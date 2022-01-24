@@ -8,7 +8,7 @@ EYES_CLOSED_SECONDS = 10
 
 def main():
     closed_count = 0
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture()
 
     ret, frame = cap.read(0)
     small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)

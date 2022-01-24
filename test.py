@@ -7,6 +7,7 @@ if cap.isOpened() :
     delay = int(1000 / cap.get(cv2.CAP_PROP_FPS))
     while True :
         ret, frame = cap.read()
+        frame = cv2.resize(frame, (0, 100), fx = 0.5, fy = 0.5)
         if ret :
             frame = cv2.flip(frame, 1)
             cv2.imshow("Video", frame)
