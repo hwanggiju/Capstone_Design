@@ -4,14 +4,14 @@ import cv2
 import time
 from scipy.spatial import distance as dist
 
-EYES_CLOSED_SECONDS = 5
+EYES_CLOSED_SECONDS = 10
 
 def main():
     closed_count = 0
     cap = cv2.VideoCapture(0)
 
     ret, frame = cap.read(0)
-    small_frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
+    small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
     rgb_small_frame = small_frame[:, :, ::-1]
 
     face_landmarks_list = face_recognition.face_landmarks(rgb_small_frame)
