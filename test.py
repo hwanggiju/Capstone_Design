@@ -8,6 +8,7 @@ if cap.isOpened() :
     while True :
         ret, frame = cap.read()
         if ret :
+            frame = cv2.flip(frame, 1)
             cv2.imshow("Video", frame)
             if cv2.waitKey(delay) & 0xFF == 27:
                 break
