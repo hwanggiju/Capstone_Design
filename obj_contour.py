@@ -9,14 +9,14 @@ if cap.isOpened() :
     print("Camera Is Opened")
     
     hog = cv2.HOGDescriptor()
-    hog.setSVMDetector(cv2.HOGDescriptor_getDaimlerPeopleDetector())
+    hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
     
     delay = int(1000 / cap.get(cv2.CAP_PROP_FPS))
     
     while True :
         reg, frame = cap.read()
         if reg :
-            detected, _ = hog.detectedMultiScale(frame)
+            detected, _ = hog.detectMultiScale(frame)
             
             for (x, y , w, h) in detected :
                 c = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
