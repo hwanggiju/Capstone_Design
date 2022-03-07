@@ -41,11 +41,10 @@ while True :
         y2 = int(detect[i, 6] * h)
         
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0))
-        
-    area = (x2-x1) * (y2-y1)
-    center_x = x1 + (x2-x1)/2 
-    center_y = y1 + (y2-y1)/2
-    print('area : %d    center_x : %d   center_y : %d' %(area, center_x, center_y))
+        area = (x2-x1) * (y2-y1)
+        center_x = x1 + (x2-x1)/2 
+        center_y = y1 + (y2-y1)/2
+        print('area : %d    center_x : %d   center_y : %d' %(area, center_x, center_y))
     cv2.imshow('frame', frame)
     
     if cv2.waitKey(1) == 27:
