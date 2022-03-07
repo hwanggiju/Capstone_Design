@@ -6,6 +6,7 @@ model = 'res10_300x300_ssd_iter_140000.caffemodel'
 config = 'deploy.prototxt.txt'
 
 cap = cv2.VideoCapture(0)
+print(cap.get(cv2.CAP_PROP_FRAME_WIDTH), cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
 if not cap.isOpened() :
     print('Camera open failed!')
@@ -42,9 +43,9 @@ while True :
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0))
         
     area = (x2-x1) * (y2-y1)
-    center_x = (x2-x1)/2
-    center_y = (y2-y1)/2
-    print('area : %d    center_x : %d   center_y : %d' %(area, center_x, center_y))
+    center_x = x1 + (x2-x1)/2 
+    center_y = y1 + (y2-y1)/2
+#    print('area : %d    center_x : %d   center_y : %d' %(area, center_x, center_y))
     cv2.imshow('frame', frame)
     
     if cv2.waitKey(1) == 27:
