@@ -45,7 +45,7 @@ while True :
     area = (x2-x1) * (y2-y1)
     center_x = x1 + (x2-x1)/2 
     center_y = y1 + (y2-y1)/2
-#    print('area : %d    center_x : %d   center_y : %d' %(area, center_x, center_y))
+    print('area : %d    center_x : %d   center_y : %d' %(area, center_x, center_y))
     cv2.imshow('frame', frame)
     
     if cv2.waitKey(1) == 27:
