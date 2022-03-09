@@ -1,4 +1,4 @@
-
+# 캡스톤 디자인 최종 코드 작성 부분
 import face_recognition
 import cv2
 import time
@@ -59,6 +59,7 @@ def main():
             
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0))
             
+            # 책상 다리 모터 제어에 활용되는 값
             area = (x2-x1) * (y2-y1)
             center_x = x1 + (x2-x1)/2 
             center_y = y1 + (y2-y1)/2
@@ -84,6 +85,7 @@ def main():
                     print('area : %d    center_x : %d   center_y : %d   left_eye : %lf   left_eye : %lf' 
                           %(area, center_x, center_y, ear_left, ear_right))
 
+                    # 졸음 방지 진동 모터에 활용될 값
                     closed = ear_left < 0.2 and ear_right < 0.2
                     closed = 0
                     if (closed):
