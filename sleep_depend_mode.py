@@ -33,16 +33,24 @@ def main():
                 thickness = 2
 
                 cv2.rectangle(small_frame, left_eye[0], right_eye[-1], color, thickness)
-
+                
+                x1 = left_eye[0][0]
+                y1 = left_eye[0][1]
+                x2 = right_eye[-1][0]
+                y2 = right_eye[-1][1]
+                
+                print(x1, y1, x2, y2)
+                
+                eye_value = (y2 - y1) / 2
+                
                 cv2.imshow('Video', small_frame)
 
-                ear_left = get_ear(left_eye)
-                ear_right = get_ear(right_eye)
+#                ear_left = get_ear(left_eye)
+#                ear_right = get_ear(right_eye)
                 
-                print(ear_left, ear_right)
+#                print(ear_left, ear_right)
 
-                closed = ear_left < 0.2 and ear_right < 0.2
-
+                closed = eye_value < 0.2
                 if (closed):
                     closed_count += 1
 
@@ -63,14 +71,14 @@ def main():
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
             break
-
+'''
 def get_ear(eye):
 	A = dist.euclidean(eye[1], eye[5])
 	B = dist.euclidean(eye[2], eye[4])
 	C = dist.euclidean(eye[0], eye[3])
 	ear = (A + B) / (2.0 * C)
 	return ear
-
+'''
 if __name__ == "__main__":
     main()
 
