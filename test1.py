@@ -5,7 +5,7 @@ import time
 from scipy.spatial import distance as dist
 import sys
 import numpy as np
-'''
+
 # 졸음 인식 판단 카운트 값
 EYES_CLOSED_SECONDS = 5
 
@@ -19,7 +19,7 @@ net = cv2.dnn.readNet(model, config)
 if net.empty() :
     print('Net open failed!')
     sys.exit()
-'''
+
 
 def main():
     # closed_count = 0    # 카운트 비교 변수 선언
