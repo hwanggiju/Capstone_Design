@@ -49,7 +49,7 @@ def main():
         if frame is None :
             break
         #이미지를 프레임에 대입
-        blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
+        #blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
         results = cascade.detectMultiScale(small_frame,  # 입력 이미지
                                            scaleFactor=1.5,  # 이미지 피라미드 스케일 factor
                                            minNeighbors=5,  # 인접 객체 최소 거리 픽셀
