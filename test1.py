@@ -49,8 +49,8 @@ def main():
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
         # 그레이 스케일 변환
         gray = cv2.cvtColor(small_frame, cv2.COLOR_BGR2GRAY)
-    if frame is None :
-            break
+        #if frame is None :
+        #   break
         #이미지를 프레임에 대입
         #blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
         results = cascade.detectMultiScale(gray,  # 입력 이미지
