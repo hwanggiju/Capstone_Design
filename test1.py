@@ -61,7 +61,7 @@ def main():
         for box in results:
             # 좌표 추출
             x, y, w, h = box
-        cv2.rectangle(small_frame, (x, y), (x + w, y + h), (255, 255, 255), thickness=2)
+            cv2.rectangle(small_frame, (x, y), (x + w, y + h), (255, 255, 255), thickness=2)
         #blob 사람인식 속도
         #net.setInput(blob)
         '''
