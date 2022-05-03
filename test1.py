@@ -37,9 +37,9 @@ def main():
         print('Camera open failed!')
         sys.exit()
     
-    #small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
-    #rgb_small_frame = small_frame[:, :, ::-1]
-    #face_landmarks_list = face_recognition.face_landmarks(rgb_small_frame)
+    small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+    rgb_small_frame = small_frame[:, :, ::-1]
+    face_landmarks_list = face_recognition.face_landmarks(rgb_small_frame)
     
     #process = True    
     
@@ -50,7 +50,7 @@ def main():
             break
         #이미지를 프레임에 대입
         blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
-        results = cascade.detectMultiScale(frame,  # 입력 이미지
+        results = cascade.detectMultiScale(small_frame,  # 입력 이미지
                                            scaleFactor=1.5,  # 이미지 피라미드 스케일 factor
                                            minNeighbors=5,  # 인접 객체 최소 거리 픽셀
                                            minSize=(20, 20)  # 탐지 객체 최소 크기
@@ -58,9 +58,9 @@ def main():
         for box in results:
             # 좌표 추출
             x, y, w, h = box
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 255), thickness=2)
+        cv2.rectangle(small_frame, (x, y), (x + w, y + h), (255, 255, 255), thickness=2)
         #blob 사람인식 속도
-        net.setInput(blob)
+        #net.setInput(blob)
         '''
         detect = net.forward()
 
@@ -89,7 +89,7 @@ def main():
             center_x = x1 + (x2-x1)/2
             center_y = y1 + (y2-y1)/2 # 인식된 부분 중심 좌표 x, y 값
         '''
-        cv2.imshow('Facerec_Video', frame)
+        cv2.imshow('Facerec_Video', small_frame)
         '''    
         print('area : %d    center_x : %d   center_y : %d' 
                 %(area, center_x, center_y))
