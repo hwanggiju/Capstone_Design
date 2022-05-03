@@ -48,7 +48,7 @@ def main():
 
         #blob 사람인식 속도
         net.setInput(blob)
-        #detect = net.forward()
+        detect = net.forward()
 
         (h, w) = frame.shape[:2]
         detect = detect[0, 0, :, :]
