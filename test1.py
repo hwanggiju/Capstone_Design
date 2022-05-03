@@ -11,7 +11,7 @@ import numpy as np
 # 모델 불러오기
 #cascade = cv2.CascadeClassifier(cascade_filename)
 
-cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
 
 # 졸음 인식 판단 카운트 값
@@ -56,14 +56,12 @@ def main():
         #   break
         #이미지를 프레임에 대입
         #blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
-        results = cascade.detectMultiScale(gray,  # 입력 이미지
+        results = face_cascade.detectMultiScale(gray,  # 입력 이미지
                                            scaleFactor=1.5,  # 이미지 피라미드 스케일 factor
                                            minNeighbors=5,  # 인접 객체 최소 거리 픽셀
                                            minSize=(20, 20)  # 탐지 객체 최소 크기
                                            )
-        for box in results:
-            # 좌표 추출
-            x, y, w, h = box
+        for (x, y, w, h) in results:
             cv2.rectangle(small_frame, (x, y), (x + w, y + h), (255, 255, 255), thickness=2)
         #blob 사람인식 속도
         #net.setInput(blob)
