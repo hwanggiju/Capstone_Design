@@ -46,10 +46,10 @@ def main():
         #이미지를 프레임에 대입
         blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
 
-        #blob 사람인식
+        #blob 사람인식 속도
         net.setInput(blob)
         detect = net.forward()
-        '''
+
         (h, w) = frame.shape[:2]
         detect = detect[0, 0, :, :]
         
@@ -69,7 +69,7 @@ def main():
             area = (x2-x1) * (y2-y1) # 사용자 인식 넓이
             center_x = x1 + (x2-x1)/2 
             center_y = y1 + (y2-y1)/2 # 인식된 부분 중심 좌표 x, y 값
-        '''
+
         cv2.imshow('Facerec_Video', frame)
         '''    
         print('area : %d    center_x : %d   center_y : %d' 
