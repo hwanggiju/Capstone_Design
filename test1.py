@@ -39,7 +39,7 @@ def main():
     
 
     #rgb_small_frame = small_frame[:, :, ::-1]
-    face_landmarks_list = face_recognition.face_landmarks(rgb_small_frame)
+    #face_landmarks_list = face_recognition.face_landmarks(rgb_small_frame)
     
     #process = True    
     
