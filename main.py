@@ -31,7 +31,7 @@ def main():
         print('Camera open failed!')
         sys.exit()
     
-    small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+    small_frame = cv2.resize(frame, (0, 0), fx=1.25, fy=1.25)
     rgb_small_frame = small_frame[:, :, ::-1]
     face_landmarks_list = face_recognition.face_landmarks(rgb_small_frame)
     
@@ -43,9 +43,9 @@ def main():
         if frame is None :
             break
         
-        blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
+        #blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
         print(1)
-        net.setInput(blob)
+        #net.setInput(blob)
         print(1)
         detect = net.forward()
         print(1)
@@ -69,7 +69,7 @@ def main():
             center_x = x1 + (x2-x1)/2 
             center_y = y1 + (y2-y1)/2 # 인식된 부분 중심 좌표 x, y 값
         print(1)
-        cv2.imshow('Facerec_Video', small_frame)
+        cv2.imshow('Facerec_Video', frame)
         '''    
             print('area : %d    center_x : %d   center_y : %d' 
                 %(area, center_x, center_y)) 
