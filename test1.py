@@ -62,7 +62,7 @@ def main():
                                            minSize=(20, 20)  # 탐지 객체 최소 크기
                                            )
         for (x, y, w, h) in results:
-            cv2.rectangle(small_frame, (x, y), (x + w, y + h), (255, 255, 255), thickness=2)
+            cv2.rectangle(small_frame, (x, y), (x + w, y + h), (255, 0, 0), thickness=2)
         #blob 사람인식 속도
         #net.setInput(blob)
         '''
