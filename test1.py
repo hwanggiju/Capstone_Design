@@ -11,7 +11,7 @@ import numpy as np
 # 모델 불러오기
 #cascade = cv2.CascadeClassifier(cascade_filename)
 
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_alt_tree.xml')
 eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
 
 # 졸음 인식 판단 카운트 값
