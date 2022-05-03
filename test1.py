@@ -43,12 +43,13 @@ def main():
         _, frame = cap.read(0)
         if frame is None :
             break
-
+        #이미지를 프레임에 대입
         blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
-        '''
+
+        #blob 사람인식
         net.setInput(blob)
         detect = net.forward()
-        
+        '''
         (h, w) = frame.shape[:2]
         detect = detect[0, 0, :, :]
         
