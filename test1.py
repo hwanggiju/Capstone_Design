@@ -26,7 +26,6 @@ if net.empty() :
     sys.exit()
 
 
-
 def main():
     # closed_count = 0    # 카운트 비교 변수 선언
     cap = cv2.VideoCapture(0)
