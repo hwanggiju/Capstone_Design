@@ -44,12 +44,14 @@ def main():
             break
         
         blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
+        print(1)
         net.setInput(blob)
+        print(1)
         detect = net.forward()
-        
+        print(1)
         (h, w) = frame.shape[:2]
         detect = detect[0, 0, :, :]
-        
+        print(1)
         for i in range(detect.shape[0]) : 
             confidence = detect[i, 2]
             if confidence < 0.5 :
@@ -66,7 +68,7 @@ def main():
             area = (x2-x1) * (y2-y1) # 사용자 인식 넓이
             center_x = x1 + (x2-x1)/2 
             center_y = y1 + (y2-y1)/2 # 인식된 부분 중심 좌표 x, y 값
-            
+        print(1)
         cv2.imshow('Facerec_Video', frame)
         '''    
             print('area : %d    center_x : %d   center_y : %d' 
