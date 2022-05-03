@@ -52,9 +52,10 @@ def main():
 
         (h, w) = frame.shape[:2]
         print(frame.shape[:2])
-        detect = detect[0, 0, :, :]
         print("-------------------------------------")
         print(detect)
+
+        detect = detect[0, 0, :, :]
         print("-------------------------------------")
         print(detect.shape[0])
         for i in range(detect.shape[0]) :
