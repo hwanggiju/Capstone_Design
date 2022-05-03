@@ -52,11 +52,11 @@ def main():
 
         (h, w) = frame.shape[:2]
         #detect = detect[0, 0, :, :]
-        '''
+
         for i in range(detect.shape[0]) : 
-            confidence = detect[i, 2]
-            if confidence < 0.5 :
-                break
+            #confidence = detect[i, 2]
+            #if confidence < 0.5 :
+            #    break
             
             x1 = int(detect[i, 3] * w)
             y1 = int(detect[i, 4] * h)
@@ -69,7 +69,7 @@ def main():
             area = (x2-x1) * (y2-y1) # 사용자 인식 넓이
             center_x = x1 + (x2-x1)/2 
             center_y = y1 + (y2-y1)/2 # 인식된 부분 중심 좌표 x, y 값
-        '''
+        
         cv2.imshow('Facerec_Video', frame)
         '''    
         print('area : %d    center_x : %d   center_y : %d' 
