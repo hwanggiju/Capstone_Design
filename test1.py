@@ -49,7 +49,7 @@ def main():
     # 사용자 인식 구현 부분 --------------------------------------------------------
     while True:
         _, frame = cap.read(0)
-        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+        small_frame = cv2.resize(frame, (0, 0), fx=1.25, fy=1.25)
         # 그레이 스케일 변환
         gray = cv2.cvtColor(small_frame, cv2.COLOR_BGR2GRAY)
         #if frame is None :
@@ -57,7 +57,7 @@ def main():
         #이미지를 프레임에 대입
         #blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
         results = face_cascade.detectMultiScale(gray,  # 입력 이미지
-                                           scaleFactor=1.5,  # 이미지 피라미드 스케일 factor
+                                           scaleFactor=1.1,  # 이미지 피라미드 스케일 factor
                                            minNeighbors=5,  # 인접 객체 최소 거리 픽셀
                                            minSize=(20, 20)  # 탐지 객체 최소 크기
                                            )
