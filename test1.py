@@ -57,7 +57,7 @@ def main():
         #이미지를 프레임에 대입
         #blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
         results = face_cascade.detectMultiScale(gray,  # 입력 이미지
-                                           scaleFactor=1.3,  # 이미지 피라미드 스케일 factor
+                                           scaleFactor=1.1,  # 이미지 피라미드 스케일 factor
                                            minNeighbors=5,  # 인접 객체 최소 거리 픽셀
                                            minSize=(20, 20)  # 탐지 객체 최소 크기
                                            )
