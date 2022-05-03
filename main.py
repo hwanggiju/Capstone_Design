@@ -86,15 +86,15 @@ def main():
                     left_eye = face_landmark['left_eye']
                     right_eye = face_landmark['right_eye']
 
-                    ear_left = get_ear(left_eye)
-                    ear_right = get_ear(right_eye)
+                    eye_left = get_ear(left_eye)
+                    eye_right = get_ear(right_eye)
                     
                     print('left_eye : %lf   left_eye : %lf' 
-                        %(ear_left, ear_right))
+                        %(eye_left, eye_right))
 
                     # 졸음 방지 알림에 활용될 코드
                     closed = 0
-                    closed = ear_left < 0.2 and ear_right < 0.2
+                    closed = eye_left < 0.2 and eye_right < 0.2
                     if (closed):
                         closed_count += 1
 
