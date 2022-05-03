@@ -6,6 +6,11 @@ from scipy.spatial import distance as dist
 import sys
 import numpy as np
 
+# 가중치 파일 경로
+cascade_filename = 'haarcascade_frontalface_alt.xml'
+# 모델 불러오기
+cascade = cv2.CascadeClassifier(cascade_filename)
+
 # 졸음 인식 판단 카운트 값
 EYES_CLOSED_SECONDS = 5
 
