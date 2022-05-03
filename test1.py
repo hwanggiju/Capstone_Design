@@ -43,8 +43,9 @@ def main():
         _, frame = cap.read(0)
         if frame is None :
             break
-        '''
+
         blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
+        '''
         net.setInput(blob)
         detect = net.forward()
         
