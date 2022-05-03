@@ -7,9 +7,12 @@ import sys
 import numpy as np
 
 # 가중치 파일 경로
-cascade_filename = 'haarcascade_frontalface_alt.xml'
+#cascade_filename = 'haarcascade_frontalface_alt.xml'
 # 모델 불러오기
-cascade = cv2.CascadeClassifier(cascade_filename)
+#cascade = cv2.CascadeClassifier(cascade_filename)
+
+cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
 
 # 졸음 인식 판단 카운트 값
 EYES_CLOSED_SECONDS = 5
@@ -150,7 +153,6 @@ def get_ear(eye):
 	return ear
 
 if __name__ == "__main__":
-    img = cv2.imread('face.jpg')
     main()
     cv2.destroyAllWindows()
 
