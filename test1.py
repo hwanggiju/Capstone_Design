@@ -58,10 +58,10 @@ def main():
             #if confidence < 0.5 :
             #    break
             
-            x1 = int(detect[i, 3] * w)
-            y1 = int(detect[i, 4] * h)
-            x2 = int(detect[i, 5] * w)
-            y2 = int(detect[i, 6] * h)
+            x1 = int(frame[i, 3] * w)
+            y1 = int(frame[i, 4] * h)
+            x2 = int(frame[i, 5] * w)
+            y2 = int(frame[i, 6] * h)
             
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0))
             
