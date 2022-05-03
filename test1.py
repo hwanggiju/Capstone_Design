@@ -51,24 +51,24 @@ def main():
         #detect = net.forward()
 
         (h, w) = frame.shape[:2]
-        #detect = detect[0, 0, :, :]
-        #detect -> frame
-        for i in range(frame.shape[0]) :
-            #confidence = detect[i, 2]
-            #if confidence < 0.5 :
-            #    break
-            
-            x1 = int(frame[i, 3] * w)
-            y1 = int(frame[i, 4] * h)
-            x2 = int(frame[i, 5] * w)
-            y2 = int(frame[i, 6] * h)
-            
-            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0))
-            
-            # 책상 다리 모터 제어에 활용되는 값
-            area = (x2-x1) * (y2-y1) # 사용자 인식 넓이
-            center_x = x1 + (x2-x1)/2 
-            center_y = y1 + (y2-y1)/2 # 인식된 부분 중심 좌표 x, y 값
+        detect = detect[0, 0, :, :]
+
+        #for i in range(detect.shape[0]) :
+        confidence = detect[i, 2]
+        if confidence < 0.5 :
+            break
+
+        x1 = int(detect[i, 3] * w)
+        y1 = int(detect[i, 4] * h)
+        x2 = int(detect[i, 5] * w)
+        y2 = int(detect[i, 6] * h)
+
+        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0))
+
+        # 책상 다리 모터 제어에 활용되는 값
+        area = (x2-x1) * (y2-y1) # 사용자 인식 넓이
+        center_x = x1 + (x2-x1)/2
+        center_y = y1 + (y2-y1)/2 # 인식된 부분 중심 좌표 x, y 값
 
         cv2.imshow('Facerec_Video', frame)
         '''    
