@@ -37,7 +37,7 @@ def main():
         print('Camera open failed!')
         sys.exit()
     
-    small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+
     rgb_small_frame = small_frame[:, :, ::-1]
     face_landmarks_list = face_recognition.face_landmarks(rgb_small_frame)
     
@@ -46,11 +46,14 @@ def main():
     # 사용자 인식 구현 부분 --------------------------------------------------------
     while True:
         _, frame = cap.read(0)
-        if frame is None :
+        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+        # 그레이 스케일 변환
+        gray = cv2.cvtColor(small_frame, cv2.COLOR_BGR2GRAY)
+    if frame is None :
             break
         #이미지를 프레임에 대입
         #blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
-        results = cascade.detectMultiScale(small_frame,  # 입력 이미지
+        results = cascade.detectMultiScale(gray,  # 입력 이미지
                                            scaleFactor=1.5,  # 이미지 피라미드 스케일 factor
                                            minNeighbors=5,  # 인접 객체 최소 거리 픽셀
                                            minSize=(20, 20)  # 탐지 객체 최소 크기
