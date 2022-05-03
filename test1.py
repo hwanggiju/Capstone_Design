@@ -5,7 +5,7 @@ import time
 from scipy.spatial import distance as dist
 import sys
 import numpy as np
-
+'''
 # 졸음 인식 판단 카운트 값
 EYES_CLOSED_SECONDS = 5
 
@@ -19,30 +19,31 @@ net = cv2.dnn.readNet(model, config)
 if net.empty() :
     print('Net open failed!')
     sys.exit()
+'''
 
 def main():
-    closed_count = 0    # 카운트 비교 변수 선언
+    # closed_count = 0    # 카운트 비교 변수 선언
     cap = cv2.VideoCapture(0)
     _, frame = cap.read(0)
-    print(cap.get(cv2.CAP_PROP_FRAME_WIDTH), 
-          cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    # print(cap.get(cv2.CAP_PROP_FRAME_WIDTH), 
+    #      cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     
     if not cap.isOpened() :
         print('Camera open failed!')
         sys.exit()
     
-    small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
-    rgb_small_frame = small_frame[:, :, ::-1]
-    face_landmarks_list = face_recognition.face_landmarks(rgb_small_frame)
+    #small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+    #rgb_small_frame = small_frame[:, :, ::-1]
+    #face_landmarks_list = face_recognition.face_landmarks(rgb_small_frame)
     
-    process = True    
+    #process = True    
     
     # 사용자 인식 구현 부분 --------------------------------------------------------
     while True:
         _, frame = cap.read(0)
         if frame is None :
             break
-        
+        '''
         blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
         net.setInput(blob)
         detect = net.forward()
@@ -66,11 +67,13 @@ def main():
             area = (x2-x1) * (y2-y1) # 사용자 인식 넓이
             center_x = x1 + (x2-x1)/2 
             center_y = y1 + (y2-y1)/2 # 인식된 부분 중심 좌표 x, y 값
-            
-            cv2.imshow('Facerec_Video', frame)
-            
-            print('area : %d    center_x : %d   center_y : %d' 
+        '''
+        cv2.imshow('Facerec_Video', frame)
+        '''    
+        print('area : %d    center_x : %d   center_y : %d' 
                 %(area, center_x, center_y))
+        '''
+        '''
         # -----------------------------------------------------------------------------
             ret, frame = cap.read(0)
             small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
@@ -109,7 +112,7 @@ def main():
                                 print("EYES OPENED")
                         closed_count = 0
             # -------------------------------------------------------------
-        
+        '''
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
             break
