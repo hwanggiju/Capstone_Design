@@ -69,7 +69,7 @@ def main():
             center_x = x1 + (x2-x1)/2 
             center_y = y1 + (y2-y1)/2 # 인식된 부분 중심 좌표 x, y 값
         print(1)
-        cv2.imshow('Facerec_Video', frame)
+        cv2.imshow('Facerec_Video', small_frame)
         '''    
             print('area : %d    center_x : %d   center_y : %d' 
                 %(area, center_x, center_y)) 
