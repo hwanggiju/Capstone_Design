@@ -5,8 +5,6 @@ import time
 from scipy.spatial import distance as dist
 import sys
 import numpy as np
-if (sys.platform != "win32"):
-    import RPi.GPIO as GPIO
 
 # 졸음 인식 판단 카운트 값
 EYES_CLOSED_SECONDS = 5
@@ -70,9 +68,9 @@ def main():
             center_y = y1 + (y2-y1)/2 # 인식된 부분 중심 좌표 x, y 값
             
             cv2.imshow('Facerec_Video', frame)
-            
+        '''    
             print('area : %d    center_x : %d   center_y : %d' 
-                %(area, center_x, center_y))
+                %(area, center_x, center_y)) 
         # -----------------------------------------------------------------------------
             ret, frame = cap.read(0)
             small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
@@ -86,15 +84,15 @@ def main():
                     left_eye = face_landmark['left_eye']
                     right_eye = face_landmark['right_eye']
 
-                    eye_left = get_ear(left_eye)
-                    eye_right = get_ear(right_eye)
+                    ear_left = get_ear(left_eye)
+                    ear_right = get_ear(right_eye)
                     
                     print('left_eye : %lf   left_eye : %lf' 
-                        %(eye_left, eye_right))
+                        %(ear_left, ear_right))
 
                     # 졸음 방지 알림에 활용될 코드
                     closed = 0
-                    closed = eye_left < 0.2 and eye_right < 0.2
+                    closed = ear_left < 0.2 and ear_right < 0.2
                     if (closed):
                         closed_count += 1
 
@@ -115,7 +113,7 @@ def main():
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
             break
-
+'''
 # 특징점 좌표값을 받은 후 거리값 도출 함수
 def get_ear(eye):
 	A = dist.euclidean(eye[1], eye[5])
