@@ -43,16 +43,15 @@ def main():
         if frame is None :
             break
         
-        #blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
-        print(1)
-        #net.setInput(blob)
-        print(1)
-        detect = net.forward()
-        print(1)
-        (h, w) = frame.shape[:2]
-        detect = detect[0, 0, :, :]
-        print(1)
-        for i in range(detect.shape[0]) : 
+        # blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
+
+        # net.setInput(blob)
+        # detect = net.forward()
+        # (h, w) = frame.shape[:2]
+        # detect = detect[0, 0, :, :]
+        
+        
+    '''    for i in range(detect.shape[0]) : 
             confidence = detect[i, 2]
             if confidence < 0.5 :
                 break
@@ -70,7 +69,7 @@ def main():
             center_y = y1 + (y2-y1)/2 # 인식된 부분 중심 좌표 x, y 값
         print(1)
         cv2.imshow('Facerec_Video', frame)
-        '''    
+           
             print('area : %d    center_x : %d   center_y : %d' 
                 %(area, center_x, center_y)) 
         # -----------------------------------------------------------------------------
@@ -112,6 +111,8 @@ def main():
                         closed_count = 0
             # -------------------------------------------------------------
         '''
+        
+        cv2.imshow('Facerec_Video', frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
             break
