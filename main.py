@@ -5,6 +5,7 @@ import time
 from scipy.spatial import distance as dist
 import sys
 import numpy as np
+import RPI.GPIO as gpio
 
 # 졸음 인식 판단 카운트 값
 EYES_CLOSED_SECONDS = 5
