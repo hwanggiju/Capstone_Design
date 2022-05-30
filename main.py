@@ -5,7 +5,7 @@ import time
 from scipy.spatial import distance as dist
 import sys
 import numpy as np
-import RPI.GPIO as gpio
+#import RPI.GPIO as gpio
 
 # 졸음 인식 판단 카운트 값
 EYES_CLOSED_SECONDS = 5
@@ -46,7 +46,7 @@ def main():
         
         blob = cv2.dnn.blobFromImage(frame,             #image
                                      1,                 #scalefactor
-                                     (300, 300),        #image Size
+                                     (200, 200),        #image Size
                                      (104, 177, 123)    #Scalar
                                      )
         net.setInput(blob)
