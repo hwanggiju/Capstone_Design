@@ -21,7 +21,7 @@ try :
 
         time.sleep(0.2)
         
-        GPIO.output(in13_lst, GPIO.HIGH)
+        GPIO.output(in13_lst, GPIO.HIGH) #
         GPIO.output(in24_lst, GPIO.LOW)
         
         GPIO.output(en_lst, GPIO.HIGH)
