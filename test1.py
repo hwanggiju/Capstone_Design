@@ -1,51 +1,52 @@
 import RPi.GPIO as gpio
 import time
 
-gpio.setmode(gpio.BCM)
+gpio.setmode(gpio.BOARD)
 gpio.setwarnings(False)
 
-gpio.setup(13, gpio.OUT) # enA
-gpio.setup(6, gpio.OUT) # in1
-gpio.setup(5, gpio.OUT) # in2
-gpio.setup(22, gpio.OUT) # in3
-gpio.setup(27, gpio.OUT) # in4
-gpio.setup(17, gpio.OUT) # enB
+gpio.setup(33, gpio.OUT) # enA
+gpio.setup(11, gpio.OUT) # enB
+gpio.setup(31, gpio.OUT) # in1
+gpio.setup(29, gpio.OUT) # in2
+gpio.setup(15, gpio.OUT) # in3
+gpio.setup(13, gpio.OUT) # in4
 
 
 while True :
+    gpio.output(33, gpio.LOW) # enA
+    gpio.output(11, gpio.LOW)
+    gpio.output(31, gpio.LOW)
+    gpio.output(29, gpio.LOW)
+    gpio.output(15, gpio.LOW)
     gpio.output(13, gpio.LOW)
-    gpio.output(17, gpio.LOW)
-    gpio.output(6, gpio.LOW)
-    gpio.output(5, gpio.LOW)
-    gpio.output(22, gpio.LOW)
-    gpio.output(27, gpio.LOW)
 
     time.sleep(0.2)
 
-    gpio.output(6, gpio.HIGH)
-    gpio.output(5, gpio.LOW)
-    gpio.output(22, gpio.HIGH)
-    gpio.output(27, gpio.LOW)
-    gpio.output(13, gpio.HIGH)
-    gpio.output(17, gpio.HIGH)
+    gpio.output(33, gpio.HIGH)
+    gpio.output(11, gpio.HIGH)
+    gpio.output(31, gpio.HIGH)
+    gpio.output(29, gpio.LOW)
+    gpio.output(15, gpio.HIGH)
+    gpio.output(13, gpio.LOW)
     
     time.sleep(1)
     
+    gpio.output(33, gpio.LOW)
+    gpio.output(11, gpio.LOW)
+    gpio.output(31, gpio.LOW)
+    gpio.output(29, gpio.LOW)
+    gpio.output(15, gpio.LOW)
     gpio.output(13, gpio.LOW)
-    gpio.output(17, gpio.LOW)
-    gpio.output(6, gpio.LOW)
-    gpio.output(5, gpio.LOW)
-    gpio.output(22, gpio.LOW)
-    gpio.output(27, gpio.LOW)
 
     time.sleep(0.2)
 
-    gpio.output(6, gpio.LOW)
-    gpio.output(5, gpio.HIGH)
-    gpio.output(22, gpio.LOW)
-    gpio.output(27, gpio.HIGH)
-    gpio.output(13, gpio.LOW)
-    gpio.output(17, gpio.HIGH)
+    gpio.output(33, gpio.HIGH)
+    gpio.output(11, gpio.HIGH)
+    gpio.output(31, gpio.LOW)
+    gpio.output(29, gpio.HIGH)
+    gpio.output(15, gpio.LOW)
+    gpio.output(13, gpio.HIGH)
+    
     
     time.sleep(1)
     
