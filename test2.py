@@ -26,7 +26,7 @@ while True :
     GPIO.output(in3, GPIO.LOW) # in3
     GPIO.output(in4, GPIO.LOW) # in4
 
-    time.sleep(0.2)
+    time.sleep(0.02)
 
     GPIO.output(enA, 0)
     GPIO.output(enB, 0)
@@ -46,7 +46,7 @@ while True :
     GPIO.output(in3, GPIO.LOW)  # in3
     GPIO.output(in4, GPIO.LOW)  # in4
 
-    time.sleep(0.2)
+    time.sleep(0.02)
 
     GPIO.output(enA, GPIO.HIGH)
     GPIO.output(enB, GPIO.HIGH)
@@ -60,4 +60,3 @@ while True :
 
 
 GPIO.cleanup()
-    
