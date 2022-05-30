@@ -36,7 +36,7 @@ while True :
     GPIO.output(in3, GPIO.HIGH)
     GPIO.output(in4, GPIO.LOW)
 
-    time.sleep(1)
+    time.sleep(1000)
 
     GPIO.output(enA, GPIO.LOW)  # enA
     GPIO.output(enB, GPIO.LOW)  # enB
