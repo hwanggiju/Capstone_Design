@@ -98,12 +98,12 @@ def main():
                 # if minHeightPixel > center_y:
                     # minHeightPixel = center_y
                     
-            if(480 - maxHeightPixel) > 100:
-                # currentHeight = (center_y-maxHeightPixel)/(minHeightPixel - maxHeightPixel)*(maxHeight-minHeight) + minHeight
-                # print(currentHeight)
-                one_pixel = (maxHeight - minHeight) / (480 - maxHeightPixel)
-                totalHeight = one_pixel * (maxHeight - minHeight)
-                print(totalHeight)
+                if(480 - maxHeightPixel) > 100:
+                    # currentHeight = (center_y-maxHeightPixel)/(minHeightPixel - maxHeightPixel)*(maxHeight-minHeight) + minHeight
+                    # print(currentHeight)
+                    one_pixel = (maxHeight - minHeight) / (480 - maxHeightPixel)
+                    totalHeight = one_pixel * (maxHeight - minHeight) + minHeight
+                    print(totalHeight)
         # -----------------------------------------------------------------------------
             '''
             ret, frame = cap.read(0)
