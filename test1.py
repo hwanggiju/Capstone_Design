@@ -44,8 +44,11 @@ while True :
     gpio.output(5, gpio.HIGH)
     gpio.output(22, gpio.LOW)
     gpio.output(27, gpio.HIGH)
-    gpio.output(13, gpio.HIGH)
+    gpio.output(13, gpio.LOW)
     gpio.output(17, gpio.HIGH)
     
     time.sleep(1)
+    
+    if KeyboardInterrupt :
+        gpio.cleanup()
     
