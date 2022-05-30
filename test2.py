@@ -2,14 +2,13 @@ import RPi.GPIO as GPIO
 import time
 #test 1
 GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)###
+GPIO.setwarnings(False)
 enA = 13
 enB = 17
 in1 = 6
 in2 = 5
 in3 = 22
 in4 = 27
-GPIO.cleanup()
 GPIO.setup(enA, GPIO.OUT, initial=0) # enA
 GPIO.setup(enB, GPIO.OUT, initial=0) # enB
 GPIO.setup(in1, GPIO.OUT, initial=0) # in1
@@ -31,13 +30,13 @@ while True :
 
     GPIO.output(enA, 0)
     GPIO.output(enB, 0)
-    
+
     GPIO.output(in1, GPIO.HIGH)
     GPIO.output(in2, GPIO.LOW)
     GPIO.output(in3, GPIO.HIGH)
     GPIO.output(in4, GPIO.LOW)
-    
-    time.sleep(1)
+
+    time.sleep(1000)
 
     GPIO.output(enA, GPIO.LOW)  # enA
     GPIO.output(enB, GPIO.LOW)  # enB
@@ -59,7 +58,6 @@ while True :
 
     time.sleep(1)
 
-    
-    if KeyboardInterrupt :
-        GPIO.cleanup()
+
+GPIO.cleanup()
     
