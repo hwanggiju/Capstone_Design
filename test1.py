@@ -14,9 +14,9 @@ gpio.setup(13, gpio.OUT) # in4
 
 while True :
     gpio.output(33, gpio.LOW) # enA
-    gpio.output(11, gpio.LOW)
-    gpio.output(31, gpio.LOW)
-    gpio.output(29, gpio.LOW)
+    gpio.output(11, gpio.LOW) # enB
+    gpio.output(31, gpio.LOW) # in1
+    gpio.output(29, gpio.LOW) #
     gpio.output(15, gpio.LOW)
     gpio.output(13, gpio.LOW)
 
