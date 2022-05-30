@@ -44,7 +44,11 @@ def main():
         if frame is None :
             break
         
-        blob = cv2.dnn.blobFromImage(frame, 1, (300, 300), (104, 177, 123))
+        blob = cv2.dnn.blobFromImage(frame,             #image
+                                     1,                 #scalefactor
+                                     (200, 200),        #image Size
+                                     (104, 177, 123)    #Scalar
+                                     )
         net.setInput(blob)
         detect = net.forward()
         
