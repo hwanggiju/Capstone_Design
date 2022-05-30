@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import time
 #test 1
 GPIO.setmode(GPIO.BOARD)
-GPIO.setwarnings(False)
+GPIO.setwarnings(False)###
 
 GPIO.setup(33, GPIO.OUT) # enA
 GPIO.setup(11, GPIO.OUT) # enB
