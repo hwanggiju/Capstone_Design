@@ -37,8 +37,8 @@ try :
 
         GPIO.output(en_lst, GPIO.HIGH)
         
-        GPIO.output(in13_lst, GPIO.HIGH)
-        GPIO.output(in24_lst, GPIO.LOW)
+        GPIO.output(in13_lst, GPIO.LOW)
+        GPIO.output(in24_lst, GPIO.HIGH)
         
         time.sleep(1)
     
