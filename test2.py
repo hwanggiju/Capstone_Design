@@ -9,13 +9,14 @@ in1 = 6
 in2 = 5
 in3 = 22
 in4 = 27
+GPIO.cleanup()
 GPIO.setup(enA, GPIO.OUT) # enA
 GPIO.setup(enB, GPIO.OUT) # enB
 GPIO.setup(in1, GPIO.OUT) # in1
 GPIO.setup(in2, GPIO.OUT) # in2
 GPIO.setup(in3, GPIO.OUT) # in3
 GPIO.setup(in4, GPIO.OUT) # in4
-GPIO.cleanup()
+
 
 while True :
     GPIO.output(enA, GPIO.LOW) # enA
