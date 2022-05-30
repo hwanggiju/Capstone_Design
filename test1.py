@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import time
 #test 1
 GPIO.setmode(GPIO.BOARD)
-GPIO.setwarnings(False)###
+GPIO.setwarnings(False)
 
 en_lst = [33, 11]
 in13_lst = [31, 15]
@@ -13,7 +13,7 @@ GPIO.setup(in13_lst, GPIO.OUT)
 GPIO.setup(in24_lst, GPIO.OUT)
 
 try :
-    while True :
+    while 1 :
         GPIO.output(in13_lst, GPIO.LOW)
         GPIO.output(in24_lst, GPIO.LOW)
         
