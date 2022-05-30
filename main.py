@@ -72,7 +72,7 @@ def main():
             center_x = x1 + (x2-x1)/2 
             center_y = y1 + (y2-y1)/2 # 인식된 부분 중심 좌표 x, y 값
             
-            cv2.imshow('Facerec_Video', frame)
+
             
             print('area : %d    center_x : %d   center_y : %d' 
                 %(area, center_x, center_y))
@@ -114,7 +114,7 @@ def main():
                                 print("EYES OPENED")
                         closed_count = 0
             # -------------------------------------------------------------
-        
+        cv2.imshow('Facerec_Video', frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
             break
