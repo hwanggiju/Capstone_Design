@@ -8,9 +8,12 @@ en_lst = [11, 33]
 in13_lst = [13, 29]
 in24_lst = [15, 31]
 
-GPIO.setup(en_lst, GPIO.OUT)
-GPIO.setup(in13_lst, GPIO.OUT)
-GPIO.setup(in24_lst, GPIO.OUT)
+GPIO.setup(11, GPIO.OUT)
+GPIO.setup(33, GPIO.OUT)
+GPIO.setup(13, GPIO.OUT)
+GPIO.setup(15, GPIO.OUT)
+GPIO.setup(29, GPIO.OUT)
+GPIO.setup(31, GPIO.OUT)
 
 try :
     while 1 :
@@ -44,10 +47,10 @@ try :
 
         time.sleep(0.2)
         
-        GPIO.output(13, GPIO.HIGH)
-        GPIO.output(15, GPIO.LOW)
-        GPIO.output(29, GPIO.HIGH)
-        GPIO.output(31, GPIO.LOW)
+        GPIO.output(13, GPIO.LOW)
+        GPIO.output(15, GPIO.HIGH)
+        GPIO.output(29, GPIO.LOW)
+        GPIO.output(31, GPIO.HIGH)
         
         GPIO.output(11, GPIO.HIGH)
         GPIO.output(33, GPIO.HIGH)
