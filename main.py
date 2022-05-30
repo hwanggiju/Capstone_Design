@@ -65,18 +65,17 @@ def main():
             x2 = int(detect[i, 5] * w)
             y2 = int(detect[i, 6] * h)
             
-            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0))
+            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0)) #green ractangle
             
             # 책상 다리 모터 제어에 활용되는 값
             area = (x2-x1) * (y2-y1) # 사용자 인식 넓이
             center_x = x1 + (x2-x1)/2 
             center_y = y1 + (y2-y1)/2 # 인식된 부분 중심 좌표 x, y 값
             
-
-            
             print('area : %d    center_x : %d   center_y : %d' 
                 %(area, center_x, center_y))
         # -----------------------------------------------------------------------------
+            '''
             ret, frame = cap.read(0)
             small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
             rgb_small_frame = small_frame[:, :, ::-1]
@@ -113,7 +112,7 @@ def main():
                                 asleep = False
                                 print("EYES OPENED")
                         closed_count = 0
-            # -------------------------------------------------------------
+            # -------------------------------------------------------------'''
         cv2.imshow('Facerec_Video', frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
