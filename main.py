@@ -14,6 +14,10 @@ EYES_CLOSED_SECONDS = 5
 model = 'res10_300x300_ssd_iter_140000.caffemodel'
 config = 'deploy.prototxt.txt'
 
+# 사용자 정의 변수
+maxHeight = 168
+minHeight = 130
+
 # 네트워크 구성
 net = cv2.dnn.readNet(model, config)
 
@@ -68,11 +72,13 @@ def main():
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0)) #green ractangle
             
             # 책상 다리 모터 제어에 활용되는 값
-            area = (x2-x1) * (y2-y1) # 사용자 인식 넓이
+            area = (x2-x1) * (y2-y1)    # 사용자 인식 넓이
             center_x = x1 + (x2-x1)/2 
-            center_y = y1 + (y2-y1)/2 # 인식된 부분 중심 좌표 x, y 값
-            
-            print('area : %d    center_x : %d   center_y : %d' 
+            center_y = y1 + (y2-y1)/2   # 인식된 부분 중심 좌표 x, y 값
+            width = x2-x1
+            height =y2-y1
+            print(" 가로 :"+str(width)+"  세로:"+str(height),end='')
+            print('  area : %d    center_x : %d   center_y : %d'
                 %(area, center_x, center_y))
         # -----------------------------------------------------------------------------
             '''
