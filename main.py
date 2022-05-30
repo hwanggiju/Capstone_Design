@@ -14,6 +14,12 @@ iic_arr = [3, 5] # 3 -> GPIO 2, 5 -> GPIO 3 자이로 oled
 uart_arr = [8, 10] # 8(Tx) -> GPIO 14 / 10(Rx) -> GPIO 15
 
 gpio.setmode(gpio.BCM)
+gpio.setup(13, gpio.OUT)
+gpio.setup(6, gpio.OUT)
+gpio.setup(5, gpio.OUT)
+gpio.setup(22, gpio.OUT)
+gpio.setup(27, gpio.OUT)
+gpio.setup(17, gpio.OUT)
 
 # 졸음 인식 판단 카운트 값
 EYES_CLOSED_SECONDS = 5
