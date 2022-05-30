@@ -7,6 +7,12 @@ import sys
 import numpy as np
 #import RPI.GPIO as gpio
 
+# 데이터 입출력
+# GPIO 17 27 22 23 24 25 5 6 12 13 16 26
+pin_array = [11, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37] 
+iic_arr = [3, 5] # 3 -> GPIO 2, 5 -> GPIO 3 자이로 oled
+uart_arr = [8, 10] # 8(Tx) -> GPIO 14 / 10(Rx) -> GPIO 15
+
 # 졸음 인식 판단 카운트 값
 EYES_CLOSED_SECONDS = 5
 
@@ -15,8 +21,8 @@ model = 'res10_300x300_ssd_iter_140000.caffemodel'
 config = 'deploy.prototxt.txt'
 
 # 사용자 정의 변수
-maxHeight = 168
-minHeight = 130
+maxHeight = 170
+minHeight = 80
 
 # 네트워크 구성
 net = cv2.dnn.readNet(model, config)
@@ -44,7 +50,7 @@ def main():
 
     # 픽셀 최대 최소값 초기화
     maxHeightPixel = 0
-    minHeightPixel = 10000
+    # minHeightPixel = 10000
 
     # 사용자 인식 구현 부분 --------------------------------------------------------
     while True:
@@ -86,14 +92,18 @@ def main():
                 %(area, center_x, center_y))
 
             # 가로 범위 인식
-            if width > 70 and width < 90:
+            if width > 70 and width < 100:
                 if maxHeightPixel < center_y:
                     maxHeightPixel = center_y
-                if minHeightPixel > center_y:
-                    minHeightPixel = center_y
-            if(maxHeightPixel - minHeightPixel) > 100:
-                currentHeight = (center_y-maxHeightPixel)/(minHeightPixel - maxHeightPixel)*(maxHeight-minHeight) + minHeight
-                print(currentHeight)
+                # if minHeightPixel > center_y:
+                    # minHeightPixel = center_y
+                    
+            if(480 - maxHeightPixel) > 100:
+                # currentHeight = (center_y-maxHeightPixel)/(minHeightPixel - maxHeightPixel)*(maxHeight-minHeight) + minHeight
+                # print(currentHeight)
+                one_pixel = (maxHeight - minHeight) / (480 - maxHeightPixel)
+                totalHeight = one_pixel * (maxHeight - minHeight)
+                print(totalHeight)
         # -----------------------------------------------------------------------------
             '''
             ret, frame = cap.read(0)
