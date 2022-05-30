@@ -1,8 +1,8 @@
 import RPi.GPIO as GPIO
 import time
-
+#test 1
 GPIO.setmode(GPIO.BOARD)
-GPIO.setwarnings(False)
+GPIO.setwarnings(False)###
 
 en_lst = [33, 11]
 in13_lst = [31, 15]
