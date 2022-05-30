@@ -2,8 +2,6 @@ import RPi.GPIO as GPIO
 import time
 #test 1
 GPIO.setmode(GPIO.BCM)
-mode = GPIO.getmode()
-print(mode)
 GPIO.setwarnings(False)
 enA = 11
 enB = 33
@@ -38,7 +36,7 @@ while True :
     GPIO.output(in3, GPIO.HIGH)
     GPIO.output(in4, GPIO.LOW)
 
-    time.sleep(1000)
+    time.sleep(1)
 
     GPIO.output(enA, GPIO.LOW)  # enA
     GPIO.output(enB, GPIO.LOW)  # enB
