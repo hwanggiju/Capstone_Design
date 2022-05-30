@@ -90,9 +90,9 @@ def main():
             print(" 가로 :"+str(width)+"  세로:"+str(height),end='')
             print('  area : %d    center_x : %d   center_y : %d'
                 %(area, center_x, center_y))
-            '''
+            
             # 가로 범위 인식
-            if width > 70 and width < 100:
+            if width > 70 and width < 90: # 카메라 사용자 거리 : 70 ~ 100
                 if maxHeightPixel < center_y:
                     maxHeightPixel = center_y
                 # if minHeightPixel > center_y:
@@ -104,7 +104,7 @@ def main():
                     one_pixel = (maxHeight - minHeight) / (480 - maxHeightPixel)
                     totalHeight = one_pixel * (maxHeight - minHeight) + minHeight
                     print(totalHeight)
-            '''
+            
         # -----------------------------------------------------------------------------
             '''
             ret, frame = cap.read(0)
