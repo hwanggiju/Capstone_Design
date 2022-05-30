@@ -5,13 +5,15 @@ import time
 from scipy.spatial import distance as dist
 import sys
 import numpy as np
-#import RPI.GPIO as gpio
+import RPi.GPIO as gpio
 
 # 데이터 입출력
 # GPIO 17 27 22 23 24 25 5 6 12 13 16 26
-pin_array = [11, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37] 
+pin_array = [11, 13, 15, 16, 18, 22, 29, 31, 32, 33, 36, 37] # enA : 33, in1 : 31, in2 : 29, in3 : 15, in4 : 13, enB : 11, buzzer : 16 
 iic_arr = [3, 5] # 3 -> GPIO 2, 5 -> GPIO 3 자이로 oled
 uart_arr = [8, 10] # 8(Tx) -> GPIO 14 / 10(Rx) -> GPIO 15
+
+gpio.setmode(gpio.BCM)
 
 # 졸음 인식 판단 카운트 값
 EYES_CLOSED_SECONDS = 5
@@ -95,12 +97,12 @@ def main():
             if width > 70 and width < 90: # 카메라 사용자 거리 : 70 ~ 100
                 if maxHeightPixel < center_y:
                     maxHeightPixel = center_y
-                # if minHeightPixel > center_y:
-                    # minHeightPixel = center_y
+                if minHeightPixel > center_y:
+                    minHeightPixel = center_y
                     
                 if(480 - maxHeightPixel) > 100:
-                    # currentHeight = (center_y-maxHeightPixel)/(minHeightPixel - maxHeightPixel)*(maxHeight-minHeight) + minHeight
-                    # print(currentHeight)
+                    currentHeight = (center_y-maxHeightPixel)/(minHeightPixel - maxHeightPixel)*(maxHeight-minHeight) + minHeight
+                    print(currentHeight)
                     one_pixel = (maxHeight - minHeight) / (480 - maxHeightPixel)
                     totalHeight = one_pixel * (maxHeight - minHeight) + minHeight
                     print(totalHeight)
