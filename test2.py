@@ -19,8 +19,8 @@ GPIO.setup(in4, GPIO.OUT) # in4
 
 
 while True :
-    GPIO.output(enA, GPIO.LOW) # enA
-    GPIO.output(enB, GPIO.LOW) # enB
+    GPIO.output(enA, 0) # enA
+    GPIO.output(enB, 0) # enB
 
     GPIO.output(in1, GPIO.LOW) # in1
     GPIO.output(in2, GPIO.LOW) # in2
