@@ -2,13 +2,15 @@ import RPi.GPIO as GPIO
 import time
 #test 1
 GPIO.setmode(GPIO.BCM)
+mode = GPIO.getmode()
+print(mode)
 GPIO.setwarnings(False)
-enA = 13
-enB = 17
-in1 = 6
-in2 = 5
-in3 = 22
-in4 = 27
+enA = 11
+enB = 33
+in1 = 13
+in2 = 15
+in3 = 29
+in4 = 31
 GPIO.setup(enA, GPIO.OUT, initial=0) # enA
 GPIO.setup(enB, GPIO.OUT, initial=0) # enB
 GPIO.setup(in1, GPIO.OUT, initial=0) # in1
