@@ -41,7 +41,11 @@ def main():
     face_landmarks_list = face_recognition.face_landmarks(rgb_small_frame)
     
     process = True    
-    
+
+    # 픽셀 최대 최소값 초기화
+    maxHeightPixel = 0
+    minHeightPixel = 10000
+
     # 사용자 인식 구현 부분 --------------------------------------------------------
     while True:
         _, frame = cap.read(0)
@@ -80,6 +84,15 @@ def main():
             print(" 가로 :"+str(width)+"  세로:"+str(height),end='')
             print('  area : %d    center_x : %d   center_y : %d'
                 %(area, center_x, center_y))
+
+            # 가로 범위 인식
+            if width > 70 and width < 90:
+                if maxHeightPixel < center_y:
+                    maxHeightPixel = center_y
+                if minHeightPixel > center_y:
+                    minHeightPixel = center_y
+                currentHeight = (center_y-minHeightPixel)/(maxHeightPixel - minHeightPixel)*(maxHeight-minHeight) + minHeight
+                print(currentHeight)
         # -----------------------------------------------------------------------------
             '''
             ret, frame = cap.read(0)
