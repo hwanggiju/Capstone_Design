@@ -10,31 +10,31 @@ gpio.setup(27, gpio.OUT) # in4
 gpio.setup(17, gpio.OUT) # enB
 
 while True :
-    gpio.OUTPUT(6, gpio.LOW)
-    gpio.OUTPUT(5, gpio.LOW)
-    gpio.OUTPUT(22, gpio.LOW)
-    gpio.OUTPUT(27, gpio.LOW)
+    gpio.output(6, gpio.LOW)
+    gpio.output(5, gpio.LOW)
+    gpio.output(22, gpio.LOW)
+    gpio.output(27, gpio.LOW)
 
     time.sleep(0.2)
 
-    gpio.OUTPUT(6, gpio.HIGH)
-    gpio.OUTPUT(5, gpio.LOW)
-    gpio.OUTPUT(22, gpio.HIGH)
-    gpio.OUTPUT(27, gpio.LOW)
+    gpio.output(6, gpio.HIGH)
+    gpio.output(5, gpio.LOW)
+    gpio.output(22, gpio.HIGH)
+    gpio.output(27, gpio.LOW)
 
     time.sleep(1)
     
-    gpio.OUTPUT(6, gpio.LOW)
-    gpio.OUTPUT(5, gpio.LOW)
-    gpio.OUTPUT(22, gpio.LOW)
-    gpio.OUTPUT(27, gpio.LOW)
+    gpio.output(6, gpio.LOW)
+    gpio.output(5, gpio.LOW)
+    gpio.output(22, gpio.LOW)
+    gpio.output(27, gpio.LOW)
 
     time.sleep(0.2)
 
-    gpio.OUTPUT(6, gpio.LOW)
-    gpio.OUTPUT(5, gpio.HIGH)
-    gpio.OUTPUT(22, gpio.LOW)
-    gpio.OUTPUT(27, gpio.HIGH)
+    gpio.output(6, gpio.LOW)
+    gpio.output(5, gpio.HIGH)
+    gpio.output(22, gpio.LOW)
+    gpio.output(27, gpio.HIGH)
 
     time.sleep(1)
     ##
