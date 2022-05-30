@@ -62,7 +62,7 @@ def main():
         
         blob = cv2.dnn.blobFromImage(frame,             #image
                                      1,                 #scalefactor
-                                     (150, 150),        #image Size
+                                     (140, 140),        #image Size
                                      (104, 177, 123)    #Scalar
                                      )
         net.setInput(blob)
