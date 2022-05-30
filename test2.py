@@ -2,6 +2,8 @@ import RPi.GPIO as GPIO
 import time
 #test 1
 GPIO.setmode(GPIO.BCM)
+mode = GPIO.getmode()
+print(mode)
 GPIO.setwarnings(False)
 enA = 13
 enB = 17
