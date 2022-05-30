@@ -15,7 +15,7 @@ GPIO.setup(in1, GPIO.OUT) # in1
 GPIO.setup(in2, GPIO.OUT) # in2
 GPIO.setup(in3, GPIO.OUT) # in3
 GPIO.setup(in4, GPIO.OUT) # in4
-
+GPIO.cleanup()
 
 while True :
     GPIO.output(enA, GPIO.LOW) # enA
@@ -57,7 +57,7 @@ while True :
     GPIO.output(in4, GPIO.HIGH)
 
     time.sleep(1)
-    
+
     
     if KeyboardInterrupt :
         GPIO.cleanup()
