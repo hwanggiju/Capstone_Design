@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 #test 1
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
 en_lst = [11, 33] 
