@@ -12,35 +12,36 @@ GPIO.setup(en_lst, GPIO.OUT)
 GPIO.setup(in13_lst, GPIO.OUT)
 GPIO.setup(in24_lst, GPIO.OUT)
 
-while True :
-    GPIO.output(en_lst, GPIO.LOW)
-    
-    GPIO.output(in13_lst, GPIO.LOW)
-    GPIO.output(in24_lst, GPIO.LOW)
+try :
+    while True :
+        GPIO.output(en_lst, GPIO.LOW)
+        
+        GPIO.output(in13_lst, GPIO.LOW)
+        GPIO.output(in24_lst, GPIO.LOW)
 
-    time.sleep(0.2)
+        time.sleep(0.2)
 
-    GPIO.output(en_lst, GPIO.HIGH)
-    
-    GPIO.output(in13_lst, GPIO.HIGH)
-    GPIO.output(in24_lst, GPIO.LOW)
-    
-    time.sleep(1)
-    
-    GPIO.output(en_lst, GPIO.LOW)
-    
-    GPIO.output(in13_lst, GPIO.LOW)
-    GPIO.output(in24_lst, GPIO.LOW)
+        GPIO.output(en_lst, GPIO.HIGH)
+        
+        GPIO.output(in13_lst, GPIO.HIGH)
+        GPIO.output(in24_lst, GPIO.LOW)
+        
+        time.sleep(1)
+        
+        GPIO.output(en_lst, GPIO.LOW)
+        
+        GPIO.output(in13_lst, GPIO.LOW)
+        GPIO.output(in24_lst, GPIO.LOW)
 
-    time.sleep(0.2)
+        time.sleep(0.2)
 
-    GPIO.output(en_lst, GPIO.HIGH)
+        GPIO.output(en_lst, GPIO.HIGH)
+        
+        GPIO.output(in13_lst, GPIO.HIGH)
+        GPIO.output(in24_lst, GPIO.LOW)
+        
+        time.sleep(1)
     
-    GPIO.output(in13_lst, GPIO.HIGH)
-    GPIO.output(in24_lst, GPIO.LOW)
-    
-    time.sleep(1)
-    
-    if KeyboardInterrupt :
-        GPIO.cleanup()
+except KeyboardInterrupt :
+    GPIO.cleanup()
     
