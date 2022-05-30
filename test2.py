@@ -10,12 +10,12 @@ in2 = 5
 in3 = 22
 in4 = 27
 GPIO.cleanup()
-GPIO.setup(enA, GPIO.OUT) # enA
-GPIO.setup(enB, GPIO.OUT) # enB
-GPIO.setup(in1, GPIO.OUT) # in1
-GPIO.setup(in2, GPIO.OUT) # in2
-GPIO.setup(in3, GPIO.OUT) # in3
-GPIO.setup(in4, GPIO.OUT) # in4
+GPIO.setup(enA, GPIO.OUT, initial=0) # enA
+GPIO.setup(enB, GPIO.OUT, initial=0) # enB
+GPIO.setup(in1, GPIO.OUT, initial=0) # in1
+GPIO.setup(in2, GPIO.OUT, initial=0) # in2
+GPIO.setup(in3, GPIO.OUT, initial=0) # in3
+GPIO.setup(in4, GPIO.OUT, initial=0) # in4
 
 
 while True :
