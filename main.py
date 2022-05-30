@@ -91,6 +91,7 @@ def main():
                     maxHeightPixel = center_y
                 if minHeightPixel > center_y:
                     minHeightPixel = center_y
+            if(maxHeightPixel - minHeightPixel) > 100:
                 currentHeight = (center_y-minHeightPixel)/(maxHeightPixel - minHeightPixel)*(maxHeight-minHeight) + minHeight
                 print(currentHeight)
         # -----------------------------------------------------------------------------
