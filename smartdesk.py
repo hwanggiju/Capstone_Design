@@ -130,6 +130,8 @@ def main():
                     elif currentHeight > 160:
                         driverSet(1,0,1,0,1,1)#down
                         print("down\n")
+                    else :
+                        driverSet(0, 0, 0, 0, 0, 0) # stay
         cv2.imshow('Facerec_Video', frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
