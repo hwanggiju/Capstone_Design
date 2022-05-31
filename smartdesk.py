@@ -35,16 +35,26 @@ def initHardware():
         GPIO.output(driver[i], GPIO.LOW)
 
 # driver
-def driverSet(enA, In1, In2, In3, In4, enB):
+def driverSet(enA, motorA, motorB, enB):
     for i in range(len(driver)):
         GPIO.output(driver[i], 0)
-    time.sleep(0.1)
-    GPIO.output(driver[0], enA)
-    GPIO.output(driver[1], In1)
-    GPIO.output(driver[2], In2)
-    GPIO.output(driver[3], In3)
-    GPIO.output(driver[4], In4)
-    GPIO.output(driver[5], enB)
+    time.sleep(0.001)
+    if motorA == 1:
+        GPIO.output(driver[0], enA)
+        GPIO.output(driver[1], 0)
+        GPIO.output(driver[2], 1)
+    else:
+        GPIO.output(driver[0], enA)
+        GPIO.output(driver[1], 1)
+        GPIO.output(driver[2], 0)
+    if motorB == 1:
+        GPIO.output(driver[3], 0)
+        GPIO.output(driver[4], 1)
+        GPIO.output(driver[5], enB)
+    else:
+        GPIO.output(driver[3], 1)
+        GPIO.output(driver[4], 0)
+        GPIO.output(driver[5], enB)
 
 # main code
 def main():
@@ -125,13 +135,13 @@ def main():
                     print(currentHeight)
                     #높이에 따른 모터작동
                     if currentHeight < 140:
-                        driverSet(1,1,0,1,0,1)#up
-                        print("up\n")
-                    elif currentHeight > 160:
-                        driverSet(1,0,1,0,1,1)#down
+                        driverSet(1,0,0,1)# down
                         print("down\n")
+                    elif currentHeight > 160:
+                        driverSet(1,1,1,1)#up
+                        print("up\n")
                     else :
-                        driverSet(0, 0, 0, 0, 0, 0) # stay
+                        driverSet(0, 0, 0, 0) # stay
         cv2.imshow('Facerec_Video', frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
