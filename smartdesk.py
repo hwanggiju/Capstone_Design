@@ -84,13 +84,16 @@ def main():
             print(" 가로 :" + str(width) + "  세로:" + str(height), end='')
             print('  area : %d    center_x : %d   center_y : %d'
                   % (area, center_x, center_y))
-            
+
         cv2.imshow('Facerec_Video', frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
             break
 
 if __name__ == "__main__":
-    initDriver()
-    main()
-    cv2.destroyAllWindows()
+    try:
+        initDriver()
+        main()
+        cv2.destroyAllWindows()
+    except KeyboardInterrupt:
+        GPIO.cleanup()
