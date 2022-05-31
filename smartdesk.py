@@ -135,12 +135,10 @@ def main():
         cv2.imshow('Facerec_Video', frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
+            GPIO.cleanup()
             break
 
 if __name__ == "__main__":
-    try:
-        initHardware()
-        main()
-        cv2.destroyAllWindows()
-    except KeyboardInterrupt:
-        GPIO.cleanup()
+    initHardware()
+    main()
+    cv2.destroyAllWindows()
