@@ -73,6 +73,11 @@ def main():
     # 픽셀 최대 최소값 초기화
     maxHeightPixel = 0
     minHeightPixel = 1000
+
+    driverSet(1, 0, 1, 0, 1, 1)
+    time.sleep(2)
+    driverSet(0, 0, 0, 0, 0, 0)
+
     while True:
         _, frame = cap.read(0)
         if frame is None:
