@@ -8,6 +8,10 @@ import numpy as np
 
 # Motor Driver [enA/in1/in2/in3/in4/enB]
 driver = [ 11, 13, 15, 29, 31, 33]
+# 3 -> GPIO 2, 5 -> GPIO 3 자이로 oled
+iic_arr = [3, 5]
+# 8(Tx) -> GPIO 14 / 10(Rx) -> GPIO 15
+uart_arr = [8, 10]
 
 def initDriver():
     GPIO.setmode(GPIO.BOARD)
