@@ -108,7 +108,7 @@ def main():
             print(" 가로 :" + str(width) + "  세로:" + str(height), end='')
             print('  area : %d    center_x : %d   center_y : %d'
                   % (area, center_x, center_y))
-            if width > 70 and width < 90:  # 카메라 사용자 거리 : 70 ~ 100
+            if width > 70 and width < 90:  # 카메라 사용자 거리 : 70 ~ 100(cm)
                 # 움직임으로 최대 최소점 고정
                 if maxHeightPixel < center_y:
                     maxHeightPixel = center_y
