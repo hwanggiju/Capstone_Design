@@ -22,9 +22,9 @@ switch = [36, 38, 40]
 maxHeight = 170
 minHeight = 80
 
+GPIO.setmode(GPIO.BOARD)
+GPIO.setwarnings(False)
 def initHardware():
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setwarnings(False)
     #input/output setting
     for i in range(len(driver)):
         GPIO.setup(driver[i], GPIO.OUT)
