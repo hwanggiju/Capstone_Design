@@ -18,6 +18,10 @@ spi_arr = [19, 21, 23, 24, 26]
 # switch[left/center/right]
 switch = [36, 38, 40]
 
+# 사용자 정의 변수
+maxHeight = 170
+minHeight = 80
+
 def initHardware():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setwarnings(False)
@@ -68,7 +72,7 @@ def main():
 
     # 픽셀 최대 최소값 초기화
     maxHeightPixel = 0
-
+    minHeightPixel = 1000
     while True:
         _, frame = cap.read(0)
         if frame is None:
@@ -104,7 +108,24 @@ def main():
             print(" 가로 :" + str(width) + "  세로:" + str(height), end='')
             print('  area : %d    center_x : %d   center_y : %d'
                   % (area, center_x, center_y))
-
+            if width > 70 and width < 90:  # 카메라 사용자 거리 : 70 ~ 100
+                if maxHeightPixel < center_y:
+                    maxHeightPixel = center_y
+                if minHeightPixel > center_y:
+                    minHeightPixel = center_y
+                if (480 - maxHeightPixel) > 100:
+                    currentHeight = (center_y - maxHeightPixel) / (minHeightPixel - maxHeightPixel) * (
+                                maxHeight - minHeight) + minHeight
+                    print(currentHeight)
+                    one_pixel = (maxHeight - minHeight) / (480 - maxHeightPixel)
+                    totalHeight = one_pixel * (maxHeight - minHeight) + minHeight
+                    print(totalHeight)
+                    if totalHeight < 140:
+                        driverSet(1,1,0,1,0,1)
+                        print("up\n")
+                    elif totalHeight > 160:
+                        driverSet(1,0,1,0,1,1)
+                        print("down\n")
         cv2.imshow('Facerec_Video', frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
