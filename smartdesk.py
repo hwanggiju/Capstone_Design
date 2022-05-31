@@ -39,12 +39,12 @@ def driverSet(enA, In1, In2, In3, In4, enB):
     for i in range(len(driver)):
         GPIO.output(driver[i], 0)
     time.sleep(0.1)
-    GPIO.setup(driver[0], enA)
-    GPIO.setup(driver[1], In1)
-    GPIO.setup(driver[2], In2)
-    GPIO.setup(driver[3], In3)
-    GPIO.setup(driver[4], In4)
-    GPIO.setup(driver[5], enB)
+    GPIO.output(driver[0], enA)
+    GPIO.output(driver[1], In1)
+    GPIO.output(driver[2], In2)
+    GPIO.output(driver[3], In3)
+    GPIO.output(driver[4], In4)
+    GPIO.output(driver[5], enB)
 
 # main code
 def main():
