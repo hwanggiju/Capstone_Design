@@ -75,7 +75,7 @@ def main():
     minHeightPixel = 1000
 
     driverSet(1, 0, 1, 0, 1, 1)
-    time.sleep(2)
+    time.sleep(5)
     driverSet(0, 0, 0, 0, 0, 0)
 
     while True:
