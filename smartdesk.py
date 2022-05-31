@@ -114,18 +114,15 @@ def main():
                     maxHeightPixel = center_y
                 if minHeightPixel > center_y:
                     minHeightPixel = center_y
-                if (480 - maxHeightPixel) > 100:
+                if (maxHeightPixel-minHeightPixel) > 100:
                     currentHeight = (center_y - maxHeightPixel) / (minHeightPixel - maxHeightPixel) * (
                                 maxHeight - minHeight) + minHeight
                     print(currentHeight)
-                    one_pixel = (maxHeight - minHeight) / (480 - maxHeightPixel)
-                    totalHeight = one_pixel * (maxHeight - minHeight) + minHeight
-                    print(totalHeight)
                     #높이에 따른 모터작동
-                    if totalHeight < 140:
+                    if currentHeight < 140:
                         driverSet(1,1,0,1,0,1)#up
                         print("up\n")
-                    elif totalHeight > 160:
+                    elif currentHeight > 160:
                         driverSet(1,0,1,0,1,1)#down
                         print("down\n")
         cv2.imshow('Facerec_Video', frame)
