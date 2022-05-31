@@ -84,9 +84,9 @@ def main():
     maxHeightPixel = 0
     minHeightPixel = 1000
 
-    driverSet(1, 0, 1, 0, 1, 1)
-    time.sleep(5)
-    driverSet(0, 0, 0, 0, 0, 0)
+    # driverSet(1, 0, 1, 0, 1, 1)
+    # time.sleep(5)
+    # driverSet(0, 0, 0, 0, 0, 0)
 
     while True:
         _, frame = cap.read(0)
