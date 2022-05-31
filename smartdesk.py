@@ -16,7 +16,7 @@ uart_arr = [8, 10]
 # SPI [MOSI/MISO/SCK/CE0/CE1]
 spi_arr = [19, 21, 23, 24, 26]
 # switch
-switch = []
+switch = [36, 38, 40]
 
 def initDriver():
     GPIO.setmode(GPIO.BOARD)
