@@ -5,10 +5,13 @@ import time
 from scipy.spatial import distance as dist
 import sys
 import numpy as np
-import RPi.GPIO as gpio
 
 # Motor Driver [enA/in1/in2/in3/in4/enB]
 driver = [ 11, 13, 15, 29, 31, 33]
+
+if net.empty() :
+    print('Net open failed!')
+    sys.exit()
 
 def initDriver():
     GPIO.setmode(GPIO.BOARD)
@@ -38,9 +41,15 @@ def main():
     _, frame = cap.read(0)
     print(cap.get(cv2.CAP_PROP_FRAME_WIDTH),
           cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    
     if not cap.isOpened() :
         print('Camera open failed!')
         sys.exit()
+
+    model = 'res10_300x300_ssd_iter_140000.caffemodel'
+    config = 'deploy.prototxt.txt'
+
+    net = cv2.dnn.readNet(model, config)
 
     small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
     rgb_small_frame = small_frame[:, :, ::-1]
