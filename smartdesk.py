@@ -119,11 +119,19 @@ def main():
                                 maxHeight - minHeight) + minHeight
                     print(currentHeight)
                     #높이에 따른 모터작동
+<<<<<<< HEAD
                     if currentHeight < 140:
                         driverSet(1,1,0,1,0,1)#up
                         print("up\n")
                     elif currentHeight > 160:
                         driverSet(1,0,1,0,1,1)#down
+=======
+                    if totalHeight < 140:
+                        driverSet(1,1,0,1,0,1) #up
+                        print("up\n")
+                    elif totalHeight > 160:
+                        driverSet(1,0,1,0,1,1) #down
+>>>>>>> c29466c24fdecbb310ba5a669c9ae3736aeb9845
                         print("down\n")
         cv2.imshow('Facerec_Video', frame)
         key = cv2.waitKey(1) & 0xFF
