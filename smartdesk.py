@@ -38,7 +38,7 @@ def initHardware():
 def driverSet(enA, motorA, motorB, enB):
     for i in range(len(driver)):
         GPIO.output(driver[i], 0)
-    time.sleep(0.001)
+    time.sleep(0.2)
     if motorA == 1:
         GPIO.output(driver[0], enA)
         GPIO.output(driver[1], 0)
@@ -84,9 +84,9 @@ def main():
     maxHeightPixel = 0
     minHeightPixel = 1000
 
-    # driverSet(1, 0, 1, 0, 1, 1)
+    # driverSet(1, 0, 0, 1)
     # time.sleep(5)
-    # driverSet(0, 0, 0, 0, 0, 0)
+    # driverSet(0, 0, 0, 0)
 
     while True:
         _, frame = cap.read(0)
