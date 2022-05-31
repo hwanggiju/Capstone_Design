@@ -109,6 +109,7 @@ def main():
             print('  area : %d    center_x : %d   center_y : %d'
                   % (area, center_x, center_y))
             if width > 70 and width < 90:  # 카메라 사용자 거리 : 70 ~ 100
+                # 움직임으로 최대 최소점 고정
                 if maxHeightPixel < center_y:
                     maxHeightPixel = center_y
                 if minHeightPixel > center_y:
@@ -120,11 +121,12 @@ def main():
                     one_pixel = (maxHeight - minHeight) / (480 - maxHeightPixel)
                     totalHeight = one_pixel * (maxHeight - minHeight) + minHeight
                     print(totalHeight)
+                    #높이에 따른 모터작동
                     if totalHeight < 140:
-                        driverSet(1,1,0,1,0,1)
+                        driverSet(1,1,0,1,0,1)#up
                         print("up\n")
                     elif totalHeight > 160:
-                        driverSet(1,0,1,0,1,1)
+                        driverSet(1,0,1,0,1,1)#down
                         print("down\n")
         cv2.imshow('Facerec_Video', frame)
         key = cv2.waitKey(1) & 0xFF
