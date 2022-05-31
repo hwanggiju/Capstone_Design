@@ -6,12 +6,17 @@ from scipy.spatial import distance as dist
 import sys
 import numpy as np
 
+
 # Motor Driver [enA/in1/in2/in3/in4/enB]
-driver = [ 11, 13, 15, 29, 31, 33]
-# 3 -> GPIO 2, 5 -> GPIO 3 자이로 oled
+driver = [11, 13, 15, 29, 31, 33]
+# I2C [SDA/SCL]
 iic_arr = [3, 5]
-# 8(Tx) -> GPIO 14 / 10(Rx) -> GPIO 15
+# UART [TXD/RXD]
 uart_arr = [8, 10]
+# SPI [MOSI/MISO/SCK/CE0/CE1]
+spi_arr = [19, 21, 23, 24, 26]
+# switch
+switch = []
 
 def initDriver():
     GPIO.setmode(GPIO.BOARD)
