@@ -9,10 +9,6 @@ import numpy as np
 # Motor Driver [enA/in1/in2/in3/in4/enB]
 driver = [ 11, 13, 15, 29, 31, 33]
 
-if net.empty() :
-    print('Net open failed!')
-    sys.exit()
-
 def initDriver():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setwarnings(False)
@@ -50,6 +46,10 @@ def main():
     config = 'deploy.prototxt.txt'
 
     net = cv2.dnn.readNet(model, config)
+    
+    if net.empty() :
+        print('Net open failed!')
+        sys.exit()
 
     small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
     rgb_small_frame = small_frame[:, :, ::-1]
