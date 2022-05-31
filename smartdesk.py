@@ -15,15 +15,17 @@ iic_arr = [3, 5]
 uart_arr = [8, 10]
 # SPI [MOSI/MISO/SCK/CE0/CE1]
 spi_arr = [19, 21, 23, 24, 26]
-# switch
+# switch[left/center/right]
 switch = [36, 38, 40]
 
-def initDriver():
+def initHardware():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setwarnings(False)
     #input/output setting
     for i in range(len(driver)):
         GPIO.setup(driver[i], GPIO.OUT)
+    for i in range(len(switch)):
+        GPIO.setup(switch[i], GPIO.IN)
     #initial system down
     for i in range(len(driver)):
         GPIO.output(driver[i], GPIO.LOW)
@@ -110,7 +112,7 @@ def main():
 
 if __name__ == "__main__":
     try:
-        initDriver()
+        initHardware()
         main()
         cv2.destroyAllWindows()
     except KeyboardInterrupt:
