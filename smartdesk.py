@@ -24,9 +24,12 @@ minHeight = 80
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
+
 # 각도
-cameraAngle = 50
-deskAngle = 30
+cameraAngle = 50 # 카메라 각도
+deskAngle = 30 # 책상 판과 카메라 중심까지의 각도
+deskUserAngle = 0 # 책상 판과 사용자 높이 사이의 각도
+cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
 
 def initHardware():
     #input/output setting
@@ -127,6 +130,7 @@ def main():
             print(" 가로 :" + str(width) + "  세로:" + str(height), end='')
             print('  area : %d    center_x : %d   center_y : %d'
                   % (area, center_x, center_y))
+            
             '''
             if width > 70 and width < 90:  # 카메라 사용자 거리 : 70 ~ 100(cm)
                 # 움직임으로 최대 최소점 고정
@@ -148,6 +152,11 @@ def main():
                     else :
                         driverSet(0, 0, 0, 0) # stay
             '''
+        
+        cameraUserAngle = ((480 - center_y)*cameraAngle) / 480
+        deskUserAngle = deskAngle - (cameraAngle / 2) + cameraUserAngle
+        print("cameraUserAngle = %d\tdeskUserAngle = %d"%(cameraUserAngle, deskUserAngle))
+        
         cv2.imshow('Facerec_Video', frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
