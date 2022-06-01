@@ -21,6 +21,7 @@ switch = [36, 38, 40]
 # 사용자 정의 변수
 maxHeight = 170
 minHeight = 80
+seatdownHeight = 0
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
@@ -155,7 +156,9 @@ def main():
         
             cameraUserAngle = ((480 - center_y)*cameraAngle) / 480
             deskUserAngle = deskAngle - (cameraAngle / 2) + cameraUserAngle
-            print("cameraUserAngle = %d\tdeskUserAngle = %d"%(cameraUserAngle, deskUserAngle))
+            print("cameraUserAngle = %d\tdeskUserAngle = %d"%(cameraUserAngle, deskUserAngle), end='')
+            seatdownHeight = np.sin(deskUserAngle * np.pi/180) # np.pi/180 degree -> radian 변환
+            print("앉은 키 : %f"%(seatdownHeight))
         
         cv2.imshow('Facerec_Video', frame)
         key = cv2.waitKey(1) & 0xFF
