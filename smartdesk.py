@@ -22,15 +22,12 @@ switch = [36, 38, 40]
 maxHeight = 170
 minHeight = 80
 
-<<<<<<< Updated upstream
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
-=======
 # 각도
 cameraAngle = 50
 deskAngle = 30
 
->>>>>>> Stashed changes
 def initHardware():
     #input/output setting
     for i in range(len(driver)):
@@ -130,6 +127,7 @@ def main():
             print(" 가로 :" + str(width) + "  세로:" + str(height), end='')
             print('  area : %d    center_x : %d   center_y : %d'
                   % (area, center_x, center_y))
+            '''
             if width > 70 and width < 90:  # 카메라 사용자 거리 : 70 ~ 100(cm)
                 # 움직임으로 최대 최소점 고정
                 if maxHeightPixel < center_y:
@@ -149,6 +147,7 @@ def main():
                         print("up\n")
                     else :
                         driverSet(0, 0, 0, 0) # stay
+            '''
         cv2.imshow('Facerec_Video', frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
