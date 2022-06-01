@@ -153,9 +153,9 @@ def main():
                         driverSet(0, 0, 0, 0) # stay
             '''
         
-        cameraUserAngle = ((480 - center_y)*cameraAngle) / 480
-        deskUserAngle = deskAngle - (cameraAngle / 2) + cameraUserAngle
-        print("cameraUserAngle = %d\tdeskUserAngle = %d"%(cameraUserAngle, deskUserAngle))
+            cameraUserAngle = ((480 - center_y)*cameraAngle) / 480
+            deskUserAngle = deskAngle - (cameraAngle / 2) + cameraUserAngle
+            print("cameraUserAngle = %d\tdeskUserAngle = %d"%(cameraUserAngle, deskUserAngle))
         
         cv2.imshow('Facerec_Video', frame)
         key = cv2.waitKey(1) & 0xFF
