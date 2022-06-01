@@ -3,11 +3,17 @@ import face_recognition
 import cv2
 import time
 from scipy.spatial import distance as dist
+import RPi.GPIO as GPIO
 
 EYES_CLOSED_SECONDS = 5
+BuzzerPin = 27
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setwarnings(False)
 
 def main():
     closed_count = 0
+    GPIO.setup(BuzzerPin)
     cap = cv2.VideoCapture(0)
 
     _, frame = cap.read(0)
@@ -51,16 +57,18 @@ def main():
                 if (closed_count >= EYES_CLOSED_SECONDS):
                     asleep = True
                     while (asleep):
-                        print("EYES CLOSED")
+                        GPIO.output(BuzzerPin, 1)
 
                         if cv2.waitKey(1) == 32: 
                             asleep = False
-                            print("EYES OPENED")
+                            GPIO.output(BuzzerPin, 0)
+
                     closed_count = 0
 
         process = not process
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
+            GPIO.cleanup()
             break
 
 def get_ear(eye):
