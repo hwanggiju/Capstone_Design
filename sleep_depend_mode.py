@@ -6,7 +6,7 @@ from scipy.spatial import distance as dist
 import RPi.GPIO as GPIO
 
 EYES_CLOSED_SECONDS = 5
-BuzzerPin = 27
+BuzzerPin = 22
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
