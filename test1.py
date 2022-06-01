@@ -47,26 +47,6 @@ try :
 
         time.sleep(0.2)
         
-        GPIO.output(13, GPIO.HIGH)
-        GPIO.output(15, GPIO.LOW)
-        GPIO.output(29, GPIO.HIGH)
-        GPIO.output(31, GPIO.LOW)
-        
-        GPIO.output(11, GPIO.HIGH)
-        GPIO.output(33, GPIO.HIGH)
-        
-        time.sleep(1)
-        
-        GPIO.output(13, GPIO.LOW)
-        GPIO.output(15, GPIO.LOW)
-        GPIO.output(29, GPIO.LOW)
-        GPIO.output(31, GPIO.LOW)
-        
-        GPIO.output(11, GPIO.LOW)
-        GPIO.output(33, GPIO.LOW)
-
-        time.sleep(0.2)
-        
         GPIO.output(13, GPIO.LOW)
         GPIO.output(15, GPIO.HIGH)
         GPIO.output(29, GPIO.LOW)

@@ -22,8 +22,15 @@ switch = [36, 38, 40]
 maxHeight = 170
 minHeight = 80
 
+<<<<<<< Updated upstream
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
+=======
+# 각도
+cameraAngle = 50
+deskAngle = 30
+
+>>>>>>> Stashed changes
 def initHardware():
     #input/output setting
     for i in range(len(driver)):
