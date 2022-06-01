@@ -10,10 +10,10 @@ BuzzerPin = 27
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
+GPIO.setup(BuzzerPin, GPIO.OUT)
 
 def main():
     closed_count = 0
-    GPIO.setup(BuzzerPin, GPIO.OUT)
     cap = cv2.VideoCapture(0)
 
     _, frame = cap.read(0)
