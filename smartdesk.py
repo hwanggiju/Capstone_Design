@@ -54,7 +54,7 @@ def getUserDistance(faceWidth, pixelX):
     return np.cos(userTopAngle * np.pi/180)*userDistance
 
 def getUserHeight(userDistance, pixelY):
-    cameraUserAngle = ((480-pixelY)*cameraAngle)/480
+    cameraUserAngle = ((480 - pixelY) * 50) / 480
     deskUserAngle = deskAngle - cameraAngle/2 + cameraUserAngle
     return np.tan(deskUserAngle * np.pi/180)*userDistance + deskHeight
 
