@@ -50,12 +50,12 @@ def getUserDistance(faceWidth, pixelX):
     else:
         val = 320 - pixelX
     userTopAngle = val * (cameraAngle / 480)
-    return np.cos(userTopAngle * np.pi/180)*userDistance
+    return np.cos(userTopAngle )*userDistance
 
 def getUserHeight(userDistance, pixelY):
     cameraUserAngle = ((480-pixelY)*cameraAngle)/480
     deskUserAngle = deskAngle - cameraAngle/2 + cameraUserAngle
-    return np.tan(deskUserAngle * np.pi/180)*userDistance + deskHeight
+    return np.tan(deskUserAngle )*userDistance + deskHeight
 
 def initHardware():
     #input/output setting
