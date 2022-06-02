@@ -23,6 +23,15 @@ maxHeight = 170
 minHeight = 80
 seatdownHeight = 0
 
+#
+userDistanceMin = 73#cm
+faceWidthMax    = 120#pixel
+userDistanceMax = 112#cm
+faceWidthMin    = 80#pixel
+deskHeight = 80
+
+userDistance    = 0
+
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
@@ -31,6 +40,22 @@ cameraAngle = 50 # 카메라 각도
 deskAngle = 30 # 책상 판과 카메라 중심까지의 각도
 deskUserAngle = 0 # 책상 판과 사용자 높이 사이의 각도
 cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
+
+
+def getUserDistance(faceWidth, pixelX):
+    userDistance = (faceWidth - faceWidthMin)/(faceWidthMax - faceWidthMin)*(userDistanceMax - userDistanceMin) + userDistanceMin
+    val = 0
+    if pixelX >= 320:
+        val = pixelX - 320
+    else:
+        val = 320 - pixelX
+    userTopAngle = val * (cameraAngle / 480)
+    return cos(userTopAngle)*userDistance
+
+def getUserHeight(userDistance, pixelY):
+    cameraUserAngle = ((480-pixelY)*cameraAngle)/480
+    deskUserAngle = deskAngle - cameraAngle/2 + cameraUserAngle
+    return tan(deskUserAngle)*userDistance + deskHeight
 
 def initHardware():
     #input/output setting
@@ -129,7 +154,7 @@ def main():
             width = x2 - x1
             height = y2 - y1
             print(" 가로 :" + str(width) + "  세로:" + str(height), end='')
-            print('  area : %d    center_x : %d   center_y : %d'
+            print('  area : %d    center_x : %d   center_y : %d \n'
                   % (area, center_x, center_y))
             
             '''
@@ -153,13 +178,10 @@ def main():
                     else :
                         driverSet(0, 0, 0, 0) # stay
             '''
-        
-            cameraUserAngle = ((480 - center_y)*cameraAngle) / 480
-            deskUserAngle = deskAngle - (cameraAngle / 2) + cameraUserAngle
-            print("cameraUserAngle = %d\tdeskUserAngle = %d"%(cameraUserAngle, deskUserAngle), end='')
-            seatdownHeight = 70 * np.sin(deskUserAngle * np.pi/180) + minHeight # np.pi/180 degree -> radian 변환
-            print("\t앉은 키 : %f"%(seatdownHeight))
-        
+
+            height = getUserHeight(getUserDistance(width,center_x),center_y)
+            print("키는 = " + str(height) + "\n")
+
         cv2.imshow('Facerec_Video', frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
