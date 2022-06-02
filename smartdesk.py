@@ -23,12 +23,14 @@ maxHeight = 170
 minHeight = 80
 seatdownHeight = 0
 
-#
-userDistanceMin = 73#cm
-faceWidthMax    = 120#pixel
-userDistanceMax = 112#cm
-faceWidthMin    = 80#pixel
-deskHeight = 80
+#가까울때
+userDistanceMin = 60#cm
+faceWidthMax    = 110#pixel
+#멀때
+userDistanceMax = 114#cm
+faceWidthMin    = 72#pixel
+
+deskHeight = 82
 
 userDistance    = 0
 
