@@ -24,11 +24,11 @@ minHeight = 80
 seatdownHeight = 0
 
 #가까울때
-userDistanceMin = 60#cm
-faceWidthMax    = 110#pixel
+userDistanceMin = 60 #cm
+faceWidthMax    = 110 #pixel
 #멀때
-userDistanceMax = 114#cm
-faceWidthMin    = 72#pixel
+userDistanceMax = 114 #cm
+faceWidthMin    = 72 #pixel
 
 deskHeight = 82
 
@@ -98,6 +98,8 @@ def main():
     _, frame = cap.read(0)
     print(cap.get(cv2.CAP_PROP_FRAME_WIDTH),
           cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+    rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
     
     if not cap.isOpened() :
         print('Camera open failed!')
@@ -112,7 +114,7 @@ def main():
         print('Net open failed!')
         sys.exit()
 
-    small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+    small_frame = cv2.resize(rotate_frame, (0, 0), fx=0.25, fy=0.25)
     rgb_small_frame = small_frame[:, :, ::-1]
     face_landmarks_list = face_recognition.face_landmarks(rgb_small_frame)
 
@@ -126,16 +128,17 @@ def main():
 
     while True:
         _, frame = cap.read(0)
+        rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
         if frame is None:
             break
-        blob = cv2.dnn.blobFromImage(frame,  # image
+        blob = cv2.dnn.blobFromImage(rotate_frame,  # image
                                      1,  # scalefactor
                                      (200, 200),  # image Size
                                      (104, 177, 123)  # Scalar
                                      )
         net.setInput(blob)
         detect = net.forward()
-        (h, w) = frame.shape[:2]
+        (h, w) = rotate_frame.shape[:2]
         detect = detect[0, 0, :, :]
 
         for i in range(detect.shape[0]):
@@ -148,7 +151,7 @@ def main():
             x2 = int(detect[i, 5] * w)
             y2 = int(detect[i, 6] * h)
 
-            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0))  # green ractangle
+            cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green ractangle
 
             # 책상 다리 모터 제어에 활용되는 값
             area = (x2 - x1) * (y2 - y1)  # 사용자 인식 넓이
@@ -185,7 +188,7 @@ def main():
             height = getUserHeight(getUserDistance(width,center_x),center_y - height/2)
             print("키는 = " + str(height) + "\n")
 
-        cv2.imshow('Facerec_Video', frame)
+        cv2.imshow('Facerec_Video', rotate_frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
             GPIO.cleanup()
