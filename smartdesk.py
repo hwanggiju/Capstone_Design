@@ -42,6 +42,7 @@ deskUserAngle = 0 # 책상 판과 사용자 높이 사이의 각도
 cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
 
 
+
 def getUserDistance(faceWidth, pixelX):
     userDistance = (faceWidth - faceWidthMin)/(faceWidthMax - faceWidthMin)*(userDistanceMax - userDistanceMin) + userDistanceMin
     val = 0
@@ -179,7 +180,7 @@ def main():
                         driverSet(0, 0, 0, 0) # stay
             '''
 
-            height = getUserHeight(getUserDistance(width,center_x),center_y)
+            height = getUserHeight(getUserDistance(width,center_x),center_y - height/2)
             print("키는 = " + str(height) + "\n")
 
         cv2.imshow('Facerec_Video', frame)
