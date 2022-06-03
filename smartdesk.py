@@ -49,6 +49,9 @@ deskAngle = 0 #28 # 책상 판과 카메라 중심까지의 각도
 deskUserAngle = 0 # 책상 판과 사용자 높이 사이의 각도
 cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
 
+mode = 0 # 0:down 1:stop 2:up
+oldMode = 0
+
 '''
 def getUserDistance(faceWidth, pixelX):
     userDistance = (faceWidth / (faceWidthMax - faceWidthMin)) * (userDistanceMax - userDistanceMin) + userDistanceMin
@@ -129,9 +132,7 @@ def driverSet(enA, motorA, motorB, enB):
 
 # main code
 
-initial = True
-mode = 0 # 0:down 1:stop 2:up
-oldMode = 0
+
 def main():
     driverSet(1,0,0,1)# down
     time.sleep(5)
