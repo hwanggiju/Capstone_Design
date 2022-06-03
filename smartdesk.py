@@ -1,3 +1,4 @@
+from asyncio.unix_events import _UnixSelectorEventLoop
 import face_recognition
 import cv2
 import RPi.GPIO as GPIO
@@ -46,19 +47,32 @@ cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
 height = [0,0,0,0,0]
 
 def getUserDistance(faceWidth, pixelX):
-    userDistance = (faceWidthMax - faceWidth)/(faceWidthMax - faceWidthMin)*(userDistanceMax - userDistanceMin) + userDistanceMin
-    val = 0
-    if pixelX >= 320:
-        val = pixelX - 320
-    else:
-        val = 320 - pixelX
-    userTopAngle = val * (cameraAngle / 480)
-    return np.cos(userTopAngle * np.pi/180)*userDistance
+    userDistance = (faceWidth / (faceWidthMax - faceWidthMin)) * (userDistanceMax - userDistanceMin) + userDistanceMin
+    # userDistance = (faceWidthMax - faceWidth)/(faceWidthMax - faceWidthMin)*(userDistanceMax - userDistanceMin) + userDistanceMin
+    valAngle = 0
+    # if pixelX >= 320:
+    #    val = pixelX - 320
+    # else:
+    #    val = 320 - pixelX
+    valAngle = cameraAngle * (pixelX / 480)
+    
+    if valAngle >= 25 :
+        userTopAngle = valAngle - 25
+    else :
+        userTopAngle = 25 - valAngle
+    
+    return np.cos(userTopAngle * np.pi/180) * userDistance
 
 def getUserHeight(userDistance, pixelY):
-    cameraUserAngle = ((480 - pixelY) * 50) / 480
-    deskUserAngle = deskAngle - cameraAngle/2 + cameraUserAngle
-    return np.tan(deskUserAngle * np.pi/180)*userDistance + deskHeight
+    valAngle = 0
+    valAngle = pixelY/640 * (cameraAngle * 4/3) # (cameraAngle * 4/3) 세로 카메라 각도
+    # cameraUserAngle = ((480 - pixelY) * 50) / 480
+    if valAngle >= (cameraAngle * 4/3)/2 :
+        cameraUserAngle = valAngle - (cameraAngle * 4/3)/2
+    else :
+        cameraUserAngle = (cameraAngle * 4/3)/2 - valAngle
+    # deskUserAngle = deskAngle - cameraAngle/2 + cameraUserAngle
+    return np.tan(cameraUserAngle * np.pi/180)*userDistance + deskHeight
 
 def initHardware():
     #input/output setting
@@ -185,7 +199,7 @@ def main():
                         driverSet(0, 0, 0, 0) # stay
             '''
 
-            height = getUserHeight(getUserDistance(width,center_x),center_y - height/2)
+            height = getUserHeight(getUserDistance(width,center_x), center_y - height/2)
             print("키는 = " + str(height) + "\n")
 
         cv2.imshow('Facerec_Video', rotate_frame)
