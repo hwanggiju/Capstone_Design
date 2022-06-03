@@ -61,7 +61,7 @@ def getUserDistance(faceWidth, pixelX):
     else :
         userTopAngle = 25 - valAngle
     
-    return np.cos(userTopAngle * np.pi/180) * userDistance
+    return userDistance / np.cos(userTopAngle * np.pi/180)
 
 def getUserHeight(userDistance, pixelY):
     valAngle = 0
