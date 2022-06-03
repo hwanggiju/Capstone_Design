@@ -49,8 +49,7 @@ deskAngle = 0 #28 # 책상 판과 카메라 중심까지의 각도
 deskUserAngle = 0 # 책상 판과 사용자 높이 사이의 각도
 cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
 
-mode = 0 # 0:down 1:stop 2:up
-oldMode = 0
+
 
 '''
 def getUserDistance(faceWidth, pixelX):
@@ -167,7 +166,8 @@ def main():
     # driverSet(1, 0, 0, 1)
     # time.sleep(5)
     # driverSet(0, 0, 0, 0)
-
+    actionA = 0  # 0:down 1:stop 2:up
+    actionB = 0
     while True:
         _, frame = cap.read(0)
         rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
@@ -211,22 +211,22 @@ def main():
 
         #높이에 따른 모터작동
         if naniHeight < 140:
-            mode = 0
+            actionA = 0
             print("down\n")
         elif naniHeight > 160:
-            mode = 2
+            actionA = 2
             print("up\n")
         else:
-            mode = 1
+            actionA = 1
 
-        if oldMode != mode:
-            if mode == 0:
+        if actionB != actionA:
+            if actionA == 0:
                 driverSet(1,0,0,1)# down
-            elif mode == 1:
+            elif actionA == 1:
                 driverSet(0, 0, 0, 0) # stay
-            elif mode == 2:
+            elif actionA == 2:
                 driverSet(1,1,1,1)# up
-            oldMode = mode
+            actionB = actionA
 
         cv2.imshow('Facerec_Video', rotate_frame)
         key = cv2.waitKey(1) & 0xFF
