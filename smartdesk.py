@@ -175,7 +175,7 @@ def main():
             break
         blob = cv2.dnn.blobFromImage(rotate_frame,  # image
                                      1,  # scalefactor
-                                     (200, 200),  # image Size
+                                     (150, 150),  # image Size
                                      (104, 177, 123)  # Scalar
                                      )
         net.setInput(blob)
