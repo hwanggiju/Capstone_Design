@@ -44,8 +44,8 @@ cameraWidth = 480
 cameraHeight = 640
 
 # 각도
-cameraAngle = 50 # 카메라 각도
-deskAngle = 28 # 책상 판과 카메라 중심까지의 각도
+cameraAngle = 50 # 카메라 수평 화각
+deskAngle = 0 #28 # 책상 판과 카메라 중심까지의 각도
 deskUserAngle = 0 # 책상 판과 사용자 높이 사이의 각도
 cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
 
@@ -77,6 +77,7 @@ def getUserHeight(userDistance, pixelY):
     # deskUserAngle = deskAngle - cameraAngle/2 + cameraUserAngle
     return np.tan(cameraUserAngle * np.pi/180)*userDistance + deskHeight
 
+
 timeNum = 5
 faceWidthAverage = [(faceWidthMax - faceWidthMin) for col in range(timeNum)]
 def getUserHeight_nani(faceWidth, pixelX, pixelY):
@@ -90,7 +91,7 @@ def getUserHeight_nani(faceWidth, pixelX, pixelY):
     userTopAngle = abs(pixelX - cameraWidth/2) / cameraWidth * fullHorizontalAngle
     userDistance = calUserDistance / np.cos(userTopAngle * np.pi/180)
     cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
-    calHeight = np.tan(cameraUserAngle * np.pi/180) * userDistance
+    calHeight = np.tan((cameraUserAngle + deskAngle) * np.pi/180) * userDistance
     for i in range(timeNum-1):#shift array
         faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
     return cameraHeight + calHeight
