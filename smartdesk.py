@@ -113,21 +113,19 @@ def driverSet(enA, motorA, motorB, enB):
         GPIO.output(driver[i], 0)
     time.sleep(0.2)
     if motorA == 1:
-        GPIO.output(driver[0], enA)
         GPIO.output(driver[1], 0)
         GPIO.output(driver[2], 1)
     else:
-        GPIO.output(driver[0], enA)
         GPIO.output(driver[1], 1)
         GPIO.output(driver[2], 0)
     if motorB == 1:
         GPIO.output(driver[3], 0)
         GPIO.output(driver[4], 1)
-        GPIO.output(driver[5], enB)
     else:
         GPIO.output(driver[3], 1)
         GPIO.output(driver[4], 0)
-        GPIO.output(driver[5], enB)
+    GPIO.output(driver[0], enA)
+    GPIO.output(driver[5], enB)
     time.sleep(1)
 
 # main code
