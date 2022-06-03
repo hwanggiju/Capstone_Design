@@ -79,16 +79,22 @@ def getUserHeight(userDistance, pixelY):
     # deskUserAngle = deskAngle - cameraAngle/2 + cameraUserAngle
     return np.tan(cameraUserAngle * np.pi/180)*userDistance + deskHeight
 
+timeNum = 5
+faceWidthAverage = [(faceWidthMax - faceWidthMin) for col in range(timeNum)]
 def getUserHeight_nani(faceWidth, pixelX, pixelY):
+    faceWidthAverage[0] = faceWidth
+    widthAverage = sum(faceWidthAverage)/5
     fullHorizontalAngle = cameraAngle
     fullVerticalAngle =  (fullHorizontalAngle * cameraHeight / cameraWidth)
     faceDifference = faceWidthMax - faceWidthMin
     distanceDifference = userDistanceMax - userDistanceMin
-    calUserDistance = (faceWidthMax - faceWidth)/ faceDifference * distanceDifference + userDistanceMin
+    calUserDistance = (faceWidthMax - widthAverage)/ faceDifference * distanceDifference + userDistanceMin
     userTopAngle = abs(pixelX - cameraWidth/2) / cameraWidth * fullHorizontalAngle
     userDistance = calUserDistance/np.cos(userTopAngle * np.pi/180)
     cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
     calHeight = np.tan(cameraUserAngle * np.pi/180) * userDistance
+    for i in range(timeNum-1):#shift array
+        faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
     return cameraHeight + calHeight
 
 def initHardware():
