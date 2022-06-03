@@ -83,7 +83,7 @@ timeNum = 5
 faceWidthAverage = [(faceWidthMax - faceWidthMin) for col in range(timeNum)]
 def getUserHeight_nani(faceWidth, pixelX, pixelY):
     faceWidthAverage[0] = faceWidth
-    widthAverage = sum(faceWidthAverage)/5
+    widthAverage = sum(faceWidthAverage)/timeNum
     fullHorizontalAngle = cameraAngle
     fullVerticalAngle =  (fullHorizontalAngle * cameraHeight / cameraWidth)
     faceDifference = faceWidthMax - faceWidthMin
