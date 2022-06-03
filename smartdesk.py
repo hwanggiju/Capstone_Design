@@ -126,9 +126,12 @@ def driverSet(enA, motorA, motorB, enB):
         GPIO.output(driver[4], 0)
     GPIO.output(driver[0], enA)
     GPIO.output(driver[5], enB)
-    time.sleep(1)
 
 # main code
+
+initial = True
+mode = 0 # 0:down 1:stop 2:up
+oldMode = 0
 def main():
     driverSet(1,0,0,1)# down
     time.sleep(5)
@@ -191,37 +194,38 @@ def main():
 
             cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green ractangle
 
-            # 책상 다리 모터 제어에 활용되는 값
-            area = (x2 - x1) * (y2 - y1)  # 사용자 인식 넓이
-            center_x = x1 + (x2 - x1) / 2
-            center_y = y1 + (y2 - y1) / 2  # 인식된 부분 중심 좌표 x, y 값
-            width = x2 - x1
-            height = y2 - y1
-            print(" 가로 :" + str(width) + "  세로:" + str(height), end='')
-            print('  area : %d    center_x : %d   center_y : %d \n'
-                  % (area, center_x, center_y))
-            
-            # height = getUserHeight(getUserDistance(width,center_x), center_y - height/2)
-            naniHeight = getUserHeight_nani(width,center_x,center_y-height/2)
-            print("테스트 nani 식 :" + str(naniHeight) + "\n")
-            
-            if width > faceWidthMin and width < faceWidthMax:  # 카메라 사용자 거리 : 70 ~ 100(cm)
-                # 움직임으로 최대 최소점 고정
-                if maxHeightPixel < center_y:
-                    maxHeightPixel = center_y
-                if minHeightPixel > center_y:
-                    minHeightPixel = center_y
-                    
-                if (maxHeightPixel-minHeightPixel) > 100:
-                    #높이에 따른 모터작동
-                    if naniHeight < 140:
-                        driverSet(1,0,0,1)# down
-                        print("down\n")
-                    elif naniHeight > 160:
-                        driverSet(1,1,1,1)# up
-                        print("up\n")
-                    else :
-                        driverSet(0, 0, 0, 0) # stay
+        # 책상 다리 모터 제어에 활용되는 값
+        area = (x2 - x1) * (y2 - y1)  # 사용자 인식 넓이
+        center_x = x1 + (x2 - x1) / 2
+        center_y = y1 + (y2 - y1) / 2  # 인식된 부분 중심 좌표 x, y 값
+        width = x2 - x1
+        height = y2 - y1
+        print(" 가로 :" + str(width) + "  세로:" + str(height), end='')
+        print('  area : %d    center_x : %d   center_y : %d \n'
+              % (area, center_x, center_y))
+
+        # height = getUserHeight(getUserDistance(width,center_x), center_y - height/2)
+        naniHeight = getUserHeight_nani(width,center_x,center_y-height/2)
+        print("테스트 nani 식 :" + str(naniHeight) + "\n")
+
+        #높이에 따른 모터작동
+        if naniHeight < 140:
+            mode = 0
+            print("down\n")
+        elif naniHeight > 160:
+            mode = 2
+            print("up\n")
+        else:
+            mode = 1
+
+        if oldMode != mode:
+            if mode == 0:
+                driverSet(1,0,0,1)# down
+            elif mode == 1:
+                driverSet(0, 0, 0, 0) # stay
+            elif mode == 2:
+                driverSet(1,1,1,1)# up
+            oldMode = mode
 
         cv2.imshow('Facerec_Video', rotate_frame)
         key = cv2.waitKey(1) & 0xFF
