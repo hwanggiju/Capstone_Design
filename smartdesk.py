@@ -114,17 +114,23 @@ def driverSet(enA, motorA, motorB, enB):
     for i in range(len(driver)):
         GPIO.output(driver[i], 0)
     time.sleep(0.2)
-    if motorA == 1:
+    if motorA == 2:#up
         GPIO.output(driver[1], 0)
         GPIO.output(driver[2], 1)
-    else:
+    elif motorA == 1:#down
         GPIO.output(driver[1], 1)
         GPIO.output(driver[2], 0)
-    if motorB == 1:
+    else:#stop
+        GPIO.output(driver[1], 0)
+        GPIO.output(driver[2], 0)
+    if motorB == 2:#up
         GPIO.output(driver[3], 0)
         GPIO.output(driver[4], 1)
-    else:
+    elif motorB == 1:#down
         GPIO.output(driver[3], 1)
+        GPIO.output(driver[4], 0)
+    else:#stop
+        GPIO.output(driver[3], 0)
         GPIO.output(driver[4], 0)
     GPIO.output(driver[0], enA)
     GPIO.output(driver[5], enB)
@@ -166,8 +172,8 @@ def main():
     # driverSet(1, 0, 0, 1)
     # time.sleep(5)
     # driverSet(0, 0, 0, 0)
-    actionA = 0  # 0:down 1:stop 2:up
-    actionB = 0
+    actionNow = 0  # 0:down 1:stop 2:up
+    actionPre = 0
     while True:
         _, frame = cap.read(0)
         rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
@@ -210,23 +216,23 @@ def main():
         print("테스트 nani 식 :" + str(naniHeight) + "\n")
 
         #높이에 따른 모터작동
-        if naniHeight < 140:
-            actionA = 0
+        if naniHeight < 110:
+            actionNow = 0#down
             print("down\n")
-        elif naniHeight > 160:
-            actionA = 2
+        elif naniHeight > 130:
+            actionNow = 2#up
             print("up\n")
         else:
-            actionA = 1
+            actionNow = 1#stop
 
-        if actionB != actionA:
-            if actionA == 0:
-                driverSet(1,0,0,1)# down
-            elif actionA == 1:
-                driverSet(0, 0, 0, 0) # stay
-            elif actionA == 2:
-                driverSet(1,1,1,1)# up
-            actionB = actionA
+        if actionNow != actionPre:
+            if actionNow == 0:
+                driverSet(1,1,1,1)# down
+            elif actionNow == 1:
+                driverSet(0,0,0,0) # stay
+            elif actionNow == 2:
+                driverSet(1,2,2,1)# up
+            actionPre = actionNow
 
         cv2.imshow('Facerec_Video', rotate_frame)
         key = cv2.waitKey(1) & 0xFF
