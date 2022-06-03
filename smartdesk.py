@@ -139,7 +139,7 @@ def driverSet(enA, motorA, motorB, enB):
 
 
 def main():
-    driverSet(1,0,0,1)# down
+    driverSet(1,1,1,1)# down
     time.sleep(5)
     cap = cv2.VideoCapture(0)
     _, frame = cap.read(0)
