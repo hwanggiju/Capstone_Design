@@ -6,11 +6,24 @@ import time
 from scipy.spatial import distance as dist
 import sys
 import numpy as np
-#pip install spidev 설치 해야함
+
+# spi SSD1306 OLED code
+# pip install spidev 설치
 import spidev
 
-spi = spidev.SpiDev(0, spi_ch)
-spi.max_speed_hz = 1200000
+# MPU9250 gyro sensor code
+# pip3 install imusensor 설치
+import os
+import smbus
+from imusensor.MPU9250 import MPU9250
+
+sensorAddress = 0x68
+bus = smbus.SMBus(1)
+imu = MPU9250.MPU9250(bus, sensorAddress)
+imu.begin()
+
+# spi = spidev.SpiDev(0, spi_ch)
+# spi.max_speed_hz = 1200000
 
 
 
@@ -48,9 +61,9 @@ GPIO.setwarnings(False)
 #카메라
 cameraWidth = 480
 cameraHeight = 640
+cameraAngle = 50 # 카메라 수평 화각
 
 # 각도
-cameraAngle = 50 # 카메라 수평 화각
 deskAngle = -3 #28 # 책상 판과 카메라 중심까지의 각도
 deskUserAngle = 0 # 책상 판과 사용자 높이 사이의 각도
 cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
@@ -87,13 +100,13 @@ def getUserHeight(userDistance, pixelY):
     return np.tan(cameraUserAngle * np.pi/180)*userDistance + deskHeight
 '''
 
-timeNum = 5 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
+timeNum = 10 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
 faceWidthAverage = [((faceWidthMax + faceWidthMin)/2) for col in range(timeNum)]
 def getUserHeight_nani(faceWidth, pixelX, pixelY):
     faceWidthAverage[0] = faceWidth
     widthAverage = sum(faceWidthAverage) / timeNum
     fullHorizontalAngle = cameraAngle
-    fullVerticalAngle =  fullHorizontalAngle * cameraHeight / cameraWidth
+    fullVerticalAngle = fullHorizontalAngle * cameraHeight / cameraWidth
     faceDifference = faceWidthMax - faceWidthMin
     distanceDifference = userDistanceMax - userDistanceMin
     calUserDistance = (faceWidthMax - widthAverage) / faceDifference * distanceDifference + userDistanceMin
