@@ -6,6 +6,12 @@ import time
 from scipy.spatial import distance as dist
 import sys
 import numpy as np
+#pip install spidev 설치 해야함
+import spidev
+
+spi = spidev.SpiDev(0, spi_ch)
+spi.max_speed_hz = 1200000
+
 
 
 # Motor Driver [enA/in1/in2/in3/in4/enB]
@@ -81,7 +87,7 @@ def getUserHeight(userDistance, pixelY):
     return np.tan(cameraUserAngle * np.pi/180)*userDistance + deskHeight
 '''
 
-timeNum = 5
+timeNum = 5 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
 faceWidthAverage = [((faceWidthMax + faceWidthMin)/2) for col in range(timeNum)]
 def getUserHeight_nani(faceWidth, pixelX, pixelY):
     faceWidthAverage[0] = faceWidth
@@ -110,6 +116,9 @@ def initHardware():
         GPIO.output(driver[i], GPIO.LOW)
 
 # driver
+# 0 : stop
+# 1 : down
+# 2 : up
 def driverSet(enA, motorA, motorB, enB):
     for i in range(len(driver)):
         GPIO.output(driver[i], 0)
