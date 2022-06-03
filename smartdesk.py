@@ -172,8 +172,8 @@ def main():
     # driverSet(1, 0, 0, 1)
     # time.sleep(5)
     # driverSet(0, 0, 0, 0)
-    actionA = 0  # 0:down 1:stop 2:up
-    actionB = 0
+    actionNow = 0  # 0:down 1:stop 2:up
+    actionPre = 0
     while True:
         _, frame = cap.read(0)
         rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
@@ -216,23 +216,23 @@ def main():
         print("테스트 nani 식 :" + str(naniHeight) + "\n")
 
         #높이에 따른 모터작동
-        if naniHeight < 140:
-            actionA = 0
+        if naniHeight < 110:
+            actionNow = 0#down
             print("down\n")
-        elif naniHeight > 160:
-            actionA = 2
+        elif naniHeight > 130:
+            actionNow = 2#up
             print("up\n")
         else:
-            actionA = 1
+            actionNow = 1#stop
 
-        if actionB != actionA:
-            if actionA == 0:
+        if actionNow != actionPre:
+            if actionNow == 0:
                 driverSet(1,1,1,1)# down
-            elif actionA == 1:
+            elif actionNow == 1:
                 driverSet(0,0,0,0) # stay
-            elif actionA == 2:
+            elif actionNow == 2:
                 driverSet(1,2,2,1)# up
-            actionB = actionA
+            actionPre = actionNow
 
         cv2.imshow('Facerec_Video', rotate_frame)
         key = cv2.waitKey(1) & 0xFF
