@@ -133,7 +133,7 @@ def driverSet(enA, motorA, motorB, enB):
 # main code
 def main():
     driverSet(1,0,0,1)# down
-    time.sleep(10) 
+    time.sleep(5)
     cap = cv2.VideoCapture(0)
     _, frame = cap.read(0)
     print(cap.get(cv2.CAP_PROP_FRAME_WIDTH),
