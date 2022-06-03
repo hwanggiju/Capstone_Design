@@ -49,8 +49,6 @@ deskAngle = 28 # 책상 판과 카메라 중심까지의 각도
 deskUserAngle = 0 # 책상 판과 사용자 높이 사이의 각도
 cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
 
-height = [0,0,0,0,0]
-
 def getUserDistance(faceWidth, pixelX):
     userDistance = (faceWidth / (faceWidthMax - faceWidthMin)) * (userDistanceMax - userDistanceMin) + userDistanceMin
     # userDistance = (faceWidthMax - faceWidth)/(faceWidthMax - faceWidthMin)*(userDistanceMax - userDistanceMin) + userDistanceMin
