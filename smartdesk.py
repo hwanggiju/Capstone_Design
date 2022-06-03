@@ -216,7 +216,7 @@ def main():
         print("테스트 nani 식 :" + str(naniHeight) + "\n")
 
         #높이에 따른 모터작동
-        if naniHeight < 110:
+        if naniHeight < 120:
             actionNow = 0#down
             print("down\n")
         elif naniHeight > 130:
