@@ -24,6 +24,7 @@ maxHeight = 170
 minHeight = 80
 seatdownHeight = 0
 
+
 #가까울때
 userDistanceMin = 60 #cm
 faceWidthMax    = 110 #pixel
@@ -37,6 +38,10 @@ userDistance    = 0
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
+
+#카메라
+cameraWidth = 480
+cameraHeight = 640
 
 # 각도
 cameraAngle = 50 # 카메라 각도
@@ -73,6 +78,18 @@ def getUserHeight(userDistance, pixelY):
         cameraUserAngle = (cameraAngle * 4/3)/2 - valAngle
     # deskUserAngle = deskAngle - cameraAngle/2 + cameraUserAngle
     return np.tan(cameraUserAngle * np.pi/180)*userDistance + deskHeight
+
+def getUserHeight_nani(faceWidth, pixelX, pixelY):
+    fullHorizontalAngle = cameraAngle
+    fullVerticalAngle =  (fullHorizontalAngle * cameraHeight / cameraWidth)
+    faceDifference = faceWidthMax - faceWidthMin
+    distanceDifference = userDistanceMax - userDistanceMin
+    calUserDistance = (faceWidthMax - faceWidth)/ faceDifference * distanceDifference + userDistanceMin
+    userTopAngle = abs(pixelX - cameraWidth/2) / cameraWidth * fullHorizontalAngle
+    userDistance = calUserDistance/np.cos(userTopAngle * np.pi/180)
+    cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
+    calHeight = np.tan(cameraUserAngle * np.pi/180) * userDistance
+    return cameraHeight + calHeight
 
 def initHardware():
     #input/output setting
@@ -200,7 +217,8 @@ def main():
             '''
 
             height = getUserHeight(getUserDistance(width,center_x), center_y - height/2)
-            print("키는 = " + str(height) + "\n")
+            naniHeight = getUserHeight_nani(width,center_x,center_y-height/2)
+            print("키는 : " + str(height) + " / 테스트 nani 식 :" + str(naniHeight) + "\n")
 
         cv2.imshow('Facerec_Video', rotate_frame)
         key = cv2.waitKey(1) & 0xFF
