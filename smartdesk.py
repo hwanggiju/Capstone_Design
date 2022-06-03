@@ -31,7 +31,7 @@ faceWidthMax    = 110 #pixel
 userDistanceMax = 114 #cm
 faceWidthMin    = 72 #pixel
 
-deskHeight = 82
+deskHeight = 82 # 수정
 
 userDistance    = 0
 
@@ -64,7 +64,7 @@ def getUserDistance(faceWidth, pixelX):
     return userDistance / np.cos(userTopAngle * np.pi/180)
 
 def getUserHeight(userDistance, pixelY):
-    valAngle = 0
+    valAngle = 0 # 비교 변수
     valAngle = pixelY/640 * (cameraAngle * 4/3) # (cameraAngle * 4/3) 세로 카메라 각도
     # cameraUserAngle = ((480 - pixelY) * 50) / 480
     if valAngle >= (cameraAngle * 4/3)/2 :
