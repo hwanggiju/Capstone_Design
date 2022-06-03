@@ -114,17 +114,23 @@ def driverSet(enA, motorA, motorB, enB):
     for i in range(len(driver)):
         GPIO.output(driver[i], 0)
     time.sleep(0.2)
-    if motorA == 1:
+    if motorA == 2:#up
         GPIO.output(driver[1], 0)
         GPIO.output(driver[2], 1)
-    else:
+    elif motorA == 1:#down
         GPIO.output(driver[1], 1)
         GPIO.output(driver[2], 0)
-    if motorB == 1:
+    else:#stop
+        GPIO.output(driver[1], 0)
+        GPIO.output(driver[2], 0)
+    if motorB == 2:#up
         GPIO.output(driver[3], 0)
         GPIO.output(driver[4], 1)
-    else:
+    elif motorB == 1:#down
         GPIO.output(driver[3], 1)
+        GPIO.output(driver[4], 0)
+    else:#stop
+        GPIO.output(driver[3], 0)
         GPIO.output(driver[4], 0)
     GPIO.output(driver[0], enA)
     GPIO.output(driver[5], enB)
@@ -221,11 +227,11 @@ def main():
 
         if actionB != actionA:
             if actionA == 0:
-                driverSet(1,0,0,1)# down
+                driverSet(1,1,1,1)# down
             elif actionA == 1:
-                driverSet(0, 0, 0, 0) # stay
+                driverSet(0,0,0,0) # stay
             elif actionA == 2:
-                driverSet(1,1,1,1)# up
+                driverSet(1,2,2,1)# up
             actionB = actionA
 
         cv2.imshow('Facerec_Video', rotate_frame)
