@@ -32,7 +32,7 @@ faceWidthMax    = 110 #pixel
 userDistanceMax = 114 #cm
 faceWidthMin    = 72 #pixel
 
-deskHeight = 82 # 수정
+deskHeight = 76.5 + 42 # 수정
 
 userDistance    = 0
 
@@ -94,7 +94,7 @@ def getUserHeight_nani(faceWidth, pixelX, pixelY):
     calHeight = np.tan((cameraUserAngle + deskAngle) * np.pi/180) * userDistance
     for i in range(timeNum-1):#shift array
         faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
-    return cameraHeight + calHeight
+    return deskHeight + calHeight
 
 def initHardware():
     #input/output setting
