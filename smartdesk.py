@@ -213,8 +213,6 @@ def main():
         detect = net.forward()
         (h, w) = rotate_frame.shape[:2]
         detect = detect[0, 0, :, :]
-        print(detect)
-        print(detect.shape)
         userNum = 0
         for i in range(detect.shape[0]):
             confidence = detect[i, 2]
