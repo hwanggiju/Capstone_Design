@@ -1,7 +1,7 @@
 import cv2
 from cv2 import CAP_V4L2
 
-cap = cv2.VideoCapture(0,CAP_V4L2)
+cap = cv2.VideoCapture(-1)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
@@ -18,7 +18,6 @@ if cap.isOpened() :
                 if cv2.waitKey(delay) & 0xFF == 27:
                     print("ESC Key pressed")
                     break
-
             else :
                 print(ret, frame)
                 break
