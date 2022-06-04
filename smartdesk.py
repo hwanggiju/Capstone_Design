@@ -214,7 +214,7 @@ def main():
         print(detect)
 
         for i in range(detect.shape[0]):
-            print(detect.shape[0])
+            print(detect.shape)
             confidence = detect[i, 2]
             if confidence < 0.5:
                 break
