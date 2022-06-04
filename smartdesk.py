@@ -240,8 +240,8 @@ def main():
         cv2.imshow('Facerec_Video', rotate_frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
-            enA_pwm.stop()
-            enB_pwm.stop()
+            # enA_pwm.stop()
+            # enB_pwm.stop()
             GPIO.cleanup()
             break
 
