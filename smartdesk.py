@@ -212,13 +212,13 @@ def main():
         (h, w) = rotate_frame.shape[:2]
         detect = detect[0, 0, :, :]
         print(detect)
-        print(detect.shape[0])
+        print(detect.shape)
         for i in range(detect.shape[0]):
             confidence = detect[i, 2]
-            print(confidence)
+            
             if confidence < 0.5:
                 break
-
+            print(confidence)
             x1 = int(detect[i, 3] * w)
             y1 = int(detect[i, 4] * h)
             x2 = int(detect[i, 5] * w)
