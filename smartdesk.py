@@ -3,7 +3,7 @@ import face_recognition
 import cv2
 import RPi.GPIO as GPIO
 import time
-from scipy.spatial import distance as dist
+# from scipy.spatial import distance as dist
 import sys
 import numpy as np
 
@@ -79,36 +79,6 @@ for i in range(len(driver)):
     GPIO.output(driver[i], GPIO.LOW)
 enA_pwm = GPIO.PWM(driver[0], 1)  # channel, frequecy
 enB_pwm = GPIO.PWM(driver[5], 1)
-
-'''
-def getUserDistance(faceWidth, pixelX):
-    userDistance = (faceWidth / (faceWidthMax - faceWidthMin)) * (userDistanceMax - userDistanceMin) + userDistanceMin
-    # userDistance = (faceWidthMax - faceWidth)/(faceWidthMax - faceWidthMin)*(userDistanceMax - userDistanceMin) + userDistanceMin
-    valAngle = 0
-    # if pixelX >= 320:
-    #    val = pixelX - 320
-    # else:
-    #    val = 320 - pixelX
-    valAngle = cameraAngle * (pixelX / 480)
-    
-    if valAngle >= 25 :
-        userTopAngle = valAngle - 25
-    else :
-        userTopAngle = 25 - valAngle
-    
-    return userDistance / np.cos(userTopAngle * np.pi/180)
-
-def getUserHeight(userDistance, pixelY):
-    valAngle = 0 # 비교 변수
-    valAngle = pixelY/640 * (cameraAngle * 4/3) # (cameraAngle * 4/3) 세로 카메라 각도
-    # cameraUserAngle = ((480 - pixelY) * 50) / 480
-    if valAngle >= (cameraAngle * 4/3)/2 :
-        cameraUserAngle = valAngle - (cameraAngle * 4/3)/2
-    else :
-        cameraUserAngle = (cameraAngle * 4/3)/2 - valAngle
-    # deskUserAngle = deskAngle - cameraAngle/2 + cameraUserAngle
-    return np.tan(cameraUserAngle * np.pi/180)*userDistance + deskHeight
-'''
 
 timeNum = 10 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
 faceWidthAverage = [((faceWidthMax + faceWidthMin)/2) for col in range(timeNum)]
