@@ -170,7 +170,7 @@ def main():
     driverSet(1, 1, 1, 1)  # down
     time.sleep(5)
     while True:
-        _, frame = cap.read(0)
+        _, frame = cap.read()
         rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
         if frame is None:
             print("e")
