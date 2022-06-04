@@ -212,9 +212,8 @@ def main():
         (h, w) = rotate_frame.shape[:2]
         detect = detect[0, 0, :, :]
         print(detect)
-
+        print(detect.shape[0])
         for i in range(detect.shape[0]):
-            print(detect.shape)
             confidence = detect[i, 2]
             if confidence < 0.5:
                 break
