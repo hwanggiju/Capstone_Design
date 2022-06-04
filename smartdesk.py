@@ -173,6 +173,7 @@ def main():
         _, frame = cap.read(0)
         rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
         if frame is None:
+            print("e")
             break
         blob = cv2.dnn.blobFromImage(rotate_frame,  # image
                                      1,  # scalefactor
