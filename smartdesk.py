@@ -215,9 +215,9 @@ def main():
         print(detect.shape)
         for i in range(detect.shape[0]):
             confidence = detect[i, 2]
-            
+    
             if confidence < 0.5:
-                break
+                continue
             print(confidence)
             x1 = int(detect[i, 3] * w)
             y1 = int(detect[i, 4] * h)
