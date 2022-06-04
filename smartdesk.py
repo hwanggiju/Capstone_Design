@@ -165,6 +165,7 @@ def driverSet(enA, motorA, motorB, enB):
 def main():
 
     cap = cv2.VideoCapture(0)
+    _, frame = cap.read(0)
     print(cap.get(cv2.CAP_PROP_FRAME_WIDTH),
           cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
@@ -250,7 +251,7 @@ def main():
                 print("up\n")
             else:
                 actionNow = 1#stop
-                print("stop\n")
+                print("stop")
 
             if actionNow != actionPre:
                 if actionNow == 0:
