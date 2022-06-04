@@ -135,11 +135,11 @@ def driverSet(enA, motorA, motorB, enB):
 def main():
 
     cap = cv2.VideoCapture(0)
-    _, frame = cap.read(0)
-    print(cap.get(cv2.CAP_PROP_FRAME_WIDTH),
-          cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    # _, frame = cap.read(0)
+    # print(cap.get(cv2.CAP_PROP_FRAME_WIDTH),
+    #       cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
-    rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+    # rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
 
     if not cap.isOpened() :
         print('Camera open failed!')
