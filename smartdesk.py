@@ -58,8 +58,7 @@ userDistance    = 0
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
-enA_pwm = GPIO.PWM(driver[0], 1) # channel, frequecy
-enB_pwm = GPIO.PWM(driver[5], 1)
+
 
 #카메라
 cameraWidth = 480
@@ -130,15 +129,17 @@ def initHardware():
     #initial system down
     for i in range(len(driver)):
         GPIO.output(driver[i], GPIO.LOW)
+    enA_pwm = GPIO.PWM(driver[0], 1)  # channel, frequecy
+    enB_pwm = GPIO.PWM(driver[5], 1)
 
 # driver
 # 0 : stop
 # 1 : down
 # 2 : up
 def driverSet(enA, motorA, motorB, enB):
-    enA_pwm.start(50)
-    enB_pwm.start(50)
-    for i in range(len(driver)):
+    enA_pwm.start(0)
+    enB_pwm.start(0)
+    for i in range(1,len(driver)-1):
         GPIO.output(driver[i], 0)
     time.sleep(0.2)
     if motorA == 2:#up
@@ -159,8 +160,8 @@ def driverSet(enA, motorA, motorB, enB):
     else:#stop
         GPIO.output(driver[3], 0)
         GPIO.output(driver[4], 0)
-    GPIO.output(driver[0], enA)
-    GPIO.output(driver[5], enB)
+    enA_pwm.start(100)
+    enB_pwm.start(100)
 
 # main code
 
