@@ -7,7 +7,6 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 if cap.isOpened() :
     try:
         print("Camera Is Opened")
-        delay = int(1000 / cap.get(cv2.CAP_PROP_FPS))
         while True :
             ret, frame = cap.read()
             if ret :
