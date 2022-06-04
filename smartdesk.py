@@ -165,11 +165,8 @@ def driverSet(enA, motorA, motorB, enB):
 def main():
 
     cap = cv2.VideoCapture(0)
-    _, frame = cap.read(0)
     print(cap.get(cv2.CAP_PROP_FRAME_WIDTH),
           cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-
-    rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
 
     if not cap.isOpened() :
         print('Camera open failed!')
@@ -214,6 +211,7 @@ def main():
         (h, w) = rotate_frame.shape[:2]
         detect = detect[0, 0, :, :]
         userNum = 0
+        
         for i in range(detect.shape[0]):
             confidence = detect[i, 2]
             if confidence < 0.5:
@@ -225,6 +223,7 @@ def main():
             y2 = int(detect[i, 6] * h)
 
             cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green ractangle
+            
         if userNum == 1:
             # 책상 다리 모터 제어에 활용되는 값
             area = (x2 - x1) * (y2 - y1)  # 사용자 인식 넓이
@@ -249,6 +248,7 @@ def main():
                 print("up\n")
             else:
                 actionNow = 1#stop
+                print("stop\n")
 
             if actionNow != actionPre:
                 if actionNow == 0:
