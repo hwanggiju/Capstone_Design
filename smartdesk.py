@@ -28,7 +28,7 @@ import numpy as np
 
 
 # Motor Driver [enA/in1/in2/in3/in4/enB]
-driver = [11, 13, 15, 29, 31, 33]
+driver = [35, 13, 15, 29, 31, 33]
 # I2C [SDA/SCL]
 iic_arr = [3, 5]
 # UART [TXD/RXD]
