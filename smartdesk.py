@@ -58,6 +58,9 @@ userDistance    = 0
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
+enA_pwm = GPIO.PWM(driver[0], 1) # channel, frequecy
+enB_pwm = GPIO.PWM(driver[5], 1)
+
 #카메라
 cameraWidth = 480
 cameraHeight = 640
@@ -133,6 +136,8 @@ def initHardware():
 # 1 : down
 # 2 : up
 def driverSet(enA, motorA, motorB, enB):
+    enA_pwm.start(50)
+    enB_pwm.start(50)
     for i in range(len(driver)):
         GPIO.output(driver[i], 0)
     time.sleep(0.2)
@@ -262,6 +267,8 @@ def main():
         cv2.imshow('Facerec_Video', rotate_frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
+            enA_pwm.stop()
+            enB_pwm.stop()
             GPIO.cleanup()
             break
 
