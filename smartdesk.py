@@ -211,8 +211,10 @@ def main():
         detect = net.forward()
         (h, w) = rotate_frame.shape[:2]
         detect = detect[0, 0, :, :]
+        print(detect)
 
         for i in range(detect.shape[0]):
+            print(detect.shape[0])
             confidence = detect[i, 2]
             if confidence < 0.5:
                 break
