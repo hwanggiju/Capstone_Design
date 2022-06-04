@@ -213,51 +213,51 @@ def main():
         detect = detect[0, 0, :, :]
         print(detect)
         print(detect.shape)
+        userNum = 0
         for i in range(detect.shape[0]):
             confidence = detect[i, 2]
-    
-            #if confidence < 0.5:
-            #    continue
-            print(confidence)
+            if confidence < 0.5:
+                break
+            userNum = userNum + 1
             x1 = int(detect[i, 3] * w)
             y1 = int(detect[i, 4] * h)
             x2 = int(detect[i, 5] * w)
             y2 = int(detect[i, 6] * h)
 
             cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green ractangle
+        if userNum == 1:
+            # 책상 다리 모터 제어에 활용되는 값
+            area = (x2 - x1) * (y2 - y1)  # 사용자 인식 넓이
+            center_x = x1 + (x2 - x1) / 2
+            center_y = y1 + (y2 - y1) / 2  # 인식된 부분 중심 좌표 x, y 값
+            width = x2 - x1
+            height = y2 - y1
+            print(" 가로 :" + str(width) + "  세로:" + str(height), end='')
+            print('  area : %d    center_x : %d   center_y : %d \n'
+                % (area, center_x, center_y))
 
-        # 책상 다리 모터 제어에 활용되는 값
-        area = (x2 - x1) * (y2 - y1)  # 사용자 인식 넓이
-        center_x = x1 + (x2 - x1) / 2
-        center_y = y1 + (y2 - y1) / 2  # 인식된 부분 중심 좌표 x, y 값
-        width = x2 - x1
-        height = y2 - y1
-        print(" 가로 :" + str(width) + "  세로:" + str(height), end='')
-        print('  area : %d    center_x : %d   center_y : %d \n'
-              % (area, center_x, center_y))
+            # height = getUserHeight(getUserDistance(width,center_x), center_y - height/2)
+            naniHeight = getUserHeight_nani(width,center_x,center_y-height/2)
+            print("테스트 nani 식 :" + str(naniHeight) + "\n")
 
-        # height = getUserHeight(getUserDistance(width,center_x), center_y - height/2)
-        naniHeight = getUserHeight_nani(width,center_x,center_y-height/2)
-        print("테스트 nani 식 :" + str(naniHeight) + "\n")
+            #높이에 따른 모터작동
+            if naniHeight < 120:
+                actionNow = 0#down
+                print("down\n")
+            elif naniHeight > 130:
+                actionNow = 2#up
+                print("up\n")
+            else:
+                actionNow = 1#stop
 
-        #높이에 따른 모터작동
-        if naniHeight < 120:
-            actionNow = 0#down
-            print("down\n")
-        elif naniHeight > 130:
-            actionNow = 2#up
-            print("up\n")
-        else:
-            actionNow = 1#stop
-
-        if actionNow != actionPre:
-            if actionNow == 0:
-                driverSet(1,1,1,1)# down
-            elif actionNow == 1:
-                driverSet(0,0,0,0) # stay
-            elif actionNow == 2:
-                driverSet(1,2,2,1)# up
-            actionPre = actionNow
+            if actionNow != actionPre:
+                if actionNow == 0:
+                    driverSet(1,1,1,1)# down
+                elif actionNow == 1:
+                    driverSet(0,0,0,0) # stay
+                elif actionNow == 2:
+                    driverSet(1,2,2,1)# up
+                actionPre = actionNow
 
         cv2.imshow('Facerec_Video', rotate_frame)
         key = cv2.waitKey(1) & 0xFF
