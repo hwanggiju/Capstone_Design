@@ -70,7 +70,15 @@ deskAngle = -3 #28 # 책상 판과 카메라 중심까지의 각도
 deskUserAngle = 0 # 책상 판과 사용자 높이 사이의 각도
 cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
 
-
+for i in range(len(driver)):
+    GPIO.setup(driver[i], GPIO.OUT)
+for i in range(len(switch)):
+    GPIO.setup(switch[i], GPIO.IN)
+# initial system down
+for i in range(len(driver)):
+    GPIO.output(driver[i], GPIO.LOW)
+enA_pwm = GPIO.PWM(driver[0], 1)  # channel, frequecy
+enB_pwm = GPIO.PWM(driver[5], 1)
 
 '''
 def getUserDistance(faceWidth, pixelX):
@@ -119,18 +127,6 @@ def getUserHeight_nani(faceWidth, pixelX, pixelY):
     for i in range(timeNum-1):#shift array
         faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
     return deskHeight + calHeight
-
-def initHardware():
-    #input/output setting
-    for i in range(len(driver)):
-        GPIO.setup(driver[i], GPIO.OUT)
-    for i in range(len(switch)):
-        GPIO.setup(switch[i], GPIO.IN)
-    #initial system down
-    for i in range(len(driver)):
-        GPIO.output(driver[i], GPIO.LOW)
-    enA_pwm = GPIO.PWM(driver[0], 1)  # channel, frequecy
-    enB_pwm = GPIO.PWM(driver[5], 1)
 
 # driver
 # 0 : stop
@@ -274,6 +270,5 @@ def main():
             break
 
 if __name__ == "__main__":
-    initHardware()
     main()
     cv2.destroyAllWindows()
