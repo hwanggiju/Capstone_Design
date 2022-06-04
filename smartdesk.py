@@ -154,9 +154,9 @@ def main():
         print('Net open failed!')
         sys.exit()
 
-    small_frame = cv2.resize(rotate_frame, (0, 0), fx=0.25, fy=0.25)
-    rgb_small_frame = small_frame[:, :, ::-1]
-    face_landmarks_list = face_recognition.face_landmarks(rgb_small_frame)
+    #small_frame = cv2.resize(rotate_frame, (0, 0), fx=0.25, fy=0.25)
+    #rgb_small_frame = small_frame[:, :, ::-1]
+    #face_landmarks_list = face_recognition.face_landmarks(rgb_small_frame)
 
     # 픽셀 최대 최소값 초기화
     maxHeightPixel = 0
