@@ -1,14 +1,17 @@
 import cv2
 from cv2 import CAP_V4L2
 
-cap = cv2.VideoCapture(-1)
+<<<<<<< HEAD
+cap = cv2.VideoCapture(0)
+=======
+cap = cv2.VideoCapture(CAP_V4L2)
+>>>>>>> e04b3d62258cd07e71a19bc0547bb60fb813ee7a
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
 if cap.isOpened() :
     try:
         print("Camera Is Opened")
-        delay = int(1000 / cap.get(cv2.CAP_PROP_FPS))
         while True :
             ret, frame = cap.read()
             if ret :
