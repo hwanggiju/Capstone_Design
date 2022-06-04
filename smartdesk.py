@@ -135,6 +135,8 @@ def driverSet(enA, motorA, motorB, enB):
 def main():
 
     cap = cv2.VideoCapture(0)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
     # _, frame = cap.read(0)
     # print(cap.get(cv2.CAP_PROP_FRAME_WIDTH),
     #       cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
