@@ -77,8 +77,8 @@ for i in range(len(switch)):
 # initial system down
 for i in range(len(driver)):
     GPIO.output(driver[i], GPIO.LOW)
-enA_pwm = GPIO.PWM(driver[0], 1)  # channel, frequecy
-enB_pwm = GPIO.PWM(driver[5], 1)
+# enA_pwm = GPIO.PWM(driver[0], 1)  # channel, frequecy
+# enB_pwm = GPIO.PWM(driver[5], 1)
 
 timeNum = 10 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
 faceWidthAverage = [((faceWidthMax + faceWidthMin)/2) for col in range(timeNum)]
@@ -103,9 +103,9 @@ def getUserHeight_nani(faceWidth, pixelX, pixelY):
 # 1 : down
 # 2 : up
 def driverSet(enA, motorA, motorB, enB):
-    enA_pwm.start(0)
-    enB_pwm.start(0)
-    for i in range(1,len(driver)-1):
+    # enA_pwm.start(0)
+    # enB_pwm.start(0)
+    for i in range(len(driver)):
         GPIO.output(driver[i], 0)
     time.sleep(0.2)
     if motorA == 2:#up
@@ -126,8 +126,11 @@ def driverSet(enA, motorA, motorB, enB):
     else:#stop
         GPIO.output(driver[3], 0)
         GPIO.output(driver[4], 0)
-    enA_pwm.start(100)
-    enB_pwm.start(100)
+        
+    GPIO.output(driver[0], enA)
+    GPIO.output(driver[5], enB)
+    # enA_pwm.start(100)
+    # enB_pwm.start(100)
 
 # main code
 
@@ -175,7 +178,6 @@ def main():
         _, frame = cap.read()
         rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
         if frame is None:
-            print("e")
             break
         blob = cv2.dnn.blobFromImage(rotate_frame,  # image
                                      1,  # scalefactor
