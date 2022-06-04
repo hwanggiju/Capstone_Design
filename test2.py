@@ -1,62 +1,26 @@
-import RPi.GPIO as GPIO
-import time
-#test 1
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-enA = 11
-enB = 33
-in1 = 13
-in2 = 15
-in3 = 29
-in4 = 31
-GPIO.setup(enA, GPIO.OUT, initial=0) # enA
-GPIO.setup(enB, GPIO.OUT, initial=0) # enB
-GPIO.setup(in1, GPIO.OUT, initial=0) # in1
-GPIO.setup(in2, GPIO.OUT, initial=0) # in2
-GPIO.setup(in3, GPIO.OUT, initial=0) # in3
-GPIO.setup(in4, GPIO.OUT, initial=0) # in4
+import cv2
 
+cap = cv2.VideoCapture(0)
 
-while True :
-    GPIO.output(enA, GPIO.LOW) # enA
-    GPIO.output(enB, GPIO.LOW) # enB
-
-    GPIO.output(in1, GPIO.LOW) # in1
-    GPIO.output(in2, GPIO.LOW) # in2
-    GPIO.output(in3, GPIO.LOW) # in3
-    GPIO.output(in4, GPIO.LOW) # in4
-
-    time.sleep(0.02)
-
-    GPIO.output(enA, 0)
-    GPIO.output(enB, 0)
-
-    GPIO.output(in1, GPIO.HIGH)
-    GPIO.output(in2, GPIO.LOW)
-    GPIO.output(in3, GPIO.HIGH)
-    GPIO.output(in4, GPIO.LOW)
-
-    time.sleep(1)
-
-    GPIO.output(enA, GPIO.LOW)  # enA
-    GPIO.output(enB, GPIO.LOW)  # enB
-
-    GPIO.output(in1, GPIO.LOW)  # in1
-    GPIO.output(in2, GPIO.LOW)  # in2
-    GPIO.output(in3, GPIO.LOW)  # in3
-    GPIO.output(in4, GPIO.LOW)  # in4
-
-    time.sleep(0.02)
-
-    GPIO.output(enA, GPIO.HIGH)
-    GPIO.output(enB, GPIO.HIGH)
-
-    GPIO.output(in1, GPIO.LOW)
-    GPIO.output(in2, GPIO.HIGH)
-    GPIO.output(in3, GPIO.LOW)
-    GPIO.output(in4, GPIO.HIGH)
-
-    time.sleep(1)
-
-
-GPIO.cleanup()
+if cap.isOpened() :
+    print("Camera Is Opened")
+    delay = int(1000 / cap.get(cv2.CAP_PROP_FPS))
+    while True :
+        ret, frame = cap.read()
+        if ret :
+            img_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            img_gray = cv2.flip(img_gray, 1)
+            cv2.imshow("Video", img_gray)
+            if cv2.waitKey(delay) & 0xFF == 27:
+                print("ESC Key pressed")
+                break
+            
+        else :
+            print(ret, frame)
+            break
+    
+else :
+    print("Camera Isn't Opened")
+    
+cap.release()
+cv2.destroyAllWindows()
