@@ -1,11 +1,6 @@
 import cv2
-from cv2 import CAP_V4L2
 
-<<<<<<< Updated upstream
-cap = cv2.VideoCapture(0,CAP_V4L2)
-=======
 cap = cv2.VideoCapture(0)
->>>>>>> Stashed changes
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
