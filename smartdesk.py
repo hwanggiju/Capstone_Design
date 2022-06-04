@@ -168,6 +168,8 @@ def main():
     print(cap.get(cv2.CAP_PROP_FRAME_WIDTH),
           cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
+    rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+
     if not cap.isOpened() :
         print('Camera open failed!')
         sys.exit()
