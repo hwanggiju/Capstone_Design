@@ -39,9 +39,9 @@ spi_arr = [19, 21, 23, 24, 26]
 switch = [36, 38, 40]
 
 # 사용자 정의 변수
-maxHeight = 170
-minHeight = 80
-seatdownHeight = 0
+# maxHeight = 170
+# minHeight = 80
+# seatdownHeight = 0
 
 
 #가까울때
@@ -164,8 +164,8 @@ def main():
     #face_landmarks_list = face_recognition.face_landmarks(rgb_small_frame)
 
     # 픽셀 최대 최소값 초기화
-    maxHeightPixel = 0
-    minHeightPixel = 1000
+    # maxHeightPixel = 0
+    # minHeightPixel = 1000
 
     # driverSet(1, 0, 0, 1)
     # time.sleep(5)
