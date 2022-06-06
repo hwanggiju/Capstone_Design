@@ -60,7 +60,8 @@ userDistance    = 0
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
-
+timeNum = 1000 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
+faceWidthAverage = [((faceWidthMax + faceWidthMin)/2) for col in range(timeNum)]
 
 #카메라
 cameraWidth = 480
@@ -90,8 +91,7 @@ GPIO.output(wave[0], False)
 # enA_pwm = GPIO.PWM(driver[0], 1)  # channel, frequecy
 # enB_pwm = GPIO.PWM(driver[5], 1)
 
-timeNum = 10000 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
-faceWidthAverage = [((faceWidthMax + faceWidthMin)/2) for col in range(timeNum)]
+
 def getUserHeight_nani(faceWidth, pixelX, pixelY, nowHeight):
     faceWidthAverage[0] = faceWidth
     sumHeight = 0
@@ -106,7 +106,7 @@ def getUserHeight_nani(faceWidth, pixelX, pixelY, nowHeight):
     userTopAngle = abs(pixelX - cameraWidth/2) / cameraWidth * fullHorizontalAngle
     userDistance = calUserDistance / np.cos(userTopAngle * np.pi/180)
     cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
-    calHeight = np.tan((cameraUserAngle + deskAngle) * np.pi/180) * userDistance + np.tan(cameraUserAngle * np.pi/180)*10
+    calHeight = np.tan((cameraUserAngle + deskAngle) * np.pi/180) * userDistance #+ np.tan(cameraUserAngle * np.pi/180)*10
     for i in range(timeNum-1):#shift array
         faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
     return nowHeight + calHeight
@@ -244,7 +244,7 @@ def main():
             print('  area : %d    center_x : %d   center_y : %d \n'
                 % (area, center_x, center_y))
             #Height = getUserHeight_nani(width,center_x,center_y-height/2, deskHeight)
-            Height = getUserHeight_nani(width,center_x,center_y-height/2, waveSensorHeight+cameraWaveDifference)
+            Height = getUserHeight_nani(width,center_x,center_y-height/2, waveSensorHeight+cameraWaveDifference+1.5)
             print("테스트 nani 식 :" + str(Height) + "\n")
             '''
             #높이에 따른 모터작동
