@@ -52,8 +52,8 @@ faceWidthMax    = 110 #pixel
 userDistanceMax = 114 #cm
 faceWidthMin    = 72 #pixel
 
-deskHeight = 76.5 + 42 # 수정
-waveSensorHeight = 70 # 최소 길이 초기화
+deskHeight = 117.5# 수정
+waveSensorHeight = 70 # 최소 길이 초기화 71.5
 
 userDistance    = 0
 
@@ -66,6 +66,7 @@ GPIO.setwarnings(False)
 cameraWidth = 480
 cameraHeight = 640
 cameraAngle = 50 # 카메라 수평 화각
+cameraWaveDifference = 46 #카메라 - 센서간 높이차이
 
 # 각도
 deskAngle = -3 #28 # 책상 판과 카메라 중심까지의 각도
@@ -100,7 +101,7 @@ def getUserHeight_nani(faceWidth, pixelX, pixelY, nowHeight):
     distanceDifference = userDistanceMax - userDistanceMin
     calUserDistance = (faceWidthMax - widthAverage) / faceDifference * distanceDifference + userDistanceMin
     userTopAngle = abs(pixelX - cameraWidth/2) / cameraWidth * fullHorizontalAngle
-    userDistance = calUserDistance / np.cos(userTopAngle * np.pi/180)
+    userDistance = calUserDistance / np.cos(userTopAngle * np.pi/180) + 10
     cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
     calHeight = np.tan((cameraUserAngle + deskAngle) * np.pi/180) * userDistance
     for i in range(timeNum-1):#shift array
@@ -240,7 +241,7 @@ def main():
             print('  area : %d    center_x : %d   center_y : %d \n'
                 % (area, center_x, center_y))
             #Height = getUserHeight_nani(width,center_x,center_y-height/2, deskHeight)
-            Height = getUserHeight_nani(width,center_x,center_y-height/2, waveSensorHeight+48.5)
+            Height = getUserHeight_nani(width,center_x,center_y-height/2, waveSensorHeight+cameraWaveDifference)
             print("테스트 nani 식 :" + str(Height) + "\n")
             '''
             #높이에 따른 모터작동
