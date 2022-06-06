@@ -37,7 +37,7 @@ spi_arr = [19, 21, 23, 24, 26]
 # switch[left/center/right]
 switch = [36, 38, 40]
 # ultra wave[trig, echo]
-wave = [16, 18]
+wave = [18, 16]
 
 # 사용자 정의 변수
 # maxHeight = 170
@@ -186,10 +186,10 @@ def main():
     # minHeightPixel = 1000
 
     # 초음파 핀 setup
-    GPIO.setup(wave[0], GPIO.OUT)
-    GPIO.setup(wave[1], GPIO.IN)
+    # GPIO.setup(wave[0], GPIO.OUT)
+    # GPIO.setup(wave[1], GPIO.IN)
     
-    GPIO.output(wave[0], False)
+    # GPIO.output(wave[0], False)
 
     actionNow = 0  # 0:down 1:stop 2:up
     actionPre = 0
@@ -213,7 +213,7 @@ def main():
         detect = detect[0, 0, :, :]
         userNum = 0
         
-        dist = waveFun() # 초음파 측정 거리
+        # dist = waveFun() # 초음파 측정 거리
         
         for i in range(detect.shape[0]):
             confidence = detect[i, 2]
@@ -261,7 +261,7 @@ def main():
                     driverSet(1,2,2,1)# up
                 actionPre = actionNow
 
-        print("초음파 측정 거리 : %d" % (dist))
+        # print("초음파 측정 거리 : %d" % (dist))
         
         cv2.imshow('Facerec_Video', rotate_frame)
         key = cv2.waitKey(1) & 0xFF
