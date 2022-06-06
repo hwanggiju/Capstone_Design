@@ -232,8 +232,8 @@ def main():
 
     actionNow = 0  # 0:down 1:stop 2:up
     actionPre = 0
-    driverSet(1, 1, 1, 1)  # down
-    time.sleep(5)
+    #driverSet(1, 1, 1, 1)  # down
+    #time.sleep(5)
     asd = False
     while True:
         nowTime = time.time()
