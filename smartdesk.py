@@ -111,6 +111,26 @@ def getUserHeight_nani(faceWidth, pixelX, pixelY, nowHeight):
         faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
     return nowHeight + calHeight
 
+def getUserHeight_nani1(faceWidth, pixelX, pixelY, nowHeight):
+    faceWidthAverage[0] = faceWidth
+    sumHeight = 0
+    for i in range(len(faceWidthAverage)):
+        sumHeight = faceWidthAverage[i] + sumHeight
+    widthAverage = sumHeight / timeNum
+    fullHorizontalAngle = cameraAngle
+    fullVerticalAngle = fullHorizontalAngle * cameraHeight / cameraWidth
+    faceDifference = faceWidthMax - faceWidthMin
+    distanceDifference = userDistanceMax - userDistanceMin
+    calUserDistance = (faceWidthMax - widthAverage) / faceDifference * distanceDifference + userDistanceMin
+    userTopAngle = abs(pixelX - cameraWidth/2) / cameraWidth * fullHorizontalAngle
+    userSideAngle = abs(cameraHeight/2 - pixelY) / cameraHeight fullVerticalAngle
+    userDistance = calUserDistance / np.cos(userTopAngle * np.pi/180) / np.cos(userSideAngle)
+    cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
+    calHeight = np.sin((cameraUserAngle + deskAngle) * np.pi/180) * (userDistance + 10)
+    for i in range(timeNum-1):#shift array
+        faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
+    return nowHeight + calHeight
+
 # driver
 # 0 : stop
 # 1 : down
@@ -244,7 +264,7 @@ def main():
             print('  area : %d    center_x : %d   center_y : %d \n'
                 % (area, center_x, center_y))
             #Height = getUserHeight_nani(width,center_x,center_y-height/2, deskHeight)
-            Height = getUserHeight_nani(width,center_x,center_y-height/2, waveSensorHeight+cameraWaveDifference+1.5)
+            Height = getUserHeight_nani1(width,center_x,center_y-height/2, waveSensorHeight+cameraWaveDifference+1.5)
             print("테스트 nani 식 :" + str(Height) + "\n")
             '''
             #높이에 따른 모터작동
