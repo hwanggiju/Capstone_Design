@@ -285,28 +285,23 @@ def main():
             if stop != True:
                 if Height < 120:
                     stop = driverSet(1, 1, 1, 1)  # down
-                    actionNow = 0#down
+                    actionPre = 0#down
                     print("down\n")
                 elif Height > 130:
                     stop = driverSet(1, 2, 2, 1)  # up
-                    actionNow = 2#up
+                    actionPre = 2#up
                     print("up\n")
                 else:
                     stop = driverSet(0, 0, 0, 0)  # stay
-                    actionNow = 1#stop
+                    actionPre = 1#stop
                     print("stop")
             else:
-                if actionNow != actionPre :
-                    '''
-                    if actionNow == 0:
-                        driverSet(1,1,1,1)# down
-                    elif actionNow == 1:
-                        driverSet(0,0,0,0) # stay
-                    elif actionNow == 2:
-                        driverSet(1,2,2,1)# up
-                        '''
+                if Height < 120 and actionPre != 0:
                     stop = False
-                    actionPre = actionNow
+                elif Height > 130 and actionPre != 2:
+                    stop = False
+                elif actionPre != 1:
+                    stop = False
 
         print("초음파 측정 거리 : %d" % (waveSensorHeight))
         
