@@ -60,7 +60,7 @@ userDistance    = 0
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
-timeNum = 1000 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
+timeNum = 100 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
 faceWidthAverage = [((faceWidthMax + faceWidthMin)/2) for col in range(timeNum)]
 
 #카메라
