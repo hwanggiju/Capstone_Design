@@ -143,7 +143,7 @@ def driverSet(enA, motorA, motorB, enB):
     # enB_pwm.start(0)
     for i in range(len(driver)):
         GPIO.output(driver[i], 0)
-    time.sleep(0.2)
+    time.sleep(1)
     if motorA == 2:#up
         GPIO.output(driver[1], 0)
         GPIO.output(driver[2], 1)
@@ -269,7 +269,7 @@ def main():
             #Height = getUserHeight_nani(width,center_x,center_y-height/2, deskHeight)
             Height = getUserHeight_nani1(width,center_x,center_y-height/2, waveSensorHeight+cameraWaveDifference+1.5)
             print("테스트 nani 식 :" + str(Height) + "\n")
-            
+
             #높이에 따른 모터작동
             if Height < 120:
                 actionNow = 0#down
