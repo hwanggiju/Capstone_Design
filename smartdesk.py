@@ -37,6 +37,8 @@ uart_arr = [8, 10]
 spi_arr = [19, 21, 23, 24, 26]
 # switch[left/center/right]
 switch = [36, 38, 40]
+# ultra wave[trig, echo]
+wave = [16, 18]
 
 # 사용자 정의 변수
 # maxHeight = 170
@@ -131,6 +133,23 @@ def driverSet(enA, motorA, motorB, enB):
     GPIO.output(driver[5], enB)
     # enA_pwm.start(100)
     # enB_pwm.start(100)
+    
+def waveFun() :
+    GPIO.output(wave[0], True)
+    time.sleep(0.00001)
+    GPIO.output(wave[0], False)
+    
+    while GPIO.input(wave[1]) == 0 :
+        pulse_start = time.time()
+        
+    while GPIO.input(wave[1]) == 1 :
+        pulse_end = time.time()
+        
+    pulse_duration = pulse_end - pulse_start
+    distance = pulse_duration   * 17000
+    distance = round(distance, 2)
+    
+    return distance
 
 # main code
 
@@ -167,13 +186,18 @@ def main():
     # maxHeightPixel = 0
     # minHeightPixel = 1000
 
-    # driverSet(1, 0, 0, 1)
-    # time.sleep(5)
-    # driverSet(0, 0, 0, 0)
+    # 초음파 핀 setup
+    GPIO.setup(wave[0], GPIO.OUT)
+    GPIO.setup(wave[1], GPIO.IN)
+    
+    GPIO.output(wave[0], False)
+
     actionNow = 0  # 0:down 1:stop 2:up
     actionPre = 0
     driverSet(1, 1, 1, 1)  # down
     time.sleep(5)
+    
+    
     while True:
         _, frame = cap.read()
         rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
@@ -189,6 +213,8 @@ def main():
         (h, w) = rotate_frame.shape[:2]
         detect = detect[0, 0, :, :]
         userNum = 0
+        
+        dis = waveFun() # 초음파 측정 거리
         
         for i in range(detect.shape[0]):
             confidence = detect[i, 2]
@@ -236,7 +262,9 @@ def main():
                 elif actionNow == 2:
                     driverSet(1,2,2,1)# up
                 actionPre = actionNow
-
+                
+        print("초음파 측정 거리 : %d" % (dis))
+        
         cv2.imshow('Facerec_Video', rotate_frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
