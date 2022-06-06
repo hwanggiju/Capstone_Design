@@ -300,7 +300,7 @@ def main():
                     stop = False
                 elif Height > 130 and actionPre != 2:
                     stop = False
-                elif actionPre != 1:
+                elif Height >= 120 and Height <= 130 and actionPre != 1:
                     stop = False
 
         print("초음파 측정 거리 : %d" % (waveSensorHeight))
