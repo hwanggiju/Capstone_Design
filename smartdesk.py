@@ -190,13 +190,13 @@ def main():
     GPIO.setup(wave[1], GPIO.IN)
     
     GPIO.output(wave[0], False)
+    waveSensorHeight = 0
 
     actionNow = 0  # 0:down 1:stop 2:up
     actionPre = 0
     driverSet(1, 1, 1, 1)  # down
     time.sleep(5)
-    
-    
+
     while True:
         _, frame = cap.read()
         rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
@@ -213,7 +213,7 @@ def main():
         detect = detect[0, 0, :, :]
         userNum = 0
         
-        dist = waveFun() # 초음파 측정 거리
+        waveSensorHeight = waveFun() # 책상 높이
         
         for i in range(detect.shape[0]):
             confidence = detect[i, 2]
@@ -261,7 +261,7 @@ def main():
                     driverSet(1,2,2,1)# up
                 actionPre = actionNow
 
-        print("초음파 측정 거리 : %d" % (dist))
+        print("초음파 측정 거리 : %d" % (waveSensorHeight))
         
         cv2.imshow('Facerec_Video', rotate_frame)
         key = cv2.waitKey(1) & 0xFF
