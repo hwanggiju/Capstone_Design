@@ -149,7 +149,7 @@ def driverSet(enA, motorA, motorB, enB):
     # enB_pwm.start(0)
     for i in range(len(driver)):
         GPIO.output(driver[i], 0)
-    if nowTime - preTime > 1:
+    if nowTime - preTime > 2:
         if motorA == 2:#up
             GPIO.output(driver[1], 0)
             GPIO.output(driver[2], 1)
