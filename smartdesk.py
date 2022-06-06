@@ -234,7 +234,7 @@ def main():
     actionPre = 0
     driverSet(1, 1, 1, 1)  # down
     time.sleep(5)
-
+    a = False
     while True:
         nowTime = time.time()
         _, frame = cap.read()
@@ -281,16 +281,18 @@ def main():
             print("테스트 nani 식 :" + str(Height) + "\n")
 
             #높이에 따른 모터작동
-            if Height < 120:
-                driverSet(1, 1, 1, 1)  # down
+
+            if Height < 120 and a == False:
+                a = driverSet(1, 1, 1, 1)  # down
                 actionNow = 0#down
                 print("down\n")
-            elif Height > 130:
-                driverSet(1, 2, 2, 1)  # up
+            elif Height > 130 and a == False:
+                a = driverSet(1, 2, 2, 1)  # up
                 actionNow = 2#up
                 print("up\n")
             else:
-                driverSet(0, 0, 0, 0)  # stay
+                a = driverSet(0, 0, 0, 0)  # stay
+                a = True
                 actionNow = 1#stop
                 print("stop")
             '''
