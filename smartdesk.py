@@ -171,6 +171,7 @@ def driverSet(enA, motorA, motorB, enB):
         GPIO.output(driver[0], enA)
         GPIO.output(driver[5], enB)
         initial = True
+        preTime = nowTime
     # enA_pwm.start(100)
     # enB_pwm.start(100)
     
