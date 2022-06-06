@@ -234,7 +234,7 @@ def main():
     actionPre = 0
     driverSet(1, 1, 1, 1)  # down
     time.sleep(5)
-    a = False
+    asd = False
     while True:
         nowTime = time.time()
         _, frame = cap.read()
@@ -282,16 +282,16 @@ def main():
 
             #높이에 따른 모터작동
 
-            if Height < 120 and a == False:
-                a = driverSet(1, 1, 1, 1)  # down
+            if Height < 120 and asd == False:
+                asd = driverSet(1, 1, 1, 1)  # down
                 actionNow = 0#down
                 print("down\n")
-            elif Height > 130 and a == False:
-                a = driverSet(1, 2, 2, 1)  # up
+            elif Height > 130 and asd == False:
+                asd = driverSet(1, 2, 2, 1)  # up
                 actionNow = 2#up
                 print("up\n")
             else:
-                a = driverSet(0, 0, 0, 0)  # stay
+                asd = driverSet(0, 0, 0, 0)  # stay
                 #a = False
                 actionNow = 1#stop
                 print("stop")
