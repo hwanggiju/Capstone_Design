@@ -173,7 +173,6 @@ def driverSet(enA, motorA, motorB, enB):
         initial = True
         preTime = nowTime
         return True
-    return False
     # enA_pwm.start(100)
     # enB_pwm.start(100)
     
