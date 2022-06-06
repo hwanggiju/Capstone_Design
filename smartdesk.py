@@ -192,6 +192,8 @@ def main():
     
     GPIO.output(wave[0], False)
 
+    distPre = 0
+    distNow = 0
     actionNow = 0  # 0:down 1:stop 2:up
     actionPre = 0
     driverSet(1, 1, 1, 1)  # down
@@ -214,7 +216,7 @@ def main():
         detect = detect[0, 0, :, :]
         userNum = 0
         
-        dis = waveFun() # 초음파 측정 거리
+        dist = waveFun() # 초음파 측정 거리
         
         for i in range(detect.shape[0]):
             confidence = detect[i, 2]
@@ -239,7 +241,6 @@ def main():
             print('  area : %d    center_x : %d   center_y : %d \n'
                 % (area, center_x, center_y))
 
-            # height = getUserHeight(getUserDistance(width,center_x), center_y - height/2)
             naniHeight = getUserHeight_nani(width,center_x,center_y-height/2)
             print("테스트 nani 식 :" + str(naniHeight) + "\n")
 
@@ -254,16 +255,21 @@ def main():
                 actionNow = 1#stop
                 print("stop")
 
-            if actionNow != actionPre:
+            if actionNow != actionPre :
                 if actionNow == 0:
                     driverSet(1,1,1,1)# down
+                    distPre = dist
                 elif actionNow == 1:
                     driverSet(0,0,0,0) # stay
+                    distNow = dist
                 elif actionNow == 2:
                     driverSet(1,2,2,1)# up
+                    distPre = dist
                 actionPre = actionNow
+            
+
                 
-        print("초음파 측정 거리 : %d" % (dis))
+        print("초음파 측정 거리 : %d" % (dist))
         
         cv2.imshow('Facerec_Video', rotate_frame)
         key = cv2.waitKey(1) & 0xFF
