@@ -94,7 +94,10 @@ timeNum = 500 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
 faceWidthAverage = [((faceWidthMax + faceWidthMin)/2) for col in range(timeNum)]
 def getUserHeight_nani(faceWidth, pixelX, pixelY, nowHeight):
     faceWidthAverage[0] = faceWidth
-    widthAverage = sum(faceWidthAverage) / timeNum
+    sumHeight = 0
+    for i in range(len(faceWidthAverage)):
+        sumHeight = faceWidthAverage[i] + sumHeight
+    widthAverage = sumHeight / timeNum
     fullHorizontalAngle = cameraAngle
     fullVerticalAngle = fullHorizontalAngle * cameraHeight / cameraWidth
     faceDifference = faceWidthMax - faceWidthMin
