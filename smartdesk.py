@@ -44,6 +44,8 @@ wave = [18, 16]
 # minHeight = 80
 # seatdownHeight = 0
 
+nowTime = time.time()
+preTime = nowTime
 
 #가까울때
 userDistanceMin = 60 #cm
@@ -139,32 +141,36 @@ def getUserHeight_nani1(faceWidth, pixelX, pixelY, nowHeight):
 # 1 : down
 # 2 : up
 def driverSet(enA, motorA, motorB, enB):
+    global initial, nowTime, preTime
+    if initial == True:
+        preTime = time.time()
+        initial = False
     # enA_pwm.start(0)
     # enB_pwm.start(0)
     for i in range(len(driver)):
         GPIO.output(driver[i], 0)
-    time.sleep(1)
-    if motorA == 2:#up
-        GPIO.output(driver[1], 0)
-        GPIO.output(driver[2], 1)
-    elif motorA == 1:#down
-        GPIO.output(driver[1], 1)
-        GPIO.output(driver[2], 0)
-    else:#stop
-        GPIO.output(driver[1], 0)
-        GPIO.output(driver[2], 0)
-    if motorB == 2:#up
-        GPIO.output(driver[3], 0)
-        GPIO.output(driver[4], 1)
-    elif motorB == 1:#down
-        GPIO.output(driver[3], 1)
-        GPIO.output(driver[4], 0)
-    else:#stop
-        GPIO.output(driver[3], 0)
-        GPIO.output(driver[4], 0)
-        
-    GPIO.output(driver[0], enA)
-    GPIO.output(driver[5], enB)
+    if nowTime - preTime > 1:
+        if motorA == 2:#up
+            GPIO.output(driver[1], 0)
+            GPIO.output(driver[2], 1)
+        elif motorA == 1:#down
+            GPIO.output(driver[1], 1)
+            GPIO.output(driver[2], 0)
+        else:#stop
+            GPIO.output(driver[1], 0)
+            GPIO.output(driver[2], 0)
+        if motorB == 2:#up
+            GPIO.output(driver[3], 0)
+            GPIO.output(driver[4], 1)
+        elif motorB == 1:#down
+            GPIO.output(driver[3], 1)
+            GPIO.output(driver[4], 0)
+        else:#stop
+            GPIO.output(driver[3], 0)
+            GPIO.output(driver[4], 0)
+        GPIO.output(driver[0], enA)
+        GPIO.output(driver[5], enB)
+        initial = True
     # enA_pwm.start(100)
     # enB_pwm.start(100)
     
@@ -189,7 +195,7 @@ def waveFun() :
 
 
 def main():
-
+    global nowTime, preTime
     cap = cv2.VideoCapture(0)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraHeight)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraWidth)
@@ -227,6 +233,7 @@ def main():
     time.sleep(5)
 
     while True:
+        nowTime = time.time()
         _, frame = cap.read()
         rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
         if frame is None:
