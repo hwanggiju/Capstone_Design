@@ -292,7 +292,9 @@ def main():
                 actionNow = 2#up
                 print("up\n")
             else:
-                asd = driverSet(0, 0, 0, 0)  # stay
+                asds = driverSet(0, 0, 0, 0)  # stay
+                if asds == True:
+                    asd = False
                 #a = False
                 actionNow = 1#stop
                 print("stop")
