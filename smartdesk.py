@@ -307,6 +307,7 @@ def main():
                     driverSet(1,2,2,1)# up
                     '''
                 asd = False
+            else:
                 actionPre = actionNow
 
         print("초음파 측정 거리 : %d" % (waveSensorHeight))
