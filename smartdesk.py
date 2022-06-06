@@ -90,7 +90,7 @@ GPIO.output(wave[0], False)
 # enA_pwm = GPIO.PWM(driver[0], 1)  # channel, frequecy
 # enB_pwm = GPIO.PWM(driver[5], 1)
 
-timeNum = 1000 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
+timeNum = 10000 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
 faceWidthAverage = [((faceWidthMax + faceWidthMin)/2) for col in range(timeNum)]
 def getUserHeight_nani(faceWidth, pixelX, pixelY, nowHeight):
     faceWidthAverage[0] = faceWidth
