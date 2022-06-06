@@ -70,7 +70,7 @@ cameraWaveDifference = 46 #카메라 - 센서간 높이차이
 
 # 각도
 deskAngle = -3 #28 # 책상 판과 카메라 중심까지의 각도
-deskUserAngle = 0 # 책상 판과 사용자 높이 사이의 각도
+deskUserAngle = -1 # 책상 판과 사용자 높이 사이의 각도
 cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
 
 
@@ -90,7 +90,7 @@ GPIO.output(wave[0], False)
 # enA_pwm = GPIO.PWM(driver[0], 1)  # channel, frequecy
 # enB_pwm = GPIO.PWM(driver[5], 1)
 
-timeNum = 30 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
+timeNum = 50 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
 faceWidthAverage = [((faceWidthMax + faceWidthMin)/2) for col in range(timeNum)]
 def getUserHeight_nani(faceWidth, pixelX, pixelY, nowHeight):
     faceWidthAverage[0] = faceWidth
@@ -103,7 +103,7 @@ def getUserHeight_nani(faceWidth, pixelX, pixelY, nowHeight):
     userTopAngle = abs(pixelX - cameraWidth/2) / cameraWidth * fullHorizontalAngle
     userDistance = calUserDistance / np.cos(userTopAngle * np.pi/180)
     cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
-    calHeight = np.tan((cameraUserAngle + deskAngle) * np.pi/180) * userDistance - np.tan(cameraUserAngle * np.pi/180)*10
+    calHeight = np.tan((cameraUserAngle + deskAngle) * np.pi/180) * userDistance + np.tan(cameraUserAngle * np.pi/180)*10
     for i in range(timeNum-1):#shift array
         faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
     return nowHeight + calHeight
