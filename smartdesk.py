@@ -60,7 +60,7 @@ userDistance    = 0
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
-timeNum = 20 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
+timeNum = 10 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
 faceWidthAverage = [((faceWidthMax + faceWidthMin)/2) for col in range(timeNum)]
 
 #카메라
@@ -126,7 +126,7 @@ def getUserHeight_nani1(faceWidth, pixelX, pixelY, nowHeight):
     userSideAngle = abs(cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
     userDistance = (calUserDistance / np.cos(userTopAngle * np.pi/180))/ np.cos(userSideAngle * np.pi/180)
     gap = calUserDistance / userDistance
-    calUserDistance = ((faceWidthMax - (1 - gap)*10) - widthAverage) / faceDifference * distanceDifference + userDistanceMin
+    calUserDistance = ((faceWidthMax - (1 - gap) * 20) - widthAverage) / faceDifference * distanceDifference + userDistanceMin
     userDistance = (calUserDistance / np.cos(userTopAngle * np.pi / 180)) / np.cos(userSideAngle * np.pi / 180)
     cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
     calHeight = np.sin((cameraUserAngle + deskAngle) * np.pi/180) * (userDistance+15)
