@@ -53,6 +53,7 @@ userDistanceMax = 114 #cm
 faceWidthMin    = 72 #pixel
 
 deskHeight = 76.5 + 42 # 수정
+waveSensorHeight = 0
 
 userDistance    = 0
 
@@ -83,7 +84,7 @@ for i in range(len(driver)):
 
 timeNum = 10 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
 faceWidthAverage = [((faceWidthMax + faceWidthMin)/2) for col in range(timeNum)]
-def getUserHeight_nani(faceWidth, pixelX, pixelY):
+def getUserHeight_nani(faceWidth, pixelX, pixelY, nowHeight):
     faceWidthAverage[0] = faceWidth
     widthAverage = sum(faceWidthAverage) / timeNum
     fullHorizontalAngle = cameraAngle
@@ -97,7 +98,7 @@ def getUserHeight_nani(faceWidth, pixelX, pixelY):
     calHeight = np.tan((cameraUserAngle + deskAngle) * np.pi/180) * userDistance
     for i in range(timeNum-1):#shift array
         faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
-    return deskHeight + calHeight
+    return nowHeight + calHeight
 
 # driver
 # 0 : stop
@@ -190,7 +191,6 @@ def main():
     GPIO.setup(wave[1], GPIO.IN)
     
     GPIO.output(wave[0], False)
-    waveSensorHeight = 0
 
     actionNow = 0  # 0:down 1:stop 2:up
     actionPre = 0
@@ -238,7 +238,7 @@ def main():
             print('  area : %d    center_x : %d   center_y : %d \n'
                 % (area, center_x, center_y))
 
-            naniHeight = getUserHeight_nani(width,center_x,center_y-height/2)
+            naniHeight = getUserHeight_nani(width,center_x,center_y-height/2, waveSensorHeight+48.5)
             print("테스트 nani 식 :" + str(naniHeight) + "\n")
 
             #높이에 따른 모터작동
