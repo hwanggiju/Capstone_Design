@@ -65,7 +65,7 @@ GPIO.setwarnings(False)
 #카메라
 cameraWidth = 480
 cameraHeight = 640
-cameraAngle = 50 # 카메라 수평 화각
+cameraAngle = 56 # 카메라 수평 화각
 cameraWaveDifference = 46 #카메라 - 센서간 높이차이
 
 # 각도
