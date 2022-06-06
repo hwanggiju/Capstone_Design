@@ -237,7 +237,7 @@ def main():
     #time.sleep(5)
     stop = False
     while True:
-        time.sleep(0.1)
+        time.sleep(0.01)
         nowTime = time.time()
         _, frame = cap.read()
         rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
