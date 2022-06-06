@@ -232,7 +232,7 @@ def main():
 
 
     actionNow = 0  # 0:down 1:stop 2:up
-    actionPre = 0
+    actionPre = 1
     #driverSet(1, 1, 1, 1)  # down
     #time.sleep(5)
     asd = False
@@ -307,7 +307,6 @@ def main():
                     driverSet(1,2,2,1)# up
                     '''
                 asd = False
-            else:
                 actionPre = actionNow
 
         print("초음파 측정 거리 : %d" % (waveSensorHeight))
