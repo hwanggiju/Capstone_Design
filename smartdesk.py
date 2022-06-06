@@ -235,7 +235,7 @@ def main():
     actionPre = 1
     #driverSet(1, 1, 1, 1)  # down
     #time.sleep(5)
-    asd = False
+    stop = False
     while True:
         nowTime = time.time()
         _, frame = cap.read()
@@ -282,32 +282,31 @@ def main():
             print("테스트 nani 식 :" + str(Height) + "\n")
 
             #높이에 따른 모터작동
-
-            if Height < 120 and asd == False:
-                asd = driverSet(1, 1, 1, 1)  # down
-                actionNow = 0#down
-                print("down\n")
-            elif Height > 130 and asd == False:
-                asd = driverSet(1, 2, 2, 1)  # up
-                actionNow = 2#up
-                print("up\n")
-            elif asd == False:
-                asd = driverSet(0, 0, 0, 0)  # stay
-                #a = False
-                actionNow = 1#stop
-                print("stop")
-
-            if actionNow != actionPre :
-                '''
-                if actionNow == 0:
-                    driverSet(1,1,1,1)# down
-                elif actionNow == 1:
-                    driverSet(0,0,0,0) # stay
-                elif actionNow == 2:
-                    driverSet(1,2,2,1)# up
+            if stop != True:
+                if Height < 120:
+                    stop = driverSet(1, 1, 1, 1)  # down
+                    actionNow = 0#down
+                    print("down\n")
+                elif Height > 130:
+                    stop = driverSet(1, 2, 2, 1)  # up
+                    actionNow = 2#up
+                    print("up\n")
+                else:
+                    stop = driverSet(0, 0, 0, 0)  # stay
+                    actionNow = 1#stop
+                    print("stop")
+            else:
+                if actionNow != actionPre :
                     '''
-                asd = False
-                actionPre = actionNow
+                    if actionNow == 0:
+                        driverSet(1,1,1,1)# down
+                    elif actionNow == 1:
+                        driverSet(0,0,0,0) # stay
+                    elif actionNow == 2:
+                        driverSet(1,2,2,1)# up
+                        '''
+                    stop = False
+                    actionPre = actionNow
 
         print("초음파 측정 거리 : %d" % (waveSensorHeight))
         
