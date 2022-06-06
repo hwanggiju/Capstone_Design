@@ -46,7 +46,7 @@ wave = [18, 16]
 
 nowTime = time.time()
 preTime = nowTime
-
+initial = True
 #가까울때
 userDistanceMin = 60 #cm
 faceWidthMax    = 110 #pixel
