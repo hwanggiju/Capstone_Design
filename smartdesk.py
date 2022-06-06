@@ -3,7 +3,6 @@ import face_recognition
 import cv2
 import RPi.GPIO as GPIO
 import time
-# from scipy.spatial import distance as dist
 import sys
 import numpy as np
 
@@ -192,8 +191,6 @@ def main():
     
     GPIO.output(wave[0], False)
 
-    distPre = 0
-    distNow = 0
     actionNow = 0  # 0:down 1:stop 2:up
     actionPre = 0
     driverSet(1, 1, 1, 1)  # down
@@ -258,17 +255,12 @@ def main():
             if actionNow != actionPre :
                 if actionNow == 0:
                     driverSet(1,1,1,1)# down
-                    distPre = dist
                 elif actionNow == 1:
                     driverSet(0,0,0,0) # stay
-                    distNow = dist
                 elif actionNow == 2:
                     driverSet(1,2,2,1)# up
-                    distPre = dist
                 actionPre = actionNow
-            
 
-                
         print("초음파 측정 거리 : %d" % (dist))
         
         cv2.imshow('Facerec_Video', rotate_frame)
