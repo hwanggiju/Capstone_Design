@@ -291,23 +291,24 @@ def main():
                 asd = driverSet(1, 2, 2, 1)  # up
                 actionNow = 2#up
                 print("up\n")
-            else:
-                asds = driverSet(0, 0, 0, 0)  # stay
-                if asds == True:
-                    asd = False
+            elif asd == False:
+                asd = driverSet(0, 0, 0, 0)  # stay
                 #a = False
                 actionNow = 1#stop
                 print("stop")
-            '''
+
             if actionNow != actionPre :
+                '''
                 if actionNow == 0:
                     driverSet(1,1,1,1)# down
                 elif actionNow == 1:
                     driverSet(0,0,0,0) # stay
                 elif actionNow == 2:
                     driverSet(1,2,2,1)# up
+                    '''
+                asd = False
                 actionPre = actionNow
-            '''
+
         print("초음파 측정 거리 : %d" % (waveSensorHeight))
         
         cv2.imshow('Facerec_Video', rotate_frame)
