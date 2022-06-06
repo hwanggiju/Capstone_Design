@@ -172,6 +172,8 @@ def driverSet(enA, motorA, motorB, enB):
         GPIO.output(driver[5], enB)
         initial = True
         preTime = nowTime
+        return True
+    return False
     # enA_pwm.start(100)
     # enB_pwm.start(100)
     
@@ -280,15 +282,18 @@ def main():
 
             #높이에 따른 모터작동
             if Height < 120:
+                driverSet(1, 1, 1, 1)  # down
                 actionNow = 0#down
                 print("down\n")
             elif Height > 130:
+                driverSet(1, 2, 2, 1)  # up
                 actionNow = 2#up
                 print("up\n")
             else:
+                driverSet(0, 0, 0, 0)  # stay
                 actionNow = 1#stop
                 print("stop")
-
+            '''
             if actionNow != actionPre :
                 if actionNow == 0:
                     driverSet(1,1,1,1)# down
@@ -297,7 +302,7 @@ def main():
                 elif actionNow == 2:
                     driverSet(1,2,2,1)# up
                 actionPre = actionNow
-
+            '''
         print("초음파 측정 거리 : %d" % (waveSensorHeight))
         
         cv2.imshow('Facerec_Video', rotate_frame)
