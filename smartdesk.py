@@ -53,7 +53,7 @@ userDistanceMax = 114 #cm
 faceWidthMin    = 72 #pixel
 
 deskHeight = 76.5 + 42 # 수정
-waveSensorHeight = 0
+waveSensorHeight = 70 # 최소 길이 초기화
 
 userDistance    = 0
 
@@ -72,6 +72,8 @@ deskAngle = -3 #28 # 책상 판과 카메라 중심까지의 각도
 deskUserAngle = 0 # 책상 판과 사용자 높이 사이의 각도
 cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
 
+
+#하드웨어 초기설정
 for i in range(len(driver)):
     GPIO.setup(driver[i], GPIO.OUT)
 for i in range(len(switch)):
@@ -79,6 +81,11 @@ for i in range(len(switch)):
 # initial system down
 for i in range(len(driver)):
     GPIO.output(driver[i], GPIO.LOW)
+# 초음파 핀 setup
+GPIO.setup(wave[0], GPIO.OUT)
+GPIO.setup(wave[1], GPIO.IN)
+GPIO.output(wave[0], False)
+
 # enA_pwm = GPIO.PWM(driver[0], 1)  # channel, frequecy
 # enB_pwm = GPIO.PWM(driver[5], 1)
 
@@ -186,11 +193,6 @@ def main():
     # maxHeightPixel = 0
     # minHeightPixel = 1000
 
-    # 초음파 핀 setup
-    GPIO.setup(wave[0], GPIO.OUT)
-    GPIO.setup(wave[1], GPIO.IN)
-    
-    GPIO.output(wave[0], False)
 
     actionNow = 0  # 0:down 1:stop 2:up
     actionPre = 0
@@ -237,15 +239,15 @@ def main():
             print(" 가로 :" + str(width) + "  세로:" + str(height), end='')
             print('  area : %d    center_x : %d   center_y : %d \n'
                 % (area, center_x, center_y))
-
-            naniHeight = getUserHeight_nani(width,center_x,center_y-height/2, waveSensorHeight+48.5)
-            print("테스트 nani 식 :" + str(naniHeight) + "\n")
-
+            #Height = getUserHeight_nani(width,center_x,center_y-height/2, deskHeight)
+            Height = getUserHeight_nani(width,center_x,center_y-height/2, waveSensorHeight+48.5)
+            print("테스트 nani 식 :" + str(Height) + "\n")
+            '''
             #높이에 따른 모터작동
-            if naniHeight < 120:
+            if Height < 120:
                 actionNow = 0#down
                 print("down\n")
-            elif naniHeight > 130:
+            elif Height > 130:
                 actionNow = 2#up
                 print("up\n")
             else:
@@ -260,7 +262,7 @@ def main():
                 elif actionNow == 2:
                     driverSet(1,2,2,1)# up
                 actionPre = actionNow
-
+            '''
         print("초음파 측정 거리 : %d" % (waveSensorHeight))
         
         cv2.imshow('Facerec_Video', rotate_frame)
