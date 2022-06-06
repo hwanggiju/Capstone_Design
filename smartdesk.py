@@ -269,7 +269,7 @@ def main():
             #Height = getUserHeight_nani(width,center_x,center_y-height/2, deskHeight)
             Height = getUserHeight_nani1(width,center_x,center_y-height/2, waveSensorHeight+cameraWaveDifference+1.5)
             print("테스트 nani 식 :" + str(Height) + "\n")
-            '''
+            
             #높이에 따른 모터작동
             if Height < 120:
                 actionNow = 0#down
@@ -289,7 +289,7 @@ def main():
                 elif actionNow == 2:
                     driverSet(1,2,2,1)# up
                 actionPre = actionNow
-            '''
+
         print("초음파 측정 거리 : %d" % (waveSensorHeight))
         
         cv2.imshow('Facerec_Video', rotate_frame)
