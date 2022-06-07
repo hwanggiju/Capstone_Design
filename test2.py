@@ -1,26 +1,30 @@
-import cv2
+import time
+from mpu9250_jmdev.registers import *
+from mpu9250_jmdev.mpu_9250 import MPU9250
 
-cap = cv2.VideoCapture(0)
+mpu = MPU9250(
+    address_ak=AK8963_ADDRESS, 
+    address_mpu_master=MPU9050_ADDRESS_68, # In 0x68 Address
+    address_mpu_slave=None, 
+    bus=1,
+    gfs=GFS_1000, 
+    afs=AFS_8G, 
+    mfs=AK8963_BIT_16, 
+    mode=AK8963_MODE_C100HZ)
 
-if cap.isOpened() :
-    print("Camera Is Opened")
-    delay = int(1000 / cap.get(cv2.CAP_PROP_FPS))
-    while True :
-        ret, frame = cap.read()
-        if ret :
-            img_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            img_gray = cv2.flip(img_gray, 1)
-            cv2.imshow("Video", img_gray)
-            if cv2.waitKey(delay) & 0xFF == 27:
-                print("ESC Key pressed")
-                break
-            
-        else :
-            print(ret, frame)
-            break
+mpu.configure() # Apply the settings to the registers.
+
+while True:
+
+    print("|.....MPU9250 in 0x68 Address.....|")
+    print("Accelerometer", mpu.readAccelerometerMaster()) # 가속도
+    print("Gyroscope", mpu.readGyroscopeMaster()) # 자이로
+    print("Magnetometer", mpu.readMagnetometerMaster()) # 자력계
+    print("Temperature", mpu.readTemperatureMaster()) # 온도
+    print("\n")
+
+    time.sleep(1)
     
-else :
-    print("Camera Isn't Opened")
     
-cap.release()
-cv2.destroyAllWindows()
+    # mpu.calibrate() # Calibrate sensors
+    # mpu.configure() # The calibration function resets the sensors, so you need to reconfigure them
