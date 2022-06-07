@@ -12,15 +12,15 @@ mpu = MPU9250(
     mfs=AK8963_BIT_16, 
     mode=AK8963_MODE_C100HZ)
 
-mpu.configure() # Apply the settings to the registers.
+mpu.configure() # mpu 레지스터 설정
 
 while True:
 
     print("|.....MPU9250 in 0x68 Address.....|")
-    print("Accelerometer", mpu.readAccelerometerMaster()) # 가속도
+    # print("Accelerometer", mpu.readAccelerometerMaster()) # 가속도
     print("Gyroscope", mpu.readGyroscopeMaster()) # 자이로
-    print("Magnetometer", mpu.readMagnetometerMaster()) # 자력계
-    print("Temperature", mpu.readTemperatureMaster()) # 온도
+    # print("Magnetometer", mpu.readMagnetometerMaster()) # 자력계
+    # print("Temperature", mpu.readTemperatureMaster()) # 온도
     print("\n")
 
     time.sleep(1)
