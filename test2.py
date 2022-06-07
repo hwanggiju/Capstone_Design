@@ -26,5 +26,4 @@ while True:
     time.sleep(1)
     
     
-    # mpu.calibrate() # Calibrate sensors
-    # mpu.configure() # The calibration function resets the sensors, so you need to reconfigure them
+    # mpu.calibrate() # 센서값 교정
