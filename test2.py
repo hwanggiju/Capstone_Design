@@ -140,10 +140,10 @@ def cal_angle_gyro(GyX, GyY, GyZ):
 
     now = time.time()
     dt = now - past     # 초단위
-
-    GyX_deg += ((GyX - baseGyX) / DEGREE_PER_SECOND) * dt
-    GyY_deg += ((GyY - baseGyY) / DEGREE_PER_SECOND) * dt
-    GyZ_deg += ((GyZ - baseGyZ) / DEGREE_PER_SECOND) * dt
+    if abs(GyX - baseGyX) > 0.2:
+        GyX_deg += ((GyX - baseGyX) / DEGREE_PER_SECOND) * dt
+        GyY_deg += ((GyY - baseGyY) / DEGREE_PER_SECOND) * dt
+        GyZ_deg += ((GyZ - baseGyZ) / DEGREE_PER_SECOND) * dt
 
     past = now      # 다음 계산을 위해 past로 저장되어야 한다.
 
