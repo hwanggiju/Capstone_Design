@@ -239,7 +239,7 @@ def main():
         time.sleep(0.2)
         nowTime = time.time()
         imu.readSensor()
-	    imu.computeOrientation()
+        imu.computeOrientation()
         _, frame = cap.read()
         rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
         if frame is None:
