@@ -15,7 +15,7 @@ GYRO_ZOUT_H  = 0x47
 
 
 def MPU_Init():
-	#write to sample rate register
+	# write to sample rate register
 	bus.write_byte_data(Device_Address, SMPLRT_DIV, 7)
 	
 	#Write to power management register
@@ -32,16 +32,16 @@ def MPU_Init():
 
 def read_raw_data(addr):
 	#Accelero and Gyro value are 16-bit
-        high = bus.read_byte_data(Device_Address, addr)
-        low = bus.read_byte_data(Device_Address, addr+1)
+    high = bus.read_byte_data(Device_Address, addr)
+    low = bus.read_byte_data(Device_Address, addr+1)
+
+    #concatenate higher and lower value
+    value = ((high << 8) | low)
     
-        #concatenate higher and lower value
-        value = ((high << 8) | low)
-        
-        #to get signed value from mpu6050
-        if(value > 32768):
-                value = value - 65536
-        return value
+    #to get signed value from mpu6050
+    if(value > 32768):
+        value = value - 65536
+    return value
 
 
 bus = smbus.SMBus(1) 	# or bus = smbus.SMBus(0) for older version boards
@@ -74,4 +74,4 @@ while True:
 	
 
 	print ("Gx=%.2f" %Gx, u'\u00b0'+ "/s", "\tGy=%.2f" %Gy, u'\u00b0'+ "/s", "\tGz=%.2f" %Gz, u'\u00b0'+ "/s", "\tAx=%.2f g" %Ax, "\tAy=%.2f g" %Ay, "\tAz=%.2f g" %Az) 	
-	sleep(1)
+	sleep(0.2)
