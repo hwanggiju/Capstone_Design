@@ -184,7 +184,6 @@ def set_MPU_init(dlpf_bw=DLPF_BW_256,
                 clk_pll=CLOCK_PLL_XGYRO):
     global baseAcX, baseAcY, baseAcZ, baseGyX, baseGyY, baseGyZ, past
 
-    # MPU6050 초기값 setting
     write_byte(PWR_MGMT_1, SLEEP_EN | clk_pll)      # sleep mode(bit6), clock(bit2:0)은 XGyro 동기
     write_byte(CONFIG, dlpf_bw)                     # bit 2:0
     write_byte(GYRO_CONFIG, gyro_fs)                # Gyro Full Scale bit 4:3
@@ -211,7 +210,6 @@ if __name__ == '__main__':
 
     cnt = 0
     AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
-    baseGyX = GyX
     while True:
         # 3) accel, gyro의 Raw data 읽기, 
         AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
