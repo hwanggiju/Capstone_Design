@@ -306,9 +306,9 @@ def main():
                     stop = False
 
         print("초음파 측정 거리 : %d\n" % (waveSensorHeight))
-        print ("Gyro x: {0} ; Gyro y : {1} ; Gyro z : {2}".format(imu.GyroVals[0], imu.GyroVals[1], imu.GyroVals[2]))
-        print ("Accel x: {0} ; Accel y : {1} ; Accel z : {2}".format(imu.AccelVals[0], imu.AccelVals[1], imu.AccelVals[2]))
-        cv2.imshow('Facerec_Video', rotate_frame)
+        print ("Gyro x: %.2f ; Gyro y : %.2f ; Gyro z : %.2f".format(imu.GyroVals[0], imu.GyroVals[1], imu.GyroVals[2]))
+        print ("Accel x: %.2f ; Accel y : %.2f ; Accel z : %.2f".format(imu.AccelVals[0], imu.AccelVals[1], imu.AccelVals[2]))
+        # cv2.imshow('Facerec_Video', rotate_frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
             # enA_pwm.stop()
