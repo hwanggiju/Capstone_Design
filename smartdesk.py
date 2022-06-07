@@ -11,15 +11,14 @@ import numpy as np
 # import spidev
 
 # MPU9250 gyro sensor code
-# pip3 install imusensor 설치
-# import os
-# import smbus
-# from imusensor.MPU9250 import MPU9250
+import os
+import smbus
+from imusensor.MPU9250 import MPU9250
 
-# sensorAddress = 0x68
-# bus = smbus.SMBus(1)
-# imu = MPU9250.MPU9250(bus, sensorAddress)
-# imu.begin()
+sensorAddress = 0x68
+bus = smbus.SMBus(1)
+imu = MPU9250.MPU9250(bus, sensorAddress)
+imu.begin()
 
 # spi = spidev.SpiDev(0, spi_ch)
 # spi.max_speed_hz = 1200000
@@ -239,6 +238,8 @@ def main():
     while True:
         time.sleep(0.2)
         nowTime = time.time()
+        imu.readSensor()
+	    imu.computeOrientation()
         _, frame = cap.read()
         rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
         if frame is None:
@@ -305,6 +306,7 @@ def main():
                     stop = False
 
         print("초음파 측정 거리 : %d" % (waveSensorHeight))
+        print ("Gyro x: {0} ; Gyro y : {1} ; Gyro z : {2}".format(imu.GyroVals[0], imu.GyroVals[1], imu.GyroVals[2]))
         
         cv2.imshow('Facerec_Video', rotate_frame)
         key = cv2.waitKey(1) & 0xFF
