@@ -167,7 +167,7 @@ def sensor_calibration():
         SumGyX += GyX
         SumGyY += GyY
         SumGyZ += GyZ
-        time.sleep(0.1)
+        
 
     avgAcX = SumAcX / 10
     avgAcY = SumAcY / 10
