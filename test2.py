@@ -129,6 +129,7 @@ GyY_deg = 0
 GyZ_deg = 0
 
 def cal_angle_gyro(GyX, GyY, GyZ):
+    global past
     """
     Gyro를 이용한 현재 각도 계산
     누적 방식이라... 회전하는 방향에 따라 양수/음수가 정해진다.
@@ -144,7 +145,7 @@ def cal_angle_gyro(GyX, GyY, GyZ):
     GyY_deg += ((GyY - baseGyY) / DEGREE_PER_SECOND) * dt
     GyZ_deg += ((GyZ - baseGyZ) / DEGREE_PER_SECOND) * dt
 
-    return now      # 다음 계산을 위해 past로 저장되어야 한다.
+    past = now      # 다음 계산을 위해 past로 저장되어야 한다.
 
 
 def sensor_calibration():
@@ -218,7 +219,7 @@ if __name__ == '__main__':
         AcX_deg, AcY_deg = cal_angle_acc(AcX, AcY, AcZ)
 
         # 4-2) Gyro를 이용한 각도 계산 
-        past = cal_angle_gyro(GyX, GyY, GyZ)
+        cal_angle_gyro(GyX, GyY, GyZ)
 
         # 5) 0.01초 간격으로 값 읽기
         time.sleep(0.01)
@@ -226,7 +227,7 @@ if __name__ == '__main__':
 
         # 1초에 한번씩 display
         if cnt%100 == 0:
-            print("GyX,Y,Z_deg = ", GyX_deg, ',', GyY_deg, ',', GyZ_deg)
+            print("GyX,Y,Z_deg = ", round(GyX_deg,4), ',', round(GyY_deg,4), ',',round(GyZ_deg,4))
             # print("AcX_deg, AcY_deg = ", AcX_deg, ',', AcY_deg)
 '''
 def read_raw_data(addr):
