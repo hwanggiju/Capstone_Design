@@ -1,19 +1,3 @@
-import smbus			#import SMBus module of I2C
-from time import sleep          #import
-from time import time 
-
-PWR_MGMT_1   = 0x6B
-SMPLRT_DIV   = 0x19
-CONFIG       = 0x1A
-GYRO_CONFIG  = 0x1B
-INT_ENABLE   = 0x38
-ACCEL_XOUT_H = 0x3B
-ACCEL_YOUT_H = 0x3D
-ACCEL_ZOUT_H = 0x3F
-GYRO_XOUT_H  = 0x43
-GYRO_YOUT_H  = 0x45
-GYRO_ZOUT_H  = 0x47
-
 # 각도(deg) = Gyro값(step) / DEGREE_PER_SECOND(step*sec/deg) * dt(sec) 의 누적...
 DEGREE_PER_SECOND = 32767 / 250  # Gyro의 Full Scale이 250인 경우
                                  # Full Scale이 1000인 경우 32767/1000
@@ -39,7 +23,7 @@ def cal_angle_gyro(GyX, GyY, GyZ):
     """
     global GyX_deg, GyY_deg, GyZ_deg
 
-    now = time()
+    now = time.time()
     dt = now - past     # 초단위
 
     GyX_deg += ((GyX - baseGyX) / DEGREE_PER_SECOND) * dt
@@ -79,7 +63,8 @@ def sensor_calibration():
 
     return avgAcX, avgAcY, avgAcZ, avgGyX, avgGyY, avgGyZ
 
-
+# Now wake the 6050 up as it starts in sleep mode
+# MPU 6050 초기화
 def set_MPU6050_init(dlpf_bw=DLPF_BW_256,
                      gyro_fs=GYRO_FS_250, accel_fs=ACCEL_FS_2,
                      clk_pll=CLOCK_PLL_XGYRO):
@@ -99,6 +84,9 @@ def set_MPU6050_init(dlpf_bw=DLPF_BW_256,
 
     return read_byte(PWR_MGMT_1)    # 정말 시작되었는지 확인
 
+########################################
+# 테트스 코드
+########################################
 if __name__ == '__main__':
     ''' -----------------------------------'''
     ''' Gyro 테스트 '''
