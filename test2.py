@@ -140,7 +140,7 @@ def cal_angle_gyro(GyX, GyY, GyZ):
 
     now = time.time()
     dt = now - past     # 초단위
-    if abs(((GyX - baseGyX) / DEGREE_PER_SECOND) * dt) > 0.01:
+    if abs(((GyX - baseGyX) / DEGREE_PER_SECOND) * dt) > 0.02:
         GyX_deg += ((GyX - baseGyX) / DEGREE_PER_SECOND) * dt
         GyY_deg += ((GyY - baseGyY) / DEGREE_PER_SECOND) * dt
         GyZ_deg += ((GyZ - baseGyZ) / DEGREE_PER_SECOND) * dt
