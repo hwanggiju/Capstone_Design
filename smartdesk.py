@@ -236,7 +236,7 @@ def main():
     #time.sleep(5)
     stop = False
     while True:
-        time.sleep(0.2)
+        time.sleep(0.005)
         nowTime = time.time()
         imu.readSensor()
         imu.computeOrientation()
