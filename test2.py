@@ -222,7 +222,7 @@ if __name__ == '__main__':
 
         # 5) 0.01초 간격으로 값 읽기
         time.sleep(0.01)
-        cnt += 1
+        cnt += 10
 
         # 1초에 한번씩 display
         if cnt%100 == 0:
