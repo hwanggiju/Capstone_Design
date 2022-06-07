@@ -1,34 +1,85 @@
 import smbus			#import SMBus module of I2C
 from time import sleep          #import
 from time import time 
+import math
 
-PWR_MGMT_1   = 0x6B
-SMPLRT_DIV   = 0x19
-CONFIG       = 0x1A
-GYRO_CONFIG  = 0x1B
-INT_ENABLE   = 0x38
-ACCEL_XOUT_H = 0x3B
-ACCEL_YOUT_H = 0x3D
-ACCEL_ZOUT_H = 0x3F
-GYRO_XOUT_H  = 0x43
-GYRO_YOUT_H  = 0x45
-GYRO_ZOUT_H  = 0x47
+# 레지스터 값 설정
+CONFIG       = 0x1A     # LowPassFilter bit 2:0
+GYRO_CONFIG  = 0x1B     # FS_SEL bit 4:3
+ACCEL_CONFIG = 0x1C     # FS_SEL bit 4:3
+PWR_MGMT_1   = 0x6B     # sleep bit 6, clk_select bit 2:0
 
-# 각도(deg) = Gyro값(step) / DEGREE_PER_SECOND(step*sec/deg) * dt(sec) 의 누적...
-DEGREE_PER_SECOND = 32767 / 250  # Gyro의 Full Scale이 250인 경우
-                                 # Full Scale이 1000인 경우 32767/1000
+# CONFIG: Low Pass Filter 설정(bit 2:0)
+DLPF_BW_256 = 0x00      # Acc: BW-260Hz, Delay-0ms, Gyro: BW-256Hz, Delay-0.98ms
+DLPF_BW_188 = 0x01
+DLPF_BW_98  = 0x02
+DLPF_BW_42  = 0x03
+DLPF_BW_20  = 0x04
+DLPF_BW_10  = 0x05
+DLPF_BW_5   = 0x06      # Acc: BW-5Hz, Delay-19ms, Gyro: BW-5Hz, Delay-18.6ms
 
-past = 0      # 현재 시간(sec)
-baseAcX = 0   # 기준점(가만히 있어도 회전이 있나???)
-baseAcY = 0
-baseAcZ = 0
-baseGyX = 0
-baseGyY = 0
-baseGyZ = 0
+# GYRO_CONFIG: Gyro의 Full Scale 설정(bit 4:3)
+GYRO_FS_250  = 0x00 << 3    # 250 deg/sec
+GYRO_FS_500  = 0x01 << 3
+GYRO_FS_1000 = 0x02 << 3
+GYRO_FS_2000 = 0x03 << 3    # 2000 deg/sec
 
-GyX_deg = 0   # 측정 각도
-GyY_deg = 0
-GyZ_deg = 0
+# ACCEL_CONFIG: 가속도센서의 Full Scale 설정(bit 4:3)
+ACCEL_FS_2  = 0x00 << 3     # 2g
+ACCEL_FS_4  = 0x01 << 3
+ACCEL_FS_8  = 0x02 << 3
+ACCEL_FS_16 = 0x03 << 3     # 16g
+
+# PWR_MGMT_1: sleep(bit 6)
+SLEEP_EN        = 0x01 << 6
+SLEEP_DIS       = 0x00 << 6
+# PWR_MGMT_1: clock(bit 2:0)
+CLOCK_INTERNAL  = 0x00  # internal clk(8KHz) 이용 (Not! Recommended)
+CLOCK_PLL_XGYRO = 0x01  # XGyro와 동기
+CLOCK_PLL_YGYRO = 0x02  # YGyro와 동기
+CLOCK_PLL_ZGYRO = 0x03  # ZGyro와 동기
+
+# Data 읽기
+ACCEL_XOUT_H = 0x3B     # Low는 0x3C
+ACCEL_YOUT_H = 0x3D     # Low는 0x3E
+ACCEL_ZOUT_H = 0x3F     # Low는 0x40
+GYRO_XOUT_H  = 0x43     # Low는 0x44
+GYRO_YOUT_H  = 0x45     # Low는 0x46
+GYRO_ZOUT_H  = 0x47     # Low는 0x48
+
+################################
+# I2C 읽고 쓰기
+################################
+# I2C Bus 초기화
+I2C_bus = smbus.SMBus(1)
+MPU6050_addr = 0x68
+
+# 한바이트 쓰기
+def write_byte(adr, data):
+    I2C_bus.write_byte_data(MPU6050_addr, adr, data)
+
+# 한바이트 읽기
+def read_byte(adr):
+    return I2C_bus.read_byte_data(MPU6050_addr, adr)
+
+# 두바이트 읽기
+def read_word(adr):
+    high = I2C_bus.read_byte_data(MPU6050_addr, adr)
+    low = I2C_bus.read_byte_data(MPU6050_addr, adr+1)
+    val = (high << 8) + low
+    return val
+
+# 두바이트를 2's complement로 읽기(-32768~32767)
+# 아두이노는 변수를 signed 16bit로 선언해서 처리하지만
+# 라즈베리파이는 이렇게 변환해 줘야 한다. 
+def read_word_2c(adr):
+    val = read_word(adr)
+    if (val >= 0x8000):
+        return -((65535 - val) + 1)
+    else:
+        return val
+    
+# -----------------------------------------------    
 
 def get_raw_data():
     """
@@ -44,6 +95,7 @@ def get_raw_data():
     return accel_xout, accel_yout, accel_zout,\
            gyro_xout, gyro_yout, gyro_zout
 
+# 가속도 앵글
 def cal_angle_acc(AcX, AcY, AcZ):
     """
     Accel값만 이용해서 X, Y의 각도 측정
@@ -59,6 +111,23 @@ def cal_angle_acc(AcX, AcY, AcZ):
     y_radians = math.atan2(AcX, math.sqrt((AcY*AcY) + (AcZ*AcZ)))
     x_radians = math.atan2(AcY, math.sqrt((AcX*AcX) + (AcZ*AcZ)))
     return math.degrees(x_radians), -math.degrees(y_radians)
+
+# 각속도 각도 계산
+# 각도(deg) = Gyro값(step) / DEGREE_PER_SECOND(step*sec/deg) * dt(sec) 의 누적...
+DEGREE_PER_SECOND = 32767 / 250  # Gyro의 Full Scale이 250인 경우
+                                 # Full Scale이 1000인 경우 32767/1000
+
+past = 0      # 현재 시간(sec)
+baseAcX = 0   # 기준점(가만히 있어도 회전이 있나???)
+baseAcY = 0
+baseAcZ = 0
+baseGyX = 0
+baseGyY = 0
+baseGyZ = 0
+
+GyX_deg = 0   # 측정 각도
+GyY_deg = 0
+GyZ_deg = 0
 
 def cal_angle_gyro(GyX, GyY, GyZ):
     """
@@ -110,29 +179,32 @@ def sensor_calibration():
 
     return avgAcX, avgAcY, avgAcZ, avgGyX, avgGyY, avgGyZ
 
-def MPU_Init():
-    	#write to sample rate register
-	bus.write_byte_data(Device_Address, SMPLRT_DIV, 7)
-	
-	#Write to power management register
-	bus.write_byte_data(Device_Address, PWR_MGMT_1, 1)
-	
-	#Write to Configuration register
-	bus.write_byte_data(Device_Address, CONFIG, 0)
-	
-	#Write to Gyro configuration register
-	bus.write_byte_data(Device_Address, GYRO_CONFIG, 24)
-	
-	#Write to interrupt enable register
-	bus.write_byte_data(Device_Address, INT_ENABLE, 1)
+def set_MPU_init(dlpf_bw=DLPF_BW_256,
+                gyro_fs=GYRO_FS_250, accel_fs=ACCEL_FS_2,
+                clk_pll=CLOCK_PLL_XGYRO):
+    global baseAcX, baseAcY, baseAcZ, baseGyX, baseGyY, baseGyZ, past
+
+    # MPU6050 초기값 setting
+    write_byte(PWR_MGMT_1, SLEEP_EN | clk_pll)      # sleep mode(bit6), clock(bit2:0)은 XGyro 동기
+    write_byte(CONFIG, dlpf_bw)                     # bit 2:0
+    write_byte(GYRO_CONFIG, gyro_fs)                # Gyro Full Scale bit 4:3
+    write_byte(ACCEL_CONFIG, accel_fs)              # Accel Full Scale Bit 4:3
+    write_byte(PWR_MGMT_1, SLEEP_DIS | clk_pll)     # Start
+
+    # sensor 계산 초기화
+    baseAcX, baseAcY, baseAcZ, baseGyX, baseGyY, baseGyZ \
+        = sensor_calibration()
+    past = time.time()
+
+    return read_byte(PWR_MGMT_1)
+
 
 if __name__ == '__main__':
     ''' -----------------------------------'''
     ''' Gyro 테스트 '''
     ''' -----------------------------------'''
-    bus = smbus.SMBus(1)
-    Device_Address = 0x68
-    MPU_Init()
+    test = set_MPU_init(dlpf_bw=DLPF_BW_98)   # BW만 변경, 나머지는 default 이용
+    print("Gyro PWR_MGMT_1 Register = ", test)
 
     # 2) Gyro 기준값 계산(Gyro 이용시)
     sensor_calibration()    # Gyro의 기준값 계산
