@@ -88,12 +88,12 @@ def get_raw_data():
     가속도(accel)와 각속도(gyro)의 현재 값 읽기
     :return: accel x/y/z, gyro x/y/z
     """
-    gyro_xout = read_word_2c(GYRO_XOUT_H)
+    #gyro_xout = read_word_2c(GYRO_XOUT_H)
     gyro_yout = read_word_2c(GYRO_YOUT_H)
-    gyro_zout = read_word_2c(GYRO_ZOUT_H)
-    accel_xout = read_word_2c(ACCEL_XOUT_H)
-    accel_yout = read_word_2c(ACCEL_YOUT_H)
-    accel_zout = read_word_2c(ACCEL_ZOUT_H)
+    #gyro_zout = read_word_2c(GYRO_ZOUT_H)
+    #accel_xout = read_word_2c(ACCEL_XOUT_H)
+    #accel_yout = read_word_2c(ACCEL_YOUT_H)
+    #accel_zout = read_word_2c(ACCEL_ZOUT_H)
     return accel_xout, accel_yout, accel_zout,\
            gyro_xout, gyro_yout, gyro_zout
 
@@ -196,8 +196,8 @@ def set_MPU_init(dlpf_bw=DLPF_BW_256,
     write_byte(PWR_MGMT_1, SLEEP_DIS | clk_pll)     # Start
 
     # sensor 계산 초기화
-    # baseAcX, baseAcY, baseAcZ, baseGyX, baseGyY, baseGyZ \
-    #    = sensor_calibration()
+    baseAcX, baseAcY, baseAcZ, baseGyX, baseGyY, baseGyZ \
+        = sensor_calibration()
     past = time.time()
 
     return read_byte(PWR_MGMT_1)
