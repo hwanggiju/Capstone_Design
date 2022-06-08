@@ -228,7 +228,7 @@ def cal_angle_gyro(GyX, GyY, GyZ):
     GyX_deg += ((GyX - baseGyX) / DEGREE_PER_SECOND) * dt
     GyY_deg += ((GyY - baseGyY) / DEGREE_PER_SECOND) * dt
     GyZ_deg += ((GyZ - baseGyZ) / DEGREE_PER_SECOND) * dt
-    average[0] = int(GyY_deg)
+    average[0] = GyY_deg
     val = sum(average)/10
     for i in range(len(average)-1):
         average[len(average) - i - 1] = average[len(average) - i - 2]
@@ -483,7 +483,8 @@ def main():
             #Height = getUserHeight_nani(width,center_x,center_y-height/2, deskHeight)
             Height = getUserHeight_nani1(width,center_x,center_y-height/2, waveSensorHeight+cameraWaveDifference+1.5)
             print("테스트 nani 식 :" + str(Height) + "\n")
-
+            if waveSensorHeight > 72 :
+                stop = driverSet(0, 0, 0, 0)
             #높이에 따른 모터작동
             if stop != True:
                 if Height < 120:
