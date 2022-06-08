@@ -201,14 +201,18 @@ def set_MPU_init(dlpf_bw=DLPF_BW_256,
     past = time.time()
 
     return read_byte(PWR_MGMT_1)
-
+average = [ 0 for i in range(10)]
 def animate(i):
+    average[0] = int(GyX_deg*100)
+    val = sum(average)/10
     AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
     cal_angle_gyro(GyX, GyY, GyZ)
     x_value.append(next(index))
-    y_value.append(int(GyX_deg*100))
+    y_value.append(val)
     plt.cla()
     plt.plot(x_value, y_value)
+    for i in range(len(average)):
+        average[len(average) - i ] = average[len(average) - i - 1]
  
 
 if __name__ == '__main__':
