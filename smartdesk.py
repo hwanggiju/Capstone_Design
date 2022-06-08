@@ -483,7 +483,7 @@ def main():
             #Height = getUserHeight_nani(width,center_x,center_y-height/2, deskHeight)
             Height = getUserHeight_nani1(width,center_x,center_y-height/2, waveSensorHeight+cameraWaveDifference+1.5)
             print("테스트 nani 식 :" + str(Height) + "\n")
-            if 70 < waveSensorHeight < 72 :
+            if waveSensorHeight <= 72 :
                 stop = driverSet(0, 0, 0, 0)
                 
             #높이에 따른 모터작동
