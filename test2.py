@@ -203,7 +203,7 @@ def set_MPU_init(dlpf_bw=DLPF_BW_256,
     return read_byte(PWR_MGMT_1)
 average = [ 0 for i in range(10)]
 def animate(i):
-    average[0] = int(GyX_deg*100)
+    average[0] = int(GyY_deg*100)
     val = sum(average)/10
     AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
     cal_angle_gyro(GyX, GyY, GyZ)
