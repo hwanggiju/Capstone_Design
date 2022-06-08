@@ -219,7 +219,7 @@ if __name__ == '__main__':
     sensor_calibration()    # Gyro의 기준값 계산
 
     cnt = 0
-    
+    nowtime=time.time()
     x_value = []
     y_value = []
     
@@ -228,7 +228,6 @@ if __name__ == '__main__':
     plt.show()
 
     while True:
-        nowtime=time.time()
         # 3) accel, gyro의 Raw data 읽기, 
         AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
      
