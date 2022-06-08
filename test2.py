@@ -211,8 +211,8 @@ def animate(i):
     y_value.append(val)
     plt.cla()
     plt.plot(x_value, y_value)
-    for i in range(len(average)):
-        average[len(average) - i ] = average[len(average) - i - 1]
+    for i in range(len(average)-1):
+        average[len(average) - i - 1] = average[len(average) - i - 2]
  
 
 if __name__ == '__main__':
