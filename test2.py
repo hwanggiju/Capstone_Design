@@ -3,6 +3,7 @@ import time
 import math
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+from itertools import count
 
 # 레지스터 값 설정
 CONFIG       = 0x1A     # LowPassFilter bit 2:0
@@ -219,6 +220,7 @@ if __name__ == '__main__':
     sensor_calibration()    # Gyro의 기준값 계산
 
     cnt = 0
+    index = count()
     x_value = []
     y_value = []
     
