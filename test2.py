@@ -202,7 +202,7 @@ def set_MPU_init(dlpf_bw=DLPF_BW_256,
     return read_byte(PWR_MGMT_1)
 
 def animate(i):
-    x_value.append(1)
+    x_value.append(next(index))
     y_value.append(int(GyX_deg*1000))
     plt.cla()
     plt.plot(x_value, y_value)
@@ -219,7 +219,6 @@ if __name__ == '__main__':
     sensor_calibration()    # Gyro의 기준값 계산
 
     cnt = 0
-    nowtime=time.time()
     x_value = []
     y_value = []
     
