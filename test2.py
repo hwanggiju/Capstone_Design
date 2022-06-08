@@ -1,6 +1,8 @@
 import smbus			#import SMBus module of I2C
 import time
 import math
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 
 # 레지스터 값 설정
 CONFIG       = 0x1A     # LowPassFilter bit 2:0
@@ -199,6 +201,12 @@ def set_MPU_init(dlpf_bw=DLPF_BW_256,
 
     return read_byte(PWR_MGMT_1)
 
+def animate():
+    x_value.append(next(nowtime))
+    y_value.append(GyX_deg)
+    plt.cla()
+    plt.plot(x_value, y_value)
+ 
 
 if __name__ == '__main__':
     ''' -----------------------------------'''
@@ -211,7 +219,16 @@ if __name__ == '__main__':
     sensor_calibration()    # Gyro의 기준값 계산
 
     cnt = 0
+    
+    x_value = []
+    y_value = []
+    
+    ani = FuncAnimation(plt.gcf(), animate, interval = 1000)
+    
+    plt.show()
+
     while True:
+        nowtime=time.time()
         # 3) accel, gyro의 Raw data 읽기, 
         AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
      
@@ -229,7 +246,8 @@ if __name__ == '__main__':
         if cnt%100 == 0:
             print("GyX,Y,Z_deg = ", round(GyX_deg, 4), ',', round(GyY_deg, 4), ',',round(GyZ_deg, 4))
             # print("AcX_deg, AcY_deg = ", AcX_deg, ',', AcY_deg)
-            
+    
+    ani = FuncAnimation(plt.gcf(), animate, interval = 1000)
             
 '''
 def read_raw_data(addr):
