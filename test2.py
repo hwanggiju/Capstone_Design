@@ -201,7 +201,7 @@ def set_MPU_init(dlpf_bw=DLPF_BW_256,
 
     return read_byte(PWR_MGMT_1)
 
-def animate():
+def animate(i):
     x_value.append(next(nowtime))
     y_value.append(GyX_deg)
     plt.cla()
@@ -223,7 +223,7 @@ if __name__ == '__main__':
     x_value = []
     y_value = []
     
-    ani = FuncAnimation(plt.gcf(), animate, interval = 1000)
+    ani = FuncAnimation(plt.gcf(), animate(), interval = 1000)
     
     plt.show()
 
