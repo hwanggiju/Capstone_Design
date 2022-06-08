@@ -113,7 +113,7 @@ def cal_angle_acc(AcX, AcY, AcZ):
 
 # 각속도 각도 계산
 # 각도(deg) = Gyro값(step) / DEGREE_PER_SECOND(step*sec/deg) * dt(sec) 의 누적...
-DEGREE_PER_SECOND = 32767 / 1000  # Gyro의 Full Scale이 250인 경우
+DEGREE_PER_SECOND = 32767 / 250  # Gyro의 Full Scale이 250인 경우
                                  # Full Scale이 1000인 경우 32767/1000
 
 past = 0      # 현재 시간(sec)
@@ -225,8 +225,10 @@ if __name__ == '__main__':
 
         # 1초에 한번씩 display
         if cnt%100 == 0:
-            print("GyX,Y,Z_deg = ", round(GyX_deg,4), ',', round(GyY_deg,4), ',',round(GyZ_deg,4))
+            print("GyX,Y,Z_deg = ", round(GyX_deg, 4), ',', round(GyY_deg, 4), ',',round(GyZ_deg, 4))
             # print("AcX_deg, AcY_deg = ", AcX_deg, ',', AcY_deg)
+            
+            
 '''
 def read_raw_data(addr):
 	#Accelero and Gyro value are 16-bit
