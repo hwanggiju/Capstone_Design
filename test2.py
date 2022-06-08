@@ -230,7 +230,7 @@ if __name__ == '__main__':
     x_value = []
     y_value = []
     
-    ani = FuncAnimation(plt.gcf(), animate, interval = 10)
+    ani = FuncAnimation(plt.gcf(), animate, interval = 1)
     
     plt.show()
 
