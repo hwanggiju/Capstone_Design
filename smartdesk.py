@@ -228,7 +228,7 @@ def cal_angle_gyro(GyX, GyY, GyZ):
     GyX_deg += ((GyX - baseGyX) / DEGREE_PER_SECOND) * dt
     GyY_deg += ((GyY - baseGyY) / DEGREE_PER_SECOND) * dt
     GyZ_deg += ((GyZ - baseGyZ) / DEGREE_PER_SECOND) * dt
-    average[0] = int(GyY_deg*100)
+    average[0] = int(GyY_deg)
     val = sum(average)/10
     for i in range(len(average)-1):
         average[len(average) - i - 1] = average[len(average) - i - 2]
