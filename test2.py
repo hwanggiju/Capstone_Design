@@ -203,7 +203,7 @@ def set_MPU_init(dlpf_bw=DLPF_BW_256,
     return read_byte(PWR_MGMT_1)
 
 def animate(i):
-    global GyX, GyY, GyZ
+    AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
     cal_angle_gyro(GyX, GyY, GyZ)
     x_value.append(next(index))
     y_value.append(int(GyX_deg*1000))
