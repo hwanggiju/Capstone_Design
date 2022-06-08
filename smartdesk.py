@@ -414,7 +414,7 @@ def main():
     # minHeightPixel = 1000
 
 
-    cnt = 0
+    # cnt = 0
     AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
     
     actionNow = 0  # 0:down 1:stop 2:up
@@ -453,12 +453,12 @@ def main():
 
         # 5) 0.01초 간격으로 값 읽기
         time.sleep(0.01)
-        cnt += 10
+        # cnt += 10
         
         # 1초에 한번씩 display
-        if cnt%100 == 0:
-            print("GyX,Y,Z_deg = ", round(GyX_deg,4), ',', round(GyY_deg,4), ',',round(GyZ_deg,4))
-            # print("AcX_deg, AcY_deg = ", AcX_deg, ',', AcY_deg)
+        # if cnt%100 == 0:
+        print("GyX,Y,Z_deg = ", round(GyX_deg,4), ',', round(GyY_deg,4), ',',round(GyZ_deg,4))
+        # print("AcX_deg, AcY_deg = ", AcX_deg, ',', AcY_deg)
         
         for i in range(detect.shape[0]):
             confidence = detect[i, 2]
