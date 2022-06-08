@@ -487,9 +487,6 @@ def main():
 
             #높이에 따른 모터작동
             if stop != True:
-                if waveSensorHeight < 72 :
-                    stop = driverSet(0, 0, 0, 0)
-                    
                 if Height < 120:
                     stop = driverSet(1, 1, 1, 1)  # down
                     actionPre = 0#down
