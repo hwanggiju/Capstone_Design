@@ -212,6 +212,7 @@ if __name__ == '__main__':
     while True:
         # 3) accel, gyro의 Raw data 읽기, 
         AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
+        print(GyX)
      
         # 4-1) Accel을 이용한 각도 계산
         AcX_deg, AcY_deg = cal_angle_acc(AcX, AcY, AcZ)
