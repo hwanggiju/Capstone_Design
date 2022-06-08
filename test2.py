@@ -191,8 +191,8 @@ def set_MPU_init(dlpf_bw=DLPF_BW_256,
     write_byte(PWR_MGMT_1, SLEEP_DIS | clk_pll)     # Start
 
     # sensor 계산 초기화
-    baseAcX, baseAcY, baseAcZ, baseGyX, baseGyY, baseGyZ \
-        = sensor_calibration()
+    # baseAcX, baseAcY, baseAcZ, baseGyX, baseGyY, baseGyZ \
+    #    = sensor_calibration()
     past = time.time()
 
     return read_byte(PWR_MGMT_1)
@@ -212,7 +212,6 @@ if __name__ == '__main__':
     while True:
         # 3) accel, gyro의 Raw data 읽기, 
         AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
-        print(GyX)
      
         # 4-1) Accel을 이용한 각도 계산
         AcX_deg, AcY_deg = cal_angle_acc(AcX, AcY, AcZ)
