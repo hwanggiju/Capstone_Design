@@ -209,7 +209,6 @@ if __name__ == '__main__':
     sensor_calibration()    # Gyro의 기준값 계산
 
     cnt = 0
-    AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
     while True:
         # 3) accel, gyro의 Raw data 읽기, 
         AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
