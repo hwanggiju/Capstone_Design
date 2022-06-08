@@ -147,9 +147,9 @@ def cal_angle_gyro(GyX, GyY, GyZ):
     GyX_deg += ((GyX - baseGyX) / DEGREE_PER_SECOND) * dt
     GyY_deg += ((GyY - baseGyY) / DEGREE_PER_SECOND) * dt
     GyZ_deg += ((GyZ - baseGyZ) / DEGREE_PER_SECOND) * dt
-    #baseGyX = GyX
-    #baseGyY = GyY
-    #baseGyZ = GyZ
+    baseGyX = GyX
+    baseGyY = GyY
+    baseGyZ = GyZ
     past = now      # 다음 계산을 위해 past로 저장되어야 한다.
 
 
