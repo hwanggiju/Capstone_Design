@@ -169,12 +169,12 @@ def get_raw_data():
     가속도(accel)와 각속도(gyro)의 현재 값 읽기
     :return: accel x/y/z, gyro x/y/z
     """
-    gyro_xout = read_word_2c(GYRO_XOUT_H)
+    gyro_xout = 0 # read_word_2c(GYRO_XOUT_H)
     gyro_yout = read_word_2c(GYRO_YOUT_H)
-    gyro_zout = read_word_2c(GYRO_ZOUT_H)
-    accel_xout = read_word_2c(ACCEL_XOUT_H)
-    accel_yout = read_word_2c(ACCEL_YOUT_H)
-    accel_zout = read_word_2c(ACCEL_ZOUT_H)
+    gyro_zout = 0 # read_word_2c(GYRO_ZOUT_H)
+    accel_xout = 0 # read_word_2c(ACCEL_XOUT_H)
+    accel_yout = 0 # read_word_2c(ACCEL_YOUT_H)
+    accel_zout = 0 # read_word_2c(ACCEL_ZOUT_H)
     return accel_xout, accel_yout, accel_zout,\
            gyro_xout, gyro_yout, gyro_zout
 
@@ -212,6 +212,7 @@ GyX_deg = 0   # 측정 각도
 GyY_deg = 0
 GyZ_deg = 0
 
+average = [ 0 for i in range(10)]
 def cal_angle_gyro(GyX, GyY, GyZ):
     global past
     """
@@ -223,13 +224,17 @@ def cal_angle_gyro(GyX, GyY, GyZ):
     global GyX_deg, GyY_deg, GyZ_deg
 
     now = time.time()
-    dt = now - past     # 초단위
-    if abs(((GyX - baseGyX) / DEGREE_PER_SECOND) * dt) > 0.02:
-        GyX_deg += ((GyX - baseGyX) / DEGREE_PER_SECOND) * dt
-        GyY_deg += ((GyY - baseGyY) / DEGREE_PER_SECOND) * dt
-        GyZ_deg += ((GyZ - baseGyZ) / DEGREE_PER_SECOND) * dt
-
+    dt = now - past
+    GyX_deg += ((GyX - baseGyX) / DEGREE_PER_SECOND) * dt
+    GyY_deg += ((GyY - baseGyY) / DEGREE_PER_SECOND) * dt
+    GyZ_deg += ((GyZ - baseGyZ) / DEGREE_PER_SECOND) * dt
+    average[0] = int(GyY_deg*100)
+    val = sum(average)/10
+    for i in range(len(average)-1):
+        average[len(average) - i - 1] = average[len(average) - i - 2]
+        
     past = now      # 다음 계산을 위해 past로 저장되어야 한다.
+    return val
     
 def sensor_calibration():
     """
@@ -448,15 +453,9 @@ def main():
         AcX_deg, AcY_deg = cal_angle_acc(AcX, AcY, AcZ)
 
         # 4-2) Gyro를 이용한 각도 계산 
-        cal_angle_gyro(GyX, GyY, GyZ)
-
-        # 5) 0.01초 간격으로 값 읽기
-        time.sleep(0.01)
-        # cnt += 10
+        Gy_Angle = cal_angle_gyro(GyX, GyY, GyZ)
         
-        # 1초에 한번씩 display
-        # if cnt%100 == 0:
-        print("GyX,Y,Z_deg = ", round(GyX_deg,4), ',', round(GyY_deg,4), ',',round(GyZ_deg,4))
+        print("GyY = ", round(Gy_Angle,4))
         # print("AcX_deg, AcY_deg = ", AcX_deg, ',', AcY_deg)
         
         for i in range(detect.shape[0]):
