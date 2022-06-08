@@ -390,8 +390,7 @@ def main():
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraHeight)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraWidth)
     
-    test = set_MPU_init(dlpf_bw=DLPF_BW_98)   # BW만 변경, 나머지는 default 이용
-    print("Gyro PWR_MGMT_1 Register = ", test)
+    test = set_MPU_init(dlpf_bw=DLPF_BW_98)
     
     # 2) Gyro 기준값 계산(Gyro 이용시)
     sensor_calibration()    # Gyro의 기준값 계산
@@ -488,6 +487,9 @@ def main():
 
             #높이에 따른 모터작동
             if stop != True:
+                if waveSensorHeight < 72 :
+                    stop = driverSet(0, 0, 0, 0)
+                    
                 if Height < 120:
                     stop = driverSet(1, 1, 1, 1)  # down
                     actionPre = 0#down
