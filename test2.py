@@ -203,7 +203,7 @@ def set_MPU_init(dlpf_bw=DLPF_BW_256,
 
 def animate(i):
     x_value.append(next(nowtime))
-    y_value.append(GyX_deg)
+    y_value.append(int(GyX_deg*1000))
     plt.cla()
     plt.plot(x_value, y_value)
  
