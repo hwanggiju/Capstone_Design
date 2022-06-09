@@ -229,7 +229,7 @@ def cal_angle_gyro(GyX, GyY, GyZ):
 
     now = time.time()
     dt = now - past
-    GyY_deg -= val
+    #GyY_deg -= val
     GyX_deg += ((GyX - baseGyX) / DEGREE_PER_SECOND) * dt
     GyY_deg += ((GyY - baseGyY) / DEGREE_PER_SECOND) * dt
     GyZ_deg += ((GyZ - baseGyZ) / DEGREE_PER_SECOND) * dt
