@@ -5,6 +5,15 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from itertools import count
 
+'''
+해야할 것
+- 정확한 각도 도출
+- 각도연산을 통한 모터 속도제어
+- OLED 작동
+- 스위치 작동
+- GUI 제작
+'''
+
 # 레지스터 값 설정
 CONFIG       = 0x1A     # LowPassFilter bit 2:0
 GYRO_CONFIG  = 0x1B     # FS_SEL bit 4:3
