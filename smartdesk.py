@@ -332,7 +332,7 @@ def getUserHeight_nani1(faceWidth, pixelX, pixelY, nowHeight):
 # 0 : stop
 # 1 : down
 # 2 : up
-def driverSet(enA, motorA, motorB, enB, Height):
+def driverSet(enA, motorA, motorB, enB):
     global initial, nowTime, preTime
     if initial == True:
         preTime = time.time()
@@ -345,7 +345,7 @@ def driverSet(enA, motorA, motorB, enB, Height):
         if motorA == 2:#up
             GPIO.output(driver[1], 0)
             GPIO.output(driver[2], 1)
-        elif motorA == 1 and Height > 72:#down
+        elif motorA == 1:#down
             GPIO.output(driver[1], 1)
             GPIO.output(driver[2], 0)
         else:#stop
@@ -354,7 +354,7 @@ def driverSet(enA, motorA, motorB, enB, Height):
         if motorB == 2:#up
             GPIO.output(driver[3], 0)
             GPIO.output(driver[4], 1)
-        elif motorB == 1 and Height > 72:#down
+        elif motorB == 1:#down
             GPIO.output(driver[3], 1)
             GPIO.output(driver[4], 0)
         else:#stop
@@ -488,15 +488,15 @@ def main():
             #높이에 따른 모터작동
             if stop != True:
                 if Height < 120:
-                    stop = driverSet(1, 1, 1, 1, waveSensorHeight)  # down
+                    stop = driverSet(1, 1, 1, 1)  # down
                     actionPre = 0#down
                     print("down\n")
                 elif Height > 130:
-                    stop = driverSet(1, 2, 2, 1, waveSensorHeight)  # up
+                    stop = driverSet(1, 2, 2, 1)  # up
                     actionPre = 2#up
                     print("up\n")
                 else:
-                    stop = driverSet(0, 0, 0, 0, waveSensorHeight)  # stay
+                    stop = driverSet(0, 0, 0, 0)  # stay
                     actionPre = 1#stop
                     print("stop")
             else:
