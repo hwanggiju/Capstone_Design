@@ -149,10 +149,14 @@ def read_byte(adr):
 
 # 두바이트 읽기
 def read_word(adr):
-    high = I2C_bus.read_byte_data(MPU_addr, adr)
-    low = I2C_bus.read_byte_data(MPU_addr, adr+1)
-    val = (high << 8) + low
-    return val
+    try:
+        high = I2C_bus.read_byte_data(MPU_addr, adr)
+        low = I2C_bus.read_byte_data(MPU_addr, adr+1)
+        val = (high << 8) + low
+    except 121:
+        continue
+    finally:
+        return val
 
 # 두바이트를 2's complement로 읽기(-32768~32767)
 # 아두이노는 변수를 signed 16bit로 선언해서 처리하지만
@@ -225,11 +229,10 @@ def cal_angle_gyro(GyX, GyY, GyZ):
 
     now = time.time()
     dt = now - past
-    GyY_deg -= GyY_deg
+    GyY_deg -= val
     GyX_deg += ((GyX - baseGyX) / DEGREE_PER_SECOND) * dt
     GyY_deg += ((GyY - baseGyY) / DEGREE_PER_SECOND) * dt
     GyZ_deg += ((GyZ - baseGyZ) / DEGREE_PER_SECOND) * dt
-    
     average[0] = GyY_deg
     val = sum(average)/10
     for i in range(len(average)-1):
