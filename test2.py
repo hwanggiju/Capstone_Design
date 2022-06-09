@@ -22,12 +22,41 @@ try :
     for cnt in range(0,3) :
         pwmA.ChangeDutyCycle(3.0) # 0도
         pwmB.ChangeDutyCycle(3.0) # 0도
+        
+        for i in range(1, len(driver)-1):
+            GPIO.output(driver[i], 0)
+        
+        GPIO.output(driver[1], 0)
+        GPIO.output(driver[2], 1)
+        GPIO.output(driver[3], 0)
+        GPIO.output(driver[4], 1)
+        
         time.sleep(1.0)
+        
         pwmA.ChangeDutyCycle(7.5) # 90도
         pwmB.ChangeDutyCycle(7.5) # 90도
+        
+        for i in range(1, len(driver)-1):
+            GPIO.output(driver[i], 0)
+        
+        GPIO.output(driver[1], 0)
+        GPIO.output(driver[2], 1)
+        GPIO.output(driver[3], 0)
+        GPIO.output(driver[4], 1)
+        
         time.sleep(1.0)
+        
         pwmA.ChangeDutyCycle(12.5) # 180도
         pwmB.ChangeDutyCycle(12.5) # 180도
+        
+        for i in range(1, len(driver)-1):
+            GPIO.output(driver[i], 0)
+        
+        GPIO.output(driver[1], 0)
+        GPIO.output(driver[2], 1)
+        GPIO.output(driver[3], 0)
+        GPIO.output(driver[4], 1)
+        
         time.sleep(1.0)
         
 except KeyboardInterrupt :
