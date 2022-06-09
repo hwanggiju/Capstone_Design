@@ -345,7 +345,7 @@ def driverSet(enA, motorA, motorB, enB, Height):
         if motorA == 2:#up
             GPIO.output(driver[1], 0)
             GPIO.output(driver[2], 1)
-        elif motorA == 1:#down
+        elif motorA == 1 and Height > 72:#down
             GPIO.output(driver[1], 1)
             GPIO.output(driver[2], 0)
         else:#stop
@@ -354,7 +354,7 @@ def driverSet(enA, motorA, motorB, enB, Height):
         if motorB == 2:#up
             GPIO.output(driver[3], 0)
             GPIO.output(driver[4], 1)
-        elif motorB == 1:#down
+        elif motorB == 1 and Height > 72:#down
             GPIO.output(driver[3], 1)
             GPIO.output(driver[4], 0)
         else:#stop
