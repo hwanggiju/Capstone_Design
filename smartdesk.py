@@ -133,7 +133,7 @@ cameraAngle = 56 # 카메라 수평 화각
 cameraWaveDifference = 46 #카메라 - 센서간 높이차이
 
 # 각도
-deskAngle = -3 #28 # 책상 판과 카메라 중심까지의 각도
+deskAngle = -1 #28 # 책상 판과 카메라 중심까지의 각도
 deskUserAngle = -1 # 책상 판과 사용자 높이 사이의 각도
 cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
 
@@ -342,7 +342,7 @@ def getUserHeight_nani1(faceWidth, pixelX, pixelY, nowHeight):
     userSideAngle = abs(cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
     userDistance = (calUserDistance / np.cos(userTopAngle * np.pi/180))/ np.cos(userSideAngle * np.pi/180)
     gap = calUserDistance / userDistance
-    calUserDistance = ((faceWidthMax + (1 - gap) * 10) - widthAverage) / faceDifference * distanceDifference + userDistanceMin
+    calUserDistance = ((faceWidthMax + (1 - gap) * 5) - widthAverage) / faceDifference * distanceDifference + userDistanceMin
     userDistance = (calUserDistance / np.cos(userTopAngle * np.pi / 180)) / np.cos(userSideAngle * np.pi / 180)
     cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
     calHeight = np.sin((cameraUserAngle + deskAngle) * np.pi/180) * (userDistance+15)
