@@ -169,7 +169,7 @@ def read_word(adr):
         high = I2C_bus.read_byte_data(MPU_addr, adr)
         low = I2C_bus.read_byte_data(MPU_addr, adr+1)
         val = (high << 8) + low
-    except :
+    except 121:
         print("warnning!")
         time.sleep(2)
         pass
