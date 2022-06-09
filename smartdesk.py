@@ -169,12 +169,12 @@ def get_raw_data():
     가속도(accel)와 각속도(gyro)의 현재 값 읽기
     :return: accel x/y/z, gyro x/y/z
     """
-    gyro_xout = 0 # read_word_2c(GYRO_XOUT_H)
+    gyro_xout = read_word_2c(GYRO_XOUT_H)
     gyro_yout = read_word_2c(GYRO_YOUT_H)
-    gyro_zout = 0 # read_word_2c(GYRO_ZOUT_H)
-    accel_xout = 0 # read_word_2c(ACCEL_XOUT_H)
-    accel_yout = 0 # read_word_2c(ACCEL_YOUT_H)
-    accel_zout = 0 # read_word_2c(ACCEL_ZOUT_H)
+    gyro_zout = read_word_2c(GYRO_ZOUT_H)
+    accel_xout = read_word_2c(ACCEL_XOUT_H)
+    accel_yout = read_word_2c(ACCEL_YOUT_H)
+    accel_zout = read_word_2c(ACCEL_ZOUT_H)
     return accel_xout, accel_yout, accel_zout,\
            gyro_xout, gyro_yout, gyro_zout
 
