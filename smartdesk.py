@@ -136,8 +136,8 @@ GPIO.setup(wave[0], GPIO.OUT)
 GPIO.setup(wave[1], GPIO.IN)
 GPIO.output(wave[0], False)
 
-enA_pwm = GPIO.PWM(driver[0], 1)  # channel, frequecy
-enB_pwm = GPIO.PWM(driver[5], 1)
+# enA_pwm = GPIO.PWM(driver[0], 1)  # channel, frequecy
+# enB_pwm = GPIO.PWM(driver[5], 1)
 
 # 한바이트 쓰기
 def write_byte(adr, data):
@@ -337,8 +337,8 @@ def driverSet(enA, motorA, motorB, enB):
     if initial == True:
         preTime = time.time()
         initial = False
-    enA_pwm.start(0)
-    enB_pwm.start(0)
+    # enA_pwm.start(0)
+    # enB_pwm.start(0)
     for i in range(len(driver)):
         GPIO.output(driver[i], 0)
     if nowTime - preTime > 0.5:
@@ -364,8 +364,8 @@ def driverSet(enA, motorA, motorB, enB):
         GPIO.output(driver[5], enB)
         initial = True
         preTime = nowTime
-        enA_pwm.start(100)
-        enB_pwm.start(100)
+        # enA_pwm.start(100)
+        # enB_pwm.start(100)
         return True
     else:
         return False
