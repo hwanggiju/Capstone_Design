@@ -7,6 +7,21 @@ import sys
 import numpy as np
 import math
 
+'''
+해야할 것
+- 정확한 각도 도출
+- 각도연산을 통한 모터 속도제어 DC PWM
+- OLED 작동 SPI
+- 스위치 작동
+- GUI 제작 
+
+질문1. 논문을 찾아내서 적정한 높이를 왜 정했는가
+질문2. 높이를 자유롭게 정할 수 있는가?
+질문3. 앉고 일어서는 자세밖에 없는데 카메라는 너무 과한 테크 아닌가
+질문4. 스위치로 올리는 것보다 더 편한가? feat. 김성수교수님
+
+'''
+
 # spi SSD1306 OLED code
 # pip install spidev 설치
 # import spidev
@@ -429,6 +444,7 @@ def main():
     # cnt = 0
     AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
     
+    fixAngle = 0
     actionNow = 0  # 0:down 1:stop 2:up
     actionPre = 1
     #driverSet(1, 1, 1, 1)  # down
@@ -464,7 +480,7 @@ def main():
         Gy_Angle = cal_angle_gyro(GyX, GyY, GyZ)
         
         
-        print("GyY = ", round(Gy_Angle,4) - 0.1)
+        print("GyY = ", round(Gy_Angle,4))
         # print("AcX_deg, AcY_deg = ", AcX_deg, ',', AcY_deg)
         
         for i in range(detect.shape[0]):
