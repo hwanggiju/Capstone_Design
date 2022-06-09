@@ -463,7 +463,8 @@ def main():
         # 4-2) Gyro를 이용한 각도 계산 
         Gy_Angle = cal_angle_gyro(GyX, GyY, GyZ)
         
-        print("GyY = ", round(Gy_Angle,4))
+        
+        print("GyY = ", round(Gy_Angle,4) - 0.1)
         # print("AcX_deg, AcY_deg = ", AcX_deg, ',', AcY_deg)
         
         for i in range(detect.shape[0]):
