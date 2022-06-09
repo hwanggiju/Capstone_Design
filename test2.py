@@ -23,7 +23,7 @@ try :
         
         for i in range(1, len(driver)-1):
             GPIO.output(driver[i], 0)
-        
+        time.sleep(0.5)
         GPIO.output(driver[1], 0)
         GPIO.output(driver[2], 1)
         GPIO.output(driver[3], 0)
@@ -36,7 +36,7 @@ try :
         
         for i in range(1, len(driver)-1):
             GPIO.output(driver[i], 0)
-        
+        time.sleep(0.5)
         GPIO.output(driver[1], 0)
         GPIO.output(driver[2], 1)
         GPIO.output(driver[3], 0)
@@ -49,7 +49,7 @@ try :
         
         for i in range(1, len(driver)-1):
             GPIO.output(driver[i], 0)
-        
+        time.sleep(0.5)
         GPIO.output(driver[1], 0)
         GPIO.output(driver[2], 1)
         GPIO.output(driver[3], 0)
