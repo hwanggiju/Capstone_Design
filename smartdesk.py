@@ -332,7 +332,7 @@ def getUserHeight_nani1(faceWidth, pixelX, pixelY, nowHeight):
 # 0 : stop
 # 1 : down
 # 2 : up
-def driverSet(enA, motorA, motorB, enB):
+def driverSet(enA, motorA, motorB, enB, Height):
     global initial, nowTime, preTime
     if initial == True:
         preTime = time.time()
@@ -490,15 +490,15 @@ def main():
             #높이에 따른 모터작동
             if stop != True:
                 if Height < 120:
-                    stop = driverSet(1, 1, 1, 1)  # down
+                    stop = driverSet(1, 1, 1, 1, waveSensorHeight)  # down
                     actionPre = 0#down
                     print("down\n")
                 elif Height > 130:
-                    stop = driverSet(1, 2, 2, 1)  # up
+                    stop = driverSet(1, 2, 2, 1, waveSensorHeight)  # up
                     actionPre = 2#up
                     print("up\n")
                 else:
-                    stop = driverSet(0, 0, 0, 0)  # stay
+                    stop = driverSet(0, 0, 0, 0, waveSensorHeight)  # stay
                     actionPre = 1#stop
                     print("stop")
             else:
