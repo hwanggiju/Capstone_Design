@@ -345,7 +345,7 @@ def getUserHeight_nani1(faceWidth, pixelX, pixelY, nowHeight):
     calUserDistance = ((faceWidthMax + (1 - gap) * 3) - widthAverage) / faceDifference * distanceDifference + userDistanceMin
     userDistance = (calUserDistance / np.cos(userTopAngle * np.pi / 180)) / np.cos(userSideAngle * np.pi / 180)
     cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
-    calHeight = np.sin((cameraUserAngle + deskAngle) * np.pi/180) * (userDistance+15)
+    calHeight = np.sin((cameraUserAngle + deskAngle) * np.pi/180) * userDistance + abs(np.sin((cameraUserAngle + deskAngle) * np.pi/180))* 15
     for i in range(timeNum-1):#shift array
         faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
     return nowHeight + calHeight
