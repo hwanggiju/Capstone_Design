@@ -149,6 +149,7 @@ def read_byte(adr):
 
 # 두바이트 읽기
 def read_word(adr):
+    val = 0
     try:
         high = I2C_bus.read_byte_data(MPU_addr, adr)
         low = I2C_bus.read_byte_data(MPU_addr, adr+1)
