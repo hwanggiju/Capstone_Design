@@ -12,11 +12,9 @@ for i in range(len(driver)):
     
 pwmA = GPIO.PWM(driver[0], 50)
 pwmB = GPIO.PWM(driver[5], 50)
+
 pwmA.start(3)
 pwmB.start(3)
-
-for i in range(len(driver)) :
-    GPIO.output(driver[i], 0)
     
 try :
     for cnt in range(0,3) :
