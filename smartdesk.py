@@ -150,10 +150,10 @@ for i in range(len(switch)): #사용자 인터페이스 스위치핀
 for i in range(1, len(driver)-1):
     GPIO.output(driver[i], GPIO.LOW)
 # PWM핀 초기설정
-enA_pwm = GPIO.PWM(driver[0], 500) # channel, frequency
-enB_pwm = GPIO.PWM(driver[5], 500) # channel, frequency
-enA_pwm.start(0) #enableA pin start dutycycle
-enB_pwm.start(0) #enableB pin start dutycycle
+enA_pwm = GPIO.PWM(driver[0], 50) # channel, frequency 50Hz
+enB_pwm = GPIO.PWM(driver[5], 50) # channel, frequency 50Hz
+enA_pwm.start(0)    # enableA pin start dutycycle 0%
+enB_pwm.start(0)    # enableB pin start dutycycle 0%
 # 초음파 핀 setup
 GPIO.setup(wave[0], GPIO.OUT)
 GPIO.setup(wave[1], GPIO.IN)
@@ -285,7 +285,6 @@ def sensor_calibration():
         SumGyX += GyX
         SumGyY += GyY
         SumGyZ += GyZ
-        
 
     avgAcX = SumAcX / 10
     avgAcY = SumAcY / 10
@@ -357,7 +356,29 @@ def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
         faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
     return nowHeight + calHeight
 
-# driver
+# PWM 값만 바꿀 때.
+def changePWM(enA, enB):
+    if enA < 0 or enA > 100: #range over check
+        return False
+    elif enB < 0 or enB > 100:
+        return False
+    enA_pwm.ChangeDutyCycle(enA)
+    enB_pwm.ChangeDutyCycle(enB)
+    return True
+
+#각도 자세유지 코드
+def HorizontalHold(nowAngle, compareAngle):
+    pwmA = 90
+    pwmB = 90
+    if nowAngle > compareAngle:
+        pwmA = 100
+        pwmB = 70
+    elif nowAngle < compareAngle:
+        pwmA = 80
+        pwmB = 100
+    changePWM(pwmA, pwmB)
+
+# driver set
 # 0 : stop
 # 1 : down
 # 2 : up
@@ -366,16 +387,11 @@ def driverSet(enA, motorA, motorB, enB):
     if initial == True:
         preTime = time.time()
         initial = False
-    if enA < 0 or enA > 100: #range over check
-        return False
-    elif enB < 0 or enB > 100:
-        return False
-    enA_pwm.ChangeDutyCycle(0)
-    enB_pwm.ChangeDutyCycle(0)
+    changePWM(0, 0)
     for i in range(1, len(driver)-1):
         GPIO.output(driver[i], 0)
 
-    if nowTime - preTime > 0.5:
+    if nowTime - preTime > 0.5: # 작동 딜레이
         if motorA == 2:#up
             GPIO.output(driver[1], 0)
             GPIO.output(driver[2], 1)
@@ -396,33 +412,12 @@ def driverSet(enA, motorA, motorB, enB):
             GPIO.output(driver[4], 0)
         #GPIO.output(driver[0], enA)
         #GPIO.output(driver[5], enB)
-        enA_pwm.ChangeDutyCycle(enA)# 0~100% dutycycle
-        enB_pwm.ChangeDutyCycle(enB)
+        changePWM(enA, enB)
         initial = True
         preTime = nowTime
         return True
     else:
         return False
-# PWM 값만 바꿀 때.
-def changePWM(enA, enB):
-    if enA < 0 or enA > 100: #range over check
-        return False
-    elif enB < 0 or enB > 100:
-        return False
-    enA_pwm.ChangeDutyCycle(enA)
-    enB_pwm.ChangeDutyCycle(enB)
-    return True
-#각도측정 자세유지 코드
-def HorizontalHold(nowAngle, compareAngle):
-    pwmA = 90
-    pwmB = 90
-    if nowAngle > compareAngle:
-        pwmA = 100
-        pwmB = 70
-    elif nowAngle < compareAngle:
-        pwmA = 80
-        pwmB = 100
-    changePWM(pwmA, pwmB)
 
 def waveFun() :
     GPIO.output(wave[0], True)
@@ -539,8 +534,8 @@ def main():
             center_x = x1 + (x2 - x1) / 2
             center_y = y1 + (y2 - y1) / 2  # 인식된 부분 중심 좌표 x, y 값
 
-            print(" 가로 :" + str(widthLength) + "  세로:" + str(heightLength), end='')
-            print('  area : %d    center_x : %d   center_y : %d \n'
+            print(" 가로 :" + str(widthLength) + " 세로:" + str(heightLength), end='')
+            print(' area : %d    center_x : %d   center_y : %d \n'
                 % (area, center_x, center_y))
 
             # 얼굴폭 / 계산 좌표 X / 계산 좌표 Y / 카메라 높이
@@ -548,8 +543,8 @@ def main():
 
             print("테스트식 결과 :" + str(userHeight))
                 
-            #높이에 따른 모터작동 . 즉시 작동x 1초 후 반응유도
-            if stop != True:
+            #높이에 따른 모터작동
+            if stop != True: #드라이버 pin Set 변경 후 반복 변경 방지
                 if userHeight < 120:
                     stop = driverSet(100, 1, 1, 100)  # down
                     actionPre = 0#down
@@ -558,7 +553,7 @@ def main():
                 elif userHeight > 130:
                     stop = driverSet(100, 2, 2, 100)  # up
                     actionPre = 2#up
-                    fixAngle = Gy_Angle #현재 각도고정
+                    fixAngle = Gy_Angle  # 현재 각도고정
                     print("up\n")
                 else:
                     stop = driverSet(0, 0, 0, 0)  # stay
