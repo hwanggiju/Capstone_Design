@@ -86,7 +86,7 @@ MPU_addr = 0x68
 # spi.max_speed_hz = 1200000
 
 
-
+# 하드웨어 연결 구성
 # Motor Driver [enA/in1/in2/in3/in4/enB]
 driver = [35, 13, 15, 29, 31, 33]
 # I2C [SDA/SCL]
@@ -108,6 +108,8 @@ wave = [18, 16]
 nowTime = time.time()
 preTime = nowTime
 initial = True
+
+#기초 데이터 얼굴폭, 거리
 #가까울때
 userDistanceMin = 60 #cm
 faceWidthMax    = 110 #pixel
@@ -118,12 +120,13 @@ faceWidthMin    = 72 #pixel
 deskHeight = 117.5# 수정
 waveSensorHeight = 70 # 최소 길이 초기화 71.5
 
+fixAngle = 0 #모터 작동시 고정되는 각도값
 userDistance    = 0
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
-timeNum = 10 #평균횟수 클수록 둔화됨, 하지만 반응이 느려짐
+timeNum = 10 #계산값 평균화 횟수, 클수록 안정되지만 반응이 느려짐
 faceWidthAverage = [((faceWidthMax + faceWidthMin)/2) for col in range(timeNum)]
 
 #카메라
@@ -137,23 +140,26 @@ deskAngle = -1 #28 # 책상 판과 카메라 중심까지의 각도
 deskUserAngle = -1 # 책상 판과 사용자 높이 사이의 각도
 cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
 
-
+##################################
 #하드웨어 초기설정
-for i in range(len(driver)):
+for i in range(len(driver)): #모터 드라이버 핀
     GPIO.setup(driver[i], GPIO.OUT)
-for i in range(len(switch)):
+for i in range(len(switch)): #사용자 인터페이스 스위치핀
     GPIO.setup(switch[i], GPIO.IN)
-# initial system down
-for i in range(len(driver)):
+# 초기 시작은 모두 OFF (PWM 핀 제외)
+for i in range(1, len(driver)-1):
     GPIO.output(driver[i], GPIO.LOW)
+# PWM핀 초기설정
+enA_pwm = GPIO.PWM(driver[0], 500) # channel, frequency
+enB_pwm = GPIO.PWM(driver[5], 500) # channel, frequency
+enA_pwm.start(0) #enableA pin start dutycycle
+enB_pwm.start(0) #enableB pin start dutycycle
 # 초음파 핀 setup
 GPIO.setup(wave[0], GPIO.OUT)
 GPIO.setup(wave[1], GPIO.IN)
 GPIO.output(wave[0], False)
 
-# enA_pwm = GPIO.PWM(driver[0], 1)  # channel, frequecy
-# enB_pwm = GPIO.PWM(driver[5], 1)
-
+################################
 # 한바이트 쓰기
 def write_byte(adr, data):
     I2C_bus.write_byte_data(MPU_addr, adr, data)
@@ -308,6 +314,7 @@ def set_MPU_init(dlpf_bw=DLPF_BW_256,
 
     return read_byte(PWR_MGMT_1)
 
+''' 기본 코드
 def getUserHeight_nani(faceWidth, pixelX, pixelY, nowHeight):
     faceWidthAverage[0] = faceWidth
     sumHeight = 0
@@ -326,8 +333,8 @@ def getUserHeight_nani(faceWidth, pixelX, pixelY, nowHeight):
     for i in range(timeNum-1):#shift array
         faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
     return nowHeight + calHeight
-
-def getUserHeight_nani1(faceWidth, pixelX, pixelY, nowHeight):
+'''
+def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
     faceWidthAverage[0] = faceWidth
     sumHeight = 0
     for i in range(len(faceWidthAverage)):
@@ -359,10 +366,15 @@ def driverSet(enA, motorA, motorB, enB):
     if initial == True:
         preTime = time.time()
         initial = False
-    # enA_pwm.start(0)
-    # enB_pwm.start(0)
-    for i in range(len(driver)):
+    if enA < 0 or enA > 100: #range over check
+        return False
+    elif enB < 0 or enB > 100:
+        return False
+    enA_pwm.ChangeDutyCycle(0)
+    enB_pwm.ChangeDutyCycle(0)
+    for i in range(1, len(driver)-1):
         GPIO.output(driver[i], 0)
+
     if nowTime - preTime > 0.5:
         if motorA == 2:#up
             GPIO.output(driver[1], 0)
@@ -382,16 +394,36 @@ def driverSet(enA, motorA, motorB, enB):
         else:#stop
             GPIO.output(driver[3], 0)
             GPIO.output(driver[4], 0)
-        GPIO.output(driver[0], enA)
-        GPIO.output(driver[5], enB)
+        #GPIO.output(driver[0], enA)
+        #GPIO.output(driver[5], enB)
+        enA_pwm.ChangeDutyCycle(enA)# 0~100% dutycycle
+        enB_pwm.ChangeDutyCycle(enB)
         initial = True
         preTime = nowTime
-        # enA_pwm.start(100)
-        # enB_pwm.start(100)
         return True
     else:
         return False
-    
+# PWM 값만 바꿀 때.
+def changePWM(enA, enB):
+    if enA < 0 or enA > 100: #range over check
+        return False
+    elif enB < 0 or enB > 100:
+        return False
+    enA_pwm.ChangeDutyCycle(enA)
+    enB_pwm.ChangeDutyCycle(enB)
+    return True
+#각도측정 자세유지 코드
+def HorizontalHold(nowAngle, compareAngle):
+    pwmA = 90
+    pwmB = 90
+    if nowAngle > compareAngle:
+        pwmA = 100
+        pwmB = 70
+    elif nowAngle < compareAngle:
+        pwmA = 80
+        pwmB = 100
+    changePWM(pwmA, pwmB)
+
 def waveFun() :
     GPIO.output(wave[0], True)
     time.sleep(0.00001)
@@ -404,8 +436,8 @@ def waveFun() :
         pulse_end = time.time()
         
     pulse_duration = pulse_end - pulse_start
-    distance = pulse_duration   * 17000
-    distance = round(distance, 2)
+    distance = pulse_duration * 17000
+    distance = round(distance, 5)
     
     return distance
 
@@ -466,7 +498,7 @@ def main():
         detect = net.forward()
         (h, w) = rotate_frame.shape[:2]
         detect = detect[0, 0, :, :]
-        userNum = 0
+
         
         waveSensorHeight = waveFun() # 책상 높이
         
@@ -481,8 +513,12 @@ def main():
         
         
         print("GyY = ", round(Gy_Angle,4))
+
+        #수평 자세 유지 코드 (현재 각도, 작동시 각도)
+        HorizontalHold(Gy_Angle, fixAngle)
+
         # print("AcX_deg, AcY_deg = ", AcX_deg, ',', AcY_deg)
-        
+        userNum = 0
         for i in range(detect.shape[0]):
             confidence = detect[i, 2]
             if confidence < 0.5:
@@ -495,51 +531,57 @@ def main():
 
             cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green ractangle
             
-        if userNum == 1:
+        if userNum == 1: #인식된 얼굴 수
             # 책상 다리 모터 제어에 활용되는 값
-            area = (x2 - x1) * (y2 - y1)  # 사용자 인식 넓이
+            widthLength = x2 - x1
+            heightLength = y2 - y1
+            area = widthLength * heightLength  # 사용자 인식 넓이
             center_x = x1 + (x2 - x1) / 2
             center_y = y1 + (y2 - y1) / 2  # 인식된 부분 중심 좌표 x, y 값
-            width = x2 - x1
-            height = y2 - y1
-            print(" 가로 :" + str(width) + "  세로:" + str(height), end='')
+
+            print(" 가로 :" + str(widthLength) + "  세로:" + str(heightLength), end='')
             print('  area : %d    center_x : %d   center_y : %d \n'
                 % (area, center_x, center_y))
-            #Height = getUserHeight_nani(width,center_x,center_y-height/2, deskHeight)
-            Height = getUserHeight_nani1(width,center_x,center_y-height/2, waveSensorHeight+cameraWaveDifference+1.5)
-            print("테스트 nani 식 :" + str(Height) + "\n")
+
+            # 얼굴폭 / 계산 좌표 X / 계산 좌표 Y / 카메라 높이
+            userHeight = getUserHeight(widthLength,center_x,center_y-heightLength/2, waveSensorHeight+cameraWaveDifference+1.5)
+
+            print("테스트식 결과 :" + str(userHeight))
                 
-            #높이에 따른 모터작동
+            #높이에 따른 모터작동 . 즉시 작동x 1초 후 반응유도
             if stop != True:
-                if Height < 120:
-                    stop = driverSet(1, 1, 1, 1)  # down
+                if userHeight < 120:
+                    stop = driverSet(100, 1, 1, 100)  # down
                     actionPre = 0#down
+                    fixAngle = Gy_Angle  # 현재 각도고정
                     print("down\n")
-                elif Height > 130:
-                    stop = driverSet(1, 2, 2, 1)  # up
+                elif userHeight > 130:
+                    stop = driverSet(100, 2, 2, 100)  # up
                     actionPre = 2#up
+                    fixAngle = Gy_Angle #현재 각도고정
                     print("up\n")
                 else:
                     stop = driverSet(0, 0, 0, 0)  # stay
                     actionPre = 1#stop
                     print("stop")
             else:
-                if Height < 120 and actionPre != 0:
+                if userHeight < 120 and actionPre != 0:
                     stop = False
-                elif Height > 130 and actionPre != 2:
+                elif userHeight > 130 and actionPre != 2:
                     stop = False
-                elif Height >= 120 and Height <= 130 and actionPre != 1:
+                elif userHeight >= 120 and userHeight <= 130 and actionPre != 1:
                     stop = False
 
         print("초음파 측정 거리 : %d\n" % (waveSensorHeight))
         # cv2.imshow('Facerec_Video', rotate_frame)
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
-            # enA_pwm.stop()
-            # enB_pwm.stop()
+            enA_pwm.stop()
+            enB_pwm.stop()
             GPIO.cleanup()
             break
 
 if __name__ == "__main__":
     main()
     cv2.destroyAllWindows()
+    GPIO.cleanup()
