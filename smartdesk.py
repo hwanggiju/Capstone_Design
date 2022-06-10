@@ -6,6 +6,7 @@ import time
 import sys
 import numpy as np
 import math
+#SPI
 
 '''
 해야할 것
@@ -209,7 +210,7 @@ def get_raw_data():
 # 가속도 앵글
 def cal_angle_acc(AcX, AcY, AcZ):
     """
-    Accel값만 이용해서 X, Y의 각도 측정
+    Accel값만 이용해서 X, Y의 각도 측정 /현한: 직선 가속도만으로 각도를 측정할 수 있나?
     (고정 좌표 기준?)
     그런데... 각도가 0 -> 90 -> 0 -> -90 -> 0으로 바뀐다. 왜?
     0도 -> 90도 -> 180도 -> 270도 -> 360도
@@ -229,6 +230,7 @@ DEGREE_PER_SECOND = 32767 / 250  # Gyro의 Full Scale이 250인 경우
                                  # Full Scale이 1000인 경우 32767/1000
 
 past = 0      # 현재 시간(sec)
+past1 = 0 # nani test용 calGyro() 용 충돌예방 (필요없으면 없애도됨)
 baseAcX = 0   # 기준점(가만히 있어도 회전이 있나???)
 baseAcY = 0
 baseAcZ = 0
@@ -242,6 +244,8 @@ GyZ_deg = 0
 
 average = [ 0 for i in range(10)]
 def cal_angle_gyro(GyX, GyY, GyZ):
+    # 이 사이트를 참고하면 좋을 듯.
+    # https://hs36.tistory.com/32
     global past
     """
     Gyro를 이용한 현재 각도 계산
@@ -264,7 +268,45 @@ def cal_angle_gyro(GyX, GyY, GyZ):
         
     past = now      # 다음 계산을 위해 past로 저장되어야 한다.
     return val
-    
+
+# PID 제어식 nani 개발중
+# Kp 조절 시
+# 오차가 줄어듬 하지만 정상상태 오차로 수렴해 예상값과 오차발생
+# Ki 조절 시
+# 최초의 목표값과 정상상태 오차의 적분을 비교 : 정상상태오차 및 상승시간 개선
+# Kd 조절 시
+# 미분을 통해 정상상태로 가는 속도 조절 : 오버슈트 개선
+def PID(Kp, Ki, Kd):
+    integral = 0
+# 자이로 nani 개발중 테스트 안해봄
+def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
+    global GyX_deg, GyY_deg, GyZ_deg
+    global past1 #기존 시간값 충돌방지
+    FS_CEL = 131 #3 Full-Scale Range 0=131, 1=65.5, 2=32.8, 3=16.4
+    now = time.time()
+    dt = (now - past) / 1000.0
+    # convert gyro val to degree
+    gyro_x = (GyroAccX - baseGyX) / FS_CEL
+    gyro_y = (GyroAccY - baseGyY) / FS_CEL
+    gyro_z = (GyroAccZ - baseGyZ) / FS_CEL
+    # compute
+    gyroAngleX = gyro_x * dt + GyX_deg
+    gyroAngleY = gyro_y * dt + GyY_deg
+    gyroAngleZ = gyro_z * dt + GyZ_deg
+    # calculate Gyro
+    RADIANS_TO_DEGREES = 180 / math.pi
+    accelAngleX = math.atan(accelX / math.sqrt(math.pow(accelX, 2) + math.pow(accelZ, 2))) * RADIANS_TO_DEGREES
+    accelAngleY = math.atan(-1 * accelX / math.sqrt(math.pow(accelY, 2) + math.pow(accelZ, 2))) * RADIANS_TO_DEGREES
+    accelAngleZ = 0
+    # complementary Filter
+    alpha = 0.96
+    GyX_deg = alpha * gyroAngleX + (1.0 - alpha) * accelAngleX
+    GyY_deg = alpha * gyroAngleY + (1.0 - alpha) * accelAngleY
+    GyZ_deg = gyroAngleZ
+
+    past1 = now
+    return angleX, angleY, angleZ
+
 def sensor_calibration():
     """
     1초동안의 평균을 이용하여 기준점 계산
@@ -505,7 +547,9 @@ def main():
 
         # 4-2) Gyro를 이용한 각도 계산 
         Gy_Angle = cal_angle_gyro(GyX, GyY, GyZ)
-        
+
+        # nani 각도 코드 테스트
+        angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
         
         print("GyY = ", round(Gy_Angle,4))
 
