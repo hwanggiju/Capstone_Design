@@ -3,7 +3,8 @@ import pygame
 import math
 import sys
 from mpu9250_i2c import *
-from OpenGL import *
+from OpenGL.GL import *
+from OpenGL.GLU import *
 from pygame.locals import *
 
 time.sleep(1)
