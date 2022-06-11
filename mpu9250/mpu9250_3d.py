@@ -72,7 +72,7 @@ SCALAR = .5
 SCALAR2 = 0.2
 
 def resize(width, height) :
-    glViewPort(0, 0, width, height)
+    glViewport(0, 0, width, height)
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
     gluPerspective(45.0, float(width) / height, 0.001, 10.0)
