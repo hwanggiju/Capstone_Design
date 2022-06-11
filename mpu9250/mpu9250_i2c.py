@@ -28,7 +28,7 @@ def MPU6050_start() :
     # 인터럽터 레지스터 (FIFO 데이터 overflow 관련)
     bus.write_byte_data(MPU6050_ADDR, INT_ENABLE, 1)
     time.sleep(0.1)
-    return gyro_config_vals[gyro_indx], accel_config_vals[accel_indx]]
+    return gyro_config_vals[gyro_indx], accel_config_vals[accel_indx]
 
 def read_raw_bits(register) :
     # 가속도 자이로 값 읽기
