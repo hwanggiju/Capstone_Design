@@ -77,7 +77,7 @@ def resize(width, height) :
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
     gluPerspective(45.0, float(width) / height, 0.001, 10.0)
-    glMatrixMode(GL_MODEVIEW)
+    glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
     gluLookAt(0.0, 1.0, -5.0,
               0.0, 0.0, 0.0,
@@ -126,7 +126,7 @@ while True :
     # mpu6050 데이터 가공
     x_angle = get_x_rotation(accel_xout_scaled, accel_yout_scaled, \
                             accel_zout_scaled)
-    x_angle = get_y_rotation(accel_xout_scaled, accel_yout_scaled, \
+    y_angle = get_y_rotation(accel_xout_scaled, accel_yout_scaled, \
                             accel_zout_scaled)
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
