@@ -79,9 +79,9 @@ def resize(width, height) :
     # gluPerspective(45.0, float(width) / height, 0.001, 10.0)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
-    gluLookAt(0.0, 1.0, -5.0,
-              0.0, 0.0, 0.0,
-              0.0, 1.0, 0.0)
+    # gluLookAt(0.0, 1.0, -5.0,
+    #          0.0, 0.0, 0.0,
+    #          0.0, 1.0, 0.0)
                
 def init() :
     glEnable(GL_DEPTH_TEST)
