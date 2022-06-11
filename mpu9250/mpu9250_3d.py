@@ -4,7 +4,6 @@ import math
 import sys
 from mpu9250_i2c import *
 from OpenGL import *
-from OpenGLU import *
 from pygame.locals import *
 
 time.sleep(1)
