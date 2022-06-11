@@ -92,8 +92,8 @@ def init() :
     glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST)
     glEnable(GL_COLOR_MATERIAL)
     glEnable(GL_LIGHTING)
-    glEnable(GL_LIGHTO)
-    glLightfv(GL_LIGHTO, GL_AMBIENT, (0.3, 0.3, 0.3, 1.0));
+    #glEnable(GL_LIGHTO)
+    #glLightfv(GL_LIGHTO, GL_AMBIENT, (0.3, 0.3, 0.3, 1.0));
     
 # main
 pygame.init()
@@ -107,7 +107,7 @@ angle = 0
 print('데이터 기록')
 while True :
     try :
-        ax, ay, az = MPU6050_raw_data() 
+        ax, ay, az = MPU6050_conv() 
         
     except :
         continue
@@ -120,7 +120,7 @@ while True :
     for event in pygame.event.get():
         if event.type == QUIT:
             sys.exit(1)
-        if event.type == KEYUP and event.key == KEY_ESCAPE :
+        if event.type == KEYUP and event.key == K_ESCAPE :
             sys.exit(1)
             
     # mpu6050 데이터 가공
