@@ -5,7 +5,7 @@ time.sleep(1) # i2c setting delay
 print('데이터 값')
 while True :
     try :
-        ax, ay, az, wx, wy, wz = mpu6050_conv()
+        ax, ay, az, wx, wy, wz = MPU6050_conv()
     
     except :
         continue
