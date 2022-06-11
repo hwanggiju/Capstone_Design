@@ -513,6 +513,9 @@ def main():
     # cnt = 0
     AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
     
+    angleX = 0
+    angleY = 0
+    angleZ = 0
     fixAngle = 0
     actionNow = 0  # 0:down 1:stop 2:up
     actionPre = 1
