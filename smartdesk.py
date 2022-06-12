@@ -481,148 +481,150 @@ def waveFun() :
 
 # main code
 def main():
-    global nowTime, preTime
-    cap = cv2.VideoCapture(0)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraHeight)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraWidth)
-    
-    test = set_MPU_init(dlpf_bw=DLPF_BW_98)
-    
-    # 2) Gyro 기준값 계산(Gyro 이용시)
-    sensor_calibration()    # Gyro의 기준값 계산
-
-    if not cap.isOpened() :
-        print('Camera open failed!')
-        sys.exit()
-
-    model = 'res10_300x300_ssd_iter_140000.caffemodel'
-    config = 'deploy.prototxt.txt'
-
-    net = cv2.dnn.readNet(model, config)
-    
-    if net.empty() :
-        print('Net open failed!')
-        sys.exit()
-
-    # 픽셀 최대 최소값 초기화
-    # maxHeightPixel = 0
-    # minHeightPixel = 1000
-
-
-    # cnt = 0
-    AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
-    
-    angleX = 0
-    angleY = 0
-    angleZ = 0
-    fixAngle = 0
-    actionNow = 0  # 0:down 1:stop 2:up
-    actionPre = 1
-    #driverSet(1, 1, 1, 1)  # down
-    #time.sleep(5)
-    stop = False
-    while True:
-        time.sleep(0.005)
-        nowTime = time.time()
-        _, frame = cap.read()
-        rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
-        if frame is None:
-            break
-        blob = cv2.dnn.blobFromImage(rotate_frame,  # image
-                                     1,  # scalefactor
-                                     (200, 200),  # image Size
-                                     (104, 177, 123)  # Scalar
-                                     )
-        net.setInput(blob)
-        detect = net.forward()
-        (h, w) = rotate_frame.shape[:2]
-        detect = detect[0, 0, :, :]
-
+    try:
+        global nowTime, preTime
+        cap = cv2.VideoCapture(0)
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraHeight)
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraWidth)
         
-        waveSensorHeight = waveFun() # 책상 높이
+        test = set_MPU_init(dlpf_bw=DLPF_BW_98)
         
-        # 3) accel, gyro의 Raw data 읽기, 
+        # 2) Gyro 기준값 계산(Gyro 이용시)
+        sensor_calibration()    # Gyro의 기준값 계산
+
+        if not cap.isOpened() :
+            print('Camera open failed!')
+            sys.exit()
+
+        model = 'res10_300x300_ssd_iter_140000.caffemodel'
+        config = 'deploy.prototxt.txt'
+
+        net = cv2.dnn.readNet(model, config)
+        
+        if net.empty() :
+            print('Net open failed!')
+            sys.exit()
+
+        # 픽셀 최대 최소값 초기화
+        # maxHeightPixel = 0
+        # minHeightPixel = 1000
+
+
+        # cnt = 0
         AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
         
-        # 4-1) Accel을 이용한 각도 계산
-        AcX_deg, AcY_deg = cal_angle_acc(AcX, AcY, AcZ)
-
-        # 4-2) Gyro를 이용한 각도 계산 
-        Gy_Angle = cal_angle_gyro(GyX, GyY, GyZ)
-
-        # nani 각도 코드 테스트
-        angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
-        
-        print("GyY = ", round(Gy_Angle,4))
-
-        #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-        HorizontalHold(Gy_Angle, fixAngle)
-
-        # print("AcX_deg, AcY_deg = ", AcX_deg, ',', AcY_deg)
-        userNum = 0
-        for i in range(detect.shape[0]):
-            confidence = detect[i, 2]
-            if confidence < 0.5:
+        angleX = 0
+        angleY = 0
+        angleZ = 0
+        fixAngle = 0
+        actionNow = 0  # 0:down 1:stop 2:up
+        actionPre = 1
+        #driverSet(1, 1, 1, 1)  # down
+        #time.sleep(5)
+        stop = False
+        while True:
+            time.sleep(0.005)
+            nowTime = time.time()
+            _, frame = cap.read()
+            rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+            if frame is None:
                 break
-            userNum = userNum + 1
-            x1 = int(detect[i, 3] * w)
-            y1 = int(detect[i, 4] * h)
-            x2 = int(detect[i, 5] * w)
-            y2 = int(detect[i, 6] * h)
+            blob = cv2.dnn.blobFromImage(rotate_frame,  # image
+                                        1,  # scalefactor
+                                        (200, 200),  # image Size
+                                        (104, 177, 123)  # Scalar
+                                        )
+            net.setInput(blob)
+            detect = net.forward()
+            (h, w) = rotate_frame.shape[:2]
+            detect = detect[0, 0, :, :]
 
-            cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green ractangle
             
-        if userNum == 1: #인식된 얼굴 수
-            # 책상 다리 모터 제어에 활용되는 값
-            widthLength = x2 - x1
-            heightLength = y2 - y1
-            area = widthLength * heightLength  # 사용자 인식 넓이
-            center_x = x1 + (x2 - x1) / 2
-            center_y = y1 + (y2 - y1) / 2  # 인식된 부분 중심 좌표 x, y 값
+            waveSensorHeight = waveFun() # 책상 높이
+            
+            # 3) accel, gyro의 Raw data 읽기, 
+            AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
+            
+            # 4-1) Accel을 이용한 각도 계산
+            AcX_deg, AcY_deg = cal_angle_acc(AcX, AcY, AcZ)
 
-            print(" 가로 :" + str(widthLength) + " 세로:" + str(heightLength), end='')
-            print(' area : %d    center_x : %d   center_y : %d \n'
-                % (area, center_x, center_y))
+            # 4-2) Gyro를 이용한 각도 계산 
+            Gy_Angle = cal_angle_gyro(GyX, GyY, GyZ)
 
-            # 얼굴폭 / 계산 좌표 X / 계산 좌표 Y / 카메라 높이
-            userHeight = getUserHeight(widthLength,center_x,center_y-heightLength/2, waveSensorHeight+cameraWaveDifference+1.5)
+            # nani 각도 코드 테스트
+            angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
+            
+            print("GyY = ", round(Gy_Angle,4))
 
-            print("테스트식 결과 :" + str(userHeight))
+            #수평 자세 유지 코드 (현재 각도, 작동시 각도)
+            HorizontalHold(Gy_Angle, fixAngle)
+
+            # print("AcX_deg, AcY_deg = ", AcX_deg, ',', AcY_deg)
+            userNum = 0
+            for i in range(detect.shape[0]):
+                confidence = detect[i, 2]
+                if confidence < 0.5:
+                    break
+                userNum = userNum + 1
+                x1 = int(detect[i, 3] * w)
+                y1 = int(detect[i, 4] * h)
+                x2 = int(detect[i, 5] * w)
+                y2 = int(detect[i, 6] * h)
+
+                cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green ractangle
                 
-            #높이에 따른 모터작동
-            if stop != True: #드라이버 pin Set 변경 후 반복 변경 방지
-                if userHeight < 120:
-                    stop = driverSet(100, 1, 1, 100)  # down
-                    actionPre = 0#down
-                    fixAngle = Gy_Angle  # 현재 각도고정
-                    print("down\n")
-                elif userHeight > 130:
-                    stop = driverSet(100, 2, 2, 100)  # up
-                    actionPre = 2#up
-                    fixAngle = Gy_Angle  # 현재 각도고정
-                    print("up\n")
+            if userNum == 1: #인식된 얼굴 수
+                # 책상 다리 모터 제어에 활용되는 값
+                widthLength = x2 - x1
+                heightLength = y2 - y1
+                area = widthLength * heightLength  # 사용자 인식 넓이
+                center_x = x1 + (x2 - x1) / 2
+                center_y = y1 + (y2 - y1) / 2  # 인식된 부분 중심 좌표 x, y 값
+
+                print(" 가로 :" + str(widthLength) + " 세로:" + str(heightLength), end='')
+                print(' area : %d    center_x : %d   center_y : %d \n'
+                    % (area, center_x, center_y))
+
+                # 얼굴폭 / 계산 좌표 X / 계산 좌표 Y / 카메라 높이
+                userHeight = getUserHeight(widthLength,center_x,center_y-heightLength/2, waveSensorHeight+cameraWaveDifference+1.5)
+
+                print("테스트식 결과 :" + str(userHeight))
+                    
+                #높이에 따른 모터작동
+                if stop != True: #드라이버 pin Set 변경 후 반복 변경 방지
+                    if userHeight < 120:
+                        stop = driverSet(100, 1, 1, 100)  # down
+                        actionPre = 0#down
+                        fixAngle = Gy_Angle  # 현재 각도고정
+                        print("down\n")
+                    elif userHeight > 130:
+                        stop = driverSet(100, 2, 2, 100)  # up
+                        actionPre = 2#up
+                        fixAngle = Gy_Angle  # 현재 각도고정
+                        print("up\n")
+                    else:
+                        stop = driverSet(0, 0, 0, 0)  # stay
+                        actionPre = 1#stop
+                        print("stop")
                 else:
-                    stop = driverSet(0, 0, 0, 0)  # stay
-                    actionPre = 1#stop
-                    print("stop")
-            else:
-                if userHeight < 120 and actionPre != 0:
-                    stop = False
-                elif userHeight > 130 and actionPre != 2:
-                    stop = False
-                elif userHeight >= 120 and userHeight <= 130 and actionPre != 1:
-                    stop = False
+                    if userHeight < 120 and actionPre != 0:
+                        stop = False
+                    elif userHeight > 130 and actionPre != 2:
+                        stop = False
+                    elif userHeight >= 120 and userHeight <= 130 and actionPre != 1:
+                        stop = False
 
-        print("초음파 측정 거리 : %d\n" % (waveSensorHeight))
-        # cv2.imshow('Facerec_Video', rotate_frame)
-        key = cv2.waitKey(1) & 0xFF
-        if key == 27:
-            enA_pwm.stop()
-            enB_pwm.stop()
-            GPIO.cleanup()
-            break
-
+            print("초음파 측정 거리 : %d\n" % (waveSensorHeight))
+            # cv2.imshow('Facerec_Video', rotate_frame)
+            #key = cv2.waitKey(1) & 0xFF
+            # if key == 27:
+            #    GPIO.cleanup()
+            #    break
+    except KeyboardInterrupt :
+        pass
+    
 if __name__ == "__main__":
     main()
-    cv2.destroyAllWindows()
+    enA_pwm.stop()
+    enB_pwm.stop()
     GPIO.cleanup()
