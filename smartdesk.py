@@ -242,7 +242,7 @@ GyX_deg = 0   # 측정 각도
 GyY_deg = 0
 GyZ_deg = 0
 
-# average = [ 0 for i in range(1000)]
+average = [ 0 for i in range(1000)]
 def cal_angle_gyro(GyX, GyY, GyZ):
     # 이 사이트를 참고하면 좋을 듯.
     # https://hs36.tistor   y.com/32
@@ -260,13 +260,13 @@ def cal_angle_gyro(GyX, GyY, GyZ):
     GyX_deg += ((GyX - baseGyX) / DEGREE_PER_SECOND) * dt
     GyY_deg += ((GyY - baseGyY) / DEGREE_PER_SECOND) * dt
     GyZ_deg += ((GyZ - baseGyZ) / DEGREE_PER_SECOND) * dt
-    #average[0] = GyY_deg
-    #val = sum(average)/1000
-    #for i in range(len(average)-1):
-    #    average[len(average) - i - 1] = average[len(average) - i - 2]
+    average[0] = GyY_deg
+    val = sum(average)/1000
+    for i in range(len(average)-1):
+        average[len(average) - i - 1] = average[len(average) - i - 2]
         
-    return now      # 다음 계산을 위해 past로 저장되어야 한다.
-    #return val
+    past = now      # 다음 계산을 위해 past로 저장되어야 한다.
+    return val
 
 # PID 제어식 nani 개발중
 # Kp 조절 시
@@ -490,7 +490,7 @@ def getAngle() :
     AcX_deg, AcY_deg = cal_angle_acc(acc_x, acc_y, acc_z)
     
     # 자이로 각속도 값 계산 각도 측정
-    past = cal_angle_gyro(gyro_x, gyro_y, gyro_z)
+    GyY_deg = cal_angle_gyro(gyro_x, gyro_y, gyro_z)
     
     # 상보필터
     AngleTmp = AngleNow + GyY_deg
