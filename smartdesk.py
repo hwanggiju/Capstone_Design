@@ -252,7 +252,7 @@ def cal_angle_gyro(GyX, GyY, GyZ):
     :param y: 현재 Gyro 출력
     :return: 현재 각도, 기준 시간 -> past
     """
-    global GyX_deg, GyY_deg, GyZ_deg
+    global GyX_deg, GyY_deg, GyZ_deg, past
 
     now = time.time()
     dt = now - past
