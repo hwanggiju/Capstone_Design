@@ -242,7 +242,7 @@ GyX_deg = 0   # 측정 각도
 GyY_deg = 0
 GyZ_deg = 0
 
-average = [ 0 for i in range(1000)]
+# average = [ 0 for i in range(1000)]
 def cal_angle_gyro(GyX, GyY, GyZ):
     # 이 사이트를 참고하면 좋을 듯.
     # https://hs36.tistor   y.com/32
@@ -490,7 +490,7 @@ def getAngle() :
     AcX_deg, AcY_deg = cal_angle_acc(acc_x, acc_y, acc_z)
     
     # 자이로 각속도 값 계산 각도 측정
-    past = cal_angle_gyro(gyro_x, gyro_x, gyro_x)
+    past = cal_angle_gyro(gyro_x, gyro_y, gyro_z)
     
     # 상보필터
     AngleTmp = AngleNow + GyY_deg
@@ -528,10 +528,6 @@ def main():
         # 픽셀 최대 최소값 초기화
         # maxHeightPixel = 0
         # minHeightPixel = 1000
-
-
-        # cnt = 0
-        AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
         
         angleX = 0
         angleY = 0
@@ -539,8 +535,6 @@ def main():
         fixAngle = 0
         actionNow = 0  # 0:down 1:stop 2:up
         actionPre = 1
-        #driverSet(1, 1, 1, 1)  # down
-        #time.sleep(5)
         stop = False
         while True:
             time.sleep(0.005)
@@ -564,7 +558,6 @@ def main():
             
             # 3) accel, gyro의 Raw data 읽기, 
             AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
-            
 
             # 4-2) Gyro를 이용한 각도 계산 
             Gy_Angle = cal_angle_gyro(GyX, GyY, GyZ)
@@ -573,7 +566,7 @@ def main():
             angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
             
             # 내꼬
-            getAngle()
+            getAngle(AcY)
 
             print("nani = ", round(angleY, 4))
 
