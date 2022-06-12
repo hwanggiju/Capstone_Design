@@ -63,7 +63,7 @@ GPIO.setwarnings(False)
 
 pwmA, pwmB = setPinConfig()
 
-setMotorControl(pwmA, pwmB, 0, 0)
+setMotorControl(pwmA, pwmB, 0, 0, 0)
 time.sleep(2)
 
 setMotorControl(pwmA, pwmB, 100, 90, 1)
@@ -75,7 +75,7 @@ time.sleep(5)
 setMotorControl(pwmA, pwmB, 100, 80, 1)
 time.sleep(5)
 
-setMotorControl(pwmA, pwmB, 0, 0)
+setMotorControl(pwmA, pwmB, 0, 0, 0)
 '''
 print('start')
 while True :
