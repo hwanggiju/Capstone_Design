@@ -8,9 +8,6 @@ time.sleep(1)
 # Motor Driver [enA/in1/in2/in3/in4/enB]
 driver = [35, 13, 15, 29, 31, 33]
 
-for i in range(len(driver)) :
-    GPIO.setup(driver[i], GPIO.OUT)
-
 def setPinConfig() :
     pwmA = GPIO.PWM(driver[0], 100)
     pwmB = GPIO.PWM(driver[5], 100)
@@ -60,6 +57,9 @@ def get_x_rotation(x, y, z) :
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
+
+for i in range(len(driver)) :
+    GPIO.setup(driver[i], GPIO.OUT)
 
 pwmA, pwmB = setPinConfig()
 
