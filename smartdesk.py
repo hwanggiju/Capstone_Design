@@ -443,6 +443,7 @@ def driverSet(enA, motorA, motorB, enB):
         else:#stop
             GPIO.output(driver[1], 0)
             GPIO.output(driver[2], 0)
+            
         if motorB == 2:#up
             GPIO.output(driver[3], 0)
             GPIO.output(driver[4], 1)

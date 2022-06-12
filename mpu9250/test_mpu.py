@@ -34,9 +34,9 @@ def setMotorControl(pwm, INA, INB, speed, stat) :
         
 def setMotor(ch, speed, stat) :
     if ch == 0 :
-        setMotorControl(pwmA, driver[1], driver[2], speed, stat)
+        setMotorControl(pwmA, driver[1], driver[3], speed, stat)
     else :
-        setMotorControl(pwmA, driver[3], driver[4], speed, stat)
+        setMotorControl(pwmA, driver[2], driver[4], speed, stat)
 
 def dist(a, b) :
     return math.sqrt((a*a)+(b*b))
@@ -51,8 +51,9 @@ def get_x_rotation(x, y, z) :
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
-pwmA = setPinConfig(driver[0], driver[1], driver[2])
-pwmB = setPinConfig(driver[5], driver[3], driver[4])
+
+pwmA = setPinConfig(driver[0], driver[1], driver[3])
+pwmB = setPinConfig(driver[5], driver[2], driver[4])
 
 setMotor(0, 80, 1)
 setMotor(1, 80, 1)
