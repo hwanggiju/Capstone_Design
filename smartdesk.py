@@ -242,7 +242,7 @@ GyX_deg = 0   # 측정 각도
 GyY_deg = 0
 GyZ_deg = 0
 
-average = [ 0 for i in range(10)]
+average = [ 0 for i in range(1000)]
 def cal_angle_gyro(GyX, GyY, GyZ):
     # 이 사이트를 참고하면 좋을 듯.
     # https://hs36.tistory.com/32
@@ -262,7 +262,7 @@ def cal_angle_gyro(GyX, GyY, GyZ):
     GyY_deg += ((GyY - baseGyY) / DEGREE_PER_SECOND) * dt
     GyZ_deg += ((GyZ - baseGyZ) / DEGREE_PER_SECOND) * dt
     average[0] = GyY_deg
-    val = sum(average)/10
+    val = sum(average)/1000
     for i in range(len(average)-1):
         average[len(average) - i - 1] = average[len(average) - i - 2]
         
@@ -305,7 +305,7 @@ def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
     GyZ_deg = gyroAngleZ
 
     past1 = now
-    return gyroAngleX, gyroAngleY, gyroAngleZ
+    return GyX_deg, GyY_deg, GyZ_deg
 
 def sensor_calibration():
     """
