@@ -10,15 +10,15 @@ driver = [35, 13, 15, 29, 31, 33]
 
 def setPinConfig() :
     pwmA = GPIO.PWM(driver[0], 100)
-    pwmB = GPIO.PWM(driver[5], 100)
+    #pwmB = GPIO.PWM(driver[5], 100)
     
     pwmA.start(0)
-    pwmB.start(0)
-    return pwmA, pwmB
+    #pwmB.start(0)
+    return pwmA#, pwmB
 
-def setMotorControl(pwmA, pwmB, speedA, speedB, stat) :
+def setMotorControl(pwmA, speedA, stat) :
     pwmA.ChangeDutyCycle(speedA)
-    pwmB.ChangeDutyCycle(speedB)
+    # pwmB.ChangeDutyCycle(speedB)
     
     if stat == 1 :      # 위로
         GPIO.output(driver[1], 0)
@@ -31,7 +31,7 @@ def setMotorControl(pwmA, pwmB, speedA, speedB, stat) :
     else :     # 정지
         GPIO.output(driver[1], 0)
         GPIO.output(driver[2], 0)
-        
+    '''    
     if stat == 1 :
         GPIO.output(driver[3], 0)
         GPIO.output(driver[4], 1)
@@ -43,7 +43,7 @@ def setMotorControl(pwmA, pwmB, speedA, speedB, stat) :
     else :
         GPIO.output(driver[3], 0)
         GPIO.output(driver[4], 0)
-
+    '''
 def dist(a, b) :
     return math.sqrt((a*a)+(b*b))
 
@@ -61,21 +61,21 @@ GPIO.setwarnings(False)
 for i in range(len(driver)) :
     GPIO.setup(driver[i], GPIO.OUT)
 
-pwmA, pwmB = setPinConfig()
+pwmA = setPinConfig()
 
-setMotorControl(pwmA, pwmB, 0, 0, 0)
+setMotorControl(pwmA, 0, 0)
 time.sleep(2)
 
-setMotorControl(pwmA, pwmB, 100, 90, 1)
+setMotorControl(pwmA, 90, 1)
 time.sleep(5)
 
-setMotorControl(pwmA, pwmB, 100, 90, 2)
+setMotorControl(pwmA, 100, 2)
 time.sleep(5)
 
-setMotorControl(pwmA, pwmB, 100, 80, 1)
+setMotorControl(pwmA, 80, 1)
 time.sleep(5)
 
-setMotorControl(pwmA, pwmB, 0, 0, 0)
+setMotorControl(pwmA, 0, 0)
 '''
 print('start')
 while True :
@@ -106,6 +106,6 @@ while True :
         GPIO.cleanup()
 '''
 pwmA.stop()
-pwmB.stop()
+# pwmB.stop()
 GPIO.cleanup()
 print('finish')
