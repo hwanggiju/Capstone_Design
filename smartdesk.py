@@ -555,6 +555,7 @@ def main():
             angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
             
             print("GyY = ", round(Gy_Angle,4))
+            print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
             HorizontalHold(Gy_Angle, fixAngle)
@@ -595,12 +596,12 @@ def main():
                     if userHeight < 120:
                         stop = driverSet(100, 1, 1, 100)  # down
                         actionPre = 0#down
-                        fixAngle = Gy_Angle  # 현재 각도고정
+                        # fixAngle = Gy_Angle  # 현재 각도고정
                         print("down\n")
                     elif userHeight > 130:
                         stop = driverSet(100, 2, 2, 100)  # up
                         actionPre = 2#up
-                        fixAngle = Gy_Angle  # 현재 각도고정
+                        # fixAngle = Gy_Angle  # 현재 각도고정
                         print("up\n")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
