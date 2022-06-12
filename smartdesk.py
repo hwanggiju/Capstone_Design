@@ -478,16 +478,24 @@ def waveFun() :
     
     return distance
 
-
-# 가속도 자이로 각도 계산ing
-def getAngle(AcX, AcY, AcZ) :
+# 가속도 자이로 변수
+AngleTmp = 0
+AngleNow = 0
+G_acc = 1 / (1 + 0.04)
+# 가속도 자이로 각도 계산
+def getAngle() :
     # 가속도 - 중력가속도의 값 계산 각도 측정
     acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z = get_raw_data()
-    AcX_deg, AcY_deg = cal_angle_acc(AcX, AcY, AcZ)
+    AcX_deg, AcY_deg = cal_angle_acc(acc_x, acc_y, acc_z)
     
-    # 
+    # 자이로 각속도 값 계산 각도 측정
+    past = cal_angle_gyro(gyro_x, gyro_x, gyro_x)
     
+    # 상보필터
+    AngleTmp = AngleNow + GyY_deg
+    AngleNow = G_acc * AngleTmp + (1.0 - G_acc) * AcY_deg
     
+    print(AngleNow)
 
 
 # main code
@@ -563,7 +571,9 @@ def main():
             # nani 각도 코드 테스트
             angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
             
-            print("GyY = ", round(Gy_Angle,4))
+            # 내꼬
+            getAngle()
+            
             print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
