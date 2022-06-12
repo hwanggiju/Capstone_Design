@@ -8,17 +8,17 @@ time.sleep(1)
 # Motor Driver [enA/in1/in2/in3/in4/enB]
 driver = [35, 13, 15, 29, 31, 33]
 
-def setPinConfig(EN, INA, INB) :
-    GPIO.setup(EN, GPIO.OUT)
-    GPIO.setup(INA, GPIO.OUT)
-    GPIO.setup(INB, GPIO.OUT)
+def setPinConfig() :
+    for i in range(len(driver)) :
+        GPIO.setup(driver[i], GPIO.OUT)
 
-    pwm = GPIO.PWM(EN, 100)
-    pwm.start(0)
-    return pwm
+    pwmA = GPIO.PWM(driver[0], 100)
+    pwmB = GPIO.PWM(driver[5], 100)
+    return pwmA, pwmB
 
-def setMotorControl(pwm, speed, stat) :
-    pwm.ChangeDutyCycle(speed)
+def setMotorControl(pwmA, pwmB, speed, stat) :
+    pwmA.ChangeDutyCycle(speed)
+    pwmB.ChangeDutyCycle(speed)
     
     if stat == 1 :      # 위로
         GPIO.output(driver[1], 0)
@@ -58,19 +58,20 @@ def get_x_rotation(x, y, z) :
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
-pwmA = setPinConfig(driver[0], driver[1], driver[3])
-pwmB = setPinConfig(driver[5], driver[2], driver[4])
+pwmA, pwmB = setPinConfig()
 
-setMotorControl(pwmA, 80, 1)
-setMotorControl(pwmB, 80, 1)
-time.sleep(3)
 
-setMotorControl(pwmA, 100, 2)
-setMotorControl(pwmB, 100, 2)
+setMotorControl(pwmA, pwmB, 80, 1)
 time.sleep(5)
 
-setMotorControl(pwmA, 0, 0)
-setMotorControl(pwmB, 0, 0)
+setMotorControl(pwmA, pwmB, 100, 2)
+time.sleep(5)
+
+setMotorControl(pwmA, pwmB, 30, 1)
+time.sleep(5)
+
+setMotorControl(0, 0)
+setMotorControl(0, 0)
 '''
 print('start')
 while True :
