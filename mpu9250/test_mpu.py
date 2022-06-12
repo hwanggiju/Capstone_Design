@@ -9,7 +9,7 @@ time.sleep(1)
 driver = [35, 13, 15, 29, 31, 33]
 
 def setMotorControl(stat) :
-    '''
+    
     if stat == 1 :      # 위로
         GPIO.output(driver[1], 0)
         GPIO.output(driver[2], 1)
@@ -21,7 +21,7 @@ def setMotorControl(stat) :
     else :     # 정지
         GPIO.output(driver[1], 0)
         GPIO.output(driver[2], 0)
-    '''   
+    '''
     if stat == 1 :
         GPIO.output(driver[3], 0)
         GPIO.output(driver[4], 1)
@@ -33,7 +33,7 @@ def setMotorControl(stat) :
     else :
         GPIO.output(driver[3], 0)
         GPIO.output(driver[4], 0)
-        
+    '''    
 def dist(a, b) :
     return math.sqrt((a*a)+(b*b))
 
