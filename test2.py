@@ -17,12 +17,12 @@ from PIL import ImageDraw
 from PIL import ImageFont
 
 # oled display 오브젝트 셋업
-RST = 24
-DC = 25
+# SPI [MOSI/RST/SCK/DC/CS]
+spi_arr = [19, 21, 23, 24, 26]
 SPI_PORT = 0
 SPI_DEVICE = 0
 
-disp = Adafruit_SSD1306.SSD1306_128_64(rst=RST, dc=DC, spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE, max_speed_hz=8000000))
+disp = Adafruit_SSD1306.SSD1306_128_64(rst=spi_arr[1], dc=spi_arr[3], spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE, max_speed_hz=8000000))
 disp.begin()
 
 # clear display

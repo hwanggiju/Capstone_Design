@@ -415,7 +415,7 @@ def HorizontalHold(nowAngle, compareAngle):
         pwmA = 100
         pwmB = 70
     elif nowAngle < compareAngle:
-        pwmA = 80
+        pwmA = 80   # 이건 부하 때문인감??
         pwmB = 100
     changePWM(pwmA, pwmB)
 
