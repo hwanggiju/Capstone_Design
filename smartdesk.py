@@ -485,6 +485,7 @@ G_acc = 1 / (1 + 0.04)
 # 가속도 자이로 각도 계산
 def getAngle() :
     # 가속도 - 중력가속도의 값 계산 각도 측정
+    global AngleTmp, AngleNow, G_acc
     acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z = get_raw_data()
     AcX_deg, AcY_deg = cal_angle_acc(acc_x, acc_y, acc_z)
     
@@ -573,7 +574,7 @@ def main():
             
             # 내꼬
             getAngle()
-            
+
             print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
