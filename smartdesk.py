@@ -255,7 +255,7 @@ def cal_angle_gyro(GyX, GyY, GyZ):
     global GyX_deg, GyY_deg, GyZ_deg, past
 
     now = time.time()
-    dt = now - past
+    dt = (now - past) / 1000.0
     #GyY_deg -= val
     GyX_deg += ((GyX - baseGyX) / DEGREE_PER_SECOND) * dt
     GyY_deg += ((GyY - baseGyY) / DEGREE_PER_SECOND) * dt
@@ -479,22 +479,18 @@ def waveFun() :
     return distance
 
 # 가속도 자이로 변수
-AngleTmp = 0
-AngleNow = 0
-G_acc = 1 / (1 + 0.04)
 # 가속도 자이로 각도 계산
 def getAngle() :
     # 가속도 - 중력가속도의 값 계산 각도 측정
-    global AngleTmp, AngleNow, G_acc
     acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z = get_raw_data()
     AcX_deg, AcY_deg = cal_angle_acc(acc_x, acc_y, acc_z)
     
     # 자이로 각속도 값 계산 각도 측정
     GyY_deg = cal_angle_gyro(gyro_x, gyro_y, gyro_z)
     
+    G_acc = 1 / (1 + 0.04)
     # 상보필터
-    AngleTmp = AngleNow + GyY_deg
-    AngleNow = G_acc * AngleTmp + (1.0 - G_acc) * AcY_deg
+    AngleNow = G_acc * GyY_deg + (1.0 - G_acc) * AcY_deg
     
     print(AngleNow)
 
@@ -565,7 +561,6 @@ def main():
             # nani 각도 코드 테스트
             angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
             
-            # 내꼬
             getAngle()
 
             print("nani = ", round(angleY, 4))

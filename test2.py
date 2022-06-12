@@ -1,51 +1,49 @@
-import RPi.GPIO as GPIO
-import time
+'''
+디스플레이 관련 라이브러리 설치
+$ sudo apt-get install python-imaging python-smbus
 
-# Motor Driver [enA/in1/in2/in3/in4/enB]
-driver = [35, 13, 15, 29, 31, 33]
+$ sudo apt-get install git
+$ git clone https://github.com/adafruit/Adafruit_Python_SSD1306.git
+$ cd Adafruit_Python_SSD1306
+$ sudo python3 setup.py install
+'''
 
-GPIO.setmode(GPIO.BOARD)
-GPIO.setwarnings(False)
+# oled 라이브러리
+import Adafruit_GPIO.SPI as SPI
+import Adafruit_SSD1306
+# PIL image 라이브러리
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 
-for i in range(len(driver)) :
-    GPIO.setup(driver[i], GPIO.OUT)
+# oled display 오브젝트 셋업
+RST = 24
+DC = 25
+SPI_PORT = 0
+SPI_DEVICE = 0
 
-GPIO.output(driver[0], 0)
-GPIO.output(driver[5], 0)
-GPIO.output(driver[1], 0)
-GPIO.output(driver[2], 0)
-GPIO.output(driver[3], 0)
-GPIO.output(driver[4], 0)
-time.sleep(0.3)
+disp = Adafruit_SSD1306.SSD1306_128_64(rst=RST, dc=DC, spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE, max_speed_hz=8000000))
+disp.begin()
 
-GPIO.output(driver[0], 1)
-GPIO.output(driver[5], 1)
-GPIO.output(driver[1], 0)
-GPIO.output(driver[2], 1)
-GPIO.output(driver[3], 0)
-GPIO.output(driver[4], 1)
-time.sleep(5)
+# clear display
+disp.clear()
+disp.display()
 
-GPIO.output(driver[0], 1)
-GPIO.output(driver[5], 1)
-GPIO.output(driver[1], 0)
-GPIO.output(driver[2], 0)
-GPIO.output(driver[3], 0)
-GPIO.output(driver[4], 0)
-time.sleep(0.3)
+# 빈 이미지 준비하기
+width = disp.width
+height = disp.height
+image = Image.new('1',(width, height)) # 1bit-black&white  이미지이므로 1.
+draw = ImageDraw.Draw(image)
 
-GPIO.output(driver[0], 1)
-GPIO.output(driver[5], 1)
-GPIO.output(driver[1], 1)
-GPIO.output(driver[2], 0)
-GPIO.output(driver[3], 1)
-GPIO.output(driver[4], 0)
-time.sleep(5)
+#font 준비
+font = ImageFont.truetype("malgun.ttf",15)
 
-GPIO.output(driver[0], 0)
-GPIO.output(driver[5], 0)
-GPIO.output(driver[1], 0)
-GPIO.output(driver[2], 0)
-GPIO.output(driver[3], 0)
-GPIO.output(driver[4], 0)
-GPIO.cleanup()
+# draw a text
+draw.text(
+(10,10),
+'''Hello''',
+font=font, fill=255)
+
+# oled에 보이기
+disp.image(image)
+disp.display()
