@@ -305,7 +305,7 @@ def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
     GyZ_deg = gyroAngleZ
 
     past1 = now
-    return angleX, angleY, angleZ
+    return gyroAngleX, gyroAngleY, gyroAngleZ
 
 def sensor_calibration():
     """
