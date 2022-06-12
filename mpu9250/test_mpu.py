@@ -60,6 +60,8 @@ GPIO.setwarnings(False)
 
 pwmA, pwmB = setPinConfig()
 
+setMotorControl(0, 0)
+setMotorControl(0, 0)
 
 setMotorControl(pwmA, pwmB, 80, 1)
 time.sleep(5)
