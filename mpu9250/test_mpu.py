@@ -66,13 +66,13 @@ pwmA, pwmB = setPinConfig()
 setMotorControl(pwmA, pwmB, 0, 0)
 time.sleep(2)
 
-setMotorControl(pwmA, pwmB, 80, 1)
+setMotorControl(pwmA, pwmB, 70, 1)
 time.sleep(5)
 
 setMotorControl(pwmA, pwmB, 100, 2)
 time.sleep(5)
 
-setMotorControl(pwmA, pwmB, 30, 1)
+setMotorControl(pwmA, pwmB, 50, 1)
 time.sleep(5)
 
 setMotorControl(pwmA, pwmB, 0, 0)
