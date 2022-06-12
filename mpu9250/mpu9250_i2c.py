@@ -62,7 +62,7 @@ def MPU6050_conv() :
     w_y = (gyro_y/(2.0**15.0))*gyro_sens
     w_z = (gyro_z/(2.0**15.0))*gyro_sens
     
-    return a_x, a_y, a_z, w_x, w_y, w_z
+    return a_x, a_y, a_z
 
 # MPU6050 레지스터
 MPU6050_ADDR = 0x68
