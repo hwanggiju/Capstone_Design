@@ -19,9 +19,9 @@ def setPinConfig() :
     pwmB.start(0)
     return pwmA, pwmB
 
-def setMotorControl(pwmA, pwmB, speed, stat) :
-    pwmA.ChangeDutyCycle(speed)
-    pwmB.ChangeDutyCycle(speed)
+def setMotorControl(pwmA, pwmB, speedA, speedB, stat) :
+    pwmA.ChangeDutyCycle(speedA)
+    pwmB.ChangeDutyCycle(speedB)
     
     if stat == 1 :      # 위로
         GPIO.output(driver[1], 0)
@@ -66,13 +66,13 @@ pwmA, pwmB = setPinConfig()
 setMotorControl(pwmA, pwmB, 0, 0)
 time.sleep(2)
 
-setMotorControl(pwmA, pwmB, 70, 1)
+setMotorControl(pwmA, pwmB, 100, 90, 1)
 time.sleep(5)
 
-setMotorControl(pwmA, pwmB, 100, 2)
+setMotorControl(pwmA, pwmB, 100, 90, 2)
 time.sleep(5)
 
-setMotorControl(pwmA, pwmB, 50, 1)
+setMotorControl(pwmA, pwmB, 100, 80, 1)
 time.sleep(5)
 
 setMotorControl(pwmA, pwmB, 0, 0)
