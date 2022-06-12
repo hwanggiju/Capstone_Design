@@ -14,6 +14,9 @@ def setPinConfig() :
 
     pwmA = GPIO.PWM(driver[0], 100)
     pwmB = GPIO.PWM(driver[5], 100)
+    
+    pwmA.start(0)
+    pwmB.start(0)
     return pwmA, pwmB
 
 def setMotorControl(pwmA, pwmB, speed, stat) :
