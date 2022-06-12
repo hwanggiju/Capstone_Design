@@ -566,7 +566,7 @@ def main():
             angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
             
             # 내꼬
-            getAngle(AcY)
+            getAngle()
 
             print("nani = ", round(angleY, 4))
 
