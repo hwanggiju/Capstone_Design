@@ -28,7 +28,7 @@ def setMotorControl(pwmA, pwmB, speedA, speedB, stat) :
         GPIO.output(driver[1], 1)
         GPIO.output(driver[2], 0)
         
-    elif stat == 0 :     # 정지
+    else :     # 정지
         GPIO.output(driver[1], 0)
         GPIO.output(driver[2], 0)
         
@@ -40,7 +40,7 @@ def setMotorControl(pwmA, pwmB, speedA, speedB, stat) :
         GPIO.output(driver[3], 1)
         GPIO.output(driver[4], 0)
     
-    elif stat == 0 :
+    else :
         GPIO.output(driver[3], 0)
         GPIO.output(driver[4], 0)
 
