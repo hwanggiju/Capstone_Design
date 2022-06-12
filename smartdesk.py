@@ -6,6 +6,13 @@ import time
 import sys
 import numpy as np
 import math
+# oled 라이브러리
+import Adafruit_GPIO.SPI as SPI
+import Adafruit_SSD1306
+# PIL image 라이브러리
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 #SPI
 
 '''
