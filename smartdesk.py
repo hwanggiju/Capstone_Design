@@ -245,8 +245,7 @@ GyZ_deg = 0
 average = [ 0 for i in range(1000)]
 def cal_angle_gyro(GyX, GyY, GyZ):
     # 이 사이트를 참고하면 좋을 듯.
-    # https://hs36.tistory.com/32
-    global past
+    # https://hs36.tistor   y.com/32
     """
     Gyro를 이용한 현재 각도 계산
     누적 방식이라... 회전하는 방향에 따라 양수/음수가 정해진다.
@@ -261,13 +260,13 @@ def cal_angle_gyro(GyX, GyY, GyZ):
     GyX_deg += ((GyX - baseGyX) / DEGREE_PER_SECOND) * dt
     GyY_deg += ((GyY - baseGyY) / DEGREE_PER_SECOND) * dt
     GyZ_deg += ((GyZ - baseGyZ) / DEGREE_PER_SECOND) * dt
-    average[0] = GyY_deg
-    val = sum(average)/1000
-    for i in range(len(average)-1):
-        average[len(average) - i - 1] = average[len(average) - i - 2]
+    #average[0] = GyY_deg
+    #val = sum(average)/1000
+    #for i in range(len(average)-1):
+    #    average[len(average) - i - 1] = average[len(average) - i - 2]
         
-    past = now      # 다음 계산을 위해 past로 저장되어야 한다.
-    return val
+    return now      # 다음 계산을 위해 past로 저장되어야 한다.
+    #return val
 
 # PID 제어식 nani 개발중
 # Kp 조절 시
@@ -319,7 +318,7 @@ def sensor_calibration():
     SumGyY = 0
     SumGyZ = 0
 
-    for i in range(10):
+    for i in range(1000):
         AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
         SumAcX += AcX
         SumAcY += AcY
@@ -328,12 +327,12 @@ def sensor_calibration():
         SumGyY += GyY
         SumGyZ += GyZ
 
-    avgAcX = SumAcX / 10
-    avgAcY = SumAcY / 10
-    avgAcZ = SumAcZ / 10
-    avgGyX = SumGyX / 10
-    avgGyY = SumGyY / 10
-    avgGyZ = SumGyZ / 10
+    avgAcX = SumAcX / 1000
+    avgAcY = SumAcY / 1000
+    avgAcZ = SumAcZ / 1000
+    avgGyX = SumGyX / 1000
+    avgGyY = SumGyY / 1000
+    avgGyZ = SumGyZ / 1000
 
     return avgAcX, avgAcY, avgAcZ, avgGyX, avgGyY, avgGyZ
 
@@ -479,6 +478,18 @@ def waveFun() :
     
     return distance
 
+
+# 가속도 자이로 각도 계산ing
+def getAngle(AcX, AcY, AcZ) :
+    # 가속도 - 중력가속도의 값 계산 각도 측정
+    acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z = get_raw_data()
+    AcX_deg, AcY_deg = cal_angle_acc(AcX, AcY, AcZ)
+    
+    # 
+    
+    
+
+
 # main code
 def main():
     try:
@@ -545,8 +556,6 @@ def main():
             # 3) accel, gyro의 Raw data 읽기, 
             AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
             
-            # 4-1) Accel을 이용한 각도 계산
-            AcX_deg, AcY_deg = cal_angle_acc(AcX, AcY, AcZ)
 
             # 4-2) Gyro를 이용한 각도 계산 
             Gy_Angle = cal_angle_gyro(GyX, GyY, GyZ)
