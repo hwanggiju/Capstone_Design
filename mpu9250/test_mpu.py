@@ -93,7 +93,7 @@ while True :
         pass
     
     finally :
-        pwm_A.stop()
-        pwm_B.stop()
+        pwmA.stop()
+        pwmB.stop()
         GPIO.cleanup()
         
