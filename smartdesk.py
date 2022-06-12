@@ -318,7 +318,7 @@ def sensor_calibration():
     SumGyY = 0
     SumGyZ = 0
 
-    for i in range(1000):
+    for i in range(10):
         AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
         SumAcX += AcX
         SumAcY += AcY
@@ -327,12 +327,12 @@ def sensor_calibration():
         SumGyY += GyY
         SumGyZ += GyZ
 
-    avgAcX = SumAcX / 1000
-    avgAcY = SumAcY / 1000
-    avgAcZ = SumAcZ / 1000
-    avgGyX = SumGyX / 1000
-    avgGyY = SumGyY / 1000
-    avgGyZ = SumGyZ / 1000
+    avgAcX = SumAcX / 10
+    avgAcY = SumAcY / 10
+    avgAcZ = SumAcZ / 10
+    avgGyX = SumGyX / 10
+    avgGyY = SumGyY / 10
+    avgGyZ = SumGyZ / 10
 
     return avgAcX, avgAcY, avgAcZ, avgGyX, avgGyY, avgGyZ
 
