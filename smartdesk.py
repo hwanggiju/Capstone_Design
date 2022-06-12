@@ -233,7 +233,7 @@ def cal_angle_acc(AcX, AcY, AcZ):
 
 # 각속도 각도 계산
 # 각도(deg) = Gyro값(step) / DEGREE_PER_SECOND(step*sec/deg) * dt(sec) 의 누적...
-DEGREE_PER_SECOND = 32767 / 250  # Gyro의 Full Scale이 250인 경우
+DEGREE_PER_SECOND = 32767 / 1000  # Gyro의 Full Scale이 250인 경우
                                  # Full Scale이 1000인 경우 32767/1000
 
 past = 0      # 현재 시간(sec)
