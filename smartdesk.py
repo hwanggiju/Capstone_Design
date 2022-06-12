@@ -480,8 +480,6 @@ def waveFun() :
     return distance
 
 # main code
-
-
 def main():
     global nowTime, preTime
     cap = cv2.VideoCapture(0)

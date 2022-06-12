@@ -36,7 +36,7 @@ def setMotor(ch, speed, stat) :
     if ch == 0 :
         setMotorControl(pwmA, driver[1], driver[3], speed, stat)
     else :
-        setMotorControl(pwmA, driver[2], driver[4], speed, stat)
+        setMotorControl(pwmB, driver[2], driver[4], speed, stat)
 
 def dist(a, b) :
     return math.sqrt((a*a)+(b*b))
