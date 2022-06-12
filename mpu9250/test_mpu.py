@@ -1,5 +1,8 @@
 from mpu9250_i2c import *
 import math
+import time
+
+time.sleep(1)
 
 def dist(a, b) :
     return math.sqrt((a*a)+(b*b))
@@ -30,4 +33,5 @@ while True :
     y_angle = get_y_rotation(accel_xout_scaled, accel_yout_scaled, \
                             accel_zout_scaled)
     
-    print(x_angle, y_angle)
+    print('angle x y = {}   {}'.format(x_angle, y_angle))
+    time.sleep(1)
