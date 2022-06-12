@@ -242,7 +242,7 @@ GyX_deg = 0   # 측정 각도
 GyY_deg = 0
 GyZ_deg = 0
 
-average = [ 0 for i in range(1000)]
+average = [ 0 for i in range(100)]
 def cal_angle_gyro(GyX, GyY, GyZ):
     # 이 사이트를 참고하면 좋을 듯.
     # https://hs36.tistor   y.com/32
@@ -261,7 +261,7 @@ def cal_angle_gyro(GyX, GyY, GyZ):
     GyY_deg += ((GyY - baseGyY) / DEGREE_PER_SECOND) * dt
     GyZ_deg += ((GyZ - baseGyZ) / DEGREE_PER_SECOND) * dt
     average[0] = GyY_deg
-    val = sum(average)/1000
+    val = sum(average)/100
     for i in range(len(average)-1):
         average[len(average) - i - 1] = average[len(average) - i - 2]
         
@@ -478,8 +478,7 @@ def waveFun() :
     
     return distance
 
-# 가속도 자이로 변수
-# 가속도 자이로 각도 계산
+# 가속도 자이로 상보필터 각도 계산
 def getAngle() :
     # 가속도 - 중력가속도의 값 계산 각도 측정
     acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z = get_raw_data()
@@ -493,7 +492,6 @@ def getAngle() :
     AngleNow = G_acc * GyY_deg + (1.0 - G_acc) * AcY_deg
     
     print(AngleNow)
-
 
 # main code
 def main():
@@ -520,10 +518,6 @@ def main():
         if net.empty() :
             print('Net open failed!')
             sys.exit()
-
-        # 픽셀 최대 최소값 초기화
-        # maxHeightPixel = 0
-        # minHeightPixel = 1000
         
         angleX = 0
         angleY = 0
