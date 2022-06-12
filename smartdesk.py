@@ -109,7 +109,10 @@ switch = [36, 38, 40]
 wave = [18, 16]
 
 # 사용자 정의 변수
-# maxHeight = 170
+UserTall = 170      # 키는 입력으로 받는다
+# 적정 책상 높이
+bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18)
+# 일어섰을 때 적정 높이 = UserTall - bestDeskTall -> 초음파 거리
 # minHeight = 80
 # seatdownHeight = 0
 
@@ -125,10 +128,10 @@ faceWidthMax    = 110 #pixel
 userDistanceMax = 114 #cm
 faceWidthMin    = 72 #pixel
 
-deskHeight = 117.5# 수정
+deskHeight       = 117.5 # 수정
 waveSensorHeight = 70 # 최소 길이 초기화 71.5
 
-fixAngle = 0 #모터 작동시 고정되는 각도값
+fixAngle        = 0 #모터 작동시 고정되는 각도값
 userDistance    = 0
 
 GPIO.setmode(GPIO.BOARD)
@@ -607,7 +610,7 @@ def main():
                         actionPre = 0#down
                         # fixAngle = Gy_Angle  # 현재 각도고정
                         print("down\n")
-                    elif userHeight > 130:
+                    elif UserTall -5 < userHeight < UserTall:
                         stop = driverSet(100, 2, 2, 100)  # up
                         actionPre = 2#up
                         # fixAngle = Gy_Angle  # 현재 각도고정
