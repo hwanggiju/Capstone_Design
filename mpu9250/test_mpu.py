@@ -8,17 +8,7 @@ time.sleep(1)
 # Motor Driver [enA/in1/in2/in3/in4/enB]
 driver = [35, 13, 15, 29, 31, 33]
 
-def setPinConfig() :
-    pwmA = GPIO.PWM(driver[0], 100)
-    #pwmB = GPIO.PWM(driver[5], 100)
-    
-    pwmA.start(0)
-    #pwmB.start(0)
-    return pwmA#, pwmB
-
-def setMotorControl(pwmA, speedA, stat) :
-    pwmA.ChangeDutyCycle(speedA)
-    # pwmB.ChangeDutyCycle(speedB)
+def setMotorControl(stat) :
     
     if stat == 1 :      # 위로
         GPIO.output(driver[1], 0)
@@ -61,21 +51,31 @@ GPIO.setwarnings(False)
 for i in range(len(driver)) :
     GPIO.setup(driver[i], GPIO.OUT)
 
-pwmA = setPinConfig()
+pwmA = GPIO.PWM(driver[0], 100)
+pwmA.start(0)
 
-setMotorControl(pwmA, 0, 0)
+pwmA.ChangeDutyCycle(0)
+setMotorControl(0)
 time.sleep(2)
 
-setMotorControl(pwmA, 90, 1)
+pwmA.ChangeDutyCycle(100)
+setMotorControl(1)
 time.sleep(5)
 
-setMotorControl(pwmA, 100, 2)
+pwmA.ChangeDutyCycle(100)
+setMotorControl(2)
 time.sleep(5)
 
-setMotorControl(pwmA, 80, 1)
+pwmA.ChangeDutyCycle(80)
+setMotorControl(1)
 time.sleep(5)
 
-setMotorControl(pwmA, 0, 0)
+pwmA.ChangeDutyCycle(80)
+setMotorControl(2)
+time.sleep(5)
+
+pwmA.ChangeDutyCycle(0)
+setMotorControl(0)
 '''
 print('start')
 while True :
