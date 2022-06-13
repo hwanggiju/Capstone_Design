@@ -7,43 +7,89 @@ $ git clone https://github.com/adafruit/Adafruit_Python_SSD1306.git
 $ cd Adafruit_Python_SSD1306
 $ sudo python3 setup.py install
 '''
+import time
 
-# oled 라이브러리
 import Adafruit_GPIO.SPI as SPI
 import Adafruit_SSD1306
-# PIL image 라이브러리
+
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 
-# oled display 오브젝트 셋업
-# SPI [MOSI/RST/SCK/DC/CS]
-spi_arr = [19, 21, 23, 24, 26]
+import subprocess
+
+# Raspberry Pi pin configuration:
+RST = 23     # on the PiOLED this pin isnt used
+# Note the following are only used with SPI:
+DC = 24
 SPI_PORT = 0
 SPI_DEVICE = 0
+# 128x64 display with hardware SPI:
+disp = Adafruit_SSD1306.SSD1306_128_64(rst=RST, dc=DC, spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE, max_speed_hz=8000000))
 
-disp = Adafruit_SSD1306.SSD1306_128_64(rst=spi_arr[1], dc=spi_arr[3], spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE, max_speed_hz=8000000))
+# Alternatively you can specify a software SPI implementation by providing
+# digital GPIO pin numbers for all the required display pins.  For example
+# on a Raspberry Pi with the 128x32 display you might use:
+# disp = Adafruit_SSD1306.SSD1306_128_32(rst=RST, dc=DC, sclk=18, din=25, cs=22)
+
+# Initialize library.
 disp.begin()
 
-# clear display
+# Clear display.
 disp.clear()
 disp.display()
 
-# 빈 이미지 준비하기
+# Create blank image for drawing.
+# Make sure to create image with mode '1' for 1-bit color.
 width = disp.width
 height = disp.height
-image = Image.new('1',(width, height)) # 1bit-black&white  이미지이므로 1.
+image = Image.new('1', (width, height))
+
+# Get drawing object to draw on image.
 draw = ImageDraw.Draw(image)
 
-#font 준비
-font = ImageFont.truetype("malgun.ttf",15)
+# Draw a black filled box to clear the image.
+draw.rectangle((0,0,width,height), outline=0, fill=0)
 
-# draw a text
-draw.text(
-(10,10),
-'''Hello''',
-font=font, fill=255)
+# Draw some shapes.
+# First define some constants to allow easy resizing of shapes.
+padding = -2
+top = padding
+bottom = height-padding
+# Move left to right keeping track of the current x position for drawing shapes.
+x = 0
 
-# oled에 보이기
-disp.image(image)
-disp.display()
+
+# Load default font.
+font = ImageFont.load_default()
+
+# Alternatively load a TTF font.  Make sure the .ttf font file is in the same directory as the python script!
+# Some other nice fonts to try: http://www.dafont.com/bitmap.php
+# font = ImageFont.truetype('Minecraftia.ttf', 8)
+
+while True:
+
+    # Draw a black filled box to clear the image.
+    draw.rectangle((0,0,width,height), outline=0, fill=0)
+
+    # Shell scripts for system monitoring from here : https://unix.stackexchange.com/questions/119126/command-to-display-memory-usage-disk-usage-and-cpu-load
+    cmd = "hostname -I | cut -d\' \' -f1"
+    IP = subprocess.check_output(cmd, shell = True )
+    cmd = "top -bn1 | grep load | awk '{printf \"CPU Load: %.2f\", $(NF-2)}'"
+    CPU = subprocess.check_output(cmd, shell = True )
+    cmd = "free -m | awk 'NR==2{printf \"Mem: %s/%sMB %.2f%%\", $3,$2,$3*100/$2 }'"
+    MemUsage = subprocess.check_output(cmd, shell = True )
+    cmd = "df -h | awk '$NF==\"/\"{printf \"Disk: %d/%dGB %s\", $3,$2,$5}'"
+    Disk = subprocess.check_output(cmd, shell = True )
+
+    # Write two lines of text.
+
+    draw.text((x, top),       "IP: " + str(IP),  font=font, fill=255)
+    draw.text((x, top+8),     str(CPU), font=font, fill=255)
+    draw.text((x, top+16),    str(MemUsage),  font=font, fill=255)
+    draw.text((x, top+25),    str(Disk),  font=font, fill=255)
+
+    # Display image.
+    disp.image(image)
+    disp.display()
+    time.sleep(.1)
