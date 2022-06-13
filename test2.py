@@ -34,13 +34,10 @@ oled.show()
 
 image = Image.new('1', (oled.width, oled.height), 255)
 draw = ImageDraw.Draw(image)
-font1 = ImageFont.truetype("malgun.ttf",15)
 
-draw.text((20, 0), 'Korean', font=font1, fill = 0)
-draw.text((20, 24), u'한글', font=font1, fill = 0)
+draw.text((20, 0), 'Korean', fill = 0)
+draw.text((20, 24), u'한글', fill = 0)
 oled.show()
-
-
 # Display image.
 oled.image(image)
 oled.show()
