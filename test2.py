@@ -22,9 +22,9 @@ GPIO.setup(switch[0], GPIO.IN)
 GPIO.setup(switch[1], GPIO.IN)
 GPIO.setup(switch[2], GPIO.IN)
 
-up_btn = GPIO.input(switch[0])
-okay_btn = GPIO.input(switch[1])
-down_btn = GPIO.input(switch[2])
+up_btn = digitalio.DigitalInOut(board.D16)
+okay_btn = digitalio.DigitalInOut(board.D20)
+down_btn = digitalio.DigitalInOut(board.D21)
 
 # Change these
 # to the right size for your display!
