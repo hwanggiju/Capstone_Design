@@ -6,15 +6,13 @@ import time
 import sys
 import numpy as np
 import math
-# oled 라이브러리
-import Adafruit_GPIO.SPI as SPI
-import Adafruit_SSD1306
-# PIL image 라이브러리
-from PIL import Image
-from PIL import ImageDraw
-from PIL import ImageFont
-#SPI
-
+import board
+import digitalio
+from PIL import Image, ImageDraw, ImageFont
+import adafruit_ssd1306
+import os
+import smbus
+from imusensor.MPU9250 import MPU9250
 '''
 해야할 것
 - 정확한 각도 도출
@@ -29,16 +27,6 @@ from PIL import ImageFont
 질문4. 스위치로 올리는 것보다 더 편한가? feat. 김성수교수님
 
 '''
-
-# spi SSD1306 OLED code
-# pip install spidev 설치
-# import spidev
-
-# MPU9250 gyro sensor code
-import os
-import smbus
-from imusensor.MPU9250 import MPU9250
-
 # 레지스터 값 설정
 CONFIG       = 0x1A     # LowPassFilter bit 2:0
 GYRO_CONFIG  = 0x1B     # FS_SEL bit 4:3
@@ -90,8 +78,23 @@ GYRO_ZOUT_H  = 0x47     # Low는 0x48
 I2C_bus = smbus.SMBus(1)
 MPU_addr = 0x68
 
-# spi = spidev.SpiDev(0, spi_ch)
-# spi.max_speed_hz = 1200000
+################################
+# SPI Setting
+################################
+WIDTH = 128
+HEIGHT = 64  # Change to 64 if needed
+BORDER = 5
+
+# SPI 선언
+spi = board.SPI()
+oled_reset = digitalio.DigitalInOut(board.D25)
+oled_cs = digitalio.DigitalInOut(board.D8)
+oled_dc = digitalio.DigitalInOut(board.D17)
+oled = adafruit_ssd1306.SSD1306_SPI(WIDTH, HEIGHT, spi, oled_dc, oled_reset, oled_cs)
+
+# 초기화
+oled.fill(0)
+oled.show()
 
 
 # 하드웨어 연결 구성
@@ -101,8 +104,8 @@ driver = [35, 13, 15, 29, 31, 33]
 iic_arr = [3, 5]
 # UART [TXD/RXD]
 uart_arr = [8, 10]
-# SPI [MOSI/MISO/SCK/CE0/CE1]
-spi_arr = [19, 21, 23, 24, 26]
+# SPI [SCK, D1, RST, DC, CS] -> GPIO 핀번호 사용 -> [11, 10, 25, 17, 8]
+spi_arr = [23, 19, 22, 11, 24]
 # switch[left/center/right]
 switch = [36, 38, 40]
 # ultra wave[trig, echo]
@@ -169,7 +172,10 @@ enB_pwm.start(0)    # enableB pin start dutycycle 0%
 GPIO.setup(wave[0], GPIO.OUT)
 GPIO.setup(wave[1], GPIO.IN)
 GPIO.output(wave[0], False)
-
+# 버튼 핀 setup
+GPIO.setup(wave[0], GPIO.IN)
+GPIO.setup(wave[1], GPIO.IN)
+GPIO.setup(wave[2], GPIO.IN)
 ################################
 # 한바이트 쓰기
 def write_byte(adr, data):
