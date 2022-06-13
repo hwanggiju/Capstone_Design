@@ -15,8 +15,6 @@ import RPi.GPIO as GPIO
 import os
 
 switch = [36, 38, 40]
-GPIO.setmode(GPIO.BOARD)
-GPIO.setwarnings(False)
 
 # Change these
 # to the right size for your display!
