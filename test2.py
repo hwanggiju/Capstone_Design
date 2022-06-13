@@ -40,7 +40,7 @@ image = Image.new('1', (oled.width, oled.height), 255)
 draw = ImageDraw.Draw(image)
 
 draw.text((0, 0), 'First Setting', fill = 0)
-draw.text((0, 5), 'Please Input your Height', fill = 0)
+draw.text((0, 20), 'Please Input your Height', fill = 0)
 
 oled.image(image)
 oled.show()
