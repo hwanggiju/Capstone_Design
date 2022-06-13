@@ -22,6 +22,10 @@ GPIO.setup(switch[0], GPIO.IN)
 GPIO.setup(switch[1], GPIO.IN)
 GPIO.setup(switch[2], GPIO.IN)
 
+up_btn = GPIO.input(switch[0])
+okay_btn = GPIO.input(switch[1])
+down_btn = GPIO.input(switch[2])
+
 # Change these
 # to the right size for your display!
 WIDTH = 128
@@ -54,12 +58,16 @@ oled.show()
 try :
     while True :
         draw.text((0, 40), str(SET_HEIGHT), fill = 0)  
-        if GPIO.input(switch[0]) :
+        if  up_btn == True :
             SET_HEIGHT = SET_HEIGHT + 5
-            
-        else :
+        elif down_btn == True :
             SET_HEIGHT = SET_HEIGHT - 5
-
+        elif okay_btn == True :
+            oled.fill(0)
+            draw.text((0, 0), 'Your Height', fill = 0)
+            draw.text((0, 20), str(SET_HEIGHT), fill = 0)
+            oled.show()
+            
         oled.image(image)
         oled.show()
 except KeyboardInterrupt:
