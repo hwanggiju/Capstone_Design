@@ -36,8 +36,5 @@ image = Image.new('1', (oled.width, oled.height), 255)
 draw = ImageDraw.Draw(image)
 
 draw.text((20, 0), 'Korean', fill = 0)
-draw.text((20, 24), u'한글', fill = 0)
-oled.show()
-# Display image.
-oled.image(image)
+draw.text((20, 24), '한글', font=ImageFont.truetype("./batang.ttc", 48), fill = 0)
 oled.show()
