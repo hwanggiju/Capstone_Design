@@ -37,5 +37,5 @@ image = Image.new('1', (oled.width, oled.height), 255)
 draw = ImageDraw.Draw(image)
 
 draw.text((20, 0), 'Korean', fill = 0)
-draw.image(image)
+oled.image(image)
 oled.show()
