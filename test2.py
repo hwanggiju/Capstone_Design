@@ -48,7 +48,7 @@ draw = ImageDraw.Draw(image)
 draw.text((0, 0), 'First Setting', fill = 0)
 draw.text((0, 20), 'Setting your Height', fill = 0)
 
-while True :
+try :
     draw.text((0, 40), str(SET_HEIGHT), fill = 0)
     if GPIO.input(switch[0]) :
         SET_HEIGHT = SET_HEIGHT + 5
@@ -57,6 +57,9 @@ while True :
     else :
         SET_HEIGHT = SET_HEIGHT - 5
         draw.text((0, 40), str(SET_HEIGHT), fill = 0)
+
+    oled.image(image)
+    oled.show()    
         
-oled.image(image)
-oled.show()
+except :
+    pass
