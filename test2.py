@@ -14,7 +14,13 @@ import adafruit_ssd1306
 import RPi.GPIO as GPIO
 import os
 
-switch = [36, 38, 40]
+# GPIO 번호 사용
+switch =  [16, 20, 21] # -> 실제 핀 번호[36, 38, 40]
+
+# 버튼 핀 setup
+GPIO.setup(switch[0], GPIO.IN)
+GPIO.setup(switch[1], GPIO.IN)
+GPIO.setup(switch[2], GPIO.IN)
 
 # Change these
 # to the right size for your display!
@@ -42,6 +48,15 @@ draw = ImageDraw.Draw(image)
 draw.text((0, 0), 'First Setting', fill = 0)
 draw.text((0, 20), 'Setting your Height', fill = 0)
 
-
+while True :
+    draw.text((0, 40), str(SET_HEIGHT), fill = 0)
+    if GPIO.input(switch[0]) :
+        SET_HEIGHT = SET_HEIGHT + 5
+        draw.text((0, 40), str(SET_HEIGHT), fill = 0)
+        
+    else :
+        SET_HEIGHT = SET_HEIGHT - 5
+        draw.text((0, 40), str(SET_HEIGHT), fill = 0)
+        
 oled.image(image)
 oled.show()

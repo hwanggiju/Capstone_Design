@@ -172,10 +172,6 @@ enB_pwm.start(0)    # enableB pin start dutycycle 0%
 GPIO.setup(wave[0], GPIO.OUT)
 GPIO.setup(wave[1], GPIO.IN)
 GPIO.output(wave[0], False)
-# 버튼 핀 setup
-GPIO.setup(wave[0], GPIO.IN)
-GPIO.setup(wave[1], GPIO.IN)
-GPIO.setup(wave[2], GPIO.IN)
 ################################
 # 한바이트 쓰기
 def write_byte(adr, data):
