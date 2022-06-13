@@ -20,9 +20,9 @@ BORDER = 5
 
 # Use for SPI
 spi = board.SPI()
-oled_reset = digitalio.DigitalInOut(board.D11)
-oled_cs = digitalio.DigitalInOut(board.D7)
-oled_dc = digitalio.DigitalInOut(board.D8)
+oled_reset = digitalio.DigitalInOut(board.D25)
+oled_cs = digitalio.DigitalInOut(board.D8)
+oled_dc = digitalio.DigitalInOut(board.D24)
 oled = adafruit_ssd1306.SSD1306_SPI(WIDTH, HEIGHT, spi, oled_dc, oled_reset, oled_cs)
 
 # Clear display.
@@ -35,3 +35,4 @@ image = Image.open('spi_test_img.png').resize((oled.width, oled.height), Image.A
 # Display image.
 oled.image(image)
 oled.show()
+출처: https://rudalskim.tistory.com/110 [rudalskim:티스토리]
