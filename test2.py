@@ -48,18 +48,19 @@ draw = ImageDraw.Draw(image)
 draw.text((0, 0), 'First Setting', fill = 0)
 draw.text((0, 20), 'Setting your Height', fill = 0)
 
-try :
-    draw.text((0, 40), str(SET_HEIGHT), fill = 0)
-    if GPIO.input(switch[0]) :
-        SET_HEIGHT = SET_HEIGHT + 5
-        draw.text((0, 40), str(SET_HEIGHT), fill = 0)
-        
-    else :
-        SET_HEIGHT = SET_HEIGHT - 5
-        draw.text((0, 40), str(SET_HEIGHT), fill = 0)
+oled.image(image)
+oled.show()  
 
-    oled.image(image)
-    oled.show()    
-        
-except :
+try :
+    while True :
+        draw.text((0, 40), str(SET_HEIGHT), fill = 0)  
+        if GPIO.input(switch[0]) :
+            SET_HEIGHT = SET_HEIGHT + 5
+            
+        else :
+            SET_HEIGHT = SET_HEIGHT - 5
+
+        oled.image(image)
+        oled.show()
+except KeyboardInterrupt:
     pass
