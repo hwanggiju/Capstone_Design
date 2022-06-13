@@ -35,4 +35,3 @@ image = Image.open('spi_test_img.png').resize((oled.width, oled.height), Image.A
 # Display image.
 oled.image(image)
 oled.show()
-출처: https://rudalskim.tistory.com/110 [rudalskim:티스토리]
