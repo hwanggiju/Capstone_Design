@@ -14,12 +14,17 @@ import adafruit_ssd1306
 import RPi.GPIO as GPIO
 import os
 
+switch = [36, 38, 40]
+GPIO.setmode(GPIO.BOARD)
+GPIO.setwarnings(False)
 
 # Change these
 # to the right size for your display!
 WIDTH = 128
 HEIGHT = 64  # Change to 64 if needed
 BORDER = 5
+
+SET_HEIGHT = 170
 
 # Use for SPI
 spi = board.SPI()
@@ -36,6 +41,8 @@ font = ImageFont.load_default()
 image = Image.new('1', (oled.width, oled.height), 255)
 draw = ImageDraw.Draw(image)
 
-draw.text((20, 0), 'Korean', fill = 0)
+draw.text((0, 0), 'First Setting', fill = 0)
+draw.text((5, 0) 'Please Input your Height', fill = 0)
+
 oled.image(image)
 oled.show()
