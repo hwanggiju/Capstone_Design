@@ -14,6 +14,7 @@ import Adafruit_SSD1306
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
+import spidev
 
 # oled display 오브젝트 셋업
 RST = 23
