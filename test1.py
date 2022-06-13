@@ -1,62 +1,31 @@
+from cv2 import UMAT_DATA_DEVICE_COPY_OBSOLETE
 import RPi.GPIO as GPIO
-import time
-#test 1
-GPIO.setmode(GPIO.BOARD)
-GPIO.setwarnings(False)
 
-en_lst = [11, 33] 
-in13_lst = [13, 29]
-in24_lst = [15, 31]
+# GPIO 번호 사용
+switch =  [16, 20, 21] # -> 실제 핀 번호[36, 38, 40]
+GPIO.setmode(GPIO.BCM)
 
-GPIO.setup(11, GPIO.OUT)
-GPIO.setup(33, GPIO.OUT)
-GPIO.setup(13, GPIO.OUT)
-GPIO.setup(15, GPIO.OUT)
-GPIO.setup(29, GPIO.OUT)
-GPIO.setup(31, GPIO.OUT)
 
-GPIO.output(13, GPIO.LOW)
-GPIO.output(15, GPIO.LOW)
-GPIO.output(29, GPIO.LOW)
-GPIO.output(31, GPIO.LOW)
+GPIO.setup(switch[0], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(switch[1], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(switch[2], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-GPIO.output(11, GPIO.LOW)
-GPIO.output(33, GPIO.LOW)
+up_btn = GPIO.input(switch[0])
+okay_btn = GPIO.input(switch[1])
+down_btn = GPIO.input(switch[2])
 
-time.sleep(0.2)
-
-GPIO.output(13, GPIO.LOW)
-GPIO.output(15, GPIO.HIGH)
-GPIO.output(29, GPIO.LOW)
-GPIO.output(31, GPIO.HIGH)
-
-GPIO.output(11, GPIO.HIGH)
-GPIO.output(33, GPIO.HIGH)
-
-time.sleep(2)
-
-try :
+try:
+    print('button test')
     while 1 :
-        GPIO.output(13, GPIO.LOW)
-        GPIO.output(15, GPIO.LOW)
-        GPIO.output(29, GPIO.LOW)
-        GPIO.output(31, GPIO.LOW)
+        if up_btn == 1 :
+            print('u')
+            
+        elif down_btn == 1 :
+            print('d')
         
-        GPIO.output(11, GPIO.LOW)
-        GPIO.output(33, GPIO.LOW)
-
-        time.sleep(0.2)
-        
-        GPIO.output(13, GPIO.High)
-        GPIO.output(15, GPIO.LOW)
-        GPIO.output(29, GPIO.HIGH)
-        GPIO.output(31, GPIO.LOW)
-        
-        GPIO.output(11, GPIO.HIGH)
-        GPIO.output(33, GPIO.HIGH)
-        
-        time.sleep(1)
-    
+        elif okay_btn == 1 :
+            print('o')
+            
 except KeyboardInterrupt :
+    print('end')
     GPIO.cleanup()
-    
