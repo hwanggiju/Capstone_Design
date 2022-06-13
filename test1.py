@@ -2,8 +2,8 @@ from cv2 import UMAT_DATA_DEVICE_COPY_OBSOLETE
 import RPi.GPIO as GPIO
 
 # GPIO 번호 사용
-switch =  [16, 20, 21] # -> 실제 핀 번호[36, 38, 40]
-GPIO.setmode(GPIO.BCM)
+switch =  [36, 38, 40] # -> 실제 핀 번호[36, 38, 40]
+GPIO.setmode(GPIO.BOARD)
 
 
 GPIO.setup(switch[0], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
