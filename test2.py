@@ -15,13 +15,15 @@ import RPi.GPIO as GPIO
 import os
 
 # GPIO 번호 사용
-# switch =  [16, 20, 21] # -> 실제 핀 번호[36, 38, 40]
+switch =  [16, 20, 21] # -> 실제 핀 번호[36, 38, 40]
 
-# 버튼 핀 setup
-# GPIO.setup(switch[0], GPIO.IN)
-#GPIO.setup(switch[1], GPIO.IN)
-# GPIO.setup(switch[2], GPIO.IN)
+GPIO.setup(switch[0], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(switch[1], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(switch[2], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
+up_btn = GPIO.input(switch[0])
+okay_btn = GPIO.input(switch[1])
+down_btn = GPIO.input(switch[2])
 
 # Change these
 # to the right size for your display!
@@ -37,10 +39,6 @@ oled_reset = digitalio.DigitalInOut(board.D25)
 oled_cs = digitalio.DigitalInOut(board.D8)
 oled_dc = digitalio.DigitalInOut(board.D17)
 oled = adafruit_ssd1306.SSD1306_SPI(WIDTH, HEIGHT, spi, oled_dc, oled_reset, oled_cs)
-
-up_btn = digitalio.DigitalInOut(board.D16)
-okay_btn = digitalio.DigitalInOut(board.D20)
-down_btn = digitalio.DigitalInOut(board.D21)
 
 # Clear display.
 oled.fill(0)
