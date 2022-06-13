@@ -16,8 +16,8 @@ from PIL import ImageDraw
 from PIL import ImageFont
 
 # oled display 오브젝트 셋업
-RST = 24
-DC = 25
+RST = 23
+DC = 24
 SPI_PORT = 0
 SPI_DEVICE = 0
 
