@@ -45,11 +45,10 @@ def OLED_initial_setting_Height(CHANGE_HEIGHT) :
     draw.text((5, 0), 'First Setting', fill = 0)
     draw.text((5, 20), 'Input your Height', fill = 0)
     draw.text((5, 40), str(CHANGE_HEIGHT), fill = 0)
-
-try :
-    OLED_initial_setting_Height(SET_HEIGHT)
     oled.image(image)
-    oled.show()  
+    oled.show()
+try :
+    OLED_initial_setting_Height(SET_HEIGHT)  
     '''
     while True :
         if digitalio.DigitalInOut(board.D16) == 1 :
