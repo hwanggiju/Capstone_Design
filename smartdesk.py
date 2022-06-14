@@ -111,7 +111,7 @@ spi_arr = [11, 10, 25, 17, 8]
 # switch[left/center/right]
 switch = [16, 20, 21]
 # ultra wave[trig, echo]
-wave = [16, 18]
+wave = [23, 24]
 
 # 사용자 정의 변수
 UserTall = 170      # 키는 입력으로 받는다
@@ -495,13 +495,13 @@ def waveFun() :
     time.sleep(0.00001)
     GPIO.output(wave[0], False)
     
-    pulse_start = time.time()
-    pulse_end = pulse_start
+    while GPIO.input(wave[1]) == 0 :
+        pulse_start = time.time()
+    # pulse_end = pulse_start
     while GPIO.input(wave[1]) == 1 :
         pulse_end = time.time()
-        if pulse_end - pulse_start > 1:
-            return 0
-    
+        # if pulse_end - pulse_start > 1:
+        #     return 0
     pulse_duration = pulse_end - pulse_start
     distance = pulse_duration * 17000
     distance = round(distance, 5)
