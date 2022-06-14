@@ -49,21 +49,15 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
 OLED_initial_setting_Height(SET_HEIGHT)     
 try :
     while True :
-        if GPIO.input(switch[0]) == 1 :
+        if GPIO.input(switch[2]) == 1 :
             OLED_initial_setting_Height1(SET_HEIGHT)
             SET_HEIGHT = SET_HEIGHT + 5
-            oled.fill(0)
-            oled.show()
-            time.sleep(0.5)
             OLED_initial_setting_Height(SET_HEIGHT)
             time.sleep(0.2)
             
-        elif GPIO.input(switch[2]) == 1:
+        elif GPIO.input(switch[0]) == 1:
             OLED_initial_setting_Height1(SET_HEIGHT)
             SET_HEIGHT = SET_HEIGHT - 5
-            oled.fill(0)
-            oled.show()
-            time.sleep(0.5)
             OLED_initial_setting_Height(SET_HEIGHT)
             time.sleep(0.2)
             
