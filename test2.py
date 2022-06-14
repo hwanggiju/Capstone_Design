@@ -19,8 +19,6 @@ HEIGHT = 64
 BORDER = 5
 
 SET_HEIGHT = 170
-FACEWIDTHMAX = 0
-FACEWIDTHMIN = 0
 
 # Use for SPI
 spi = board.SPI()
