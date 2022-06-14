@@ -551,20 +551,15 @@ def main():
                 oled.show()
                 if GPIO.input(switch[1]) == 1 :
                     UserTall = SET_HEIGHT
-                    print('1')
                     break
-        print('2')
         global nowTime, preTime
         global actionPre, actionNow
         cap = cv2.VideoCapture(0)
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraHeight)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraWidth)
-        print('3')
         test = set_MPU_init(dlpf_bw=DLPF_BW_98)
-        print('4')
         # 2) Gyro 기준값 계산(Gyro 이용시)
         sensor_calibration()    # Gyro의 기준값 계산
-        print('5')
         if not cap.isOpened() :
             print('Camera open failed!')
             sys.exit()
@@ -573,7 +568,6 @@ def main():
         config = 'deploy.prototxt.txt'
 
         net = cv2.dnn.readNet(model, config)
-        print('6')
         if net.empty() :
             print('Net open failed!')
             sys.exit()
@@ -584,12 +578,12 @@ def main():
         fixAngle = 0
         waveSensorMean = 0
         stop = False
-        WaveAVG = [0 for i in range(10)]
-        print('7')
+        
         while True:
             time.sleep(0.005)
             nowTime = time.time()
             _, frame = cap.read()
+            print("...")
             rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
             if frame is None:
                 break
@@ -604,10 +598,6 @@ def main():
             detect = detect[0, 0, :, :]
 
             waveSensorHeight = waveFun() # 책상 높이
-            WaveAVG[0] = waveSensorHeight
-            waveSensorMean = np.mean(WaveAVG) 
-            for i in range(len(WaveAVG) - 1) :
-                WaveAVG[len(WaveAVG) - i - 1] = WaveAVG[len(WaveAVG) - i - 2]
             
             # 3) accel, gyro의 Raw data 읽기, 
             AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
