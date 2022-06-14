@@ -67,7 +67,8 @@ try :
             oled.show()
             draw.text((5, 0), 'Complete set', font = font, fill = 0)
             draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 0)
-            
+            oled.image(image)
+            oled.show()
 
 except KeyboardInterrupt :
     print('end')
