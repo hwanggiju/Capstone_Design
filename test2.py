@@ -62,9 +62,10 @@ try :
             time.sleep(0.2)
             
         elif GPIO.input(switch[1]) == 1:
-            oled.fill(0)
-            oled.show()
+            OLED_initial_setting_Height1(SET_HEIGHT)
             SET_HEIGHT = SET_HEIGHT
+            draw.text((5, 0), 'First Setting', font = font, fill = 255)
+            draw.text((5, 20), 'Input your Height', font = font, fill = 255)
             draw.text((5, 0), 'Complete set', font = font, fill = 0)
             draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 0)
             
