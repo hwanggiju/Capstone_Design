@@ -453,7 +453,7 @@ def HorizontalHold(nowAngle, compareAngle):
 # 1 : down
 # 2 : up
 def driverSet(enA, motorA, motorB, enB):
-    global initial, nowTime, preTime, fixAngle
+    global initial, nowTime, preTime
     if initial == True:
         preTime = time.time()
         initial = False
@@ -484,7 +484,6 @@ def driverSet(enA, motorA, motorB, enB):
         #GPIO.output(driver[0], enA)
         #GPIO.output(driver[5], enB)
         changePWM(enA, enB)
-        fixAngle = Gy_Angle  # 현재 각도고정
         initial = True
         preTime = nowTime
         return True
@@ -581,7 +580,7 @@ def main():
         fixAngle = 0
         waveSensorMean = 0
         stop = False
-        
+        fixAngle = 
         while True:
             time.sleep(0.005)
             nowTime = time.time()
@@ -615,7 +614,7 @@ def main():
             print("nani = ", round(angleY-fixAngle, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            HorizontalHold(Gy_Angle, fixAngle)
+            HorizontalHold(angleY, fixAngle)
 
             # print("AcX_deg, AcY_deg = ", AcX_deg, ',', AcY_deg)
             userNum = 0
@@ -653,13 +652,13 @@ def main():
                     if userHeight < 125:
                         stop = driverSet(100, 1, 1, 100)  # down
                         actionPre = 0#down
-                        
-                        print("down\n")
+                        fixAngle = Gy_Angle  # 현재 각도고정
+                        print("down")
                     elif userHeight > 130:
                         stop = driverSet(100, 2, 2, 100)  # up
                         actionPre = 2#up
-                        
-                        print("up\n")
+                        fixAngle = Gy_Angle  # 현재 각도고정
+                        print("up")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
                         actionPre = 1#stop
