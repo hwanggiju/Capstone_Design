@@ -648,12 +648,12 @@ def main():
                     
                 #높이에 따른 모터작동
                 if stop != True: #드라이버 pin Set 변경 후 반복 변경 방지
-                    if userHeight < 125:
+                    if userHeight < 130:
                         stop = driverSet(100, 1, 1, 100)  # down
                         actionPre = 0#down
                         fixAngle = Gy_Angle  # 현재 각도고정
                         print("down")
-                    elif userHeight > 130:
+                    elif userHeight > 140:
                         stop = driverSet(100, 2, 2, 100)  # up
                         actionPre = 2#up
                         fixAngle = Gy_Angle  # 현재 각도고정
@@ -663,11 +663,11 @@ def main():
                         actionPre = 1#stop
                         print("stop")
                 else:
-                    if userHeight < 125 and actionPre != 0:
+                    if userHeight < 130 and actionPre != 0:
                         stop = False
-                    elif userHeight > 130 and actionPre != 2:
+                    elif userHeight > 140 and actionPre != 2:
                         stop = False
-                    elif userHeight >= 125 and userHeight <= 130 and actionPre != 1:
+                    elif userHeight >= 130 and userHeight <= 140 and actionPre != 1:
                         stop = False
 
                     
