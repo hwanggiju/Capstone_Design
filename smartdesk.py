@@ -6,10 +6,10 @@ import time
 import sys
 import numpy as np
 import math
-#import board
-#import digitalio
+import board
+import digitalio
 from PIL import Image, ImageDraw, ImageFont
-#import adafruit_ssd1306
+import adafruit_ssd1306
 import os
 import smbus
 from imusensor.MPU9250 import MPU9250
@@ -84,34 +84,35 @@ MPU_addr = 0x68
 WIDTH = 128
 HEIGHT = 64  # Change to 64 if needed
 BORDER = 5
+SET_HEIGHT = 170
 
 # SPI 선언
-#spi = board.SPI()
-#oled_reset = digitalio.DigitalInOut(board.D25)
-#oled_cs = digitalio.DigitalInOut(board.D8)
-#oled_dc = digitalio.DigitalInOut(board.D17)
-#oled = adafruit_ssd1306.SSD1306_SPI(WIDTH, HEIGHT, spi, oled_dc, oled_reset, oled_cs)
+spi = board.SPI()
+oled_reset = digitalio.DigitalInOut(board.D25)
+oled_cs = digitalio.DigitalInOut(board.D8)
+oled_dc = digitalio.DigitalInOut(board.D17)
+oled = adafruit_ssd1306.SSD1306_SPI(WIDTH, HEIGHT, spi, oled_dc, oled_reset, oled_cs)
 
 # 초기화
-#oled.fill(0)
-#oled.show()
+oled.fill(0)
+oled.show()
 
 
 # 하드웨어 연결 구성
 # Motor Driver [enA/in1/in2/in3/in4/enB] -> [35, 13, 15, 29, 31, 33]
-# driver = [19, 27, 22, 5, 6, 13]
-driver = [35, 13, 15, 29, 31, 33]
+driver = [19, 27, 22, 5, 6, 13]
+# driver = [35, 13, 15, 29, 31, 33]
 # I2C [SDA/SCL]
-iic_arr = [3, 5]
+iic_arr = [2, 3]
 # UART [TXD/RXD]
-uart_arr = [8, 10]
+uart_arr = [14, 15]
 # SPI [SCK, D1, RST, DC, CS] -> GPIO 핀번호 사용 -> [11, 10, 25, 17, 8]
 # spi_arr = [23, 19, 22, 11, 24]
 spi_arr = [11, 10, 25, 17, 8]
 # switch[left/center/right]
-switch = [36, 38, 40]
+switch = [16, 20, 21]
 # ultra wave[trig, echo]
-wave = [18, 16]
+wave = [23, 24]
 
 # 사용자 정의 변수
 UserTall = 170      # 키는 입력으로 받는다
@@ -141,9 +142,6 @@ userDistance    = 0
 
 actionNow = 0  # 0:down 1:stop 2:up
 actionPre = 1
-
-GPIO.setmode(GPIO.BOARD)
-GPIO.setwarnings(False)
 
 timeNum = 10 #계산값 평균화 횟수, 클수록 안정되지만 반응이 느려짐
 faceWidthAverage = [((faceWidthMax + faceWidthMin)/2) for col in range(timeNum)]
@@ -178,6 +176,15 @@ GPIO.setup(wave[0], GPIO.OUT)
 GPIO.setup(wave[1], GPIO.IN)
 GPIO.output(wave[0], False)
 ################################
+
+# OLED 초기설정
+oled.fill(0)
+oled.show()
+font = ImageFont.truetype('malgun.ttf', 15)
+
+image = Image.new('1', (oled.width, oled.height), 255)
+draw = ImageDraw.Draw(image)
+
 # 한바이트 쓰기
 def write_byte(adr, data):
     I2C_bus.write_byte_data(MPU_addr, adr, data)
@@ -434,26 +441,11 @@ def HorizontalHold(nowAngle, compareAngle):
             pwmA -= diffPwm
         else:
             pwmB += diffPwm
-        '''
-        if nowAngle > compareAngle:
-            pwmA = 60
-            pwmB = 100
-        elif nowAngle < compareAngle:
-            pwmA = 100   # 이건 부하 때문인감??
-            pwmB = 60
-            '''
     elif actionPre == 0:
         if diffPwm >= 0:
             pwmB -= diffPwm
         else:
             pwmA += diffPwm
-        '''
-        if nowAngle < compareAngle:
-            pwmA = 60
-            pwmB = 100
-        elif nowAngle > compareAngle:
-            pwmA = 100   # 이건 부하 때문인감??
-            pwmB = 60'''
     print(str(pwmA) + " / " + str(pwmB))
     changePWM(pwmA, pwmB)
 
@@ -530,6 +522,20 @@ def getAngle() :
     AngleNow = G_acc * GyY_deg + (1.0 - G_acc) * AcY_deg
     
     print(AngleNow)
+    
+def OLED_initial_setting_Height(CHANGE_HEIGHT) :
+    draw.text((5, 0), 'First Setting', font = font, fill = 0)
+    draw.text((5, 20), 'Input your Height', font = font, fill = 0)
+    draw.text((5, 40), str(CHANGE_HEIGHT), font = font, fill = 0)
+    oled.image(image)
+    oled.show()
+
+def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
+    draw.text((5, 0), 'First Setting', font = font, fill = 255)
+    draw.text((5, 20), 'Input your Height', font = font, fill = 255)
+    draw.text((5, 40), str(CHANGE_HEIGHT), font = font, fill = 255)
+    oled.image(image)
+    oled.show()
 
 # main code
 def main():
@@ -557,6 +563,8 @@ def main():
         if net.empty() :
             print('Net open failed!')
             sys.exit()
+        
+        OLED_initial_setting_Height(SET_HEIGHT)
         
         angleX = 0
         angleY = 0
