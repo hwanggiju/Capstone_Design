@@ -127,11 +127,11 @@ initial = True
 
 #기초 데이터 얼굴폭, 거리
 #가까울때
-userDistanceMin = 60 #cm
-faceWidthMax    = 110 #pixel
+userDistanceMin = 70 #cm
+faceWidthMax    = 113 #pixel
 #멀때
 userDistanceMax = 114 #cm
-faceWidthMin    = 72 #pixel
+faceWidthMin    = 62 #pixel
 
 deskHeight       = 117.5 # 수정
 waveSensorHeight = 70 # 최소 길이 초기화 71.5
