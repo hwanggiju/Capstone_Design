@@ -522,6 +522,7 @@ def getAngle() :
 def main():
     try:
         global nowTime, preTime
+        global actionPre, actionNow
         cap = cv2.VideoCapture(0)
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraHeight)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraWidth)
