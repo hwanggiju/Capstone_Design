@@ -580,7 +580,6 @@ def main():
         fixAngle = 0
         waveSensorMean = 0
         stop = False
-        fixAngle = 
         while True:
             time.sleep(0.005)
             nowTime = time.time()
