@@ -577,9 +577,10 @@ def main():
         angleX = 0
         angleY = 0
         angleZ = 0
-        fixAngle = 0
         waveSensorMean = 0
         stop = False
+        angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
+        fixAngle = angleY
         while True:
             time.sleep(0.005)
             nowTime = time.time()
@@ -651,12 +652,12 @@ def main():
                     if userHeight < 130:
                         stop = driverSet(100, 1, 1, 100)  # down
                         actionPre = 0#down
-                        fixAngle = angleY  # 현재 각도고정
+                        #fixAngle = angleY  # 현재 각도고정
                         print("down")
                     elif userHeight > 140:
                         stop = driverSet(100, 2, 2, 100)  # up
                         actionPre = 2#up
-                        fixAngle = angleY  # 현재 각도고정
+                        #fixAngle = angleY  # 현재 각도고정
                         print("up")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
