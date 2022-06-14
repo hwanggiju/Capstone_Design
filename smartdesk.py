@@ -497,9 +497,8 @@ def waveFun() :
     
     pulse_start = time.time()
     pulse_end = pulse_start
-    while GPIO.input(wave[1]) == 0 :
+    while GPIO.input(wave[1]) == 1 :
         pulse_end = time.time()
-        time.sleep(0.0001)
         if pulse_end - pulse_start > 1:
             return 0
     
