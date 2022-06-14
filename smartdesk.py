@@ -491,7 +491,6 @@ def driverSet(enA, motorA, motorB, enB):
         return False
 
 def waveFun() :
-    global pulse_end, pulse_start
     GPIO.output(wave[0], True)
     time.sleep(0.00001)
     GPIO.output(wave[0], False)
@@ -500,6 +499,7 @@ def waveFun() :
         
     while GPIO.input(wave[1]) == 0 :
         pulse_end = time.time()
+        time.sleep(0.0001)
         if pulse_end - pulse_start > 1:
             return 0
     
