@@ -49,8 +49,6 @@ try :
             oled.show()
             time.sleep(0.5)
             OLED_initial_setting_Height(SET_HEIGHT)
-            oled.image(image)
-            oled.show()
             time.sleep(0.2)
             
         elif GPIO.input(switch[2]) == 1:
@@ -59,8 +57,6 @@ try :
             oled.show()
             time.sleep(0.5)
             OLED_initial_setting_Height(SET_HEIGHT)
-            oled.image(image)
-            oled.show()
             time.sleep(0.2)
             
         elif GPIO.input(switch[1]) == 1:
