@@ -86,15 +86,15 @@ HEIGHT = 64  # Change to 64 if needed
 BORDER = 5
 
 # SPI 선언
-spi = board.SPI()
-oled_reset = digitalio.DigitalInOut(board.D25)
-oled_cs = digitalio.DigitalInOut(board.D8)
-oled_dc = digitalio.DigitalInOut(board.D17)
-oled = adafruit_ssd1306.SSD1306_SPI(WIDTH, HEIGHT, spi, oled_dc, oled_reset, oled_cs)
+#spi = board.SPI()
+#oled_reset = digitalio.DigitalInOut(board.D25)
+#oled_cs = digitalio.DigitalInOut(board.D8)
+#oled_dc = digitalio.DigitalInOut(board.D17)
+#oled = adafruit_ssd1306.SSD1306_SPI(WIDTH, HEIGHT, spi, oled_dc, oled_reset, oled_cs)
 
 # 초기화
-oled.fill(0)
-oled.show()
+#oled.fill(0)
+#oled.show()
 
 
 # 하드웨어 연결 구성
