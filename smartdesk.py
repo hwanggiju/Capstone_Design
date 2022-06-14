@@ -453,7 +453,7 @@ def HorizontalHold(nowAngle, compareAngle):
 # 1 : down
 # 2 : up
 def driverSet(enA, motorA, motorB, enB):
-    global initial, nowTime, preTime
+    global initial, nowTime, preTime, fixAngle
     if initial == True:
         preTime = time.time()
         initial = False
@@ -484,6 +484,7 @@ def driverSet(enA, motorA, motorB, enB):
         #GPIO.output(driver[0], enA)
         #GPIO.output(driver[5], enB)
         changePWM(enA, enB)
+        fixAngle = Gy_Angle  # 현재 각도고정
         initial = True
         preTime = nowTime
         return True
@@ -524,6 +525,7 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
 
 # main code
 def main():
+    global actionNow, actionPre
     try :
         SET_HEIGHT = 170
         OLED_initial_setting_Height(SET_HEIGHT)
@@ -651,12 +653,12 @@ def main():
                     if userHeight < 125:
                         stop = driverSet(100, 1, 1, 100)  # down
                         actionPre = 0#down
-                        fixAngle = Gy_Angle  # 현재 각도고정
+                        
                         print("down\n")
                     elif userHeight > 130:
                         stop = driverSet(100, 2, 2, 100)  # up
                         actionPre = 2#up
-                        fixAngle = Gy_Angle  # 현재 각도고정
+                        
                         print("up\n")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
