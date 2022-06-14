@@ -50,7 +50,7 @@ try :
     OLED_initial_setting_Height(SET_HEIGHT)
     oled.image(image)
     oled.show()  
-    
+    '''
     while True :
         if digitalio.DigitalInOut(board.D16) == 1 :
             SET_HEIGHT = SET_HEIGHT + 5
@@ -67,7 +67,7 @@ try :
             oled.fill(0)
             oled.show()
             break
-
+    '''
 except KeyboardInterrupt:
     print('end')
     pass
