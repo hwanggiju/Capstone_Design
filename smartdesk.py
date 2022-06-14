@@ -598,15 +598,15 @@ def main():
             detect = net.forward()
             (h, w) = rotate_frame.shape[:2]
             detect = detect[0, 0, :, :]
-            print("test")
-            waveSensorHeight = waveFun() # 책상 높이
             
+            waveSensorHeight = waveFun() # 책상 높이
+            print('test')
             # 3) accel, gyro의 Raw data 읽기, 
             AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
-
+            print('test')
             # 4-2) Gyro를 이용한 각도 계산 
             Gy_Angle = cal_angle_gyro(GyX, GyY, GyZ)
-
+            print('test')
             # nani 각도 코드 테스트
             angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
 
