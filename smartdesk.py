@@ -551,9 +551,9 @@ def main():
                 oled.show()
                 if GPIO.input(switch[1]) == 1 :
                     UserTall = SET_HEIGHT
+                    print('t')
                     break
-                
-        
+        print('t')
         global nowTime, preTime
         global actionPre, actionNow
         cap = cv2.VideoCapture(0)
