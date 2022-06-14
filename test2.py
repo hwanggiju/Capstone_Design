@@ -60,11 +60,12 @@ try :
             time.sleep(0.2)
             
         elif GPIO.input(switch[1]) == 1:
-            SET_HEIGHT = SET_HEIGHT
+            draw.text((5, 0), ' Complete set', font = font, fill = 0)
+            draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 0)
             oled.fill(0)
             oled.show()
+            
             GPIO.cleanup()
-            break
 
 except KeyboardInterrupt :
     print('end')
