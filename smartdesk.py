@@ -491,8 +491,6 @@ def driverSet(enA, motorA, motorB, enB):
         return False
 
 def waveFun() :
-    pulse_start = 0
-    pulse_end = 0
     GPIO.output(wave[0], True)
     time.sleep(0.00001)
     GPIO.output(wave[0], False)
@@ -508,21 +506,6 @@ def waveFun() :
     distance = round(distance, 5)
     
     return distance
-
-# 가속도 자이로 상보필터 각도 계산
-def getAngle() :
-    # 가속도 - 중력가속도의 값 계산 각도 측정
-    acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z = get_raw_data()
-    AcX_deg, AcY_deg = cal_angle_acc(acc_x, acc_y, acc_z)
-    
-    # 자이로 각속도 값 계산 각도 측정
-    GyY_deg = cal_angle_gyro(gyro_x, gyro_y, gyro_z)
-    
-    G_acc = 1 / (1 + 0.04)
-    # 상보필터
-    AngleNow = G_acc * GyY_deg + (1.0 - G_acc) * AcY_deg
-    
-    print(AngleNow)
     
 def OLED_initial_setting_Height(CHANGE_HEIGHT) :
     draw.text((5, 0), 'First Setting', font = font, fill = 0)
@@ -635,8 +618,6 @@ def main():
 
             # nani 각도 코드 테스트
             angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
-            
-            getAngle()
 
             print("nani = ", round(angleY-fixAngle, 4))
 
