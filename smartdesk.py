@@ -491,6 +491,8 @@ def driverSet(enA, motorA, motorB, enB):
         return False
 
 def waveFun() :
+    pulse_start = 0
+    pulse_end = 0
     GPIO.output(wave[0], True)
     time.sleep(0.00001)
     GPIO.output(wave[0], False)
@@ -599,7 +601,6 @@ def main():
         angleY = 0
         angleZ = 0
         fixAngle = 0
-        
         waveSensorMean = 0
         stop = False
         WaveAVG = [0 for i in range(10)]
