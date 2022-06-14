@@ -28,7 +28,7 @@ GPIO.setup(switch[2], GPIO.IN)
 # Clear display.
 oled.fill(0)
 oled.show()
-font = ImageFont.truetype('malgun.ttf', 20)
+font = ImageFont.truetype('malgun.ttf', 15)
 
 image = Image.new('1', (oled.width, oled.height), 255)
 draw = ImageDraw.Draw(image)
