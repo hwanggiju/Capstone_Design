@@ -524,10 +524,13 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
 # main code
 def main():
     global actionNow, actionPre, bestDeskTall
+    # 디스플레이 초기 설정
     try :
         SET_HEIGHT = 170
         draw.text((5, 0), 'WELCOME~!!', font = font1, fill = 0)
         draw.text((5, 20), 'Smart Desk', font = font1, fill = 0)
+        oled.image(image)
+        oled.show()
         time.sleep(2)
         draw.text((5, 0), 'WELCOME~!!', font = font1, fill = 255)
         draw.text((5, 20), 'Smart Desk', font = font1, fill = 255)
@@ -626,8 +629,7 @@ def main():
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
             HorizontalHold(angleY, fixAngle)
-
-            # print("AcX_deg, AcY_deg = ", AcX_deg, ',', AcY_deg)
+            
             userNum = 0
             for i in range(detect.shape[0]):
                 confidence = detect[i, 2]
@@ -670,7 +672,7 @@ def main():
                     if int(bestDeskTall) > waveSensorMean :
                         stop = driverSet(100, 2, 2, 100)
                         stop = False
-                    # 앉았을 때, 책상의 최적 높이 고정
+                    # 
                     if int(bestDeskTall) == waveSensorMean :
                         LimitHeight = HeightAVG - bestDeskTall # 최적의 값 
                         stop = driverSet(0, 0, 0, 0)
