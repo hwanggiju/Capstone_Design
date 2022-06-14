@@ -502,6 +502,7 @@ def waveFun() :
         time.sleep(0.001)
         if pulse_end -pulse_start > 1:
             break
+            pulse_start = pulse_end
         
     pulse_duration = pulse_end - pulse_start
     distance = pulse_duration * 17000
