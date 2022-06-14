@@ -111,7 +111,7 @@ spi_arr = [11, 10, 25, 17, 8]
 # switch[left/center/right]
 switch = [16, 20, 21]
 # ultra wave[trig, echo]
-wave = [24, 23]
+wave = [16, 18]
 
 # 사용자 정의 변수
 UserTall = 170      # 키는 입력으로 받는다
