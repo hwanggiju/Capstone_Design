@@ -27,13 +27,13 @@ font = ImageFont.load_default()
 image = Image.new('1', (oled.width, oled.height), 255)
 draw = ImageDraw.Draw(image)
 
-def OLED_initial_setting_Height(CHANGE_HEIGHT) :
-    draw.text((5, 0), 'First Setting', fill = 0)
-    draw.text((5, 20), 'Input your Height', fill = 0)
-    draw.text((5, 40), str(CHANGE_HEIGHT), fill = 0)
-    oled.show()
+# def OLED_initial_setting_Height(CHANGE_HEIGHT) :
+draw.text((5, 0), 'First Setting', fill = 0)
+draw.text((5, 20), 'Input your Height', fill = 0)
+draw.text((5, 40), str(SET_HEIGHT), fill = 0)
+oled.show()
 
-OLED_initial_setting_Height(SET_HEIGHT)     
+# OLED_initial_setting_Height(SET_HEIGHT)     
 
 '''
 while True :
