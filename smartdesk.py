@@ -551,20 +551,20 @@ def main():
                 oled.show()
                 if GPIO.input(switch[1]) == 1 :
                     UserTall = SET_HEIGHT
-                    print('t')
+                    print('1')
                     break
-        print('t')
+        print('2')
         global nowTime, preTime
         global actionPre, actionNow
         cap = cv2.VideoCapture(0)
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraHeight)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraWidth)
-        
+        print('3')
         test = set_MPU_init(dlpf_bw=DLPF_BW_98)
-        
+        print('4')
         # 2) Gyro 기준값 계산(Gyro 이용시)
         sensor_calibration()    # Gyro의 기준값 계산
-
+        print('5')
         if not cap.isOpened() :
             print('Camera open failed!')
             sys.exit()
@@ -573,7 +573,7 @@ def main():
         config = 'deploy.prototxt.txt'
 
         net = cv2.dnn.readNet(model, config)
-        
+        print('6')
         if net.empty() :
             print('Net open failed!')
             sys.exit()
@@ -585,6 +585,7 @@ def main():
         waveSensorMean = 0
         stop = False
         WaveAVG = [0 for i in range(10)]
+        print('7')
         while True:
             time.sleep(0.005)
             nowTime = time.time()
