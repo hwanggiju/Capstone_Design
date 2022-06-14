@@ -1,12 +1,3 @@
-'''
-디스플레이 관련 라이브러리 설치
-$ sudo apt-get install python-imaging python-smbus
-
-$ sudo apt-get install git
-$ git clone https://github.com/adafruit/Adafruit_Python_SSD1306.git
-$ cd Adafruit_Python_SSD1306
-$ sudo python3 setup.py install
-'''
 import board
 import digitalio
 from PIL import Image, ImageDraw, ImageFont
@@ -25,13 +16,13 @@ up_btn = GPIO.input(switch[0])
 okay_btn = GPIO.input(switch[1])
 down_btn = GPIO.input(switch[2])
 
-# Change these
-# to the right size for your display!
 WIDTH = 128
-HEIGHT = 64  # Change to 64 if needed
+HEIGHT = 64 
 BORDER = 5
 
 SET_HEIGHT = 170
+FACEWIDTHMAX = 0
+FACEWIDTHMIN = 0
 
 # Use for SPI
 spi = board.SPI()
@@ -48,26 +39,42 @@ font = ImageFont.load_default()
 image = Image.new('1', (oled.width, oled.height), 255)
 draw = ImageDraw.Draw(image)
 
-draw.text((0, 0), 'First Setting', fill = 0)
-draw.text((0, 20), 'Setting your Height', fill = 0)
+def OLED_initial_setting_Height(CHANGE_HEIGHT) :
+    draw.text((0, 0), 'First Setting', fill = 0)
+    draw.text((0, 20), 'Input your Height', fill = 0)
+    draw.text((0, 40), str(CHANGE_HEIGHT), fill = 0)
+    oled.image(image)
+    oled.show()  
 
-oled.image(image)
-oled.show()  
+def OLED_initial_setting_NearFaceSize(FACEWIDTHMIN) :
+    draw.text((0, 0), 'Next Setting', fill = 0)
+    draw.text((0, 20), 'Your Face Size', fill = 0)      
+    draw.text((0, 40), str(FACEWIDTHMIN), fill = 0)        # widthLength 값 전달
 
+OLED_initial_setting_Height(HEIGHT)
+# def OLED_initial_setting_NearFaceSize(FACEWIDTHMIN)
+
+'''
 try :
+    OLED_initial_setting_Height(SET_HEIGHT)
     while True :
-        draw.text((0, 40), str(SET_HEIGHT), fill = 0)  
-        if  up_btn == True :
+        if up_btn == 1 :
             SET_HEIGHT = SET_HEIGHT + 5
-        elif down_btn == True :
+            OLED_initial_setting_Height(SET_HEIGHT)
+        elif down_btn == 1:
             SET_HEIGHT = SET_HEIGHT - 5
-        elif okay_btn == True :
+            OLED_initial_setting_Height(SET_HEIGHT)
+        elif okay_btn == 1:
+            SET_HEIGHT = SET_HEIGHT
             oled.fill(0)
-            draw.text((0, 0), 'Your Height', fill = 0)
-            draw.text((0, 20), str(SET_HEIGHT), fill = 0)
             oled.show()
-            
-        oled.image(image)
-        oled.show()
+            break
+    
+    while True :
+        OLED_initial_setting_NearFaceSize(FACEWIDTHMIN)
+        if okay_btn == 1:
+            FACEWIDTHMIN = widthLength     # 현재 얼굴 값 
+
 except KeyboardInterrupt:
     pass
+    '''

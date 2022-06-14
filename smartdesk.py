@@ -98,8 +98,8 @@ oled.show()
 
 
 # 하드웨어 연결 구성
-# Motor Driver [enA/in1/in2/in3/in4/enB]
-driver = [35, 13, 15, 29, 31, 33]
+# Motor Driver [enA/in1/in2/in3/in4/enB] -> [35, 13, 15, 29, 31, 33]
+driver = [19, 27, 22, 5, 6, 13]
 # I2C [SDA/SCL]
 iic_arr = [3, 5]
 # UART [TXD/RXD]
@@ -113,7 +113,7 @@ wave = [18, 16]
 
 # 사용자 정의 변수
 UserTall = 170      # 키는 입력으로 받는다
-# 적정 책상 높이
+# 앉았을 때 적정 책상 높이
 bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18)
 # 일어섰을 때 적정 높이 = UserTall - bestDeskTall -> 초음파 거리
 # minHeight = 80
@@ -537,7 +537,9 @@ def main():
         fixAngle = 0
         actionNow = 0  # 0:down 1:stop 2:up
         actionPre = 1
+        waveSensorMean = 0
         stop = False
+        WaveAVG = [0 for i in range(10)]
         while True:
             time.sleep(0.005)
             nowTime = time.time()
@@ -555,8 +557,11 @@ def main():
             (h, w) = rotate_frame.shape[:2]
             detect = detect[0, 0, :, :]
 
-            
             waveSensorHeight = waveFun() # 책상 높이
+            WaveAVG[0] = waveSensorHeight
+            waveSensorMean = np.mean(WaveAVG) 
+            for i in range(len(WaveAVG) - 1) :
+                WaveAVG[len(WaveAVG) - i - 1] = WaveAVG[len(WaveAVG) - i - 2]
             
             # 3) accel, gyro의 Raw data 읽기, 
             AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
@@ -610,12 +615,12 @@ def main():
                     if userHeight < 120:
                         stop = driverSet(100, 1, 1, 100)  # down
                         actionPre = 0#down
-                        # fixAngle = Gy_Angle  # 현재 각도고정
+                        fixAngle = Gy_Angle  # 현재 각도고정
                         print("down\n")
-                    elif UserTall -5 < userHeight < UserTall:
+                    elif UserTall - 2.5 < userHeight and userHeight < UserTall + 2.5:
                         stop = driverSet(100, 2, 2, 100)  # up
                         actionPre = 2#up
-                        # fixAngle = Gy_Angle  # 현재 각도고정
+                        fixAngle = Gy_Angle  # 현재 각도고정
                         print("up\n")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
@@ -629,6 +634,9 @@ def main():
                     elif userHeight >= 120 and userHeight <= 130 and actionPre != 1:
                         stop = False
 
+                if waveSensorMean < bestDeskTall :
+                    stop = driverSet(0, 0, 0, 0)
+                    
             print("초음파 측정 거리 : %d\n" % (waveSensorHeight))
             # cv2.imshow('Facerec_Video', rotate_frame)
             #key = cv2.waitKey(1) & 0xFF
