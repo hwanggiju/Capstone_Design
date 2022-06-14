@@ -6,10 +6,10 @@ import time
 import sys
 import numpy as np
 import math
-import board
-import digitalio
+#import board
+#import digitalio
 from PIL import Image, ImageDraw, ImageFont
-import adafruit_ssd1306
+#import adafruit_ssd1306
 import os
 import smbus
 from imusensor.MPU9250 import MPU9250
