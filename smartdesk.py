@@ -84,7 +84,6 @@ MPU_addr = 0x68
 WIDTH = 128
 HEIGHT = 64  # Change to 64 if needed
 BORDER = 5
-SET_HEIGHT = 170
 
 # SPI 선언
 spi = board.SPI()
@@ -540,6 +539,7 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
 # main code
 def main():
     try :
+        SET_HEIGHT = 170
         OLED_initial_setting_Height(SET_HEIGHT)
         while True :
             if GPIO.input(switch[2]) == 1 :
@@ -565,6 +565,7 @@ def main():
                 oled.image(image)
                 oled.show()
                 if GPIO.input(switch[1]) == 1 :
+                    UserTall = SET_HEIGHT
                     break
                 
         
