@@ -644,7 +644,7 @@ def main():
                         stop = False
                     elif userHeight > 130 and actionPre != 2:
                         stop = False
-                    elif userHeight >= 120 and userHeight <= 130 and actionPre != 1:
+                    elif userHeight >= 125 and userHeight <= 130 and actionPre != 1:
                         stop = False
 
                     
