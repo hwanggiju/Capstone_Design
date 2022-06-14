@@ -99,13 +99,15 @@ BORDER = 5
 
 # 하드웨어 연결 구성
 # Motor Driver [enA/in1/in2/in3/in4/enB] -> [35, 13, 15, 29, 31, 33]
-driver = [19, 27, 22, 5, 6, 13]
+# driver = [19, 27, 22, 5, 6, 13]
+driver = [35, 13, 15, 29, 31, 33]
 # I2C [SDA/SCL]
 iic_arr = [3, 5]
 # UART [TXD/RXD]
 uart_arr = [8, 10]
 # SPI [SCK, D1, RST, DC, CS] -> GPIO 핀번호 사용 -> [11, 10, 25, 17, 8]
-spi_arr = [23, 19, 22, 11, 24]
+# spi_arr = [23, 19, 22, 11, 24]
+spi_arr = [11, 10, 25, 17, 8]
 # switch[left/center/right]
 switch = [36, 38, 40]
 # ultra wave[trig, echo]
