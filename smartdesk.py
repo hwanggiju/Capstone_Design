@@ -587,7 +587,7 @@ def main():
             
             getAngle()
 
-            print("nani = ", round(angleY, 4))
+            print("nani = ", round(angleY-fixAngle, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
             HorizontalHold(Gy_Angle, fixAngle)
