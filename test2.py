@@ -45,6 +45,8 @@ try :
     while True :
         if GPIO.input(switch[0]) == 1 :
             SET_HEIGHT = SET_HEIGHT + 5
+            oled.fill(0)
+            oled.show()
             OLED_initial_setting_Height(SET_HEIGHT)
             oled.image(image)
             oled.show()
@@ -52,6 +54,8 @@ try :
             
         elif GPIO.input(switch[2]) == 1:
             SET_HEIGHT = SET_HEIGHT - 5
+            oled.fill(0)
+            oled.show()
             OLED_initial_setting_Height(SET_HEIGHT)
             oled.image(image)
             oled.show()
