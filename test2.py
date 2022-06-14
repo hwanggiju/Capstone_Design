@@ -4,6 +4,7 @@ from PIL import Image, ImageDraw, ImageFont
 import adafruit_ssd1306
 import RPi.GPIO as GPIO
 import os
+import time
 
 # GPIO 번호 사용
 switch =  [16, 20, 21] # -> 실제 핀 번호[36, 38, 40]
@@ -46,12 +47,6 @@ def OLED_initial_setting_Height(CHANGE_HEIGHT) :
     oled.image(image)
     oled.show()  
 
-def OLED_initial_setting_NearFaceSize(FACEWIDTHMIN) :
-    draw.text((0, 0), 'Next Setting', fill = 0)
-    draw.text((0, 20), 'Your Face Size', fill = 0)      
-    draw.text((0, 40), str(FACEWIDTHMIN), fill = 0)        # widthLength 값 전달
-
-
 try :
     OLED_initial_setting_Height(SET_HEIGHT)
     while True :
@@ -66,11 +61,6 @@ try :
             oled.fill(0)
             oled.show()
             break
-    
-    while True :
-        OLED_initial_setting_NearFaceSize(FACEWIDTHMIN)
-        if GPIO.input(switch[2]) == 1:
-            FACEWIDTHMIN = widthLength     # 현재 얼굴 값 
 
 except KeyboardInterrupt:
     pass
