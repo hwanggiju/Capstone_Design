@@ -6,9 +6,9 @@ switch =  [36, 38, 40] # -> 실제 핀 번호[36, 38, 40]
 GPIO.setmode(GPIO.BOARD)
 
 
-GPIO.setup(switch[0], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(switch[1], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(switch[2], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(switch[0], GPIO.IN)
+GPIO.setup(switch[1], GPIO.IN)
+GPIO.setup(switch[2], GPIO.IN)
 
 up_btn = GPIO.input(switch[0])
 okay_btn = GPIO.input(switch[1])
