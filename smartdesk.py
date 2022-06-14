@@ -580,7 +580,6 @@ def main():
         fixAngle = 0
         waveSensorMean = 0
         stop = False
-        angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
         while True:
             time.sleep(0.005)
             nowTime = time.time()
