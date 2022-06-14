@@ -131,7 +131,7 @@ userDistanceMin = 70 #cm
 faceWidthMax    = 113 #pixel
 #멀때
 userDistanceMax = 114 #cm
-faceWidthMin    = 62 #pixel
+faceWidthMin    = 65 #pixel
 
 deskHeight       = 117.5 # 수정
 waveSensorHeight = 70 # 최소 길이 초기화 71.5
