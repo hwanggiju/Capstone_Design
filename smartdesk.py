@@ -579,6 +579,7 @@ def main():
         angleZ = 0
         waveSensorMean = 0
         stop = False
+        AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
         angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
         fixAngle = angleY
         while True:
