@@ -4,13 +4,13 @@ import digitalio
 from PIL import Image, ImageDraw, ImageFont
 import adafruit_ssd1306
 import os
-import time
+# import time
 
 WIDTH = 128
 HEIGHT = 64 
 BORDER = 5
 
-SET_HEIGHT = 170
+# SET_HEIGHT = 170
 
 # Use for SPI
 spi = board.SPI()
@@ -30,7 +30,7 @@ draw = ImageDraw.Draw(image)
 # def OLED_initial_setting_Height(CHANGE_HEIGHT) :
 draw.text((5, 0), 'First Setting', font = font, fill = 0)
 draw.text((5, 20), 'Input your Height', font = font, fill = 0)
-draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 0)
+#draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 0)
 oled.image(image)
 oled.show()
 
