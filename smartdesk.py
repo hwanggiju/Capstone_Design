@@ -321,7 +321,7 @@ def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
     accelAngleY = math.atan(-1 * accelX / math.sqrt(math.pow(accelY, 2) + math.pow(accelZ, 2))) * RADIANS_TO_DEGREES
     accelAngleZ = 0
     # complementary Filter
-    alpha = 0.96
+    alpha = 0.8
     GyX_deg = alpha * gyroAngleX + (1.0 - alpha) * accelAngleX
     GyY_deg = alpha * gyroAngleY + (1.0 - alpha) * accelAngleY
     GyZ_deg = gyroAngleZ
@@ -577,12 +577,10 @@ def main():
         angleX = 0
         angleY = 0
         angleZ = 0
+        fixAngle = 0
         waveSensorMean = 0
         stop = False
-        time.sleep(1)
-        AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
         angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
-        fixAngle = angleY
         while True:
             time.sleep(0.005)
             nowTime = time.time()
@@ -654,12 +652,12 @@ def main():
                     if userHeight < 130:
                         stop = driverSet(100, 1, 1, 100)  # down
                         actionPre = 0#down
-                        #fixAngle = angleY  # 현재 각도고정
+                        fixAngle = angleY  # 현재 각도고정
                         print("down")
                     elif userHeight > 140:
                         stop = driverSet(100, 2, 2, 100)  # up
                         actionPre = 2#up
-                        #fixAngle = angleY  # 현재 각도고정
+                        fixAngle = angleY  # 현재 각도고정
                         print("up")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
