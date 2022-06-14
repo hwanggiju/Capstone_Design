@@ -36,7 +36,7 @@ draw = ImageDraw.Draw(image)
 def OLED_initial_setting_Height(CHANGE_HEIGHT) :
     draw.text((5, 0), 'First Setting', font = font, fill = 0)
     draw.text((5, 20), 'Input your Height', font = font, fill = 0)
-    draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 0)
+    draw.text((5, 40), str(CHANGE_HEIGHT), font = font, fill = 0)
     oled.image(image)
     oled.show()
 
