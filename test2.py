@@ -51,20 +51,17 @@ def OLED_initial_setting_NearFaceSize(FACEWIDTHMIN) :
     draw.text((0, 20), 'Your Face Size', fill = 0)      
     draw.text((0, 40), str(FACEWIDTHMIN), fill = 0)        # widthLength 값 전달
 
-OLED_initial_setting_Height(HEIGHT)
-# def OLED_initial_setting_NearFaceSize(FACEWIDTHMIN)
 
-'''
 try :
     OLED_initial_setting_Height(SET_HEIGHT)
     while True :
-        if up_btn == 1 :
+        if GPIO.input(switch[0]) == 1 :
             SET_HEIGHT = SET_HEIGHT + 5
             OLED_initial_setting_Height(SET_HEIGHT)
-        elif down_btn == 1:
+        elif GPIO.input(switch[1]) == 1:
             SET_HEIGHT = SET_HEIGHT - 5
             OLED_initial_setting_Height(SET_HEIGHT)
-        elif okay_btn == 1:
+        elif GPIO.input(switch[2]) == 1:
             SET_HEIGHT = SET_HEIGHT
             oled.fill(0)
             oled.show()
@@ -72,9 +69,8 @@ try :
     
     while True :
         OLED_initial_setting_NearFaceSize(FACEWIDTHMIN)
-        if okay_btn == 1:
+        if GPIO.input(switch[2]) == 1:
             FACEWIDTHMIN = widthLength     # 현재 얼굴 값 
 
 except KeyboardInterrupt:
     pass
-    '''

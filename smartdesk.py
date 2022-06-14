@@ -139,6 +139,9 @@ waveSensorHeight = 70 # 최소 길이 초기화 71.5
 fixAngle        = 0 #모터 작동시 고정되는 각도값
 userDistance    = 0
 
+actionNow = 0  # 0:down 1:stop 2:up
+actionPre = 1
+
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
@@ -423,14 +426,22 @@ def changePWM(enA, enB):
 
 #각도 자세유지 코드
 def HorizontalHold(nowAngle, compareAngle):
-    pwmA = 80
-    pwmB = 80
-    if nowAngle > compareAngle:
-        pwmA = 60
-        pwmB = 100
-    elif nowAngle < compareAngle:
-        pwmA = 100   # 이건 부하 때문인감??
-        pwmB = 60
+    pwmA = 70
+    pwmB = 70
+    if actionPre == 2:
+        if nowAngle > compareAngle:
+            pwmA = 40
+            pwmB = 100
+        elif nowAngle < compareAngle:
+            pwmA = 100   # 이건 부하 때문인감??
+            pwmB = 40
+    elif actionPre == 0:
+        if nowAngle < compareAngle:
+            pwmA = 40
+            pwmB = 100
+        elif nowAngle > compareAngle:
+            pwmA = 100   # 이건 부하 때문인감??
+            pwmB = 40
     changePWM(pwmA, pwmB)
 
 # driver set
@@ -537,8 +548,7 @@ def main():
         angleY = 0
         angleZ = 0
         fixAngle = 0
-        actionNow = 0  # 0:down 1:stop 2:up
-        actionPre = 1
+        
         waveSensorMean = 0
         stop = False
         WaveAVG = [0 for i in range(10)]
