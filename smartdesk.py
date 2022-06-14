@@ -578,8 +578,6 @@ def main():
             print('Net open failed!')
             sys.exit()
         
-        OLED_initial_setting_Height(SET_HEIGHT)
-        
         angleX = 0
         angleY = 0
         angleZ = 0
