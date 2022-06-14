@@ -583,10 +583,12 @@ def main():
             time.sleep(0.005)
             nowTime = time.time()
             _, frame = cap.read()
-            print("...")
+            
             rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
             if frame is None:
+                print("fail")
                 break
+            
             blob = cv2.dnn.blobFromImage(rotate_frame,  # image
                                         1,  # scalefactor
                                         (200, 200),  # image Size
