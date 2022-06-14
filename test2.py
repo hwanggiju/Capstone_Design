@@ -8,7 +8,7 @@ import os
 import time
 
 # GPIO 번호 사용
-switch =  [16, 20, 21] # -> 실제 핀 번호[36, 38, 40]
+# switch =  [16, 20, 21] # -> 실제 핀 번호[36, 38, 40]
 
 # GPIO.setup(switch[0], GPIO.IN)
 # GPIO.setup(switch[1], GPIO.IN)
@@ -44,19 +44,24 @@ draw = ImageDraw.Draw(image)
 def OLED_initial_setting_Height(CHANGE_HEIGHT) :
     draw.text((5, 0), 'First Setting', fill = 0)
     draw.text((5, 20), 'Input your Height', fill = 0)
-    draw.text((0, 40), str(CHANGE_HEIGHT), align=CENTER, fill = 0)
-    oled.image(image)
-    oled.show()  
+    draw.text((5, 40), str(CHANGE_HEIGHT), align=CENTER, fill = 0)
 
 try :
     OLED_initial_setting_Height(SET_HEIGHT)
+    oled.image(image)
+    oled.show()  
+    
     while True :
         if digitalio.DigitalInOut(board.D16) == 1 :
             SET_HEIGHT = SET_HEIGHT + 5
             OLED_initial_setting_Height(SET_HEIGHT)
+            oled.image(image)
+            oled.show() 
         elif digitalio.DigitalInOut(board.D20) == 1:
             SET_HEIGHT = SET_HEIGHT - 5
             OLED_initial_setting_Height(SET_HEIGHT)
+            oled.image(image)
+            oled.show() 
         elif digitalio.DigitalInOut(board.D21) == 1:
             SET_HEIGHT = SET_HEIGHT
             oled.fill(0)
