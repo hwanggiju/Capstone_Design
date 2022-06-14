@@ -497,9 +497,11 @@ def waveFun() :
     
     pulse_start = time.time()
         
-    time.sleep(0.001)
     while GPIO.input(wave[1]) == 1 :
         pulse_end = time.time()
+        time.sleep(0.001)
+        if pulse_end -pulse_start > 1:
+            break
         
     pulse_duration = pulse_end - pulse_start
     distance = pulse_duration * 17000
@@ -599,8 +601,7 @@ def main():
             (h, w) = rotate_frame.shape[:2]
             detect = detect[0, 0, :, :]
             
-            #waveSensorHeight = waveFun() # 책상 높이
-            #print('test')
+            waveSensorHeight = waveFun() # 책상 높이
             # 3) accel, gyro의 Raw data 읽기, 
             AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
             #print('test')
