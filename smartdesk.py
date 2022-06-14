@@ -96,7 +96,6 @@ oled = adafruit_ssd1306.SSD1306_SPI(WIDTH, HEIGHT, spi, oled_dc, oled_reset, ole
 oled.fill(0)
 oled.show()
 
-
 # 하드웨어 연결 구성
 # Motor Driver [enA/in1/in2/in3/in4/enB] -> [35, 13, 15, 29, 31, 33]
 driver = [19, 27, 22, 5, 6, 13]
@@ -114,9 +113,9 @@ switch = [16, 20, 21]
 wave = [24, 23]
 
 # 사용자 정의 변수
-UserTall = 170      # 키는 입력으로 받는다
+UserTall = 0      # 키는 입력으로 받는다
 # 앉았을 때 적정 책상 높이
-bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18)
+bestDeskTall = 0 # (UserTall * 0.23) + (UserTall * 0.18)
 # 일어섰을 때 적정 높이 = UserTall - bestDeskTall -> 초음파 거리
 # minHeight = 80
 # seatdownHeight = 0
@@ -149,7 +148,7 @@ faceWidthAverage = [((faceWidthMax + faceWidthMin)/2) for col in range(timeNum)]
 cameraWidth = 480
 cameraHeight = 640
 cameraAngle = 56 # 카메라 수평 화각
-cameraWaveDifference = 46 #카메라 - 센서간 높이차이
+cameraWaveDifference = 46 # 카메라 - 센서간 높이차이
 
 # 각도
 deskAngle = -1 #28 # 책상 판과 카메라 중심까지의 각도
@@ -300,7 +299,7 @@ def cal_angle_gyro(GyX, GyY, GyZ):
 # 미분을 통해 정상상태로 가는 속도 조절 : 오버슈트 개선
 def PID(Kp, Ki, Kd):
     integral = 0
-# 자이로 nani 개발중 테스트 안해봄
+    
 def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
     global GyX_deg, GyY_deg, GyZ_deg
     global past1 #기존 시간값 충돌방지
@@ -553,7 +552,9 @@ def main():
                 oled.show()
                 if GPIO.input(switch[1]) == 1 :
                     UserTall = SET_HEIGHT
+                    bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18)
                     break
+                
         global nowTime, preTime
         global actionPre, actionNow
         cap = cv2.VideoCapture(0)
