@@ -40,10 +40,17 @@ def OLED_initial_setting_Height(CHANGE_HEIGHT) :
     oled.image(image)
     oled.show()
 
+def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
+    draw.text((5, 0), 'First Setting', font = font, fill = 0)
+    draw.text((5, 20), 'Input your Height', font = font, fill = 0)
+    draw.text((5, 40), str(CHANGE_HEIGHT), font = font, fill = 255)
+    oled.image(image)
+    oled.show()
 OLED_initial_setting_Height(SET_HEIGHT)     
 try :
     while True :
         if GPIO.input(switch[0]) == 1 :
+            OLED_initial_setting_Height1(SET_HEIGHT)
             SET_HEIGHT = SET_HEIGHT + 5
             oled.fill(0)
             oled.show()
@@ -52,6 +59,7 @@ try :
             time.sleep(0.2)
             
         elif GPIO.input(switch[2]) == 1:
+            OLED_initial_setting_Height1(SET_HEIGHT)
             SET_HEIGHT = SET_HEIGHT - 5
             oled.fill(0)
             oled.show()
