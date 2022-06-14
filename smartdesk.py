@@ -430,8 +430,8 @@ def HorizontalHold(nowAngle, compareAngle):
     pwmB = 0
     diffPwm = np.sin((nowAngle-compareAngle)* 90 * np.pi/180) * 40
     if actionPre == 2:
-        pwmA = 60 + diffPwm
-        pwmB = 60 - diffPwm
+        pwmA = 60 - diffPwm
+        pwmB = 60 + diffPwm
         '''
         if nowAngle > compareAngle:
             pwmA = 60
@@ -441,8 +441,8 @@ def HorizontalHold(nowAngle, compareAngle):
             pwmB = 60
             '''
     elif actionPre == 0:
-        pwmA = 60 - diffPwm
-        pwmB = 60 + diffPwm
+        pwmA = 60 + diffPwm
+        pwmB = 60 - diffPwm
         '''
         if nowAngle < compareAngle:
             pwmA = 60
