@@ -428,14 +428,14 @@ def changePWM(enA, enB):
 def HorizontalHold(nowAngle, compareAngle):
     pwmA = 80
     pwmB = 80
-    if actionPre == 2:
+    if actionPre == 0:
         if nowAngle > compareAngle:
             pwmA = 60
             pwmB = 100
         elif nowAngle < compareAngle:
             pwmA = 100   # 이건 부하 때문인감??
             pwmB = 60
-    elif actionPre == 0:
+    elif actionPre == 2:
         if nowAngle < compareAngle:
             pwmA = 60
             pwmB = 100
