@@ -497,13 +497,11 @@ def waveFun() :
     
     pulse_start = time.time()
         
-    while GPIO.input(wave[1]) == 1 :
+    while GPIO.input(wave[1]) == 0 :
         pulse_end = time.time()
-        time.sleep(0.001)
-        if pulse_end -pulse_start > 1:
-            break
-            pulse_start = pulse_end
-        
+        if pulse_end - pulse_start > 1:
+            return 0
+    
     pulse_duration = pulse_end - pulse_start
     distance = pulse_duration * 17000
     distance = round(distance, 5)
