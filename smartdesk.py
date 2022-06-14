@@ -619,7 +619,7 @@ def main():
                         actionPre = 0#down
                         fixAngle = Gy_Angle  # 현재 각도고정
                         print("down\n")
-                    elif userHeight >130:
+                    elif userHeight > 130:
                         stop = driverSet(100, 2, 2, 100)  # up
                         actionPre = 2#up
                         fixAngle = Gy_Angle  # 현재 각도고정
@@ -636,8 +636,6 @@ def main():
                     elif userHeight >= 120 and userHeight <= 130 and actionPre != 1:
                         stop = False
 
-                if waveSensorMean < bestDeskTall :
-                    stop = driverSet(0, 0, 0, 0)
                     
             print("초음파 측정 거리 : %d\n" % (waveSensorHeight))
             # cv2.imshow('Facerec_Video', rotate_frame)
