@@ -12,7 +12,7 @@ HEIGHT = 64
 BORDER = 5
 
 SET_HEIGHT = 170
-spi_arr = [11, 10, 25, 17, 8]
+switch = [16, 20, 21]
 
 # Use for SPI
 spi = board.SPI()
@@ -21,7 +21,9 @@ oled_cs = digitalio.DigitalInOut(board.D8)
 oled_dc = digitalio.DigitalInOut(board.D17)
 oled = adafruit_ssd1306.SSD1306_SPI(WIDTH, HEIGHT, spi, oled_dc, oled_reset, oled_cs)
 
-GPIO.setup()
+GPIO.setup(switch[0], GPIO.IN)
+GPIO.setup(switch[1], GPIO.IN)
+GPIO.setup(switch[2], GPIO.IN)
 
 # Clear display.
 oled.fill(0)
@@ -41,19 +43,21 @@ def OLED_initial_setting_Height(CHANGE_HEIGHT) :
 OLED_initial_setting_Height(SET_HEIGHT)     
 try :
     while True :
-        if digitalio.DigitalInOut(board.D16) == 1 :
+        if GPIO.input(switch[0]) == 1 :
             SET_HEIGHT = SET_HEIGHT + 5
             OLED_initial_setting_Height(SET_HEIGHT)
             oled.image(image)
             oled.show()
             time.sleep(0.2)
-        elif digitalio.DigitalInOut(board.D20) == 1:
+            
+        elif GPIO.input(switch[2]) == 1:
             SET_HEIGHT = SET_HEIGHT - 5
             OLED_initial_setting_Height(SET_HEIGHT)
             oled.image(image)
             oled.show()
             time.sleep(0.2)
-        elif digitalio.DigitalInOut(board.D21) == 1:
+            
+        elif GPIO.input(switch[1]) == 1:
             SET_HEIGHT = SET_HEIGHT
             oled.fill(0)
             oled.show()
