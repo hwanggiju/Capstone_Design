@@ -619,7 +619,7 @@ def main():
                         actionPre = 0#down
                         fixAngle = Gy_Angle  # 현재 각도고정
                         print("down\n")
-                    elif UserTall - 2.5 < userHeight and userHeight < UserTall + 2.5:
+                    elif userHeight >130:
                         stop = driverSet(100, 2, 2, 100)  # up
                         actionPre = 2#up
                         fixAngle = Gy_Angle  # 현재 각도고정
