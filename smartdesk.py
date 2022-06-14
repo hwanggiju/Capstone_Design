@@ -179,6 +179,8 @@ GPIO.output(wave[0], False)
 oled.fill(0)
 oled.show()
 font = ImageFont.truetype('malgun.ttf', 15)
+font1 = ImageFont.truetype('malgun.ttf', 20)
+font2 = ImageFont.truetype('malgun.ttf', 10)
 
 image = Image.new('1', (oled.width, oled.height), 255)
 draw = ImageDraw.Draw(image)
@@ -320,7 +322,7 @@ def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
     accelAngleY = math.atan(-1 * accelX / math.sqrt(math.pow(accelY, 2) + math.pow(accelZ, 2))) * RADIANS_TO_DEGREES
     accelAngleZ = 0
     # complementary Filter
-    alpha = 0.5
+    alpha = 0.86
     GyX_deg = alpha * gyroAngleX + (1.0 - alpha) * accelAngleX
     GyY_deg = alpha * gyroAngleY + (1.0 - alpha) * accelAngleY
     GyZ_deg = gyroAngleZ
@@ -433,7 +435,7 @@ def changePWM(enA, enB):
 def HorizontalHold(nowAngle, compareAngle):
     pwmA = 100
     pwmB = 100
-    diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 35)
+    diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 70)
     if actionPre == 2:
         if diffPwm >= 0:
             pwmA -= diffPwm
@@ -480,8 +482,6 @@ def driverSet(enA, motorA, motorB, enB):
         else:#stop
             GPIO.output(driver[3], 0)
             GPIO.output(driver[4], 0)
-        #GPIO.output(driver[0], enA)
-        #GPIO.output(driver[5], enB)
         changePWM(enA, enB)
         initial = True
         preTime = nowTime
@@ -508,14 +508,14 @@ def waveFun() :
     return distance
     
 def OLED_initial_setting_Height(CHANGE_HEIGHT) :
-    draw.text((5, 0), 'First Setting', font = font, fill = 0)
+    draw.text((5, 0), '-First Setting-', font = font, fill = 0)
     draw.text((5, 20), 'Input your Height', font = font, fill = 0)
     draw.text((5, 40), str(CHANGE_HEIGHT), font = font, fill = 0)
     oled.image(image)
     oled.show()
 
 def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
-    draw.text((5, 0), 'First Setting', font = font, fill = 255)
+    draw.text((5, 0), '-First Setting-', font = font, fill = 255)
     draw.text((5, 20), 'Input your Height', font = font, fill = 255)
     draw.text((5, 40), str(CHANGE_HEIGHT), font = font, fill = 255)
     oled.image(image)
@@ -523,9 +523,14 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
 
 # main code
 def main():
-    global actionNow, actionPre
+    global actionNow, actionPre, bestDeskTall
     try :
         SET_HEIGHT = 170
+        draw.text((5, 0), 'WELCOME~!!', font = font1, fill = 0)
+        draw.text((5, 20), 'Smart Desk', font = font1, fill = 0)
+        time.sleep(2)
+        draw.text((5, 0), 'WELCOME~!!', font = font1, fill = 255)
+        draw.text((5, 20), 'Smart Desk', font = font1, fill = 255)
         OLED_initial_setting_Height(SET_HEIGHT)
         while True :
             if GPIO.input(switch[2]) == 1 :
@@ -552,7 +557,7 @@ def main():
                 oled.show()
                 if GPIO.input(switch[1]) == 1 :
                     UserTall = SET_HEIGHT
-                    bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18)
+                    bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18) # 초음파 거리 값
                     break
                 
         global nowTime, preTime
@@ -581,6 +586,8 @@ def main():
         fixAngle = 0
         waveSensorMean = 0
         stop = False
+        HeightAVG = [UserTall for i in range(1000)]
+        WaveAVG = [waveSensorHeight for i in range(15)]
         while True:
             time.sleep(0.005)
             nowTime = time.time()
@@ -602,6 +609,10 @@ def main():
             detect = detect[0, 0, :, :]
             
             waveSensorHeight = waveFun() # 책상 높이
+            WaveAVG[0] = waveSensorHeight
+            for i in range(len(WaveAVG) - 1) :
+                WaveAVG[len(WaveAVG) - i - 1] = WaveAVG[len(WaveAVG) - i - 2]
+            waveSensorMean = np.mean(WaveAVG)
             # 3) accel, gyro의 Raw data 읽기, 
             AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
             #print('test')
@@ -644,18 +655,35 @@ def main():
 
                 # 얼굴폭 / 계산 좌표 X / 계산 좌표 Y / 카메라 높이
                 userHeight = getUserHeight(widthLength,center_x,center_y-heightLength/2, waveSensorHeight+cameraWaveDifference+1.5)
-
-                print("테스트식 결과 :" + str(userHeight))
-                    
+                HeightAVG[0] = userHeight
+                for i in range(len(HeightAVG) - 1):
+                    HeightAVG[len(HeightAVG) - i - 1] = HeightAVG[len(HeightAVG) - i - 2]
+                # 사용자의 현재 키
+                # 현재 키의 값 변화를 천천히 바꿔주기 위함
+                userHeightAVG = np.mean(HeightAVG)
+                print("테스트식 결과 :" + str(userHeightAVG))
+                
+                # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                 #높이에 따른 모터작동
-                if stop != True: #드라이버 pin Set 변경 후 반복 변경 방지
-                    if userHeight < 130:
-                        stop = driverSet(100, 1, 1, 100)  # down
+                if stop != True: # 드라이버 pin Set 변경 후 반복 변경 방지
+                    # 앉았을 때, 책상의 최적 높이 설정
+                    if int(bestDeskTall) > waveSensorMean :
+                        stop = driverSet(100, 2, 2, 100)
+                        stop = False
+                    # 앉았을 때, 책상의 최적 높이 고정
+                    if int(bestDeskTall) == waveSensorMean :
+                        LimitHeight = HeightAVG - bestDeskTall # 최적의 값 
+                        stop = driverSet(0, 0, 0, 0)
+                        stop = False
+                    # down
+                    if (userHeightAVG - waveSensorMean) < LimitHeight:
+                        stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
                         fixAngle = angleY  # 현재 각도고정
                         print("down")
-                    elif userHeight > 140:
-                        stop = driverSet(100, 2, 2, 100)  # up
+                    # up    
+                    elif (userHeightAVG - waveSensorMean) > LimitHeight:
+                        stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
                         fixAngle = angleY  # 현재 각도고정
                         print("up")
@@ -664,20 +692,14 @@ def main():
                         actionPre = 1#stop
                         print("stop")
                 else:
-                    if userHeight < 130 and actionPre != 0:
+                    if (userHeightAVG - waveSensorMean) < LimitHeight and actionPre != 0:
                         stop = False
-                    elif userHeight > 140 and actionPre != 2:
+                    elif (userHeightAVG - waveSensorMean) > LimitHeight and actionPre != 2:
                         stop = False
-                    elif userHeight >= 130 and userHeight <= 140 and actionPre != 1:
+                    elif (userHeightAVG - waveSensorMean) == LimitHeight and actionPre != 1:
                         stop = False
 
-                    
-            print("초음파 측정 거리 : %d\n" % (waveSensorHeight))
-            # cv2.imshow('Facerec_Video', rotate_frame)
-            #key = cv2.waitKey(1) & 0xFF
-            # if key == 27:
-            #    GPIO.cleanup()
-            #    break
+            print("초음파 측정 거리 : %d\n" % (waveSensorMean))
     except KeyboardInterrupt :
         pass
     
