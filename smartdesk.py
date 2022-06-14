@@ -426,12 +426,14 @@ def changePWM(enA, enB):
 
 #각도 자세유지 코드
 def HorizontalHold(nowAngle, compareAngle):
-    pwmA = 0
-    pwmB = 0
+    pwmA = 100
+    pwmB = 100
     diffPwm = np.sin((nowAngle-compareAngle) * 60 * np.pi/180) * 50
     if actionPre == 2:
-        pwmA = 100 - diffPwm
-        pwmB = 100
+        if diffPwm >= 0:
+            pwmA -= diffPwm
+        else:
+            pwmB += diffPwm
         '''
         if nowAngle > compareAngle:
             pwmA = 60
@@ -441,8 +443,10 @@ def HorizontalHold(nowAngle, compareAngle):
             pwmB = 60
             '''
     elif actionPre == 0:
-        pwmA = 100
-        pwmB = 100 - diffPwm
+        if diffPwm >= 0:
+            pwmB -= diffPwm
+        else:
+            pwmA += diffPwm
         '''
         if nowAngle < compareAngle:
             pwmA = 60
