@@ -629,11 +629,13 @@ def main():
                         stop = driverSet(100, 1, 1, 100)  # down
                         actionPre = 0#down
                         fixAngle = Gy_Angle  # 현재 각도고정
+                        fixAngle = 0
                         print("down\n")
                     elif userHeight > 130:
                         stop = driverSet(100, 2, 2, 100)  # up
                         actionPre = 2#up
                         fixAngle = Gy_Angle  # 현재 각도고정
+                        fixAngle = 0
                         print("up\n")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
