@@ -47,26 +47,23 @@ def OLED_initial_setting_Height(CHANGE_HEIGHT) :
     draw.text((5, 40), str(CHANGE_HEIGHT), fill = 0)
     oled.image(image)
     oled.show()
-try :
-    OLED_initial_setting_Height(SET_HEIGHT)  
-    '''
-    while True :
-        if digitalio.DigitalInOut(board.D16) == 1 :
-            SET_HEIGHT = SET_HEIGHT + 5
-            OLED_initial_setting_Height(SET_HEIGHT)
-            oled.image(image)
-            oled.show() 
-        elif digitalio.DigitalInOut(board.D20) == 1:
-            SET_HEIGHT = SET_HEIGHT - 5
-            OLED_initial_setting_Height(SET_HEIGHT)
-            oled.image(image)
-            oled.show() 
-        elif digitalio.DigitalInOut(board.D21) == 1:
-            SET_HEIGHT = SET_HEIGHT
-            oled.fill(0)
-            oled.show()
-            break
-    '''
-except KeyboardInterrupt:
-    print('end')
-    pass
+    
+    
+OLED_initial_setting_Height(SET_HEIGHT)  
+
+while True :
+    if digitalio.DigitalInOut(board.D16) == 1 :
+        SET_HEIGHT = SET_HEIGHT + 5
+        OLED_initial_setting_Height(SET_HEIGHT)
+        oled.image(image)
+        oled.show() 
+    elif digitalio.DigitalInOut(board.D20) == 1:
+        SET_HEIGHT = SET_HEIGHT - 5
+        OLED_initial_setting_Height(SET_HEIGHT)
+        oled.image(image)
+        oled.show() 
+    elif digitalio.DigitalInOut(board.D21) == 1:
+        SET_HEIGHT = SET_HEIGHT
+        oled.fill(0)
+        oled.show()
+        break
