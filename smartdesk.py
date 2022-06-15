@@ -434,8 +434,8 @@ def changePWM(enA, enB):
 def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
     pwmA = 0
     pwmB = 0
-    diffPwmA = 100 - int(30 * np.sin(10 * abs(nowAngle-compareAngle) * np.pi/180))
-    diffPwmB = 100 - int(30 * np.cos(10 * abs(nowAngle-compareAngle) * np.pi/180))
+    diffPwmA = 100 - int(25 * np.sin(15 * abs(nowAngle-compareAngle) * np.pi/180))
+    diffPwmB = 100 - int(25 * np.cos(15 * abs(nowAngle-compareAngle) * np.pi/180))
     print(np.sin(abs(nowAngle-compareAngle) * np.pi/180))
     print(np.cos(abs(nowAngle-compareAngle) * np.pi/180))
     if actionPre == 2 :
@@ -443,21 +443,15 @@ def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
             pwmA = diffPwmA
             pwmB = diffPwmB
         elif nowAngle > compareAngle: # enA가 enB보다 느려야한다. 올라갈 때 기준이다. 반대
-            pwmA = diffPwmA
-            pwmB = diffPwmB
-        else :          # 값이 서로 비슷해지면 pwm 값을 유지하면서 올라간다
-            pwmA = diffPwmA
-            pwmB = diffPwmB
+            pwmA = diffPwmB
+            pwmB = diffPwmA
     elif actionPre == 0 :
         if (nowAngle < compareAngle) : 
             pwmA = diffPwmA
             pwmB = diffPwmB
         elif (nowAngle > compareAngle):
-            pwmA = diffPwmA
-            pwmB = diffPwmB
-        else :
-            pwmA = diffPwmA
-            pwmB = diffPwmB
+            pwmA = diffPwmB
+            pwmB = diffPwmA
     changePWM(pwmA, pwmB)
     print(str(pwmA) + '/' + str(pwmB))
     return i
