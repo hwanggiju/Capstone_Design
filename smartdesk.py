@@ -420,7 +420,7 @@ def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
         faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
     return nowHeight + calHeight
 
-# PWM 값만 바꿀 때.
+# PWM 값만 바꿀 때
 def changePWM(enA, enB):
     if enA < 0 or enA > 100: #range over check
         return False
@@ -431,9 +431,7 @@ def changePWM(enA, enB):
     return True
 
 #각도 자세유지 코드
-i=0
-def HorizontalHold(nowAngle, compareAngle):
-    global i
+def HorizontalHold(nowAngle, compareAngle, i):
     fixPwmA = 0
     fixPwmB = 0
     pwmA = 80
@@ -445,17 +443,18 @@ def HorizontalHold(nowAngle, compareAngle):
                 pwmA = pwmA + i
                 pwmB = pwmB
                 i += 1
-                if i == 20 :
-                    i = 1
+                if i == 21 :
+                    i -= 1
                 changePWM(pwmA, pwmB)
+                return i
             elif nowAngle > compareAngle: # enA가 enB보다 느려야한다. 올라갈 때 기준이다. 반대
                 pwmA = pwmA
                 pwmB = pwmB + i
                 i += 1
-                if i == 20 :
-                    i = 1
+                if i == 21 :
+                    i -= 1
                 changePWM(pwmA, pwmB)
-                changePWM(pwmA, pwmB)
+                return i
             else :
                 fixPwmA = pwmA
                 fixPwmB = pwmB
@@ -622,7 +621,7 @@ def main():
         HeightAVG = [130 for i in range(30)]
         WaveAVG = [waveSensorHeight for i in range(15)]
         fixAngle = angleY
-        
+        i = 1
         while True:
             time.sleep(0.005)
             nowTime = time.time()
@@ -661,7 +660,7 @@ def main():
             print("nani = ", round(angleY-fixAngle, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            HorizontalHold(angleY, fixAngle)
+            i = HorizontalHold(angleY, fixAngle, i)
             
             userNum = 0
             for i in range(detect.shape[0]):
