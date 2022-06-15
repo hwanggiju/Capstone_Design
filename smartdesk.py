@@ -453,11 +453,11 @@ def HorizontalHold(nowAngle, compareAngle, i):
             changePWM(pwmA, pwmB) 
             print(str(pwmA) + '/' + str(pwmB))
     elif actionPre == 0 :
-        if (nowAngle < compareAngle) and val > 71 : 
+        if (nowAngle < compareAngle): 
             pwmA = pwmA - diffPwm
             pwmB = pwmB + diffPwm
             print(str(pwmA) + '/' + str(pwmB))
-        elif (nowAngle > compareAngle) and val > 71:
+        elif (nowAngle > compareAngle):
             pwmA = pwmA + diffPwm
             pwmB = pwmB - diffPwm
             print(str(pwmA) + '/' + str(pwmB))
