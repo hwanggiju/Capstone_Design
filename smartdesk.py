@@ -606,7 +606,6 @@ def main():
         fixAngle = angleY
         
         while True:
-            print(fixAngle)
             time.sleep(0.005)
             nowTime = time.time()
             _, frame = cap.read()
