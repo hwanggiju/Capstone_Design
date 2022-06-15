@@ -435,6 +435,7 @@ def HorizontalHold(nowAngle, compareAngle):
     pwmA = 100
     pwmB = 100
     diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 70)
+    print(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180))
     if actionPre == 2:
         if diffPwm >= 0:
             pwmA -= diffPwm
@@ -620,9 +621,6 @@ def main():
             for i in range(len(WaveAVG) - 1) :
                 WaveAVG[len(WaveAVG) - i - 1] = WaveAVG[len(WaveAVG) - i - 2]
             waveSensorMean = np.mean(WaveAVG) # 초음파 평균 거리
-            
-            if (bestDeskTall - (waveSensorMean+3)) > 0 :
-                FirstSet = True
             
             # 3) accel, gyro의 Raw data 읽기, 
             AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
