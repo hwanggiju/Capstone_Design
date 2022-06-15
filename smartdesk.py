@@ -582,10 +582,10 @@ def main():
             print('Net open failed!')
             sys.exit()
         count = 0
-        while count <= 1000 :
+        while count <= 100000 :
             stop = driverSet(100, 1, 1, 100) 
             count += 1
-            if count == 1000:
+            if count == 100000:
                 stop = driverSet(0, 0, 0, 0) 
             
         angleX = 0
