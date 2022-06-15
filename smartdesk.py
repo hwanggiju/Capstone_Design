@@ -446,8 +446,8 @@ def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
             pwmA = diffPwmA
             pwmB = diffPwmB
         else :          # 값이 서로 비슷해지면 pwm 값을 유지하면서 올라간다
-            pwmA = pwmA
-            pwmB = pwmB
+            pwmA = diffPwmA
+            pwmB = diffPwmB
     elif actionPre == 0 :
         if (nowAngle < compareAngle) : 
             pwmA = diffPwmA
