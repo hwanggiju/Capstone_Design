@@ -432,35 +432,29 @@ def changePWM(enA, enB):
 
 #각도 자세유지 코드
 def HorizontalHold(nowAngle, compareAngle, i):
-    fixPwmA = 0
-    fixPwmB = 0
     pwmA = 70
     pwmB = 70
     # diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 30)
     if actionPre == 2 :
-        if fixPwmA == 0 and fixPwmB == 0:
-            if nowAngle < compareAngle : # enA가 enB보다 빨라야한다. 올라갈 때 기준이다.  얼마나 빨라야하는가? enA에 보상을 준다. enB에게는 채찍을 준다
-                pwmA = pwmA + i
-                pwmB = pwmB - i
-                i += 1
-                if i == 31 :
-                    i -= 1
-                changePWM(pwmA, pwmB)
-                print(str(pwmA) + " / " + str(pwmB))
-                return i
-            elif nowAngle > compareAngle: # enA가 enB보다 느려야한다. 올라갈 때 기준이다. 반대
-                pwmA = pwmA - i
-                pwmB = pwmB + i
-                i += 1
-                if i == 31 :
-                    i -= 1
-                changePWM(pwmA, pwmB)
-                return i
-            else :
-                fixPwmA = pwmA
-                fixPwmB = pwmB
-                changePWM(fixPwmA, fixPwmB)
+        if nowAngle < compareAngle : # enA가 enB보다 빨라야한다. 올라갈 때 기준이다.  얼마나 빨라야하는가? enA에 보상을 준다. enB에게는 채찍을 준다
+            pwmA = pwmA + i
+            pwmB = pwmB - i
+            i += 1
+            if i == 31 :
+                i -= 1
+            changePWM(pwmA, pwmB)
+            return i
+        elif nowAngle > compareAngle: # enA가 enB보다 느려야한다. 올라갈 때 기준이다. 반대
+            pwmA = pwmA - i
+            pwmB = pwmB + i
+            i += 1
+            if i == 31 :
+                i -= 1
+            changePWM(pwmA, pwmB)
+            return i
         else :
+            fixPwmA = pwmA
+            fixPwmB = pwmB
             changePWM(fixPwmA, fixPwmB)
         
     '''
