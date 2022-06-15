@@ -685,13 +685,13 @@ def main():
                     
                     # 앉았을 때, 책상의 최적 높이 설정
                         # down
-                    if userHeightAVG < 130:
+                    if userHeightAVG < 140:
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
                         fixAngle = angleY  # 현재 각도고정
                         print("down")
                     # up    
-                    elif userHeightAVG > 140:
+                    elif userHeightAVG > 150:
                         stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
                         fixAngle = angleY  # 현재 각도고정
