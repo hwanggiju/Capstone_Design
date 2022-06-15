@@ -582,6 +582,8 @@ def main():
             print('Net open failed!')
             sys.exit()
         
+        stop = driverSet(100, 1, 1, 100)
+        time.sleep(7)
         angleX = 0
         angleY = 0
         angleZ = 0
@@ -590,7 +592,7 @@ def main():
         LimitHeight = 0
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False
-        HeightAVG = [UserTall for i in range(1000)]
+        HeightAVG = [130 for i in range(1000)]
         WaveAVG = [waveSensorHeight for i in range(15)]
         while True:
             time.sleep(0.005)
