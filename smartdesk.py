@@ -590,13 +590,13 @@ def main():
         if net.empty() :
             print('Net open failed!')
             
+        fixAngle = 0.
         AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
         angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
         
         pwmA_val = 0
         pwmB_val = 0
         angleY = 0
-        fixAngle = 0.
         waveSensorMean = 0
         LimitHeight = 130
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
