@@ -581,6 +581,11 @@ def main():
         if net.empty() :
             print('Net open failed!')
             sys.exit()
+            
+        stop = driverSet(100, 1, 1, 100) 
+        time.sleep(10)
+        if stop == True :
+            stop = driverSet(0, 0, 0, 0) 
         
         angleX = 0
         angleY = 0
