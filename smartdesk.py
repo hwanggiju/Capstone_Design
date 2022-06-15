@@ -434,13 +434,13 @@ def changePWM(enA, enB):
 def HorizontalHold(nowAngle, compareAngle):
     pwmA = 80
     pwmB = 80
-    diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 30)
+    # diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 30)
     if (nowAngle-compareAngle) < 0 :
-        pwmA += diffPwm
-        pwmB += diffPwm
+        pwmA = 5 * np.cos(nowAngle-compareAngle * np.pi/180) + pwmA
+        pwmB = 5 * (1-np.cos(nowAngle-compareAngle * np.pi/180)) + pwmB
     elif (nowAngle-compareAngle) > 0:
-        pwmA += diffPwm
-        pwmB += diffPwm
+        pwmA = (1-np.cos(nowAngle-compareAngle * np.pi/180)) + pwmA
+        pwmB = np.cos(nowAngle-compareAngle * np.pi/180) + pwmB
     else :
         pwmA = pwmA
         pwmB = pwmB
@@ -702,11 +702,11 @@ def main():
                         actionPre = 1#stop
                         print("stop")
                 else:
-                    if userHeightAVG < 130 and actionPre != 0:
+                    if userHeightAVG < 140 and actionPre != 0:
                         stop = False
-                    elif userHeightAVG > 140 and actionPre != 2:
+                    elif userHeightAVG > 150 and actionPre != 2:
                         stop = False
-                    elif userHeightAVG > 130 and userHeightAVG < 140 and actionPre != 1 :
+                    elif userHeightAVG > 140 and userHeightAVG < 150 and actionPre != 1 :
                         stop = False
 
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
