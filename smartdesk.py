@@ -454,10 +454,10 @@ def HorizontalHold(nowAngle, compareAngle, i):
             changePWM(pwmA, pwmB)
             print(str(pwmA) + " / " + str(pwmB))
             return i
-        else :
+        else :          # 값이 서로 비슷해지면 pwm 값을 유지하면서 올라간다
             pwmA = pwmA
             pwmB = pwmB
-            changePWM(pwmA, pwmB)
+            changePWM(pwmA, pwmB) 
     if actionPre == 0 :
         if nowAngle < compareAngle : 
             pwmA = pwmA + i
