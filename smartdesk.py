@@ -580,11 +580,8 @@ def main():
         net = cv2.dnn.readNet(model, config)
         if net.empty() :
             print('Net open failed!')
-            sys.exit()
-        while True :
-            stop = driverSet(100, 1, 1, 100) 
-            if KeyboardInterrupt :
-                break
+            
+        
             
         angleX = 0
         angleY = 0
