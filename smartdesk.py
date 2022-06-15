@@ -133,7 +133,6 @@ userDistanceMax = 114 #cm
 faceWidthMin    = 65 #pixel
 
 deskHeight       = 117.5 # 수정
-waveSensorHeight = 70 # 최소 길이 초기화 71.5
 
 fixAngle        = 0 #모터 작동시 고정되는 각도값
 userDistance    = 0
@@ -588,6 +587,7 @@ def main():
         angleZ = 0
         fixAngle = 0
         waveSensorMean = 0
+        waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False
         HeightAVG = [UserTall for i in range(1000)]
         WaveAVG = [waveSensorHeight for i in range(15)]
