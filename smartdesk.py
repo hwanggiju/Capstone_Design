@@ -435,10 +435,10 @@ def HorizontalHold(nowAngle, compareAngle):
     pwmA = 80
     pwmB = 80
     # diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 30)
-    if (nowAngle-compareAngle) < 0 :
+    if (nowAngle-compareAngle) > 0 :
         pwmA = 5 * (1-np.cos(nowAngle-compareAngle * np.pi/180)) + pwmA
         pwmB = 5 * np.cos(nowAngle-compareAngle * np.pi/180) + pwmB
-    elif (nowAngle-compareAngle) > 0:
+    elif (nowAngle-compareAngle) < 0:
         pwmA = 5 * np.cos(nowAngle-compareAngle * np.pi/180) + pwmA
         pwmB = 5 * (1-np.cos(nowAngle-compareAngle * np.pi/180)) + pwmB
     else :
