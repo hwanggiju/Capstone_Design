@@ -686,7 +686,7 @@ def main():
                             FirstSet = False
                     # 앉았을 때, 책상의 최적 높이 설정
                         # down
-                    elif userHeightAVG < UserTall - 45:
+                    elif userHeightAVG < UserTall - 50:
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
                         fixAngle = angleY  # 현재 각도고정
@@ -702,11 +702,11 @@ def main():
                         actionPre = 1#stop
                         print("stop")
                 else:
-                    if userHeightAVG < UserTall - 45 and actionPre != 0:
+                    if userHeightAVG < UserTall - 50 and actionPre != 0:
                         stop = False
                     elif userHeightAVG > UserTall - 35 and actionPre != 2:
                         stop = False
-                    elif userHeightAVG > UserTall - 45 and userHeightAVG < UserTall - 35 and actionPre != 1 :
+                    elif userHeightAVG > UserTall - 50 and userHeightAVG < UserTall - 35 and actionPre != 1 :
                         stop = False
 
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
