@@ -562,7 +562,7 @@ def main():
                     UserTall = SET_HEIGHT
                     bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18) # 초음파 거리 값
                     break
-                
+            42.55 
         global nowTime, preTime
         global actionPre, actionNow
         cap = cv2.VideoCapture(0)
@@ -622,8 +622,6 @@ def main():
             waveSensorMean = np.mean(WaveAVG) # 초음파 평균 거리
             
             if (bestDeskTall - (waveSensorMean+3)) > 0 :
-                pwmA_val = np.sin((bestDeskTall - (waveSensorMean+3)) * np.pi/180) * 50
-                pwmB_val = np.sin((bestDeskTall - (waveSensorMean+3)) * np.pi/180) * 50
                 FirstSet = True
             
             # 3) accel, gyro의 Raw data 읽기, 
@@ -686,7 +684,7 @@ def main():
                             FirstSet = False
                     # 앉았을 때, 책상의 최적 높이 설정
                         # down
-                    elif userHeightAVG < UserTall - 50:
+                    elif userHeightAVG < UserTall - 45:
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
                         fixAngle = angleY  # 현재 각도고정
