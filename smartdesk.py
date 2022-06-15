@@ -434,33 +434,22 @@ def changePWM(enA, enB):
 def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
     pwmA = 0
     pwmB = 0
-    fixpwmA = 0
-    fixpwmA = 0
     diffPwmA = 100 * np.sin((45 + 19.6*abs(nowAngle-compareAngle)) * np.pi/180)
     diffPwmB = 100 * np.cos((45 + 19.6*abs(nowAngle-compareAngle)) * np.pi/180)
-    if fixpwmA == 0 and fixpwmB == 0 :
-        if actionPre == 2 :
-            if (nowAngle < compareAngle) : 
-                pwmA = diffPwmA
-                pwmB = diffPwmB
-            elif nowAngle > compareAngle:
-                pwmA = diffPwmB
-                pwmB = diffPwmA
-            else :
-                fixpwmA = diffPwmA
-                fixpwmB = diffPwmB
-        elif actionPre == 0 :
-            if (nowAngle < compareAngle) : 
-                pwmA = diffPwmA
-                pwmB = diffPwmB
-            elif (nowAngle > compareAngle):
-                pwmA = diffPwmB
-                pwmB = diffPwmA
-            else :
-                fixpwmA = diffPwmA
-                fixpwmB = diffPwmB
-    else : 
-        changePWM(fixpwmA, fixpwmB)
+    if actionPre == 2 :
+        if (nowAngle < compareAngle) : 
+            pwmA = diffPwmA
+            pwmB = diffPwmB
+        elif nowAngle > compareAngle:
+            pwmA = diffPwmB
+            pwmB = diffPwmA
+    elif actionPre == 0 :
+        if (nowAngle < compareAngle) : 
+            pwmA = diffPwmA
+            pwmB = diffPwmB
+        elif (nowAngle > compareAngle):
+            pwmA = diffPwmB
+            pwmB = diffPwmA
     changePWM(pwmA, pwmB)
     print(str(pwmA) + '/' + str(pwmB))
         
@@ -632,7 +621,27 @@ def main():
             detect = net.forward()
             (h, w) = rotate_frame.shape[:2]
             detect = detect[0, 0, :, :]
-            print(fixAngle)
+            
+            draw.text((5, 0), 'Desk Tall', font = font, fill = 255)
+            draw.text((5, 20), str(waveSensorMean+3), font = font, fill = 255)
+            draw.text((110, 0), 'up', font = font2, fill = 255)
+            draw.text((110, 30), 'okay', font = font2, fill = 255)
+            draw.text((110, 60), 'down', font = font2, fill = 255)
+            draw.text((110, 0), 'up', font = font2, fill = 0)
+            draw.text((110, 30), 'okay', font = font2, fill = 0)
+            draw.text((110, 60), 'down', font = font2, fill = 0)
+            draw.text((5, 0), 'Desk Tall', font = font, fill = 0)
+            draw.text((5, 20), str(waveSensorMean), font = font, fill = 0)
+            oled.image(image)
+            oled.show()
+            
+            if GPIO.input(switch[2]) == 1 :
+                stop = driverSet(0, 2, 2, 0)
+            elif GPIO.input(switch[0]) == 1 :
+                stop = driverSet(0, 0, 0, 0)
+            elif GPIO.input(switch[1]) == 1 :
+                stop = driverSet(0, 1, 1, 0)
+                
             waveSensorHeight = waveFun() # 책상 높이
             WaveAVG[0] = waveSensorHeight
             for i in range(len(WaveAVG) - 1) :
