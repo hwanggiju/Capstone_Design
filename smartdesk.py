@@ -458,6 +458,29 @@ def HorizontalHold(nowAngle, compareAngle, i):
             changePWM(fixPwmA, fixPwmB)
         
         print(str(pwmA) + " / " + str(pwmB))
+    if actionPre == 1 :
+        if nowAngle < compareAngle : 
+            pwmA = pwmA + i
+            pwmB = pwmB - i
+            i += 1
+            if i == 31 :
+                i -= 1
+            changePWM(pwmA, pwmB)
+            return i
+        elif nowAngle > compareAngle:
+            pwmA = pwmA - i
+            pwmB = pwmB + i
+            i += 1
+            if i == 31 :
+                i -= 1
+            changePWM(pwmA, pwmB)
+            return i
+        else :
+            fixPwmA = pwmA
+            fixPwmB = pwmB
+            changePWM(fixPwmA, fixPwmB)
+        
+        print(str(pwmA) + " / " + str(pwmB))
         
     '''
     if diffPwm >= 0:
@@ -470,8 +493,6 @@ def HorizontalHold(nowAngle, compareAngle, i):
     else:
         pwmA += diffPwm
     '''
-    changePWM(pwmA, pwmB)
-
 # driver set
 # 0 : stop
 # 1 : down
