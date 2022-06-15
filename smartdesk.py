@@ -452,7 +452,6 @@ def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
             pwmB = diffPwmA
     changePWM(pwmA, pwmB)
     print(str(pwmA) + '/' + str(pwmB))
-    return i
         
     '''
     if diffPwm >= 0:
