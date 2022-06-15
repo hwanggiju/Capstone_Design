@@ -590,6 +590,7 @@ def main():
         if net.empty() :
             print('Net open failed!')
             
+        AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
         angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
         
         pwmA_val = 0
