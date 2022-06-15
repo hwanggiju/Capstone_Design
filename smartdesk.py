@@ -436,16 +436,23 @@ def HorizontalHold(nowAngle, compareAngle):
     pwmB = 80
     fixPwmA = 0
     fixPwmB = 0
-    diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 30)
-    if nowAngle < compareAngle :
-        pwmA = pwmA
-        pwmB = pwmB
-    elif nowAngle > compareAngle:
-        pwmA = pwmA
-        pwmB = pwmB
-    else :
-        fixPwmA = pwmA
-        fixPwmB = pwmB
+    # diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 30)
+    for i in range(1, 21) :
+        if fixPwmA == 0 and fixPwmB == 0:
+            if nowAngle < compareAngle : # enA가 enB보다 빨라야한다. 올라갈 때 기준이다.  얼마나 빨라야하는가? enA에 보상을 준다. enB에게는 채찍을 준다
+                pwmA = pwmA + i
+                pwmB = pwmB - i
+                changePWM(pwmA, pwmB)
+            elif nowAngle > compareAngle: # enA가 enB보다 느려야한다. 올라갈 때 기준이다. 반대
+                pwmA = pwmA - i
+                pwmB = pwmB + i
+                changePWM(pwmA, pwmB)
+            else :
+                fixPwmA = pwmA
+                fixPwmB = pwmB
+                changePWM(fixPwmA, fixPwmB)
+        else :
+            changePWM(fixPwmA, fixPwmB)
     '''
     if diffPwm >= 0:
         pwmA -= diffPwm
