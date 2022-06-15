@@ -671,20 +671,16 @@ def main():
                 # 사용자의 현재 키
                 # 현재 키의 값 변화를 천천히 바꿔주기 위함
                 userHeightAVG = np.mean(HeightAVG)
+                
                 print("테스트식 결과 :" + str(userHeightAVG))
                 
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                 #높이에 따른 모터작동
                 if stop != True: # 드라이버 pin Set 변경 후 반복 변경 방지
-                    if FirstSet == True :
-                        if waveSensorMean + 3 < bestDeskTall :
-                            stop = driverSet(pwmA_val, 2, 2, pwmB_val)
-                            actionPre = 2#up
-                            fixAngle = angleY  # 현재 각도고정
-                            FirstSet = False
+                    
                     # 앉았을 때, 책상의 최적 높이 설정
                         # down
-                    elif userHeightAVG < UserTall - 45:
+                    if userHeightAVG < UserTall - 45:
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
                         fixAngle = angleY  # 현재 각도고정
