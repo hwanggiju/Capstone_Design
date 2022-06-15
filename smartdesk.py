@@ -435,13 +435,12 @@ def HorizontalHold(nowAngle, compareAngle):
     pwmA = 80
     pwmB = 80
     # diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 70)
-    print(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180))
     if (nowAngle-compareAngle) < 0 :
-        pwmA -= 10
-        pwmB += 10
-    elif (nowAngle-compareAngle) > 0:
         pwmA += 10
-        pwmB -= 10
+        pwmB += 5
+    elif (nowAngle-compareAngle) > 0:
+        pwmA += 5
+        pwmB += 10
     else :
         pwmA = pwmA
         pwmB = pwmB
@@ -591,11 +590,11 @@ def main():
         if net.empty() :
             print('Net open failed!')
             
+        angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
+        
         pwmA_val = 0
         pwmB_val = 0
-        angleX = 0
         angleY = 0
-        angleZ = 0
         fixAngle = 0
         waveSensorMean = 0
         LimitHeight = 130
@@ -603,6 +602,7 @@ def main():
         stop = False
         HeightAVG = [130 for i in range(30)]
         WaveAVG = [waveSensorHeight for i in range(15)]
+        fixAngle = angleY
         while True:
             time.sleep(0.005)
             nowTime = time.time()
@@ -688,13 +688,13 @@ def main():
                     if userHeightAVG < 140:
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
-                        fixAngle = angleY  # 현재 각도고정
+                        # fixAngle = angleY  # 현재 각도고정
                         print("down")
                     # up    
                     elif userHeightAVG > 150:
                         stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
-                        fixAngle = angleY  # 현재 각도고정
+                        # fixAngle = angleY  # 현재 각도고정
                         print("up")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
