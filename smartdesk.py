@@ -434,28 +434,28 @@ def changePWM(enA, enB):
 def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
     pwmA = 0
     pwmB = 0
-    diffPwmA = int(100 * np.sin((45 + abs(nowAngle-compareAngle)) * np.pi/180))
-    diffPwmB = int(100 * np.cos((45 - abs(nowAngle-compareAngle)) * np.pi/180))
+    diffPwm = int(100 * np.sin((90 + abs(nowAngle-compareAngle)) * np.pi/180))
+    #diffPwmB = int(100 * np.cos((45 - abs(nowAngle-compareAngle)) * np.pi/180))
     if actionPre == 2 :
         if (nowAngle < compareAngle) : 
-            pwmA = diffPwmA
-            pwmB = diffPwmB
+            pwmA = diffPwm
+            # pwmB = diffPwmB
         elif nowAngle > compareAngle:
-            pwmA = diffPwmB
-            pwmB = diffPwmA
+            #pwmA = diffPwmB
+            pwmB = diffPwm
         else : 
-            pwmA = diffPwmA
-            pwmB = diffPwmB
+            pwmA = diffPwm
+            #pwmB = diffPwmB
     elif actionPre == 0 :
         if (nowAngle < compareAngle) : 
-            pwmA = diffPwmA
-            pwmB = diffPwmB
+            pwmA = diffPwm
+            #pwmB = diffPwmB
         elif (nowAngle > compareAngle):
-            pwmA = diffPwmB
-            pwmB = diffPwmA
+            #pwmA = diffPwmB
+            pwmB = diffPwm
         else :
-            pwmA = diffPwmA
-            pwmB = diffPwmB
+            pwmA = diffPwm
+            #pwmB = diffPwmB
     changePWM(pwmA, pwmB)
     print(str(pwmA) + '/' + str(pwmB))
         
