@@ -129,8 +129,8 @@ initial = True
 userDistanceMin = 70 #cm
 faceWidthMax    = 111.3077 #pixel
 #멀때
-userDistanceMax = 114 #cm
-faceWidthMin    = faceWidthMax - 41 #pixel
+userDistanceMax = 137 #cm
+faceWidthMin    = faceWidthMax - 59 #pixel # 54
 
 deskHeight       = 117.5 # 수정
 
@@ -679,13 +679,13 @@ def main():
                     #    stop = driverSet(pwmA_val, 2, 2, pwmB_val)
                     # 앉았을 때, 책상의 최적 높이 설정
                         # down
-                    if (userHeightAVG - (waveSensorMean+3)) < LimitHeight:
+                    if userHeightAVG < 130:
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
                         fixAngle = angleY  # 현재 각도고정
                         print("down")
                     # up    
-                    elif (userHeightAVG - (waveSensorMean+3)) > LimitHeight:
+                    elif userHeightAVG > 140:
                         stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
                         fixAngle = angleY  # 현재 각도고정
@@ -695,11 +695,11 @@ def main():
                         actionPre = 1#stop
                         print("stop")
                 else:
-                    if (userHeightAVG - (waveSensorMean+3)) < LimitHeight and actionPre != 0:
+                    if userHeightAVG < 130 and actionPre != 0:
                         stop = False
-                    elif (userHeightAVG - (waveSensorMean+3)) > LimitHeight and actionPre != 2:
+                    elif userHeightAVG > 140 and actionPre != 2:
                         stop = False
-                    elif (userHeightAVG - (waveSensorMean+3)) == LimitHeight and actionPre != 1:
+                    elif userHeightAVG > 130 and userHeightAVG < 140 and actionPre != 1:
                         stop = False
 
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
