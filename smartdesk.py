@@ -679,8 +679,7 @@ def main():
                         actionPre = 0#down
                         fixAngle = angleY  # 현재 각도고정
                     elif int(bestDeskTall) == waveSensorMean + 3:
-                        LimitHeight = HeightAVG - bestDeskTall # 최적의 값 
-                        stop = driverSet(0, 0, 0, 0)
+                        LimitHeight = userHeightAVG - bestDeskTall # 최적의 값 
                         # down
                         if (userHeightAVG - (waveSensorMean+3)) < LimitHeight:
                             stop = driverSet(100, 1, 1, 100)  
@@ -698,14 +697,14 @@ def main():
                             actionPre = 1#stop
                             print("stop")
                 else:
-                    if (userHeightAVG - waveSensorMean) < LimitHeight and actionPre != 0:
+                    if (userHeightAVG - (waveSensorMean+3)) < LimitHeight and actionPre != 0:
                         stop = False
-                    elif (userHeightAVG - waveSensorMean) > LimitHeight and actionPre != 2:
+                    elif (userHeightAVG - (waveSensorMean+3)) > LimitHeight and actionPre != 2:
                         stop = False
-                    elif (userHeightAVG - waveSensorMean) == LimitHeight and actionPre != 1:
+                    elif (userHeightAVG - (waveSensorMean+3)) == LimitHeight and actionPre != 1:
                         stop = False
 
-            print("초음파 측정 거리 : %d\n" % (waveSensorMean))
+            print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
     except KeyboardInterrupt :
         pass
     
