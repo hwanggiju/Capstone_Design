@@ -600,15 +600,12 @@ def main():
         AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
         angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
         
-        pwmA_val = 0
-        pwmB_val = 0
         waveSensorMean = 0
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False
         HeightAVG = [130 for i in range(30)]
         WaveAVG = [waveSensorHeight for i in range(15)]
         fixAngle = angleY
-        addPwm = 1
         while True:
             time.sleep(0.005)
             nowTime = time.time()
