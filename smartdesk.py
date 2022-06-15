@@ -433,6 +433,7 @@ def changePWM(enA, enB):
 #각도 자세유지 코드
 i=0
 def HorizontalHold(nowAngle, compareAngle):
+    global i
     fixPwmA = 0
     fixPwmB = 0
     pwmA = 80
