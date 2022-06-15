@@ -624,16 +624,16 @@ def main():
             (h, w) = rotate_frame.shape[:2]
             detect = detect[0, 0, :, :]
             
+            draw.text((5, 0), 'Desk Tall', font = font, fill = 255)
+            draw.text((5, 20), (str(int(waveSensorMean+3))), font = font, fill = 0)
             draw.text((110, 0), 'up', font = font2, fill = 255)
             draw.text((110, 30), 'okay', font = font2, fill = 255)
             draw.text((110, 45), 'down', font = font2, fill = 255)
             draw.text((110, 0), 'up', font = font2, fill = 0)
-            draw.text((110, 30), 'okay', font = font2, fill = 0)
-            draw.text((110, 60), 'down', font = font2, fill = 0)
+            draw.text((100, 30), 'okay', font = font2, fill = 0)
+            draw.text((110, 45), 'down', font = font2, fill = 0)
             draw.text((5, 0), 'Desk Tall', font = font, fill = 0)
-            draw.text((5, 0), 'Desk Tall', font = font, fill = 255)
             draw.text((5, 20), (str(int(waveSensorMean+3))), font = font, fill = 0)
-            draw.text((5, 20), (str(int(waveSensorMean+3))), font = font, fill = 255)
             oled.image(image)
             oled.show()
             
