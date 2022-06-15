@@ -321,7 +321,7 @@ def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
     accelAngleY = math.atan(-1 * accelX / math.sqrt(math.pow(accelY, 2) + math.pow(accelZ, 2))) * RADIANS_TO_DEGREES
     accelAngleZ = 0
     # complementary Filter
-    alpha = 0.88
+    alpha = 0.9
     GyX_deg = alpha * gyroAngleX + (1.0 - alpha) * accelAngleX
     GyY_deg = alpha * gyroAngleY + (1.0 - alpha) * accelAngleY
     GyZ_deg = gyroAngleZ
@@ -434,7 +434,7 @@ def changePWM(enA, enB):
 def HorizontalHold(nowAngle, compareAngle):
     pwmA = 100
     pwmB = 100
-    diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 70)
+    diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 60)
     if actionPre == 2:
         if diffPwm >= 0:
             pwmA -= diffPwm
@@ -592,6 +592,7 @@ def main():
         LimitHeight = 130
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False
+        FirstSet = False
         HeightAVG = [130 for i in range(30)]
         WaveAVG = [waveSensorHeight for i in range(15)]
         while True:
@@ -623,6 +624,7 @@ def main():
             if (bestDeskTall - (waveSensorMean+3)) > 0 :
                 pwmA_val = np.sin((bestDeskTall - (waveSensorMean+3)) * np.pi/180) * 50
                 pwmB_val = np.sin((bestDeskTall - (waveSensorMean+3)) * np.pi/180) * 50
+                FirstSet = True
             
             # 3) accel, gyro의 Raw data 읽기, 
             AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
@@ -676,17 +678,21 @@ def main():
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                 #높이에 따른 모터작동
                 if stop != True: # 드라이버 pin Set 변경 후 반복 변경 방지
-                    #if waveSensorMean + 3 < bestDeskTall :
-                    #    stop = driverSet(pwmA_val, 2, 2, pwmB_val)
+                    if FirstSet == True :
+                        if waveSensorMean + 3 < bestDeskTall :
+                            stop = driverSet(pwmA_val, 2, 2, pwmB_val)
+                            actionPre = 2#up
+                            fixAngle = angleY  # 현재 각도고정
+                            FirstSet = False
                     # 앉았을 때, 책상의 최적 높이 설정
                         # down
-                    if userHeightAVG < 130:
+                    elif waveSensorMean > bestDeskTall and userHeightAVG < UserTall - 45:
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
                         fixAngle = angleY  # 현재 각도고정
                         print("down")
                     # up    
-                    elif userHeightAVG > 140:
+                    elif userHeightAVG > UserTall - 35:
                         stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
                         fixAngle = angleY  # 현재 각도고정
@@ -696,11 +702,11 @@ def main():
                         actionPre = 1#stop
                         print("stop")
                 else:
-                    if userHeightAVG < 130 and actionPre != 0:
+                    if userHeightAVG < UserTall - 45 and actionPre != 0:
                         stop = False
-                    elif userHeightAVG > 140 and actionPre != 2:
+                    elif userHeightAVG > UserTall - 35 and actionPre != 2:
                         stop = False
-                    elif userHeightAVG > 130 and userHeightAVG < 140 and actionPre != 1:
+                    elif userHeightAVG > UserTall - 45 and userHeightAVG < UserTall - 35 and actionPre != 1 :
                         stop = False
 
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
