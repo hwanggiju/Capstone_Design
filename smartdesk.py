@@ -441,7 +441,7 @@ def HorizontalHold(nowAngle, compareAngle, i):
         if fixPwmA == 0 and fixPwmB == 0:
             if nowAngle < compareAngle : # enA가 enB보다 빨라야한다. 올라갈 때 기준이다.  얼마나 빨라야하는가? enA에 보상을 준다. enB에게는 채찍을 준다
                 pwmA = pwmA + i
-                pwmB = pwmB
+                pwmB = pwmB - i
                 i += 1
                 if i == 31 :
                     i -= 1
@@ -449,7 +449,7 @@ def HorizontalHold(nowAngle, compareAngle, i):
                 print(str(pwmA) + " / " + str(pwmB))
                 return i
             elif nowAngle > compareAngle: # enA가 enB보다 느려야한다. 올라갈 때 기준이다. 반대
-                pwmA = pwmA
+                pwmA = pwmA - i
                 pwmB = pwmB + i
                 i += 1
                 if i == 31 :
@@ -460,6 +460,7 @@ def HorizontalHold(nowAngle, compareAngle, i):
                 fixPwmA = pwmA
                 fixPwmB = pwmB
                 changePWM(fixPwmA, fixPwmB)
+                print(str(fixPwmA) + " / " + str(fixPwmB))
         else :
             changePWM(fixPwmA, fixPwmB)
     print(str(fixPwmA) + " / " + str(fixPwmB))
