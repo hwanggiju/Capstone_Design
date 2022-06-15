@@ -672,14 +672,15 @@ def main():
                     # 앉았을 때, 책상의 최적 높이 설정
                     if int(bestDeskTall) > waveSensorMean + 3 :
                         stop = driverSet(100, 2, 2, 100)
-                        stop = False
-                    if int(bestDeskTall) < waveSensorMean + 3 :
-                        stop = driverSet(100, 1, 1, 100)  
-                        stop = False
-                    if int(bestDeskTall) == waveSensorMean + 3:
+                        actionPre = 2#up
+                        fixAngle = angleY  # 현재 각도고정
+                    elif int(bestDeskTall) < waveSensorMean + 3 :
+                        stop = driverSet(100, 1, 1, 100) 
+                        actionPre = 0#down
+                        fixAngle = angleY  # 현재 각도고정
+                    elif int(bestDeskTall) == waveSensorMean + 3:
                         LimitHeight = HeightAVG - bestDeskTall # 최적의 값 
                         stop = driverSet(0, 0, 0, 0)
-                        stop = False
                         # down
                         if (userHeightAVG - (waveSensorMean+3)) < LimitHeight:
                             stop = driverSet(100, 1, 1, 100)  
