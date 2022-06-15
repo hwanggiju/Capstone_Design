@@ -604,7 +604,9 @@ def main():
         HeightAVG = [130 for i in range(30)]
         WaveAVG = [waveSensorHeight for i in range(15)]
         fixAngle = angleY
+        
         while True:
+            print(fixAngle)
             time.sleep(0.005)
             nowTime = time.time()
             _, frame = cap.read()
