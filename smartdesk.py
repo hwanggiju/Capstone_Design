@@ -462,7 +462,7 @@ def HorizontalHold(nowAngle, compareAngle, i):
             pwmA = pwmA - i
             pwmB = pwmB + i
             i += 0.5
-            if i == 16 :
+            if i == 15.5 :
                 i -= 0.5
             changePWM(pwmA, pwmB)
             print(str(pwmA) + '/' + str(pwmB))
@@ -470,7 +470,7 @@ def HorizontalHold(nowAngle, compareAngle, i):
             pwmA = pwmA + i
             pwmB = pwmB - i
             i += 0.5
-            if i == 16 :
+            if i == 15.5 :
                 i -= 0.5
             changePWM(pwmA, pwmB)
             print(str(pwmA) + '/' + str(pwmB))
