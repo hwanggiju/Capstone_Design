@@ -625,13 +625,14 @@ def main():
             detect = detect[0, 0, :, :]
             
             draw.text((5, 0), 'Desk Tall', font = font, fill = 255)
-            draw.text((110, 0), 'up', font = font2, fill = 255)
+            draw.text((100, 0), 'up', font = font2, fill = 255)
             draw.text((100, 23), 'okay', font = font2, fill = 255)
             draw.text((100, 45), 'down', font = font2, fill = 255)
-            draw.text((110, 0), 'up', font = font2, fill = 0)
+            draw.text((100, 0), 'up', font = font2, fill = 0)
             draw.text((100, 23), 'okay', font = font2, fill = 0)
             draw.text((100, 45), 'down', font = font2, fill = 0)
-            draw.text((5, 0), 'Desk Tall', font = font, fill = 0)
+            draw.text((5, 0), 'Desk Tall', font = font2, fill = 0)
+            draw.text((5, 0), str(int(waveSensorMean)), font = font2, fill = 0)
             oled.image(image)
             oled.show()
             
