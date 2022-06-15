@@ -431,6 +431,7 @@ def changePWM(enA, enB):
     return True
 
 #각도 자세유지 코드
+i=0
 def HorizontalHold(nowAngle, compareAngle):
     fixPwmA = 0
     fixPwmB = 0
