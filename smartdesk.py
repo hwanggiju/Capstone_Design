@@ -591,7 +591,7 @@ def main():
         LimitHeight = 130
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False
-        HeightAVG = [130 for i in range(1000)]
+        HeightAVG = [130 for i in range(50)]
         WaveAVG = [waveSensorHeight for i in range(15)]
         while True:
             
