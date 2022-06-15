@@ -604,7 +604,7 @@ def main():
                 oled.show()
                 if GPIO.input(switch[1]) == 1 :
                     UserTall = SET_HEIGHT
-                    bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18) # 초음파 거리 값
+                    bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18) # 초음파 거리 값 
                     break
         global nowTime, preTime
         global actionPre, actionNow
@@ -632,13 +632,12 @@ def main():
         pwmA_val = 0
         pwmB_val = 0
         waveSensorMean = 0
-        LimitHeight = 130
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False
         HeightAVG = [130 for i in range(30)]
         WaveAVG = [waveSensorHeight for i in range(15)]
         fixAngle = angleY
-        i = 1
+        addPwm = 1
         while True:
             time.sleep(0.005)
             nowTime = time.time()
@@ -677,7 +676,7 @@ def main():
             print("nani = ", round(angleY-fixAngle, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            i = HorizontalHold(angleY, fixAngle, i)
+            addPwm = HorizontalHold(angleY, fixAngle, addPwm)
             
             userNum = 0
             for i in range(detect.shape[0]):
@@ -714,20 +713,20 @@ def main():
                 userHeightAVG = np.mean(HeightAVG)
                 
                 print("테스트식 결과 :" + str(userHeightAVG))
-                
+                # 실제 책상 높이는 78cm인데, 키를 바탕으로한 최적의 높이 식을 대입하면 키가 190cm 사람이 최적의 책상 높이가 77.9 ????
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                 #높이에 따른 모터작동
                 if stop != True: # 드라이버 pin Set 변경 후 반복 변경 방지
                     
                     # 앉았을 때, 책상의 최적 높이 설정
                         # down
-                    if userHeightAVG < 140:
+                    if userHeightAVG < 140 :
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
                         # fixAngle = angleY  # 현재 각도고정
                         print("down")
                     # up    
-                    elif userHeightAVG > 150:
+                    elif userHeightAVG > 150 :
                         stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
                         # fixAngle = angleY  # 현재 각도고정
