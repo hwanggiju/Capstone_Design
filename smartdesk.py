@@ -415,7 +415,7 @@ def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
     calUserDistance = ((faceWidthMax + (1 - gap) * 3) - widthAverage) / faceDifference * distanceDifference + userDistanceMin
     userDistance = (calUserDistance / np.cos(userTopAngle * np.pi / 180)) / np.cos(userSideAngle * np.pi / 180)
     cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
-    calHeight = np.sin((cameraUserAngle + deskAngle) * np.pi/180) * userDistance + abs(np.sin((cameraUserAngle + deskAngle) * np.pi/180))* 15
+    calHeight = np.sin((cameraUserAngle + deskAngle) * np.pi/180) * userDistance + 10# abs(np.sin((cameraUserAngle + deskAngle) * np.pi/180))* 15
     for i in range(timeNum-1):#shift array
         faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
     return nowHeight + calHeight
@@ -679,7 +679,7 @@ def main():
                     #if waveSensorMean + 3 < bestDeskTall :
                     #    stop = driverSet(pwmA_val, 2, 2, pwmB_val)
                     # 앉았을 때, 책상의 최적 높이 설정
-                    if int(bestDeskTall) > waveSensorMean + 3 :
+                    if userHeightAVG > 140 :
                         stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
                         fixAngle = angleY  # 현재 각도고정
