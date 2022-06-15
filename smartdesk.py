@@ -453,12 +453,12 @@ def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
             print(str(pwmA) + '/' + str(pwmB))
     elif actionPre == 0 :
         if (nowAngle < compareAngle) and waveSensorMean > 71: 
-            pwmA = pwmA - diffPwm
-            pwmB = pwmB + diffPwm
-            print(str(pwmA) + '/' + str(pwmB))
-        elif (nowAngle > compareAngle) and waveSensorMean > 71:
             pwmA = pwmA + diffPwm
             pwmB = pwmB - diffPwm
+            print(str(pwmA) + '/' + str(pwmB))
+        elif (nowAngle > compareAngle) and waveSensorMean > 71:
+            pwmA = pwmA - diffPwm
+            pwmB = pwmB + diffPwm
             print(str(pwmA) + '/' + str(pwmB))
         else :
             pwmA = 0
