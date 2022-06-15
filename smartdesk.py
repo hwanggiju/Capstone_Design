@@ -432,8 +432,8 @@ def changePWM(enA, enB):
 
 #각도 자세유지 코드
 def HorizontalHold(nowAngle, compareAngle, i):
-    pwmA = 85
-    pwmB = 85
+    pwmA = 90
+    pwmB = 90
     val = waveFun()
     # diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 30)
     if actionPre == 2 :
@@ -441,7 +441,7 @@ def HorizontalHold(nowAngle, compareAngle, i):
             pwmA = pwmA + i
             pwmB = pwmB - i
             i += 1
-            if i == 16 :
+            if i == 11 :
                 i -= 1
             changePWM(pwmA, pwmB)
             print(str(pwmA) + '/' + str(pwmB))
@@ -449,7 +449,7 @@ def HorizontalHold(nowAngle, compareAngle, i):
             pwmA = pwmA - i
             pwmB = pwmB + i
             i += 1
-            if i == 16 :
+            if i == 11 :
                 i -= 1
             changePWM(pwmA, pwmB)
             print(str(pwmA) + '/' + str(pwmB))
@@ -463,7 +463,7 @@ def HorizontalHold(nowAngle, compareAngle, i):
             pwmA = pwmA - i
             pwmB = pwmB + i
             i += 1
-            if i == 16 :
+            if i == 11 :
                 i -= 1
             changePWM(pwmA, pwmB)
             print(str(pwmA) + '/' + str(pwmB))
@@ -471,7 +471,7 @@ def HorizontalHold(nowAngle, compareAngle, i):
             pwmA = pwmA + i
             pwmB = pwmB - i
             i += 1
-            if i == 16 :
+            if i == 11 :
                 i -= 1
             changePWM(pwmA, pwmB)
             print(str(pwmA) + '/' + str(pwmB))
