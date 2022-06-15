@@ -434,8 +434,8 @@ def changePWM(enA, enB):
 def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
     pwmA = 0
     pwmB = 0
-    diffPwmA = 100 * np.sin(45 + abs(nowAngle-compareAngle)/nowAngle * np.pi/180)
-    diffPwmB = 100 * np.cos(45 + abs(nowAngle-compareAngle)/nowAngle * np.pi/180)
+    diffPwmA = 100 * np.sin(45 + abs(nowAngle-compareAngle)* np.pi/180)
+    diffPwmB = 100 * np.cos(45 + abs(nowAngle-compareAngle) * np.pi/180)
     if actionPre == 2 :
         if (nowAngle < compareAngle) : 
             pwmA = diffPwmA
@@ -595,17 +595,12 @@ def main():
         net = cv2.dnn.readNet(model, config)
         if net.empty() :
             print('Net open failed!')
-            
-        fixAngle = 0.
-        AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
-        angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
         
         waveSensorMean = 0
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False
         HeightAVG = [130 for i in range(30)]
         WaveAVG = [waveSensorHeight for i in range(15)]
-        fixAngle = angleY
         while True:
             time.sleep(0.005)
             nowTime = time.time()
@@ -691,13 +686,13 @@ def main():
                     if userHeightAVG < 140 :
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
-                        # fixAngle = angleY  # 현재 각도고정
+                        fixAngle = angleY  # 현재 각도고정
                         print("down")
                     # up    
                     elif userHeightAVG > 150 :
                         stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
-                        # fixAngle = angleY  # 현재 각도고정
+                        fixAngle = angleY  # 현재 각도고정
                         print("up")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
