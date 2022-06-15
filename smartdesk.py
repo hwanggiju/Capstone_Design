@@ -460,10 +460,8 @@ def HorizontalHold(nowAngle, compareAngle, i):
                 fixPwmA = pwmA
                 fixPwmB = pwmB
                 changePWM(fixPwmA, fixPwmB)
-                print(str(fixPwmA) + " / " + str(fixPwmB))
         else :
             changePWM(fixPwmA, fixPwmB)
-    print(str(fixPwmA) + " / " + str(fixPwmB))
         
     '''
     if diffPwm >= 0:
