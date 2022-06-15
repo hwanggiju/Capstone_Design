@@ -436,8 +436,6 @@ def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
     pwmB = 0
     diffPwmA = 100 - int(10 * np.sin(abs(nowAngle-compareAngle) / 1.2 * 45 * np.pi/180))
     diffPwmB = 100 - int(10 * np.cos(abs(nowAngle-compareAngle) / 1.2 * 45 * np.pi/180))
-    print(str(diffPwmA) + '/' + str(diffPwmB))
-    print()
     if actionPre == 2 :
         if (nowAngle < compareAngle) : # enA가 enB보다 빨라야한다. 올라갈 때 기준이다.  얼마나 빨라야하는가? enA에 보상을 준다. enB에게는 채찍을 준다
             pwmA = diffPwmA
