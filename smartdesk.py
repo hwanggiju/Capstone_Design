@@ -150,7 +150,7 @@ cameraAngle = 56 # 카메라 수평 화각
 cameraWaveDifference = 46 # 카메라 - 센서간 높이차이
 
 # 각도
-deskAngle = -1 #28 # 책상 판과 카메라 중심까지의 각도
+deskAngle = 0 #28 # 책상 판과 카메라 중심까지의 각도
 deskUserAngle = -1 # 책상 판과 사용자 높이 사이의 각도
 cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
 
@@ -581,8 +581,8 @@ def main():
         if net.empty() :
             print('Net open failed!')
             
-        
-            
+        pwmA_val = 0
+        pwmB_val = 0
         angleX = 0
         angleY = 0
         angleZ = 0
@@ -618,7 +618,12 @@ def main():
             WaveAVG[0] = waveSensorHeight
             for i in range(len(WaveAVG) - 1) :
                 WaveAVG[len(WaveAVG) - i - 1] = WaveAVG[len(WaveAVG) - i - 2]
-            waveSensorMean = np.mean(WaveAVG)
+            waveSensorMean = np.mean(WaveAVG) # 초음파 평균 거리
+            
+            if (bestDeskTall - (waveSensorMean+3)) > 0 :
+                pwmA_val = np.sin((bestDeskTall - (waveSensorMean+3)) * np.pi/180) * 50
+                pwmB_val = np.sin((bestDeskTall - (waveSensorMean+3)) * np.pi/180) * 50
+            
             # 3) accel, gyro의 Raw data 읽기, 
             AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
             #print('test')
@@ -659,7 +664,7 @@ def main():
                     % (area, center_x, center_y))
 
                 # 얼굴폭 / 계산 좌표 X / 계산 좌표 Y / 카메라 높이
-                userHeight = getUserHeight(widthLength,center_x,center_y-heightLength/2, waveSensorHeight+cameraWaveDifference+1.5)
+                userHeight = getUserHeight(widthLength,center_x,center_y-heightLength/2, waveSensorHeight+cameraWaveDifference+2)
                 HeightAVG[0] = userHeight
                 for i in range(len(HeightAVG) - 1):
                     HeightAVG[len(HeightAVG) - i - 1] = HeightAVG[len(HeightAVG) - i - 2]
@@ -671,6 +676,8 @@ def main():
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                 #높이에 따른 모터작동
                 if stop != True: # 드라이버 pin Set 변경 후 반복 변경 방지
+                    if waveSensorMean + 3 < bestDeskTall :
+                        stop = driverSet(pwmA_val, 2, 2, pwmB_val)
                     # 앉았을 때, 책상의 최적 높이 설정
                     if int(bestDeskTall) > waveSensorMean + 3 :
                         stop = driverSet(100, 2, 2, 100)
