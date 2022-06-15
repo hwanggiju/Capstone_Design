@@ -434,8 +434,8 @@ def changePWM(enA, enB):
 def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
     pwmA = 0
     pwmB = 0
-    diffPwmA = 100 * np.sin((45 + 19.6*abs(nowAngle-compareAngle)) * np.pi/180)
-    diffPwmB = 100 * np.cos((45 + 19.6*abs(nowAngle-compareAngle)) * np.pi/180)
+    diffPwmA = 100 * np.sin((45 + 19.4*abs(nowAngle-compareAngle)) * np.pi/180)
+    diffPwmB = 100 * np.cos((45 + 19.4*abs(nowAngle-compareAngle)) * np.pi/180)
     if actionPre == 2 :
         if (nowAngle < compareAngle) : 
             pwmA = diffPwmA
@@ -623,25 +623,6 @@ def main():
             detect = net.forward()
             (h, w) = rotate_frame.shape[:2]
             detect = detect[0, 0, :, :]
-            
-            draw.text((5, 0), 'Desk Tall', font = font, fill = 255)
-            draw.text((100, 0), 'up', font = font2, fill = 255)
-            draw.text((100, 23), 'okay', font = font2, fill = 255)
-            draw.text((100, 45), 'down', font = font2, fill = 255)
-            draw.text((100, 0), 'up', font = font2, fill = 0)
-            draw.text((100, 23), 'okay', font = font2, fill = 0)
-            draw.text((100, 45), 'down', font = font2, fill = 0)
-            draw.text((5, 0), 'Desk Tall', font = font2, fill = 0)
-            draw.text((5, 15), str(int(waveSensorMean)), font = font2, fill = 0)
-            oled.image(image)
-            oled.show()
-            
-            if GPIO.input(switch[2]) == 1 :
-                stop = driverSet(0, 2, 2, 0)
-            elif GPIO.input(switch[0]) == 1 :
-                stop = driverSet(0, 0, 0, 0)
-            elif GPIO.input(switch[1]) == 1 :
-                stop = driverSet(0, 1, 1, 0)
                 
             waveSensorHeight = waveFun() # 책상 높이
             WaveAVG[0] = waveSensorHeight
@@ -702,7 +683,6 @@ def main():
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                 #높이에 따른 모터작동
                 if stop != True: # 드라이버 pin Set 변경 후 반복 변경 방지
-                    
                     # 앉았을 때, 책상의 최적 높이 설정
                         # down
                     if userHeightAVG < 140 :
@@ -727,9 +707,6 @@ def main():
                         stop = False
                     elif userHeightAVG > 140 and userHeightAVG < 150 and actionPre != 1 :
                         stop = False
-                draw.fill(255)
-                
-
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
     except KeyboardInterrupt :
         pass
