@@ -686,7 +686,7 @@ def main():
                             FirstSet = False
                     # 앉았을 때, 책상의 최적 높이 설정
                         # down
-                    elif waveSensorMean > bestDeskTall and userHeightAVG < UserTall - 45:
+                    elif userHeightAVG < UserTall - 45:
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
                         fixAngle = angleY  # 현재 각도고정
