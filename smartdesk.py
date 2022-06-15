@@ -321,7 +321,7 @@ def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
     accelAngleY = math.atan(-1 * accelX / math.sqrt(math.pow(accelY, 2) + math.pow(accelZ, 2))) * RADIANS_TO_DEGREES
     accelAngleZ = 0
     # complementary Filter
-    alpha = 0.89
+    alpha = 0.86
     GyX_deg = alpha * gyroAngleX + (1.0 - alpha) * accelAngleX
     GyY_deg = alpha * gyroAngleY + (1.0 - alpha) * accelAngleY
     GyZ_deg = gyroAngleZ
@@ -434,8 +434,8 @@ def changePWM(enA, enB):
 def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
     pwmA = 0
     pwmB = 0
-    diffPwmA = 100 * np.sin((45 + 8*abs(nowAngle-compareAngle))* np.pi/180)
-    diffPwmB = 100 * np.cos((45 + 8*abs(nowAngle-compareAngle)) * np.pi/180)
+    diffPwmA = 100 * np.sin((45 + 10*abs(nowAngle-compareAngle)) * np.pi/180)
+    diffPwmB = 100 * np.cos((45 + 10*abs(nowAngle-compareAngle)) * np.pi/180)
     if actionPre == 2 :
         if (nowAngle < compareAngle) : 
             pwmA = diffPwmA
