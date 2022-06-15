@@ -700,11 +700,11 @@ def main():
                         actionPre = 1#stop
                         print("stop")
                 else:
-                    if userHeightAVG < UserTall - 50 and actionPre != 0:
+                    if userHeightAVG < UserTall - 45 and actionPre != 0:
                         stop = False
                     elif userHeightAVG > UserTall - 35 and actionPre != 2:
                         stop = False
-                    elif userHeightAVG > UserTall - 50 and userHeightAVG < UserTall - 35 and actionPre != 1 :
+                    elif userHeightAVG > UserTall - 45 and userHeightAVG < UserTall - 35 and actionPre != 1 :
                         stop = False
 
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
