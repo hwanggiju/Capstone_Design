@@ -435,22 +435,16 @@ def HorizontalHold(nowAngle, compareAngle, i):
     pwmA = 90
     pwmB = 90
     val = waveFun()
-    # diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 30)
+    diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 30)
     if actionPre == 2 :
         if (nowAngle < compareAngle) : # enA가 enB보다 빨라야한다. 올라갈 때 기준이다.  얼마나 빨라야하는가? enA에 보상을 준다. enB에게는 채찍을 준다
-            pwmA = pwmA + i
-            pwmB = pwmB - i
-            i += 1
-            if i == 11 :
-                i -= 1
+            pwmA = pwmA + diffPwm
+            pwmB = pwmB - diffPwm
             changePWM(pwmA, pwmB)
             print(str(pwmA) + '/' + str(pwmB))
         elif nowAngle > compareAngle: # enA가 enB보다 느려야한다. 올라갈 때 기준이다. 반대
-            pwmA = pwmA - i
-            pwmB = pwmB + i
-            i += 1
-            if i == 11 :
-                i -= 1
+            pwmA = pwmA - diffPwm
+            pwmB = pwmB + diffPwm
             changePWM(pwmA, pwmB)
             print(str(pwmA) + '/' + str(pwmB))
         else :          # 값이 서로 비슷해지면 pwm 값을 유지하면서 올라간다
@@ -460,26 +454,18 @@ def HorizontalHold(nowAngle, compareAngle, i):
             print(str(pwmA) + '/' + str(pwmB))
     elif actionPre == 0 :
         if (nowAngle < compareAngle) and val > 71 : 
-            pwmA = pwmA - i
-            pwmB = pwmB + i
-            i += 1
-            if i == 11 :
-                i -= 1
-            changePWM(pwmA, pwmB)
+            pwmA = pwmA - diffPwm
+            pwmB = pwmB + diffPwm
             print(str(pwmA) + '/' + str(pwmB))
         elif (nowAngle > compareAngle) and val > 71:
-            pwmA = pwmA + i
-            pwmB = pwmB - i
-            i += 1
-            if i == 11 :
-                i -= 1
-            changePWM(pwmA, pwmB)
+            pwmA = pwmA + diffPwm
+            pwmB = pwmB - diffPwm
             print(str(pwmA) + '/' + str(pwmB))
         else :
             pwmA = pwmA
             pwmB = pwmB
-            changePWM(pwmA, pwmB)
             print(str(pwmA) + '/' + str(pwmB))
+    changePWM(pwmA, pwmB)
     return i
         
     '''
