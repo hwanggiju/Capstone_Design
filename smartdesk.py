@@ -457,6 +457,7 @@ def driverSet(enA, motorA, motorB, enB):
     if initial == True:
         preTime = time.time()
         initial = False
+    val = waveFun()
     changePWM(0, 0)
     for i in range(1, len(driver)-1):
         GPIO.output(driver[i], 0)
@@ -465,7 +466,7 @@ def driverSet(enA, motorA, motorB, enB):
         if motorA == 2:#up
             GPIO.output(driver[1], 0)
             GPIO.output(driver[2], 1)
-        elif motorA == 1:#down
+        elif motorA == 1 and val > 71:#down
             GPIO.output(driver[1], 1)
             GPIO.output(driver[2], 0)
         else:#stop
@@ -475,7 +476,7 @@ def driverSet(enA, motorA, motorB, enB):
         if motorB == 2:#up
             GPIO.output(driver[3], 0)
             GPIO.output(driver[4], 1)
-        elif motorB == 1:#down
+        elif motorB == 1 and val > 71:#down
             GPIO.output(driver[3], 1)
             GPIO.output(driver[4], 0)
         else:#stop
