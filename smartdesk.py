@@ -651,7 +651,7 @@ def main():
             # nani 각도 코드 테스트
             angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
 
-            print("nani = ", round(angleY-fixAngle, 4))
+            print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
             HorizontalHold(angleY, fixAngle, waveSensorMean)
