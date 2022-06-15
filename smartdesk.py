@@ -431,7 +431,7 @@ def changePWM(enA, enB):
     return True
 
 #각도 자세유지 코드
-def HorizontalHold(nowAngle, compareAngle):
+def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
     pwmA = 85
     pwmB = 85
     diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 15)
@@ -452,18 +452,17 @@ def HorizontalHold(nowAngle, compareAngle):
             changePWM(pwmA, pwmB) 
             print(str(pwmA) + '/' + str(pwmB))
     elif actionPre == 0 :
-        if (nowAngle < compareAngle): 
+        if (nowAngle < compareAngle) and waveSensorMean > 73: 
             pwmA = pwmA - diffPwm
             pwmB = pwmB + diffPwm
             print(str(pwmA) + '/' + str(pwmB))
-        elif (nowAngle > compareAngle):
+        elif (nowAngle > compareAngle) and waveSensorMean > 73:
             pwmA = pwmA + diffPwm
             pwmB = pwmB - diffPwm
             print(str(pwmA) + '/' + str(pwmB))
         else :
             pwmA = 0
             pwmB = 0
-            print(str(pwmA) + '/' + str(pwmB))
     changePWM(pwmA, pwmB)
     return i
         
@@ -661,7 +660,7 @@ def main():
             print("nani = ", round(angleY-fixAngle, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            HorizontalHold(angleY, fixAngle)
+            HorizontalHold(angleY, fixAngle, waveSensorMean)
             
             userNum = 0
             for i in range(detect.shape[0]):
