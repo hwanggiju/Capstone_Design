@@ -127,10 +127,10 @@ initial = True
 #기초 데이터 얼굴폭, 거리
 #가까울때
 userDistanceMin = 70 #cm
-faceWidthMax    = 113 #pixel
+faceWidthMax    = 111.3077 #pixel
 #멀때
 userDistanceMax = 114 #cm
-faceWidthMin    = 65 #pixel
+faceWidthMin    = faceWidthMax - 41 #pixel
 
 deskHeight       = 117.5 # 수정
 
@@ -594,7 +594,6 @@ def main():
         HeightAVG = [130 for i in range(50)]
         WaveAVG = [waveSensorHeight for i in range(15)]
         while True:
-            
             time.sleep(0.005)
             nowTime = time.time()
             _, frame = cap.read()
@@ -679,32 +678,22 @@ def main():
                     #if waveSensorMean + 3 < bestDeskTall :
                     #    stop = driverSet(pwmA_val, 2, 2, pwmB_val)
                     # 앉았을 때, 책상의 최적 높이 설정
-                    if userHeightAVG > 140 :
+                        # down
+                    if (userHeightAVG - (waveSensorMean+3)) < LimitHeight:
+                        stop = driverSet(100, 1, 1, 100)  
+                        actionPre = 0#down
+                        fixAngle = angleY  # 현재 각도고정
+                        print("down")
+                    # up    
+                    elif (userHeightAVG - (waveSensorMean+3)) > LimitHeight:
                         stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
                         fixAngle = angleY  # 현재 각도고정
-                    elif int(bestDeskTall) < waveSensorMean + 3 :
-                        stop = driverSet(100, 1, 1, 100) 
-                        actionPre = 0#down
-                        fixAngle = angleY  # 현재 각도고정
-                    elif int(bestDeskTall) == waveSensorMean + 3:
-                        LimitHeight = userHeightAVG - bestDeskTall # 최적의 값 
-                        # down
-                        if (userHeightAVG - (waveSensorMean+3)) < LimitHeight:
-                            stop = driverSet(100, 1, 1, 100)  
-                            actionPre = 0#down
-                            fixAngle = angleY  # 현재 각도고정
-                            print("down")
-                        # up    
-                        elif (userHeightAVG - (waveSensorMean+3)) > LimitHeight:
-                            stop = driverSet(100, 2, 2, 100)
-                            actionPre = 2#up
-                            fixAngle = angleY  # 현재 각도고정
-                            print("up")
-                        else:
-                            stop = driverSet(0, 0, 0, 0)  # stay
-                            actionPre = 1#stop
-                            print("stop")
+                        print("up")
+                    else:
+                        stop = driverSet(0, 0, 0, 0)  # stay
+                        actionPre = 1#stop
+                        print("stop")
                 else:
                     if (userHeightAVG - (waveSensorMean+3)) < LimitHeight and actionPre != 0:
                         stop = False
