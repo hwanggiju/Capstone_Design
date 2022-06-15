@@ -434,14 +434,13 @@ def changePWM(enA, enB):
 def HorizontalHold(nowAngle, compareAngle):
     pwmA = 80
     pwmB = 80
-    # diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 30).
-    print(np.cos((nowAngle-compareAngle) * np.pi/180))
+    # diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 30)
     if (nowAngle-compareAngle) < 0 :
-        pwmA = (20*np.cos(nowAngle-compareAngle * np.pi/180)) * np.cos(nowAngle-compareAngle * np.pi/180) + pwmA
-        pwmB = (20*(1-np.cos(nowAngle-compareAngle * np.pi/180))) * (1-np.cos(nowAngle-compareAngle * np.pi/180)) + pwmB
+        pwmA = (20*np.cos((nowAngle-compareAngle) * np.pi/180)) * np.cos((nowAngle-compareAngle) * np.pi/180) + pwmA
+        pwmB = (20*(1-np.cos((nowAngle-compareAngle) * np.pi/180))) * (1-np.cos((nowAngle-compareAngle) * np.pi/180)) + pwmB
     elif (nowAngle-compareAngle) > 0:
-        pwmA = (20*(1-np.cos(nowAngle-compareAngle * np.pi/180))) * (1-np.cos(nowAngle-compareAngle * np.pi/180)) + pwmA
-        pwmB = (20*np.cos(nowAngle-compareAngle * np.pi/180)) * np.cos(nowAngle-compareAngle * np.pi/180) + pwmB
+        pwmA = (20*(1-np.cos((nowAngle-compareAngle) * np.pi/180))) * (1-np.cos((nowAngle-compareAngle) * np.pi/180)) + pwmA
+        pwmB = (20*np.cos((nowAngle-compareAngle) * np.pi/180)) * np.cos((nowAngle-compareAngle) * np.pi/180) + pwmB
     else :
         pwmA = pwmA
         pwmB = pwmB
