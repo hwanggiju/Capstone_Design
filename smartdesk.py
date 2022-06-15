@@ -574,6 +574,8 @@ def main():
                 oled.image(image)
                 oled.show()
                 if GPIO.input(switch[1]) == 1 :
+                    draw.text((5, 0), 'Complete set', font = font, fill = 255)
+                    draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
                     UserTall = SET_HEIGHT
                     bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18) # 초음파 거리 값 
                     break
