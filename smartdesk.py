@@ -434,13 +434,13 @@ def changePWM(enA, enB):
 def HorizontalHold(nowAngle, compareAngle):
     pwmA = 80
     pwmB = 80
-    # diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 70)
+    diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 30)
     if (nowAngle-compareAngle) < 0 :
-        pwmA += 10
-        pwmB += 5
+        pwmA += diffPwm
+        pwmB += diffPwm
     elif (nowAngle-compareAngle) > 0:
-        pwmA += 5
-        pwmB += 10
+        pwmA += diffPwm
+        pwmB += diffPwm
     else :
         pwmA = pwmA
         pwmB = pwmB
