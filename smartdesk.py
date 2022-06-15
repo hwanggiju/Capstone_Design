@@ -581,13 +581,13 @@ def main():
         if net.empty() :
             print('Net open failed!')
             sys.exit()
-        
-        while True :
+        count = 0
+        while count >= 1000 :
             stop = driverSet(100, 1, 1, 100) 
-            time.sleep(10)
-            stop = driverSet(0, 0, 0, 0) 
-            break
-        
+            count += 1
+            if count == 1000:
+                stop = driverSet(0, 0, 0, 0) 
+            
         angleX = 0
         angleY = 0
         angleZ = 0
