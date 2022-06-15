@@ -572,7 +572,6 @@ def main():
                     UserTall = SET_HEIGHT
                     bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18) # 초음파 거리 값
                     break
-            42.55 
         global nowTime, preTime
         global actionPre, actionNow
         cap = cv2.VideoCapture(0)
@@ -602,7 +601,6 @@ def main():
         LimitHeight = 130
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False
-        FirstSet = False
         HeightAVG = [130 for i in range(30)]
         WaveAVG = [waveSensorHeight for i in range(15)]
         while True:
