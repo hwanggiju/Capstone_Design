@@ -581,11 +581,12 @@ def main():
         if net.empty() :
             print('Net open failed!')
             sys.exit()
-            
-        stop = driverSet(100, 1, 1, 100) 
-        time.sleep(10)
-        if stop == True :
+        
+        while True :
+            stop = driverSet(100, 1, 1, 100) 
+            time.sleep(10)
             stop = driverSet(0, 0, 0, 0) 
+            break
         
         angleX = 0
         angleY = 0
@@ -598,6 +599,7 @@ def main():
         HeightAVG = [130 for i in range(1000)]
         WaveAVG = [waveSensorHeight for i in range(15)]
         while True:
+            
             time.sleep(0.005)
             nowTime = time.time()
             _, frame = cap.read()
