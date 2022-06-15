@@ -581,12 +581,10 @@ def main():
         if net.empty() :
             print('Net open failed!')
             sys.exit()
-        count = 0
-        while count <= 100000 :
+        while True :
             stop = driverSet(100, 1, 1, 100) 
-            count += 1
-            if count == 100000:
-                stop = driverSet(0, 0, 0, 0) 
+            if KeyboardInterrupt :
+                break
             
         angleX = 0
         angleY = 0
