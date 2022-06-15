@@ -676,8 +676,8 @@ def main():
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                 #높이에 따른 모터작동
                 if stop != True: # 드라이버 pin Set 변경 후 반복 변경 방지
-                    if waveSensorMean + 3 < bestDeskTall :
-                        stop = driverSet(pwmA_val, 2, 2, pwmB_val)
+                    #if waveSensorMean + 3 < bestDeskTall :
+                    #    stop = driverSet(pwmA_val, 2, 2, pwmB_val)
                     # 앉았을 때, 책상의 최적 높이 설정
                     if int(bestDeskTall) > waveSensorMean + 3 :
                         stop = driverSet(100, 2, 2, 100)
