@@ -431,10 +431,9 @@ def changePWM(enA, enB):
     return True
 
 #각도 자세유지 코드
-def HorizontalHold(nowAngle, compareAngle, i):
+def HorizontalHold(nowAngle, compareAngle):
     pwmA = 85
     pwmB = 85
-    val = waveFun()
     diffPwm = int(np.sin((nowAngle-compareAngle) / 1.2 * 90 * np.pi/180) * 15)
     if actionPre == 2 :
         if (nowAngle < compareAngle) : # enA가 enB보다 빨라야한다. 올라갈 때 기준이다.  얼마나 빨라야하는가? enA에 보상을 준다. enB에게는 채찍을 준다
@@ -662,7 +661,7 @@ def main():
             print("nani = ", round(angleY-fixAngle, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            addPwm = HorizontalHold(angleY, fixAngle, addPwm)
+            HorizontalHold(angleY, fixAngle)
             
             userNum = 0
             for i in range(detect.shape[0]):
