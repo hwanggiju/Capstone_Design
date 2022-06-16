@@ -324,7 +324,7 @@ def PID(currentVal,setVal):
     Ki = 0.1
     Kd = 1
     now = time.time()
-    dt = (now - pastPID) / 1000.0 # mS
+    dt = (now - pastPID) / 1.0 # mS
     errorGap_P = setVal - currentVal
     Kp_term = Kp * errorGap_P
 
