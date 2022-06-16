@@ -688,7 +688,7 @@ def main():
         waveSensorMean = 0
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False
-        HeightAVG = [130 for i in range(30)]
+        HeightAVG = [130 for i in range(15)]
         WaveAVG = [waveSensorHeight for i in range(15)]
 
 
@@ -771,7 +771,7 @@ def main():
                     print("테스트식 결과 :" + str(round(userHeightAVG, 2)))
                     print("차값 :" + str(userHeight - userHeightAVG))
                     #val = PID(userHeightAVG, userHeight)
-                    #print("PID 계산값 " + str(round(val, 5)))
+                    print("PID 계산값 " + str(round(val, 5)))
                     # 그래프 값 입력부
                     y_val[0] = userHeight
                     y_valAVG[0] = userHeightAVG
