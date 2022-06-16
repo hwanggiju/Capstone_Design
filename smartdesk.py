@@ -30,7 +30,7 @@ ENB_PWM = [100 for i in range(graphRow)]
 angleLine = np.linspace(-3,3,graphRow)
 heightLine = np.linspace(70, 190, graphRow)
 pidLine = np.linspace(-100,100,graphRow)
-pwmLine = np.linspace(0,100,graphRow)
+pwmLine = np.linspace(80,100,graphRow)
 
 plt.ion()
 figure, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4 ,figsize=(10, 8))
