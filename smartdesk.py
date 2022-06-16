@@ -30,7 +30,7 @@ ENB_PWM = [100 for i in range(graphRow)]
 angleLine = np.linspace(-3,3,graphRow)
 heightLine = np.linspace(70, 190, graphRow)
 pidLine = np.linspace(-100,100,graphRow)
-pwmLine = np.linspace(60,100,graphRow)
+pwmLine = np.linspace(40,100,graphRow)
 
 plt.ion()
 figure, ax = plt.subplots(2, 2 ,figsize=(10, 8))
@@ -526,14 +526,12 @@ def HorizontalHoldTEST(nowAngle, compareAngle):
     if actionPre == 2 :
         pwmA -= diffPwm
         pwmB += diffPwm
-        changePWM(pwmA, pwmB)
         print(str(pwmA) + '/' + str(pwmB))
     elif actionPre == 0 :
         pwmA -= diffPwm
         pwmB += diffPwm
-        changePWM(pwmA, pwmB)
         print(str(pwmA) + '/' + str(pwmB))
-
+    changePWM(pwmA, pwmB)
     return pwmA, pwmB, val
 # driver set
 # 0 : stop
