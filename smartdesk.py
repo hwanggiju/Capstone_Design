@@ -18,10 +18,12 @@ import matplotlib.pyplot as plt
 x_val = [i for i in range(400)]
 y_val = [130 for i in range(400)]
 y_valAVG = [130 for i in range(400)]
+y_valPID = [130 for i in range(400)]
 yline = np.linspace(100, 220, 400)
+pidline = np.linspace(-1000,1000,400)
 plt.ion()
 figure, ax = plt.subplots(figsize=(8, 8))
-line1, line2 = ax.plot(x_val, yline, x_val, yline)
+line1, line2, line3, = ax.plot(x_val, yline, x_val, yline, x_val, pidline)
 plt.title("TEST", fontsize=20)
 plt.xlabel("TIME")
 plt.ylabel("UserHeight")
@@ -733,18 +735,22 @@ def main():
                 # 사용자의 현재 키
                 # 현재 키의 값 변화를 천천히 바꿔주기 위함
                 userHeightAVG = np.mean(HeightAVG)
-                print("현재 키값 :" + str(round(userHeight, 2)))
-                print("테스트식 결과 :" + str(round(userHeightAVG, 2)))
-                print("차값 :" + str(userHeight - userHeightAVG))
-                val = PID(userHeightAVG, userHeight)
-                print("PID 계산값 " + str(round(val, 5)))
-                # 그래프
-                y_val[0] = userHeight
-                y_valAVG[0] = userHeightAVG
-                for i in range(len(y_val) - 1):
-                    y_val[len(y_val) - i - 1] = y_val[len(y_val) - i - 2]
-                for i in range(len(y_valAVG) - 1):
-                    y_valAVG[len(y_valAVG) - i - 1] = y_valAVG[len(y_valAVG) - i - 2]
+                if TESTMODE == True:
+                    print("현재 키값 :" + str(round(userHeight, 2)))
+                    print("테스트식 결과 :" + str(round(userHeightAVG, 2)))
+                    print("차값 :" + str(userHeight - userHeightAVG))
+                    val = PID(userHeightAVG, userHeight)
+                    print("PID 계산값 " + str(round(val, 5)))
+                    # 그래프 값 입력부
+                    y_val[0] = userHeight
+                    y_valAVG[0] = userHeightAVG
+                    y_valPID[0] = val
+                    for i in range(len(y_val) - 1):
+                        y_val[len(y_val) - i - 1] = y_val[len(y_val) - i - 2]
+                    for i in range(len(y_valAVG) - 1):
+                        y_valAVG[len(y_valAVG) - i - 1] = y_valAVG[len(y_valAVG) - i - 2]
+                    for i in range(len(y_valPID) - 1):
+                        y_valPID[len(y_valPID) - i - 1] = y_valPID[len(y_valPID) - i - 2]
                 # 실제 책상 높이는 78cm인데, 키를 바탕으로한 최적의 높이 식을 대입하면 키가 190cm 사람이 최적의 책상 높이가 77.9 ????
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                 #높이에 따른 모터작동
@@ -777,10 +783,12 @@ def main():
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             #그래프 표시
             #line1.set_xdata(x_val)
-            line1.set_ydata(y_val)
-            line2.set_ydata(y_valAVG)
-            figure.canvas.draw()
-            figure.canvas.flush_events()
+            if TESTMODE == True:
+                line1.set_ydata(y_val)
+                line2.set_ydata(y_valAVG)
+                line3.set_ydata()
+                figure.canvas.draw()
+                figure.canvas.flush_events()
     except KeyboardInterrupt :
         pass
     
