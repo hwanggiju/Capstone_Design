@@ -491,42 +491,21 @@ def changePWM(enA, enB):
     return True
 
 #각도 자세유지 코드
-def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
+def HorizontalHold(nowAngle, compareAngle):
     pwmA = 80
     pwmB = 80
     diffPwm = int(20 * np.sin((64 * (nowAngle-compareAngle)) * np.pi/180))
     if actionPre == 2 :
-        if (nowAngle > compareAngle) : 
-            pwmA += diffPwm
-            pwmB -= diffPwm
-            changePWM(pwmA, pwmB)
-            print(str(pwmA) + '/' + str(pwmB))
-        elif nowAngle < compareAngle:
-            pwmA -= diffPwm
-            pwmB += diffPwm
-            changePWM(pwmA, pwmB)
-            print(str(pwmA) + '/' + str(pwmB))
-        else : 
-            fixpwmA = diffPwm + pwmA
-            fixpwmB = diffPwm + pwmB
-            changePWM(fixpwmA, fixpwmB)
-            print(str(fixpwmA) + '/' + str(fixpwmB))
+        pwmA += diffPwm
+        pwmB -= diffPwm
+        changePWM(pwmA, pwmB)
+        print(str(pwmA) + '/' + str(pwmB))
     elif actionPre == 0 :
-        if (nowAngle > compareAngle) : 
-            pwmA += diffPwm
-            pwmB -= diffPwm
-            changePWM(pwmA, pwmB)
-            print(str(pwmA) + '/' + str(pwmB))
-        elif (nowAngle < compareAngle):
-            pwmA -= diffPwm
-            pwmB += diffPwm
-            changePWM(pwmA, pwmB)
-            print(str(pwmA) + '/' + str(pwmB))
-        else :
-            fixpwmA = diffPwm + pwmA
-            fixpwmB = diffPwm + pwmB
-            changePWM(fixpwmA, fixpwmB)
-            print(str(fixpwmA) + '/' + str(fixpwmB))
+        pwmA += diffPwm
+        pwmB -= diffPwm
+        changePWM(pwmA, pwmB)
+        print(str(pwmA) + '/' + str(pwmB))
+
     return pwmA, pwmB
 # driver set
 # 0 : stop
