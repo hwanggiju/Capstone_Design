@@ -89,8 +89,8 @@ def eraseDisplay() :
     draw.text((100, 0), 'Up', font=font2, fill=255)
     draw.text((100, 15), 'Okay', font=font2, fill=255)
     draw.text((100, 30), 'Down', font=font2, fill=255)
-    draw.text((5, 0), 'Desk Tall', font=font2, fill=255)
-    draw.text((5, 10), str(deskDistance), font = font2, fill = 255)
+    draw.text((5, 0), 'Desk Tall', font=font, fill=255)
+    draw.text((5, 10), str(deskDistance), font = font, fill = 255)
     oled.image(image)
     oled.show()
     
@@ -120,6 +120,7 @@ try :
             draw.text((5, 40), 'Right?', font = font, fill = 0)
             oled.image(image)
             oled.show()
+            time.sleep(0.2)
             while True :
                 if GPIO.input(switch[2]) == 1:
                     draw.text((5, 0), 'Your height', font = font, fill = 255)
@@ -144,7 +145,7 @@ try :
                     draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 255)
                     draw.text((5, 40), 'Right?', font = font, fill = 255)
                     time.sleep(0.2)
-                    draw.text((5, 0), 'Success Set Height', font = font, fill = 0)
+                    draw.text((5, 0), 'Success Set Height', font = font2, fill = 0)
                     break
             drawDisplay()
             break
