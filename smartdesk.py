@@ -30,7 +30,7 @@ ENB_PWM = [100 for i in range(graphRow)]
 angleLine = np.linspace(-3,3,graphRow)
 heightLine = np.linspace(70, 190, graphRow)
 pidLine = np.linspace(-100,100,graphRow)
-pwmLine = np.linspace(80,100,graphRow)
+pwmLine = np.linspace(60,100,graphRow)
 
 plt.ion()
 figure, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4 ,figsize=(10, 8))
@@ -170,7 +170,8 @@ faceWidthMin    = faceWidthMax - 59 #pixel # 54
 
 deskHeight       = 117.5 # 수정
 
-fixAngle        = 0 #모터 작동시 고정되는 각도값
+fixAngleX       = 0 #모터 작동시 고정되는 각도값
+fixAngleY       = 0
 userDistance    = 0
 
 actionNow = 0  # 0:down 1:stop 2:up
@@ -673,8 +674,7 @@ def main():
         net = cv2.dnn.readNet(model, config)
         if net.empty() :
             print('Net open failed!')
-        
-        fixAngle = 0
+
         waveSensorMean = 0
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False
@@ -721,7 +721,7 @@ def main():
             print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngle, waveSensorMean)
+            ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY, waveSensorMean)
             
             userNum = 0
             for i in range(detect.shape[0]):
@@ -782,18 +782,21 @@ def main():
                     if userHeightAVG < 140 :
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
-                        fixAngle = angleY  # 현재 각도고정
+                        fixAngleY = angleY  # 현재 각도고정
+                        fixAngleX = angleX
                         print("down")
                     # up    
                     elif userHeightAVG > 150 :
                         stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
-                        fixAngle = angleY  # 현재 각도고정
+                        fixAngleY = angleY  # 현재 각도고정
+                        fixAngleX = angleX
                         print("up")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
                         actionPre = 1#stop
-                        fixAngle = angleY
+                        fixAngleY = angleY
+                        fixAngleX = angleX
                         print("stop")
                 else:
                     if userHeightAVG < 140 and actionPre != 0:
@@ -805,8 +808,8 @@ def main():
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             #그래프 표시
 
-            gyrosensorX[0] = angleX
-            gyrosensorY[0] = angleY - fixAngle
+            gyrosensorX[0] = angleX - fixAngleX
+            gyrosensorY[0] = angleY - fixAngleY
             # 쉬프트
             for i in range(graphRow - 1):
                 gyrosensorX[graphRow - i - 1] = gyrosensorX[graphRow - i - 2]
