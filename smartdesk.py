@@ -17,7 +17,7 @@ from imusensor.MPU9250 import MPU9250
 import matplotlib.pyplot as plt
 x_val = [i for i in range(100)]
 y_val = [130 for i in range(100)]
-yline = np.linspace(100, 250, 300)
+yline = np.linspace(0, 250, 300)
 plt.ion()
 figure, ax = plt.subplots(figsize=(8, 8))
 line1, = ax.plot(x_val, yline)
