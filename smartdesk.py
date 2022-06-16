@@ -300,7 +300,8 @@ def cal_angle_gyro(GyX, GyY, GyZ):
 # 미분을 통해 정상상태로 가는 속도 조절 : 오버슈트 개선
 def PID(Kp, Ki, Kd):
     integral = 0
-    
+
+# 가속도, 각속도를 이용해서 각 도출 (계산 및 상보필터)
 def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
     global GyX_deg, GyY_deg, GyZ_deg
     global past1 #기존 시간값 충돌방지
