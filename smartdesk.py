@@ -30,7 +30,7 @@ ENB_PWM = [100 for i in range(graphRow)]
 angleLine = np.linspace(-3,3,graphRow)
 heightLine = np.linspace(70, 190, graphRow)
 pidLine = np.linspace(-100,100,graphRow)
-pwmLine = np.linspace(40,100,graphRow)
+pwmLine = np.linspace(0,100,graphRow)
 
 plt.ion()
 figure, ax = plt.subplots(2, 2 ,figsize=(10, 8))
@@ -517,14 +517,14 @@ def HorizontalHold(nowAngle, compareAngle):
 #각도 자세유지 코드
 def HorizontalHoldTEST(nowAngle, compareAngle):
     val = PID(nowAngle, compareAngle)
-    pwmA = 70
-    pwmB = 70
+    pwmA = 50
+    pwmB = 50
     diffangle = (val) * 90 / 200
     if diffangle < -90:
         diffangle = -90
     elif diffangle > 90:
         diffangle = 90
-    diffPwm = int(30 * np.sin(diffangle * np.pi/180))
+    diffPwm = int(50 * np.sin(diffangle * np.pi/180))
     if actionPre == 2 :
         pwmA += diffPwm
         pwmB -= diffPwm
