@@ -716,6 +716,9 @@ def main():
                 userHeightAVG = np.mean(HeightAVG)
                 
                 print("테스트식 결과 :" + str(userHeightAVG))
+
+                val = PID(waveSensorHeight+cameraWaveDifference+2, userHeightAVG)
+                print("PID 계산값 " + str(round(val, 5)))
                 # 실제 책상 높이는 78cm인데, 키를 바탕으로한 최적의 높이 식을 대입하면 키가 190cm 사람이 최적의 책상 높이가 77.9 ????
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                 #높이에 따른 모터작동
