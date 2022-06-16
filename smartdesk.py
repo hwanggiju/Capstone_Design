@@ -716,9 +716,9 @@ def main():
                 # 사용자의 현재 키
                 # 현재 키의 값 변화를 천천히 바꿔주기 위함
                 userHeightAVG = np.mean(HeightAVG)
-                
-                print("테스트식 결과 :" + str(userHeightAVG))
-
+                print("현재 키값 :" + str(round(userHeight, 2)))
+                print("테스트식 결과 :" + str(round(userHeightAVG, 2)))
+                print("차값 :" + str(userHeight - userHeightAVG))
                 val = PID(userHeightAVG, userHeight)
                 print("PID 계산값 " + str(round(val, 5)))
                 # 실제 책상 높이는 78cm인데, 키를 바탕으로한 최적의 높이 식을 대입하면 키가 190cm 사람이 최적의 책상 높이가 77.9 ????
