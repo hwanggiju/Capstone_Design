@@ -584,7 +584,6 @@ def drawDisplay() :
     draw.text((5, 0), 'Desk Tall', font=font2, fill=0)
     oled.image(image)
     oled.show()
-    
     pass
     
 def eraseDisplay() :
