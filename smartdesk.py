@@ -342,8 +342,8 @@ Ki_term = 0
 # 출력 > PID값
 def PID(currentVal,setVal):
     global pastPID, preError, Kp_term, Ki_term, Kd_term
-    Kp = 10.7 #비례
-    Ki = 12.11 #적분
+    Kp = 15.7 #비례
+    Ki = 7.11 #적분
     Kd = 10.5 #미분
     now = time.time()
     dt = (now - pastPID) / 1.0
@@ -517,7 +517,7 @@ def HorizontalHoldTEST(nowAngle, compareAngle):
     val = PID(nowAngle, compareAngle)
     pwmA = 70
     pwmB = 70
-    diffangle = (val) * 90 / 200
+    diffangle = (val) * 90 / 100
     if diffangle < -90:
         diffangle = -90
     elif diffangle > 90:
