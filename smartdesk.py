@@ -27,6 +27,7 @@ from imusensor.MPU9250 import MPU9250
 질문4. 스위치로 올리는 것보다 더 편한가? feat. 김성수교수님
 
 '''
+TESTMODE = True
 # 레지스터 값 설정
 CONFIG       = 0x1A     # LowPassFilter bit 2:0
 GYRO_CONFIG  = 0x1B     # FS_SEL bit 4:3
@@ -587,35 +588,36 @@ def main():
         draw.text((5, 0), 'WELCOME~!!', font = font1, fill = 255)
         draw.text((5, 20), 'Smart Desk', font = font1, fill = 255)
         OLED_initial_setting_Height(SET_HEIGHT)
-        while True :
-            if GPIO.input(switch[2]) == 1 :
-                draw.text((5, 0), 'Complete set', font = font, fill = 255)
-                draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
-                OLED_initial_setting_Height1(SET_HEIGHT)
-                SET_HEIGHT = SET_HEIGHT + 5
-                OLED_initial_setting_Height(SET_HEIGHT)
-                time.sleep(0.2)
-                
-            elif GPIO.input(switch[0]) == 1:
-                draw.text((5, 0), 'Complete set', font = font, fill = 255)
-                draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
-                OLED_initial_setting_Height1(SET_HEIGHT)
-                SET_HEIGHT = SET_HEIGHT - 5
-                OLED_initial_setting_Height(SET_HEIGHT)
-                time.sleep(0.2)
-                
-            elif GPIO.input(switch[1]) == 1:
-                OLED_initial_setting_Height1(SET_HEIGHT)
-                draw.text((5, 0), 'Complete set', font = font, fill = 0)
-                draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 0)
-                oled.image(image)
-                oled.show()
-                if GPIO.input(switch[1]) == 1 :
+        if TESTMODE == False: #test 모드일때는 작동 안함
+            while True :
+                if GPIO.input(switch[2]) == 1 :
                     draw.text((5, 0), 'Complete set', font = font, fill = 255)
                     draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
-                    UserTall = SET_HEIGHT
-                    bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18) # 초음파 거리 값 
-                    break
+                    OLED_initial_setting_Height1(SET_HEIGHT)
+                    SET_HEIGHT = SET_HEIGHT + 5
+                    OLED_initial_setting_Height(SET_HEIGHT)
+                    time.sleep(0.2)
+
+                elif GPIO.input(switch[0]) == 1:
+                    draw.text((5, 0), 'Complete set', font = font, fill = 255)
+                    draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
+                    OLED_initial_setting_Height1(SET_HEIGHT)
+                    SET_HEIGHT = SET_HEIGHT - 5
+                    OLED_initial_setting_Height(SET_HEIGHT)
+                    time.sleep(0.2)
+
+                elif GPIO.input(switch[1]) == 1:
+                    OLED_initial_setting_Height1(SET_HEIGHT)
+                    draw.text((5, 0), 'Complete set', font = font, fill = 0)
+                    draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 0)
+                    oled.image(image)
+                    oled.show()
+                    if GPIO.input(switch[1]) == 1 :
+                        draw.text((5, 0), 'Complete set', font = font, fill = 255)
+                        draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
+                        UserTall = SET_HEIGHT
+                        bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18) # 초음파 거리 값
+                        break
         global nowTime, preTime
         global actionPre, actionNow
         cap = cv2.VideoCapture(0)
