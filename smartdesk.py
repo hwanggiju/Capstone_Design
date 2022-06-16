@@ -622,6 +622,9 @@ def eraseDisplay() :
 # main code
 def main():
     global actionNow, actionPre, bestDeskTall, fixAngleX, fixAngleY
+    global nowTime, preTime
+    global actionPre, actionNow
+    global deskAngle
     # 디스플레이 초기 설정
     try :
         SET_HEIGHT = 170
@@ -663,8 +666,7 @@ def main():
                         UserTall = SET_HEIGHT
                         bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18) # 초음파 거리 값
                         break
-        global nowTime, preTime
-        global actionPre, actionNow
+
         cap = cv2.VideoCapture(0)
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraHeight)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraWidth)
