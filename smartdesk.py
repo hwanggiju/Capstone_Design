@@ -741,10 +741,6 @@ def main():
                 y_val[0] = userHeight
                 for i in range(len(y_val) - 1):
                     y_val[len(y_val) - i - 1] = y_val[len(y_val) - i - 2]
-                line1.set_xdata(x_val)
-                line1.set_ydata(y_val)
-                figure.canvas.draw()
-                figure.canvas.flush_events()
                 # 실제 책상 높이는 78cm인데, 키를 바탕으로한 최적의 높이 식을 대입하면 키가 190cm 사람이 최적의 책상 높이가 77.9 ????
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                 #높이에 따른 모터작동
@@ -775,6 +771,10 @@ def main():
                     elif userHeightAVG > 140 and userHeightAVG < 150 and actionPre != 1 :
                         stop = False
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
+            line1.set_xdata(x_val)
+            line1.set_ydata(y_val)
+            figure.canvas.draw()
+            figure.canvas.flush_events()
     except KeyboardInterrupt :
         pass
     
