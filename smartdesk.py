@@ -524,12 +524,12 @@ def HorizontalHoldTEST(nowAngle, compareAngle):
         diffangle = 90
     diffPwm = int(30 * np.sin(diffangle * np.pi/180))
     if actionPre == 2 :
-        pwmA -= diffPwm
-        pwmB += diffPwm
+        pwmA += diffPwm
+        pwmB -= diffPwm
         print(str(pwmA) + '/' + str(pwmB))
     elif actionPre == 0 :
-        pwmA -= diffPwm
-        pwmB += diffPwm
+        pwmA += diffPwm
+        pwmB -= diffPwm
         print(str(pwmA) + '/' + str(pwmB))
     changePWM(pwmA, pwmB)
     return pwmA, pwmB, val
