@@ -298,8 +298,28 @@ def cal_angle_gyro(GyX, GyY, GyZ):
 # 최초의 목표값과 정상상태 오차의 적분을 비교 : 정상상태오차 및 상승시간 개선
 # Kd 조절 시
 # 미분을 통해 정상상태로 가는 속도 조절 : 오버슈트 개선
-def PID(Kp, Ki, Kd):
-    integral = 0
+pastPID = time.time() # 초기 셋팅
+preError = 0
+# 인수 > 센서값 , 목표치
+def PID(currentVal,Aim):
+    global pastPID, preError
+    Kp = 1
+    Ki = 1
+    Kd = 1
+    now = time.time()
+    dt = (now - pastPID) / 1000.0 # mS
+    errorGap_P = Aim - currentVal
+    Kp_term = Kp * errorGap_P
+
+    errorGap_I = errorGap_P * dt
+    Ki_term = Ki * errorGap_I
+
+    errorGap_D = (errorGap_P - preError) / dt
+    Kd_term = Kd * errorGap_D
+
+    preError = errorGap_P
+    pastPID = now
+    return Kp_term + Ki_term + Kd_term
 
 # 가속도, 각속도를 이용해서 각 도출 (계산 및 상보필터)
 def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
