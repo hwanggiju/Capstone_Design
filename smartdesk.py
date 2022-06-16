@@ -768,8 +768,8 @@ def main():
                     print("현재 키값 :" + str(round(userHeight, 2)))
                     print("테스트식 결과 :" + str(round(userHeightAVG, 2)))
                     print("차값 :" + str(userHeight - userHeightAVG))
-                    val = PID(userHeightAVG, userHeight)
-                    print("PID 계산값 " + str(round(val, 5)))
+                    #val = PID(userHeightAVG, userHeight)
+                    #print("PID 계산값 " + str(round(val, 5)))
                     # 그래프 값 입력부
                     y_val[0] = userHeight
                     y_valAVG[0] = userHeightAVG
