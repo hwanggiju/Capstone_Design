@@ -805,8 +805,8 @@ def main():
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             #그래프 표시
 
-            gyrosensorX[0] = angleX
-            gyrosensorY[0] = angleY
+            gyrosensorX[0] = angleX 
+            gyrosensorY[0] = angleY - fixAngle
             # 쉬프트
             for i in range(graphRow - 1):
                 gyrosensorX[graphRow - i - 1] = gyrosensorX[graphRow - i - 2]
