@@ -342,7 +342,7 @@ Ki_term = 0
 # 출력 > PID값
 def PID(currentVal,setVal):
     global pastPID, preError, Kp_term, Ki_term, Kd_term
-    Kp = 10.7 #비례
+    Kp = 20.7 #비례
     Ki = 12.11 #적분
     Kd = 10.5 #미분
     now = time.time()
@@ -526,8 +526,8 @@ def HorizontalHoldTEST(nowAngle, compareAngle):
         diffangle = 90
     diffPwm = int(40 * np.sin(diffangle * np.pi/180))
     if actionPre == 2 :
-        pwmA -= diffPwm
-        pwmB += diffPwm
+        pwmA += diffPwm
+        pwmB -= diffPwm
         print(str(pwmA) + '/' + str(pwmB))
     elif actionPre == 0 :
         pwmA -= diffPwm
@@ -623,7 +623,6 @@ def eraseDisplay() :
 def main():
     global actionNow, actionPre, bestDeskTall, fixAngleX, fixAngleY
     global nowTime, preTime
-    global actionPre, actionNow
     global deskAngle, Ki_term
     # 디스플레이 초기 설정
     try :
