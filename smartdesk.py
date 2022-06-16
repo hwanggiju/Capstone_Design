@@ -16,7 +16,7 @@ from imusensor.MPU9250 import MPU9250
 #그래프
 import matplotlib.pyplot as plt
 x_val = [i for i in range(100)]
-y_val = np.random.randint(1, 1000, 5000)
+y_val = [i for i in range(500)]
 plt.ion()
 figure, ax = plt.subplots(figsize=(10, 8))
 line1, = ax.plot(x_val, y_val)
