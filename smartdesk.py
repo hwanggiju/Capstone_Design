@@ -614,7 +614,7 @@ def eraseDisplay() :
 
 # main code
 def main():
-    global actionNow, actionPre, bestDeskTall
+    global actionNow, actionPre, bestDeskTall, fixAngleX, fixAngleY
     # 디스플레이 초기 설정
     try :
         SET_HEIGHT = 170
