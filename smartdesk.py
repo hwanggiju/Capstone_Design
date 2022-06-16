@@ -675,6 +675,7 @@ def main():
         if net.empty() :
             print('Net open failed!')
 
+        fixAngleY = 0
         waveSensorMean = 0
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False
