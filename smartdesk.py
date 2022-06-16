@@ -15,9 +15,9 @@ import smbus
 from imusensor.MPU9250 import MPU9250
 #그래프
 import matplotlib.pyplot as plt
-x_val = [i for i in range(200)]
-y_val = [130 for i in range(200)]
-yline = np.linspace(0, 250, 200)
+x_val = [i for i in range(100)]
+y_val = [130 for i in range(1000)]
+yline = np.linspace(100, 250, 1000)
 plt.ion()
 figure, ax = plt.subplots(figsize=(8, 8))
 line1, = ax.plot(x_val, yline)
@@ -771,6 +771,7 @@ def main():
                     elif userHeightAVG > 140 and userHeightAVG < 150 and actionPre != 1 :
                         stop = False
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
+            #그래프 표시
             line1.set_xdata(x_val)
             line1.set_ydata(y_val)
             figure.canvas.draw()
