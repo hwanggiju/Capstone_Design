@@ -515,22 +515,22 @@ def HorizontalHold(nowAngle, compareAngle):
 #각도 자세유지 코드
 def HorizontalHoldTEST(nowAngle, compareAngle):
     val = PID(nowAngle, compareAngle)
-    pwmA = 80
-    pwmB = 80
+    pwmA = 70
+    pwmB = 70
     diffangle = (val) * 90 / 200
     if diffangle < -90:
         diffangle = -90
     elif diffangle > 90:
         diffangle = 90
-    diffPwm = int(20 * np.sin(diffangle * np.pi/180))
+    diffPwm = int(30 * np.sin(diffangle * np.pi/180))
     if actionPre == 2 :
         pwmA -= diffPwm
         pwmB += diffPwm
         changePWM(pwmA, pwmB)
         print(str(pwmA) + '/' + str(pwmB))
     elif actionPre == 0 :
-        pwmA += diffPwm
-        pwmB -= diffPwm
+        pwmA -= diffPwm
+        pwmB += diffPwm
         changePWM(pwmA, pwmB)
         print(str(pwmA) + '/' + str(pwmB))
 
