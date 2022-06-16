@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 x_val = [i for i in range(100)]
 y_val = [0 for i in range(100)]
-def animate(, i):
+def animate(i):
     plt.cla()
     plt.plot(x_val, y_val)
     for i in range(len(y_val)-1):
