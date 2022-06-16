@@ -809,6 +809,8 @@ def main():
                         fixAngleX = angleX
                         print("stop")
                 else:
+                    fixAngleY = angleY
+                    fixAngleX = angleX
                     if userHeightAVG < 140 and actionPre != 0:
                         stop = False
                     elif userHeightAVG > 150 and actionPre != 2:
