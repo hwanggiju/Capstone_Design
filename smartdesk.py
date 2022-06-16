@@ -13,20 +13,36 @@ import adafruit_ssd1306
 import os
 import smbus
 from imusensor.MPU9250 import MPU9250
+
 #그래프
 import matplotlib.pyplot as plt
-x_val = [i for i in range(400)]
-y_val = [130 for i in range(400)]
-y_valAVG = [130 for i in range(400)]
-y_valPID = [130 for i in range(400)]
-yline = np.linspace(100, 220, 400)
-pidline = np.linspace(-1000,1000,400)
+graphRow = 200
+x_val = [i for i in range(graphRow)]
+y_val = [130 for i in range(graphRow)]
+y_valAVG = [130 for i in range(graphRow)]
+y_valPID = [130 for i in range(graphRow)]
+gyrosensorX = [0 for i in range(graphRow)]
+gyrosensorY = [0 for i in range(graphRow)]
+
+angleLine = np.linspace(-5,5,graphRow)
+hightLine = np.linspace(100, 220, graphRow)
+pidLine = np.linspace(-500,500,graphRow)
+pwmLine = np.linspace(0,100,graphRow)
+
 plt.ion()
-figure, ax = plt.subplots(figsize=(10, 8))
-line1, line2, line3, = ax.plot(x_val, yline, x_val, yline, x_val, yline)
-plt.title("TEST", fontsize=20)
+figure, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4 ,figsize=(10, 8))
+
+line_labels = ['Heght', 'complementary Filter', 'PID', 'Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
+line1 = ax1.plot(x_val, hightLine, color='red')[0]  # height
+line2 = ax1.plot(x_val, hightLine, color='green')[0]# height average
+line3 = ax2.plot(x_val, pidLine, color='blue')[0]   # pid
+line4 = ax3.plot(x_val, angleLine, color='red')[0]  # angleX
+line5 = ax3.plot(x_val, angleLine, color='blue')[0] # angleY
+line6 = ax4.plot(x_val, pwmLine, color='red')[0]    # pwm A
+line7 = ax4.plot(x_val, pwmLine, color='blue')[0]   # pwm B
+figure.legend([line1, line2, line3, line4, line5, line6, line7], labels= line_labels)
+plt.title("SMART DESK", fontsize=20)
 plt.xlabel("TIME")
-plt.ylabel("UserHeight")
 '''
 해야할 것
 - 정확한 각도 도출
