@@ -29,7 +29,7 @@ ENB_PWM = [100 for i in range(graphRow)]
 
 angleLine = np.linspace(-3,3,graphRow)
 heightLine = np.linspace(70, 190, graphRow)
-pidLine = np.linspace(-500,500,graphRow)
+pidLine = np.linspace(-100,100,graphRow)
 pwmLine = np.linspace(0,100,graphRow)
 
 plt.ion()
