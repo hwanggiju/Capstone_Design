@@ -20,15 +20,15 @@ graphRow = 200
 x_val = [i for i in range(graphRow)]
 y_val = [130 for i in range(graphRow)]
 y_valAVG = [130 for i in range(graphRow)]
-y_valPID = [130 for i in range(graphRow)]
+y_valPID = [0 for i in range(graphRow)]
 gyrosensorX = [0 for i in range(graphRow)]
 gyrosensorY = [0 for i in range(graphRow)]
-ENA_PWM = [0 for i in range(graphRow)]
-ENB_PWM = [0 for i in range(graphRow)]
+ENA_PWM = [100 for i in range(graphRow)]
+ENB_PWM = [100 for i in range(graphRow)]
 
 angleLine = np.linspace(-5,5,graphRow)
-hightLine = np.linspace(100, 220, graphRow)
-pidLine = np.linspace(-500,500,graphRow)
+hightLine = np.linspace(120, 200, graphRow)
+pidLine = np.linspace(-300,300,graphRow)
 pwmLine = np.linspace(0,100,graphRow)
 
 plt.ion()
@@ -36,8 +36,8 @@ figure, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4 ,figsize=(10, 8))
 
 line_labels = ['Heght', 'complementary Filter', 'PID', 'Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
 line1 = ax1.plot(x_val, hightLine, color='red')[0]  # height
-line2 = ax1.plot(x_val, hightLine, color='green')[0]# height average
-line3 = ax2.plot(x_val, pidLine, color='blue')[0]   # pid
+line2 = ax1.plot(x_val, hightLine, color='blue')[0]# height average
+line3 = ax2.plot(x_val, pidLine, color='green')[0]   # pid
 line4 = ax3.plot(x_val, angleLine, color='red')[0]  # angleX
 line5 = ax3.plot(x_val, angleLine, color='blue')[0] # angleY
 line6 = ax4.plot(x_val, pwmLine, color='red')[0]    # pwm A
