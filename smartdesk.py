@@ -342,8 +342,8 @@ Ki_term = 0
 # 출력 > PID값
 def PID(currentVal,setVal):
     global pastPID, preError, Kp_term, Ki_term, Kd_term
-    Kp = 5.7 #비례
-    Ki = 17.11 #적분
+    Kp = 10.7 #비례
+    Ki = 12.11 #적분
     Kd = 10.5 #미분
     now = time.time()
     dt = (now - pastPID) / 1.0
@@ -482,7 +482,12 @@ def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
 
 # PWM 값만 바꿀 때
 def changePWM(enA, enB):
-
+    if enA < 0 or enA > 100: #range over check
+        return False
+    elif enB < 0 or enB > 100:
+        return False
+    enA_pwm.start(0)  # enableA pin start dutycycle 0%
+    enB_pwm.start(0)  # enableB pin start dutycycle 0%
     enA_pwm.ChangeDutyCycle(enA)
     enB_pwm.ChangeDutyCycle(enB)
     return True
@@ -514,7 +519,7 @@ def HorizontalHoldTEST(nowAngle, compareAngle):
     val = PID(nowAngle, compareAngle)
     pwmA = 70
     pwmB = 70
-    diffangle = (val) * 90 / 100
+    diffangle = (val) * 90 / 200
     if diffangle < -90:
         diffangle = -90
     elif diffangle > 90:
