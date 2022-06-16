@@ -306,7 +306,7 @@ def PID(currentVal,Aim):
     global pastPID, preError
     Kp = 0.1
     Ki = 0.1
-    Kd = 0.1
+    Kd = 1
     now = time.time()
     dt = (now - pastPID) / 1000.0 # mS
     errorGap_P = Aim - currentVal
