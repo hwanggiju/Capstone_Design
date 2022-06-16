@@ -701,7 +701,7 @@ def main():
             print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY, waveSensorMean)
+            ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY)
             
             userNum = 0
             for i in range(detect.shape[0]):
