@@ -501,8 +501,8 @@ def HorizontalHold(nowAngle, compareAngle):
         diffangle = 90
     diffPwm = int(20 * np.sin((abs(diffangle)) * np.pi/180))
     if actionPre == 2 :
-        pwmA += diffPwm
-        pwmB -= diffPwm
+        pwmA -= diffPwm
+        pwmB += diffPwm
         changePWM(pwmA, pwmB)
         print(str(pwmA) + '/' + str(pwmB))
     elif actionPre == 0 :
