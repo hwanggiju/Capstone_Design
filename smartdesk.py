@@ -482,10 +482,7 @@ def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
 
 # PWM 값만 바꿀 때
 def changePWM(enA, enB):
-    if enA < 0 or enA > 100: #range over check
-        return False
-    elif enB < 0 or enB > 100:
-        return False
+
     enA_pwm.ChangeDutyCycle(enA)
     enB_pwm.ChangeDutyCycle(enB)
     return True
