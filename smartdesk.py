@@ -740,7 +740,7 @@ def main():
                     y_val[len(y_val) - i - 1] = y_val[len(y_val) - i - 2]
                 ani = FuncAnimation(plt.gcf(), animate, interval=1)
                 plt.tight_layout()
-                plt.show()
+
 
                 # 실제 책상 높이는 78cm인데, 키를 바탕으로한 최적의 높이 식을 대입하면 키가 190cm 사람이 최적의 책상 높이가 77.9 ????
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
@@ -780,3 +780,5 @@ if __name__ == "__main__":
     enA_pwm.stop()
     enB_pwm.stop()
     GPIO.cleanup()
+
+plt.show()
