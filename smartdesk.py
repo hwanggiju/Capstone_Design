@@ -512,6 +512,29 @@ def HorizontalHold(nowAngle, compareAngle):
         print(str(pwmA) + '/' + str(pwmB))
 
     return pwmA, pwmB
+#각도 자세유지 코드
+def HorizontalHoldTEST(nowAngle, compareAngle):
+    val = PID(nowAngle, compareAngle)
+    pwmA = 80
+    pwmB = 80
+    diffangle = (val)* 90 / 250
+    if diffangle < -90:
+        diffangle = -90
+    elif diffangle > 90:
+        diffangle = 90
+    diffPwm = int(20 * np.sin((abs(diffangle)) * np.pi/180))
+    if actionPre == 2 :
+        pwmA += diffPwm
+        pwmB -= diffPwm
+        changePWM(pwmA, pwmB)
+        print(str(pwmA) + '/' + str(pwmB))
+    elif actionPre == 0 :
+        pwmA += diffPwm
+        pwmB -= diffPwm
+        changePWM(pwmA, pwmB)
+        print(str(pwmA) + '/' + str(pwmB))
+
+    return pwmA, pwmB
 # driver set
 # 0 : stop
 # 1 : down
@@ -706,7 +729,7 @@ def main():
             print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY)
+            ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
             
             userNum = 0
             for i in range(detect.shape[0]):
