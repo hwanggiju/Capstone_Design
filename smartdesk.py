@@ -580,7 +580,8 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
 def drawDisplay() :
     draw.text((100, 0), 'Up', font=font2, fill=0)
     draw.text((100, 15), 'Okay', font=font2, fill=0)
-    draw.text((100, 0), 'Down', font=font2, fill=0)
+    draw.text((100, 30), 'Down', font=font2, fill=0)
+    draw.text((5, 0), 'Desk Tall', font=font2, fill=0)
     oled.image(image)
     oled.show()
     
