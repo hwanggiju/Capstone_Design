@@ -27,8 +27,8 @@ gyrosensorY = [0 for i in range(graphRow)]
 ENA_PWM = [100 for i in range(graphRow)]
 ENB_PWM = [100 for i in range(graphRow)]
 
-angleLine = np.linspace(-5,5,graphRow)
-heightLine = np.linspace(120, 200, graphRow)
+angleLine = np.linspace(-3,3,graphRow)
+heightLine = np.linspace(70, 190, graphRow)
 pidLine = np.linspace(-500,500,graphRow)
 pwmLine = np.linspace(0,100,graphRow)
 
@@ -713,7 +713,7 @@ def main():
             AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
             #print('test')
             # 4-2) Gyro를 이용한 각도 계산 
-            Gy_Angle = cal_angle_gyro(GyX, GyY, GyZ)
+            #Gy_Angle = cal_angle_gyro(GyX, GyY, GyZ)
             #print('test')
             # nani 각도 코드 테스트
             angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
