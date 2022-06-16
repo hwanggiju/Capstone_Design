@@ -20,6 +20,7 @@ graphRow = 200
 x_val = [i for i in range(graphRow)]
 y_val = [130 for i in range(graphRow)]
 y_valAVG = [130 for i in range(graphRow)]
+y_valDesk = [130 for i in range(graphRow)]
 y_valPID = [0 for i in range(graphRow)]
 gyrosensorX = [0 for i in range(graphRow)]
 gyrosensorY = [0 for i in range(graphRow)]
@@ -27,21 +28,23 @@ ENA_PWM = [100 for i in range(graphRow)]
 ENB_PWM = [100 for i in range(graphRow)]
 
 angleLine = np.linspace(-5,5,graphRow)
-hightLine = np.linspace(120, 200, graphRow)
+heightLine = np.linspace(120, 200, graphRow)
 pidLine = np.linspace(-500,500,graphRow)
 pwmLine = np.linspace(0,100,graphRow)
 
 plt.ion()
 figure, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4 ,figsize=(10, 8))
 
-line_labels = ['Heght', 'complementary Filter', 'PID', 'Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
-line1 = ax1.plot(x_val, hightLine, color='red')[0]  # height
-line2 = ax1.plot(x_val, hightLine, color='blue')[0]# height average
-line3 = ax2.plot(x_val, pidLine, color='green')[0]   # pid
-line4 = ax3.plot(x_val, angleLine, color='red')[0]  # angleX
-line5 = ax3.plot(x_val, angleLine, color='blue')[0] # angleY
-line6 = ax4.plot(x_val, pwmLine, color='red')[0]    # pwm A
-line7 = ax4.plot(x_val, pwmLine, color='blue')[0]   # pwm B
+line_labels = ['User Heght', 'complementary Filter', 'Desk Height', 'PID', 'Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
+line1 = ax1.plot(x_val, heightLine, color='red')[0]     # height
+line2 = ax1.plot(x_val, heightLine, color='blue')[0]    # height average
+line3 = ax1.plot(x_val, heightLine, color='green')[0]   # desk height
+line4 = ax2.plot(x_val, pidLine, color='green')[0]      # pid
+line5 = ax3.plot(x_val, angleLine, color='red')[0]      # angleX
+line6 = ax3.plot(x_val, angleLine, color='blue')[0]     # angleY
+line7 = ax4.plot(x_val, pwmLine, color='red')[0]        # pwm A
+line8 = ax4.plot(x_val, pwmLine, color='blue')[0]       # pwm B
+
 figure.legend([line1, line2, line3, line4, line5, line6, line7], labels= line_labels)
 plt.title("SMART DESK", fontsize=20)
 plt.xlabel("TIME")
@@ -799,7 +802,7 @@ def main():
                         stop = False
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             #그래프 표시
-            #line1.set_xdata(x_val)
+            y_valDesk[0] = waveSensorHeight + 2
             gyrosensorX[0] = angleX
             gyrosensorY[0] = angleY
             # 쉬프트
@@ -808,14 +811,16 @@ def main():
                 gyrosensorY[graphRow - i - 1] = gyrosensorY[graphRow - i - 2]
                 ENA_PWM[graphRow - i - 1] = ENA_PWM[graphRow - i - 2]
                 ENB_PWM[graphRow - i - 1] = ENB_PWM[graphRow - i - 2]
+                y_valDesk[graphRow - i - 1] = y_valDesk[graphRow - i - 2]
             if TESTMODE == True:
                 line1.set_ydata(y_val)
                 line2.set_ydata(y_valAVG)
-                line3.set_ydata(y_valPID)
-                line4.set_ydata(gyrosensorX)
-                line5.set_ydata(gyrosensorY)
-                line6.set_ydata(ENA_PWM)
-                line7.set_ydata(ENB_PWM)
+                line3.set_ydata(y_valDesk)
+                line4.set_ydata(y_valPID)
+                line5.set_ydata(gyrosensorX)
+                line6.set_ydata(gyrosensorY)
+                line7.set_ydata(ENA_PWM)
+                line8.set_ydata(ENB_PWM)
                 figure.canvas.draw()
                 figure.canvas.flush_events()
     except KeyboardInterrupt :
