@@ -19,8 +19,7 @@ x_val = [i for i in range(100)]
 y_val = [130 for i in range(100)]
 plt.ion()
 figure, ax = plt.subplots(figsize=(10, 8))
-y = np.random.randint(1, 100, 500)
-line1, = ax.plot(x_val, y)
+line1, = ax.plot(x_val, y_val)
 plt.title("TEST", fontsize=20)
 plt.xlabel("X-axis")
 plt.ylabel("Y-axis")
