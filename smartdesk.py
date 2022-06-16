@@ -23,6 +23,8 @@ y_valAVG = [130 for i in range(graphRow)]
 y_valPID = [130 for i in range(graphRow)]
 gyrosensorX = [0 for i in range(graphRow)]
 gyrosensorY = [0 for i in range(graphRow)]
+ENA_PWM = [0 for i in range(graphRow)]
+ENB_PWM = [0 for i in range(graphRow)]
 
 angleLine = np.linspace(-5,5,graphRow)
 hightLine = np.linspace(100, 220, graphRow)
@@ -521,6 +523,7 @@ def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
             fixpwmB = diffPwm + pwmB
             changePWM(fixpwmA, fixpwmB)
             print(str(fixpwmA) + '/' + str(fixpwmB))
+    return pwmA, pwmB
 # driver set
 # 0 : stop
 # 1 : down
@@ -715,7 +718,7 @@ def main():
             print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            HorizontalHold(angleY, fixAngle, waveSensorMean)
+            ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngle, waveSensorMean)
             
             userNum = 0
             for i in range(detect.shape[0]):
@@ -760,12 +763,17 @@ def main():
                     y_val[0] = userHeight
                     y_valAVG[0] = userHeightAVG
                     y_valPID[0] = val
-                    for i in range(len(y_val) - 1):
-                        y_val[len(y_val) - i - 1] = y_val[len(y_val) - i - 2]
-                    for i in range(len(y_valAVG) - 1):
-                        y_valAVG[len(y_valAVG) - i - 1] = y_valAVG[len(y_valAVG) - i - 2]
-                    for i in range(len(y_valPID) - 1):
-                        y_valPID[len(y_valPID) - i - 1] = y_valPID[len(y_valPID) - i - 2]
+                    gyrosensorX[0] = angleX
+                    gyrosensorY[0] = angleY
+                    # 쉬프트 그래프
+                    for i in range(graphRow - 1):
+                        y_val[graphRow - i - 1] = y_val[graphRow - i - 2]
+                        y_valPID[graphRow - i - 1] = y_valPID[graphRow - i - 2]
+                        y_valAVG[graphRow - i - 1] = y_valAVG[graphRow - i - 2]
+                        gyrosensorX[graphRow - i - 1] = gyrosensorX[graphRow - i - 2]
+                        gyrosensorY[graphRow - i - 1] = gyrosensorY[graphRow - i - 2]
+                        ENA_PWM[graphRow - i - 1] = ENA_PWM[graphRow - i - 2]
+                        ENB_PWM[graphRow - i - 1] = ENB_PWM[graphRow - i - 2]
                 # 실제 책상 높이는 78cm인데, 키를 바탕으로한 최적의 높이 식을 대입하면 키가 190cm 사람이 최적의 책상 높이가 77.9 ????
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                 #높이에 따른 모터작동
@@ -802,6 +810,10 @@ def main():
                 line1.set_ydata(y_val)
                 line2.set_ydata(y_valAVG)
                 line3.set_ydata(y_valPID)
+                line4.set_ydata(gyrosensorX)
+                line5.set_ydata(gyrosensorY)
+                line6.set_ydata(ENA_PWM)
+                line7.set_ydata(ENB_PWM)
                 figure.canvas.draw()
                 figure.canvas.flush_events()
     except KeyboardInterrupt :
