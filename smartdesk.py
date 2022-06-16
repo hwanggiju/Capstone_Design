@@ -29,7 +29,7 @@ ENB_PWM = [100 for i in range(graphRow)]
 
 angleLine = np.linspace(-3,3,graphRow)
 heightLine = np.linspace(70, 190, graphRow)
-pidLine = np.linspace(-100,100,graphRow)
+pidLine = np.linspace(-500,500,graphRow)
 pwmLine = np.linspace(60,100,graphRow)
 
 plt.ion()
@@ -517,7 +517,7 @@ def HorizontalHoldTEST(nowAngle, compareAngle):
     val = PID(nowAngle, compareAngle)
     pwmA = 80
     pwmB = 80
-    diffangle = (val)* 90 / 250
+    diffangle = (val) * 90 / 200
     if diffangle < -90:
         diffangle = -90
     elif diffangle > 90:
