@@ -301,19 +301,21 @@ def cal_angle_gyro(GyX, GyY, GyZ):
 # 미분을 통해 정상상태로 가는 속도 조절 : 오버슈트 개선
 pastPID = time.time() # 초기 셋팅
 preError = 0
+Ki_term = 0
 # 인수 > 센서값 , 목표치
-def PID(currentVal,Aim):
-    global pastPID, preError
+# 출력 > PID값
+def PID(currentVal,setVal):
+    global pastPID, preError, Kp_term, Ki_term, Kd_term
     Kp = 0.1
     Ki = 0.1
     Kd = 1
     now = time.time()
     dt = (now - pastPID) / 1000.0 # mS
-    errorGap_P = Aim - currentVal
+    errorGap_P = setVal - currentVal
     Kp_term = Kp * errorGap_P
 
     errorGap_I = errorGap_P * dt
-    Ki_term = Ki * errorGap_I
+    Ki_term += Ki * errorGap_I
 
     errorGap_D = (errorGap_P - preError) / dt
     Kd_term = Kd * errorGap_D
