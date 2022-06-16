@@ -579,8 +579,11 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     
 def drawDisplay() :
     draw.text((100, 0), 'Up', font=font2, fill=0)
-    draw.text((100, 15), 'Up', font=font2, fill=0)
-    draw.text((100, 0), 'Up', font=font2, fill=0)
+    draw.text((100, 15), 'Okay', font=font2, fill=0)
+    draw.text((100, 0), 'Down', font=font2, fill=0)
+    oled.image(image)
+    oled.show()
+    
     pass
     
 def eraseDisplay() :
@@ -692,7 +695,7 @@ def main():
             #print('test')
             # nani 각도 코드 테스트
             angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
-
+            deskAngle = angleX
             print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
