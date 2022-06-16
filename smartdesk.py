@@ -13,6 +13,20 @@ import adafruit_ssd1306
 import os
 import smbus
 from imusensor.MPU9250 import MPU9250
+#그래프
+import matplotlib.pyplot as plt
+x_val = [i for i in range(400)]
+y_val = [130 for i in range(400)]
+y_valAVG = [130 for i in range(400)]
+y_valPID = [130 for i in range(400)]
+yline = np.linspace(100, 220, 400)
+pidline = np.linspace(-1000,1000,400)
+plt.ion()
+figure, ax = plt.subplots(figsize=(8, 8))
+line1, line2, line3, = ax.plot(x_val, yline, x_val, yline, x_val, yline)
+plt.title("TEST", fontsize=20)
+plt.xlabel("TIME")
+plt.ylabel("UserHeight")
 '''
 해야할 것
 - 정확한 각도 도출
@@ -27,6 +41,7 @@ from imusensor.MPU9250 import MPU9250
 질문4. 스위치로 올리는 것보다 더 편한가? feat. 김성수교수님
 
 '''
+TESTMODE = True
 # 레지스터 값 설정
 CONFIG       = 0x1A     # LowPassFilter bit 2:0
 GYRO_CONFIG  = 0x1B     # FS_SEL bit 4:3
@@ -298,9 +313,32 @@ def cal_angle_gyro(GyX, GyY, GyZ):
 # 최초의 목표값과 정상상태 오차의 적분을 비교 : 정상상태오차 및 상승시간 개선
 # Kd 조절 시
 # 미분을 통해 정상상태로 가는 속도 조절 : 오버슈트 개선
-def PID(Kp, Ki, Kd):
-    integral = 0
-    
+pastPID = time.time() # 초기 셋팅
+preError = 0
+Ki_term = 0
+# 인수 > 센서값 , 목표치
+# 출력 > PID값
+def PID(currentVal,setVal):
+    global pastPID, preError, Kp_term, Ki_term, Kd_term
+    Kp = 1
+    Ki = 1
+    Kd = 1
+    now = time.time()
+    dt = (now - pastPID) / 1.0
+    errorGap_P = setVal - currentVal
+    Kp_term = Kp * errorGap_P
+
+    errorGap_I = errorGap_P * dt
+    Ki_term += Ki * errorGap_I
+
+    errorGap_D = (errorGap_P - preError) / dt
+    Kd_term = Kd * errorGap_D
+
+    preError = errorGap_P
+    pastPID = now
+    return Kp_term + Ki_term + Kd_term
+
+# 가속도, 각속도를 이용해서 각 도출 (계산 및 상보필터)
 def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
     global GyX_deg, GyY_deg, GyZ_deg
     global past1 #기존 시간값 충돌방지
@@ -566,35 +604,36 @@ def main():
         draw.text((5, 0), 'WELCOME~!!', font = font1, fill = 255)
         draw.text((5, 20), 'Smart Desk', font = font1, fill = 255)
         OLED_initial_setting_Height(SET_HEIGHT)
-        while True :
-            if GPIO.input(switch[2]) == 1 :
-                draw.text((5, 0), 'Complete set', font = font, fill = 255)
-                draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
-                OLED_initial_setting_Height1(SET_HEIGHT)
-                SET_HEIGHT = SET_HEIGHT + 5
-                OLED_initial_setting_Height(SET_HEIGHT)
-                time.sleep(0.2)
-                
-            elif GPIO.input(switch[0]) == 1:
-                draw.text((5, 0), 'Complete set', font = font, fill = 255)
-                draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
-                OLED_initial_setting_Height1(SET_HEIGHT)
-                SET_HEIGHT = SET_HEIGHT - 5
-                OLED_initial_setting_Height(SET_HEIGHT)
-                time.sleep(0.2)
-                
-            elif GPIO.input(switch[1]) == 1:
-                OLED_initial_setting_Height1(SET_HEIGHT)
-                draw.text((5, 0), 'Complete set', font = font, fill = 0)
-                draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 0)
-                oled.image(image)
-                oled.show()
-                if GPIO.input(switch[1]) == 1 :
+        if TESTMODE == False: #test 모드일때는 작동 안함
+            while True :
+                if GPIO.input(switch[2]) == 1 :
                     draw.text((5, 0), 'Complete set', font = font, fill = 255)
                     draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
-                    UserTall = SET_HEIGHT
-                    bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18) # 초음파 거리 값 
-                    break
+                    OLED_initial_setting_Height1(SET_HEIGHT)
+                    SET_HEIGHT = SET_HEIGHT + 5
+                    OLED_initial_setting_Height(SET_HEIGHT)
+                    time.sleep(0.2)
+
+                elif GPIO.input(switch[0]) == 1:
+                    draw.text((5, 0), 'Complete set', font = font, fill = 255)
+                    draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
+                    OLED_initial_setting_Height1(SET_HEIGHT)
+                    SET_HEIGHT = SET_HEIGHT - 5
+                    OLED_initial_setting_Height(SET_HEIGHT)
+                    time.sleep(0.2)
+
+                elif GPIO.input(switch[1]) == 1:
+                    OLED_initial_setting_Height1(SET_HEIGHT)
+                    draw.text((5, 0), 'Complete set', font = font, fill = 0)
+                    draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 0)
+                    oled.image(image)
+                    oled.show()
+                    if GPIO.input(switch[1]) == 1 :
+                        draw.text((5, 0), 'Complete set', font = font, fill = 255)
+                        draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
+                        UserTall = SET_HEIGHT
+                        bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18) # 초음파 거리 값
+                        break
         global nowTime, preTime
         global actionPre, actionNow
         cap = cv2.VideoCapture(0)
@@ -620,6 +659,9 @@ def main():
         stop = False
         HeightAVG = [130 for i in range(30)]
         WaveAVG = [waveSensorHeight for i in range(15)]
+
+
+
         while True:
             time.sleep(0.005)
             nowTime = time.time()
@@ -693,8 +735,22 @@ def main():
                 # 사용자의 현재 키
                 # 현재 키의 값 변화를 천천히 바꿔주기 위함
                 userHeightAVG = np.mean(HeightAVG)
-                
-                print("테스트식 결과 :" + str(userHeightAVG))
+                if TESTMODE == True:
+                    print("현재 키값 :" + str(round(userHeight, 2)))
+                    print("테스트식 결과 :" + str(round(userHeightAVG, 2)))
+                    print("차값 :" + str(userHeight - userHeightAVG))
+                    val = PID(userHeightAVG, userHeight)
+                    print("PID 계산값 " + str(round(val, 5)))
+                    # 그래프 값 입력부
+                    y_val[0] = userHeight
+                    y_valAVG[0] = userHeightAVG
+                    y_valPID[0] = val
+                    for i in range(len(y_val) - 1):
+                        y_val[len(y_val) - i - 1] = y_val[len(y_val) - i - 2]
+                    for i in range(len(y_valAVG) - 1):
+                        y_valAVG[len(y_valAVG) - i - 1] = y_valAVG[len(y_valAVG) - i - 2]
+                    for i in range(len(y_valPID) - 1):
+                        y_valPID[len(y_valPID) - i - 1] = y_valPID[len(y_valPID) - i - 2]
                 # 실제 책상 높이는 78cm인데, 키를 바탕으로한 최적의 높이 식을 대입하면 키가 190cm 사람이 최적의 책상 높이가 77.9 ????
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                 #높이에 따른 모터작동
@@ -715,6 +771,7 @@ def main():
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
                         actionPre = 1#stop
+                        fixAngle = angleY
                         print("stop")
                 else:
                     if userHeightAVG < 140 and actionPre != 0:
@@ -724,6 +781,14 @@ def main():
                     elif userHeightAVG > 140 and userHeightAVG < 150 and actionPre != 1 :
                         stop = False
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
+            #그래프 표시
+            #line1.set_xdata(x_val)
+            if TESTMODE == True:
+                line1.set_ydata(y_val)
+                line2.set_ydata(y_valAVG)
+                line3.set_ydata(y_valPID)
+                figure.canvas.draw()
+                figure.canvas.flush_events()
     except KeyboardInterrupt :
         pass
     
@@ -732,3 +797,4 @@ if __name__ == "__main__":
     enA_pwm.stop()
     enB_pwm.stop()
     GPIO.cleanup()
+
