@@ -824,7 +824,7 @@ def main():
                 line7.set_ydata(ENA_PWM)
                 line8.set_ydata(ENB_PWM)
                 figure.canvas.draw()
-                figure.canvas.flush_events()
+                #figure.canvas.flush_events()
     except KeyboardInterrupt :
         pass
     
