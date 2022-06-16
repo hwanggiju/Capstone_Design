@@ -522,7 +522,7 @@ def HorizontalHoldTEST(nowAngle, compareAngle):
         diffangle = -90
     elif diffangle > 90:
         diffangle = 90
-    diffPwm = int(20 * np.sin((abs(diffangle)) * np.pi/180))
+    diffPwm = int(20 * np.sin(diffangle * np.pi/180))
     if actionPre == 2 :
         pwmA += diffPwm
         pwmB -= diffPwm
