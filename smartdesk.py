@@ -33,7 +33,7 @@ pidLine = np.linspace(-100,100,graphRow)
 pwmLine = np.linspace(60,100,graphRow)
 
 plt.ion()
-figure, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4 ,figsize=(10, 8))
+figure, (ax1, ax2, ax3, ax4) = plt.subplots(2, 2 ,figsize=(10, 8))
 
 line_labels = ['User Heght', 'complementary Filter', 'Desk Height', 'PID', 'Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
 line1 = ax1.plot(x_val, heightLine, color='red')[0]     # height
