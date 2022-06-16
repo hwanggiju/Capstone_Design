@@ -786,7 +786,7 @@ def main():
             if TESTMODE == True:
                 line1.set_ydata(y_val)
                 line2.set_ydata(y_valAVG)
-                line3.set_ydata()
+                line3.set_ydata(y_valPID)
                 figure.canvas.draw()
                 figure.canvas.flush_events()
     except KeyboardInterrupt :
