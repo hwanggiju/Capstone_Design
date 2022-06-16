@@ -681,8 +681,7 @@ def main():
         HeightAVG = [130 for i in range(30)]
         WaveAVG = [waveSensorHeight for i in range(15)]
 
-
-
+        figure.canvas.flush_events()
         while True:
             time.sleep(0.005)
             nowTime = time.time()
@@ -824,7 +823,7 @@ def main():
                 line7.set_ydata(ENA_PWM)
                 line8.set_ydata(ENB_PWM)
                 figure.canvas.draw()
-                #figure.canvas.flush_events()
+
     except KeyboardInterrupt :
         pass
     
