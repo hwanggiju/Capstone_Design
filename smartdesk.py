@@ -33,17 +33,17 @@ pidLine = np.linspace(-100,100,graphRow)
 pwmLine = np.linspace(60,100,graphRow)
 
 plt.ion()
-figure, (ax1, ax2, ax3, ax4) = plt.subplots(2, 4 ,figsize=(10, 8))
+figure, ax = plt.subplots(2, 2 ,figsize=(10, 8))
 
 line_labels = ['User Heght', 'complementary Filter', 'Desk Height', 'PID', 'Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
-line1 = ax1.plot(x_val, heightLine, color='red')[0]     # height
-line2 = ax1.plot(x_val, heightLine, color='orange')[0]    # height average
-line3 = ax1.plot(x_val, heightLine, color='yellow')[0]   # desk height
-line4 = ax2.plot(x_val, pidLine, color='green')[0]      # pid
-line5 = ax3.plot(x_val, angleLine, color='blue')[0]      # angleX
-line6 = ax3.plot(x_val, angleLine, color='navy')[0]     # angleY
-line7 = ax4.plot(x_val, pwmLine, color='purple')[0]        # pwm A
-line8 = ax4.plot(x_val, pwmLine, color='crimson')[0]       # pwm B
+line1 = ax[0][0].plot(x_val, heightLine, color='red')[0]     # height
+line2 = ax[0][0].plot(x_val, heightLine, color='orange')[0]    # height average
+line3 = ax[0][0].plot(x_val, heightLine, color='yellow')[0]   # desk height
+line4 = ax[0][1].plot(x_val, pidLine, color='green')[0]      # pid
+line5 = ax[1][0].plot(x_val, angleLine, color='blue')[0]      # angleX
+line6 = ax[1][0].plot(x_val, angleLine, color='navy')[0]     # angleY
+line7 = ax[1][1].plot(x_val, pwmLine, color='purple')[0]        # pwm A
+line8 = ax[1][1].plot(x_val, pwmLine, color='crimson')[0]       # pwm B
 
 figure.legend([line1, line2, line3, line4, line5, line6, line7], labels= line_labels)
 plt.title("SMART DESK", fontsize=20)
