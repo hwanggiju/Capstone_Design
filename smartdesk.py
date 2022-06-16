@@ -24,13 +24,13 @@ y_valDesk = [130 for i in range(graphRow)]
 y_valPID = [0 for i in range(graphRow)]
 gyrosensorX = [0 for i in range(graphRow)]
 gyrosensorY = [0 for i in range(graphRow)]
-ENA_PWM = [100 for i in range(graphRow/2)]
-ENB_PWM = [100 for i in range(graphRow/2)]
+ENA_PWM = [100 for i in range(int(graphRow/2))]
+ENB_PWM = [100 for i in range(int(graphRow/2))]
 
 angleLine = np.linspace(-3,3,graphRow)
 heightLine = np.linspace(70, 190, graphRow)
 pidLine = np.linspace(-100,100,graphRow)
-pwmLine = np.linspace(60,100,graphRow/2)
+pwmLine = np.linspace(60,100,int(graphRow/2))
 
 plt.ion()
 figure, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4 ,figsize=(10, 8))
