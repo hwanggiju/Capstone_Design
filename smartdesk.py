@@ -22,7 +22,7 @@ y_valPID = [130 for i in range(400)]
 yline = np.linspace(100, 220, 400)
 pidline = np.linspace(-1000,1000,400)
 plt.ion()
-figure, ax = plt.subplots(figsize=(8, 8))
+figure, ax = plt.subplots(figsize=(10, 8))
 line1, line2, line3, = ax.plot(x_val, yline, x_val, yline, x_val, yline)
 plt.title("TEST", fontsize=20)
 plt.xlabel("TIME")
@@ -473,7 +473,6 @@ def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
     pwmA = 80
     pwmB = 80
     diffPwm = int(20 * np.sin((64 * (nowAngle-compareAngle)) * np.pi/180))
-    #diffPwmB = int(100 * np.cos((45 - abs(nowAngle-compareAngle)) * np.pi/180))
     if actionPre == 2 :
         if (nowAngle > compareAngle) : 
             pwmA += diffPwm
@@ -506,18 +505,6 @@ def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
             fixpwmB = diffPwm + pwmB
             changePWM(fixpwmA, fixpwmB)
             print(str(fixpwmA) + '/' + str(fixpwmB))
-        
-    '''
-    if diffPwm >= 0:
-        pwmA -= diffPwm
-    else:
-        pwmB += diffPwm
-    elif actionPre == 0:
-    if diffPwm >= 0:
-        pwmB -= diffPwm
-    else:
-        pwmA += diffPwm
-    '''
 # driver set
 # 0 : stop
 # 1 : down
@@ -589,6 +576,15 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     draw.text((5, 40), str(CHANGE_HEIGHT), font = font, fill = 255)
     oled.image(image)
     oled.show()
+    
+def drawDisplay() :
+    draw.text((100, 0), 'Up', font=font2, fill=0)
+    draw.text((100, 15), 'Up', font=font2, fill=0)
+    draw.text((100, 0), 'Up', font=font2, fill=0)
+    pass
+    
+def eraseDisplay() :
+    pass
 
 # main code
 def main():
