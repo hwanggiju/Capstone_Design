@@ -16,7 +16,7 @@ from imusensor.MPU9250 import MPU9250
 #그래프
 import matplotlib.pyplot as plt
 x_val = [i for i in range(100)]
-y_val = [np.random.randint(1, 00, 1000) for i in range(100)]
+y_val = np.linspace(0, 10, 100)
 plt.ion()
 figure, ax = plt.subplots(figsize=(8, 8))
 line1, = ax.plot(x_val, y_val)
@@ -737,9 +737,9 @@ def main():
                 val = PID(userHeightAVG, userHeight)
                 print("PID 계산값 " + str(round(val, 5)))
                 # 그래프
-                y_val[0] = userHeightAVG
-                for i in range(len(y_val) - 1):
-                    y_val[len(y_val) - i - 1] = y_val[len(y_val) - i - 2]
+                y_val = userHeightAVG
+                #for i in range(len(y_val) - 1):
+                #    y_val[len(y_val) - i - 1] = y_val[len(y_val) - i - 2]
                 line1.set_xdata(x_val)
                 line1.set_ydata(y_val)
                 figure.canvas.draw()
