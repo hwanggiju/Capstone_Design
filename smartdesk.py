@@ -738,7 +738,7 @@ def main():
                 val = PID(userHeightAVG, userHeight)
                 print("PID 계산값 " + str(round(val, 5)))
                 # 그래프
-                y_val = userHeightAVG
+                y_val[0] = userHeightAVG
                 for i in range(len(y_val) - 1):
                     y_val[len(y_val) - i - 1] = y_val[len(y_val) - i - 2]
                 line1.set_xdata(x_val)
