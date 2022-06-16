@@ -37,13 +37,13 @@ figure, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4 ,figsize=(10, 8))
 
 line_labels = ['User Heght', 'complementary Filter', 'Desk Height', 'PID', 'Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
 line1 = ax1.plot(x_val, heightLine, color='red')[0]     # height
-line2 = ax1.plot(x_val, heightLine, color='blue')[0]    # height average
-line3 = ax1.plot(x_val, heightLine, color='green')[0]   # desk height
+line2 = ax1.plot(x_val, heightLine, color='orange')[0]    # height average
+line3 = ax1.plot(x_val, heightLine, color='yellow')[0]   # desk height
 line4 = ax2.plot(x_val, pidLine, color='green')[0]      # pid
-line5 = ax3.plot(x_val, angleLine, color='red')[0]      # angleX
-line6 = ax3.plot(x_val, angleLine, color='blue')[0]     # angleY
-line7 = ax4.plot(x_val, pwmLine, color='red')[0]        # pwm A
-line8 = ax4.plot(x_val, pwmLine, color='blue')[0]       # pwm B
+line5 = ax3.plot(x_val, angleLine, color='blue')[0]      # angleX
+line6 = ax3.plot(x_val, angleLine, color='navy')[0]     # angleY
+line7 = ax4.plot(x_val, pwmLine, color='purple')[0]        # pwm A
+line8 = ax4.plot(x_val, pwmLine, color='crimson')[0]       # pwm B
 
 figure.legend([line1, line2, line3, line4, line5, line6, line7], labels= line_labels)
 plt.title("SMART DESK", fontsize=20)
@@ -805,7 +805,7 @@ def main():
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             #그래프 표시
 
-            gyrosensorX[0] = angleX 
+            gyrosensorX[0] = angleX
             gyrosensorY[0] = angleY - fixAngle
             # 쉬프트
             for i in range(graphRow - 1):
