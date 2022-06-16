@@ -23,7 +23,7 @@ yline = np.linspace(100, 220, 400)
 pidline = np.linspace(-1000,1000,400)
 plt.ion()
 figure, ax = plt.subplots(figsize=(8, 8))
-line1, line2, line3, = ax.plot(x_val, yline, x_val, yline, x_val, pidline)
+line1, line2, line3, = ax.plot(x_val, yline, x_val, yline, x_val, yline)
 plt.title("TEST", fontsize=20)
 plt.xlabel("TIME")
 plt.ylabel("UserHeight")
@@ -320,11 +320,11 @@ Ki_term = 0
 # 출력 > PID값
 def PID(currentVal,setVal):
     global pastPID, preError, Kp_term, Ki_term, Kd_term
-    Kp = 0.1
-    Ki = 0.1
+    Kp = 1
+    Ki = 1
     Kd = 1
     now = time.time()
-    dt = (now - pastPID) / 1.0 # mS
+    dt = (now - pastPID) / 1.0
     errorGap_P = setVal - currentVal
     Kp_term = Kp * errorGap_P
 
