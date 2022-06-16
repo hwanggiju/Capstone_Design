@@ -303,9 +303,9 @@ preError = 0
 # 인수 > 센서값 , 목표치
 def PID(currentVal,Aim):
     global pastPID, preError
-    Kp = 1
-    Ki = 1
-    Kd = 1
+    Kp = 0.1
+    Ki = 0.1
+    Kd = 0.1
     now = time.time()
     dt = (now - pastPID) / 1000.0 # mS
     errorGap_P = Aim - currentVal
@@ -739,6 +739,7 @@ def main():
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
                         actionPre = 1#stop
+                        fixAngle = angleY
                         print("stop")
                 else:
                     if userHeightAVG < 140 and actionPre != 0:
