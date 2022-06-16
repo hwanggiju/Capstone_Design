@@ -486,8 +486,8 @@ def changePWM(enA, enB):
         return False
     elif enB < 0 or enB > 100:
         return False
-    enA_pwm.start(0)  # enableA pin start dutycycle 0%
-    enB_pwm.start(0)  # enableB pin start dutycycle 0%
+    enA_pwm.ChangeDutyCycle(0)  # enableA pin start dutycycle 0%
+    enB_pwm.ChangeDutyCycle(0)  # enableB pin start dutycycle 0%
     enA_pwm.ChangeDutyCycle(enA)
     enB_pwm.ChangeDutyCycle(enB)
     return True
