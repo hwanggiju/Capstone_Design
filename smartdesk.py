@@ -343,8 +343,8 @@ Ki_term = 0
 def PID(currentVal,setVal):
     global pastPID, preError, Kp_term, Ki_term, Kd_term
     Kp = 20.7 #비례
-    Ki = 12.11 #적분
-    Kd = 10.5 #미분
+    Ki = 3.11 #적분
+    Kd = 15.5 #미분
     now = time.time()
     dt = (now - pastPID) / 1.0
     errorGap_P = setVal - currentVal
