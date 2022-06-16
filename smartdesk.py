@@ -18,16 +18,13 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from IPython import display
 x_val = [i for i in range(100)]
-y_val = [0 for i in range(100)]
+y_val = [130 for i in range(100)]
 plt.ion()
 figure, ax = plt.subplots(figsize=(10, 8))
 line1, = ax.plot(x_val, y_val)
 plt.title("TEST", fontsize=20)
 plt.xlabel("X-axis")
 plt.ylabel("Y-axis")
-def animate(i):
-    plt.cla()
-    plt.plot(x_val, y_val)
 '''
 해야할 것
 - 정확한 각도 도출
