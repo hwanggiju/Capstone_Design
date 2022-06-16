@@ -21,7 +21,7 @@ y_valAVG = [130 for i in range(400)]
 yline = np.linspace(100, 220, 400)
 plt.ion()
 figure, ax = plt.subplots(figsize=(8, 8))
-line1,line2 = ax.plot(x_val, yline, x_val, yline)
+line1, line2 = ax.plot(x_val, yline, x_val, yline)
 plt.title("TEST", fontsize=20)
 plt.xlabel("TIME")
 plt.ylabel("UserHeight")
@@ -778,7 +778,7 @@ def main():
             #그래프 표시
             #line1.set_xdata(x_val)
             line1.set_ydata(y_val)
-            line2.set_ydata(y_val)
+            line2.set_ydata(y_valAVG)
             figure.canvas.draw()
             figure.canvas.flush_events()
     except KeyboardInterrupt :
