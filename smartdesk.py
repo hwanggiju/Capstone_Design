@@ -726,6 +726,7 @@ def main():
         waveSensorMean = 0
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False
+        btn_stop = False
         HeightAVG = [130 for i in range(15)]
         WaveAVG = [waveSensorHeight for i in range(15)]
 
