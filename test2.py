@@ -67,7 +67,6 @@ WIDTH = 128
 HEIGHT = 64 
 BORDER = 5
 
-SET_HEIGHT = 170
 switch = [16, 20, 21]
 wave = [24, 23]
 driver = [19, 27, 22, 5, 6, 13]
@@ -353,6 +352,7 @@ def eraseDisplay() :
     oled.show()
         
 try :
+    SET_HEIGHT = 170
     oled.image(logoImage)
     oled.show()
     time.sleep(2)
