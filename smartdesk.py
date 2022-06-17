@@ -731,6 +731,9 @@ def main():
         WaveAVG = [waveSensorHeight for i in range(15)]
         cmptime = 0
 
+        angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
+        fixAngleY = angleY
+
         while True:
             accel = mpu9250.readAccel()
             gyro = mpu9250.readGyro()
@@ -833,24 +836,24 @@ def main():
                     if userHeightAVG < 150 :
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
-                        fixAngleY = angleY  # 현재 각도고정
-                        fixAngleX = angleX
-                        Ki_term = 0
+                        #fixAngleY = angleY  # 현재 각도고정
+                        #fixAngleX = angleX
+                        #Ki_term = 0
                         print("down")
                     # up    
                     elif userHeightAVG > 150 :
                         stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
-                        fixAngleY = angleY  # 현재 각도고정
-                        fixAngleX = angleX
-                        Ki_term = 0
+                        #fixAngleY = angleY  # 현재 각도고정
+                        #fixAngleX = angleX
+                        #Ki_term = 0
                         print("up")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
                         actionPre = 1#stop
-                        fixAngleY = angleY
-                        fixAngleX = angleX
-                        Ki_term = 0
+                        #fixAngleY = angleY
+                        #fixAngleX = angleX
+                        #Ki_term = 0
                         print("stop")
                 else:
                     if userHeightAVG < 150 and actionPre != 0:
