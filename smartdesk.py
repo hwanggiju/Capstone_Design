@@ -834,7 +834,7 @@ def main():
                 if stop != True: # 드라이버 pin Set 변경 후 반복 변경 방지
                     # 앉았을 때, 책상의 최적 높이 설정
                     # down
-                    if userHeightAVG < 150 :
+                    if userHeightAVG < 140 :
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
                         fixAngleY = angleY  # 현재 각도고정
@@ -857,7 +857,7 @@ def main():
                         Ki_term = 0
                         print("stop")
                 else:
-                    if userHeightAVG < 150 and actionPre != 0:
+                    if userHeightAVG < 140 and actionPre != 0:
                         stop = False
                     elif userHeightAVG > 150 and actionPre != 2:
                         stop = False
