@@ -645,6 +645,7 @@ def main():
         oled.show()
         OLED_initial_setting_Height(SET_HEIGHT)
         # if TESTMODE == False: #test 모드일때는 작동 안함
+        # 초기 사용자 키설정 디스플레이
         while True :
             if GPIO.input(switch[2]) == 1 :     # up
                 draw.text((5, 0), 'Complete set', font = font, fill = 255)
@@ -721,8 +722,6 @@ def main():
         if net.empty() :
             print('Net open failed!')
 
-        accel = mpu9250.readAccel()
-        gyro = mpu9250.readGyro()
         fixAngleY = 0
         waveSensorMean = 0
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
@@ -732,9 +731,7 @@ def main():
         HeightAVG = [150 for i in range(15)]
         WaveAVG = [waveSensorHeight for i in range(15)]
 
-        angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
-        fixAngleY = angleY
-
+        # 모터 동작 반복
         while True:
             accel = mpu9250.readAccel()
             gyro = mpu9250.readGyro()
@@ -790,9 +787,12 @@ def main():
                 cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green ractangle
             
             rotate_frame = cv2.resize(rotate_frame, (0, 0), fx=0.4, fy=0.4)
-    
+
+            # 일어났을 때 책상 최적의 높이
             if (waveSensorMean + 3 >= deskUserTall) and actionPre == 2 :
                 stop = driverSet(0, 0, 0, 0)      
+                
+                
             if userNum == 1: #인식된 얼굴 수
                 # 책상 다리 모터 제어에 활용되는 값
                 widthLength = x2 - x1
@@ -837,24 +837,24 @@ def main():
                     if userHeightAVG < 150 :
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
-                        #fixAngleY = angleY  # 현재 각도고정
-                        #fixAngleX = angleX
-                        #Ki_term = 0
+                        fixAngleY = angleY  # 현재 각도고정
+                        fixAngleX = angleX
+                        Ki_term = 0
                         print("down")
                     # up    
                     elif userHeightAVG > 150 :
                         stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
-                        #fixAngleY = angleY  # 현재 각도고정
-                        #fixAngleX = angleX
-                        #Ki_term = 0
+                        fixAngleY = angleY  # 현재 각도고정
+                        fixAngleX = angleX
+                        Ki_term = 0
                         print("up")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
                         actionPre = 1#stop
-                        #fixAngleY = angleY
-                        #fixAngleX = angleX
-                        #Ki_term = 0
+                        fixAngleY = angleY
+                        fixAngleX = angleX
+                        Ki_term = 0
                         print("stop")
                 else:
                     if userHeightAVG < 150 and actionPre != 0:
@@ -894,6 +894,8 @@ def main():
             if GPIO.input(switch[2]) == 1 :
                 if UPbtn_stop != True :
                     UPbtn_stop = driverSet(100, 2, 2, 100)
+                    fixAngleY = angleY
+                    fixAngleX = angleX
                     
             elif GPIO.input(switch[2]) == 0 and UPbtn_stop == True:
                 UPbtn_stop = driverSet(0, 0, 0, 0)
@@ -902,6 +904,8 @@ def main():
             if GPIO.input(switch[0]) == 1 :
                 if Downbtn_stop != True :
                     Downbtn_stop = driverSet(100, 1, 1, 100)
+                    fixAngleY = angleY
+                    fixAngleX = angleX
                     
             elif GPIO.input(switch[0]) == 0 and Downbtn_stop == True:
                 Downbtn_stop = driverSet(0, 0, 0, 0)
