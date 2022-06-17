@@ -731,7 +731,6 @@ def main():
         WaveAVG = [waveSensorHeight for i in range(15)]
 
 
-
         while True:
             accel = mpu9250.readAccel()
             gyro = mpu9250.readGyro()
@@ -893,6 +892,9 @@ def main():
                 fixAngleY = angleY
                 if btn_stop == True :
                     while True :
+                        accel = mpu9250.readAccel()
+                        gyro = mpu9250.readGyro()
+                        angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
                         ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
                         if GPIO.input(switch[2]) == 0 :
                             btn_stop = False
@@ -903,6 +905,9 @@ def main():
                 fixAngleY = angleY
                 if btn_stop == True :
                     while True :
+                        accel = mpu9250.readAccel()
+                        gyro = mpu9250.readGyro()
+                        angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
                         ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
                         if GPIO.input(switch[0]) == 0 :
                             btn_stop = False
