@@ -28,8 +28,8 @@ gyrosensorY = [0 for i in range(graphRow)]
 ENA_PWM = [100 for i in range(graphRow)]
 ENB_PWM = [100 for i in range(graphRow)]
 
-angleLine = np.linspace(-3,3,graphRow)
-heightLine = np.linspace(70, 190, graphRow)
+angleLine = np.linspace(-2,2,graphRow)
+heightLine = np.linspace(70, 200, graphRow)
 pidLine = np.linspace(-200,200,graphRow)
 pwmLine = np.linspace(0,100,graphRow)
 
@@ -343,9 +343,9 @@ Ki_term = 0
 # 출력 > PID값
 def PID(currentVal,setVal):
     global pastPID, preError, Kp_term, Ki_term, Kd_term
-    Kp = 20.0 #비례
-    Ki = 5.11 #적분
-    Kd = 10.5 #미분
+    Kp = 35.0 #비례
+    Ki = 10.11 #적분
+    Kd = 25.5 #미분
     now = time.time()
     dt = (now - pastPID) / 1.0
     errorGap_P = setVal - currentVal
@@ -382,7 +382,7 @@ def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
     accelAngleY = math.atan(-1 * accelX / math.sqrt(math.pow(accelY, 2) + math.pow(accelZ, 2))) * RADIANS_TO_DEGREES
     accelAngleZ = 0
     # complementary Filter
-    alpha = 0.86
+    alpha = 0.56
     GyX_deg = alpha * gyroAngleX + (1.0 - alpha) * accelAngleX
     GyY_deg = alpha * gyroAngleY + (1.0 - alpha) * accelAngleY
     GyZ_deg = gyroAngleZ
@@ -516,37 +516,53 @@ def HorizontalHold(nowAngle, compareAngle):
 
     return pwmA, pwmB
 #각도 자세유지 코드
+pwmA = 100
+pwmB = 100
 pwmA_AVG = 100
 pwmB_AVG = 100
+preMotorState = 0
 def HorizontalHoldTEST(nowAngle, compareAngle):
-    global pwmA_AVG, pwmB_AVG
-    val = PID(nowAngle, compareAngle)
-    pwmA = 100
-    pwmB = 100
-    diffangle = (val) * 90 / 200
-    if diffangle < -90:
-        diffangle = -90
-    elif diffangle > 90:
-        diffangle = 90
-    diffPwm = int(80 * np.sin(diffangle * np.pi/180))
+    global pwmA, pwmB, preMotorState, pwmB_AVG, pwmA_AVG
+    angleDiff = nowAngle - compareAngle
     if actionPre == 2:
-        if diffPwm >= 0:
-            pwmB -= diffPwm
-        else:
-            pwmA += diffPwm
-        print(str(pwmA) + '/' + str(pwmB))
+        if angleDiff > 0 and preMotorState == 1:
+            preMotorState = 0 #각 차값이 양수
+            pwmA = 100
+            pwmB = 100
+        elif angleDiff > 0:
+            if pwmA > 20:
+                pwmA -= 5
+            preMotorState = 0
+        elif angleDiff < 0 and preMotorState == 0:
+            preMotorState = 1 #각 차값이 음수
+            pwmA = 100
+            pwmB = 100
+        elif angleDiff < 0:
+            if pwmB > 20:
+                pwmB -= 5
+            preMotorState = 1
     elif actionPre == 0:
-        if diffPwm >= 0:
-            pwmA -= diffPwm
-        else:
-            pwmB += diffPwm
-        print(str(pwmA) + '/' + str(pwmB))
-    # complementary Filter
-    alpha = 0.85
+        if angleDiff > 0 and preMotorState == 1:
+            preMotorState = 0 #각 차값이 양수
+            pwmA = 100
+            pwmB = 100
+        elif angleDiff > 0:
+            if pwmB > 20:
+                pwmB -= 5
+            preMotorState = 0
+        elif angleDiff < 0 and preMotorState == 0:
+            preMotorState = 1 #각 차값이 음수
+            pwmA = 100
+            pwmB = 100
+        elif angleDiff < 0:
+            if pwmA > 20:
+                pwmA -= 5
+            preMotorState = 1
+    alpha = 0.7
     pwmA_AVG = alpha * pwmA_AVG + (1 - alpha) * pwmA
     pwmB_AVG = alpha * pwmB_AVG + (1 - alpha) * pwmB
     changePWM(pwmA_AVG, pwmB_AVG)
-    return pwmA_AVG, pwmB_AVG, val
+    return pwmA_AVG, pwmB_AVG
 # driver set
 # 0 : stop
 # 1 : down
@@ -705,7 +721,10 @@ def main():
 
 
         while True:
-            time.sleep(0.005)
+            accel = mpu9250.readAccel()
+            gyro = mpu9250.readGyro()
+            if TESTMODE == False:
+                time.sleep(0.005)
             nowTime = time.time()
             _, frame = cap.read()
             
@@ -729,20 +748,18 @@ def main():
             for i in range(len(WaveAVG) - 1) :
                 WaveAVG[len(WaveAVG) - i - 1] = WaveAVG[len(WaveAVG) - i - 2]
             waveSensorMean = np.mean(WaveAVG) # 초음파 평균 거리
-            
-            # 3) accel, gyro의 Raw data 읽기, 
-            AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
+
             #print('test')
             # 4-2) Gyro를 이용한 각도 계산 
             #Gy_Angle = cal_angle_gyro(GyX, GyY, GyZ)
             #print('test')
             # nani 각도 코드 테스트
-            angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
+            angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
             deskAngle = angleX
             print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            ENA_PWM[0], ENB_PWM[0], val = HorizontalHoldTEST(angleY, fixAngleY)
+            ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
             
             userNum = 0
             for i in range(detect.shape[0]):
@@ -782,7 +799,7 @@ def main():
                     print("테스트식 결과 :" + str(round(userHeightAVG, 2)))
                     print("차값 :" + str(userHeight - userHeightAVG))
                     #val = PID(userHeightAVG, userHeight)
-                    print("PID 계산값 " + str(round(val, 5)))
+                    #print("PID 계산값 " + str(round(val, 5)))
                     # 그래프 값 입력부
                     y_val[0] = userHeight
                     y_valAVG[0] = userHeightAVG
@@ -829,11 +846,11 @@ def main():
                         stop = False
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             #그래프 표시
-            gyro = mpu9250.readGyro()
-            gyrosensorX[0] = gyro['x']
-            #gyrosensorY[0] = angleY - fixAngleY
-            gyrosensorY[0] = gyro['y'] + 1
-            y_valPID[0] = val
+
+            gyrosensorX[0] = angleX - fixAngleX
+            gyrosensorY[0] = angleY - fixAngleY
+            #gyrosensorY[0] = angleY
+            y_valPID[0] = 0
             # 쉬프트
             for i in range(graphRow - 1):
                 gyrosensorX[graphRow - i - 1] = gyrosensorX[graphRow - i - 2]
