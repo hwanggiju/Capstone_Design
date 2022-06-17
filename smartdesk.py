@@ -219,6 +219,7 @@ oled.show()
 font = ImageFont.truetype('malgun.ttf', 15)
 font1 = ImageFont.truetype('malgun.ttf', 20)
 font2 = ImageFont.truetype('malgun.ttf', 10)
+font3 = ImageFont.truetype('malgun.ttf', 13)
 
 image = Image.new('1', (oled.width, oled.height), 255)
 logoImage = Image.open('logo.bmp')
@@ -636,6 +637,7 @@ def main():
     # 디스플레이 초기 설정
     try :
         SET_HEIGHT = 170
+        deskUserTall = 0
         oled.image(logoImage)
         oled.show()
         time.sleep(2)
@@ -691,15 +693,18 @@ def main():
                         draw.text((5, 0), 'Your height', font = font, fill = 255)
                         draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 255)
                         draw.text((5, 40), 'Right?', font = font, fill = 255)
+                        SET_HEIGHT = SET_HEIGHT
+                        bestDeskTall = SET_HEIGHT * 0.23 + SET_HEIGHT * 0.18
+                        deskUserTall = SET_HEIGHT - bestDeskTall
                         time.sleep(0.2)
-                        draw.text((0, 0), 'Success Set Height', font = font, fill = 0)
+                        draw.text((0, 0), 'Success Set Height', font = font3, fill = 0)
                         time.sleep(1)
                         break
                 oled.image(image)
                 oled.show()
                 break
             
-        draw.text((0, 0), 'Success Set Height', font = font, fill = 255)
+        draw.text((0, 0), 'Success Set Height', font = font3, fill = 255)
         cap = cv2.VideoCapture(0)
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraHeight)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraWidth)
@@ -803,22 +808,21 @@ def main():
                 # 사용자의 현재 키
                 # 현재 키의 값 변화를 천천히 바꿔주기 위함
                 userHeightAVG = np.mean(HeightAVG)
-                if TESTMODE == True:
-                    print("현재 키값 :" + str(round(userHeight, 2)))
-                    print("테스트식 결과 :" + str(round(userHeightAVG, 2)))
-                    print("차값 :" + str(userHeight - userHeightAVG))
-                    #val = PID(userHeightAVG, userHeight)
-                    #print("PID 계산값 " + str(round(val, 5)))
-                    # 그래프 값 입력부
-                    y_val[0] = userHeight
-                    y_valAVG[0] = userHeightAVG
-                    y_valDesk[0] = waveSensorHeight + 2
-                    # 쉬프트 그래프
-                    for i in range(graphRow - 1):
-                        y_val[graphRow - i - 1] = y_val[graphRow - i - 2]
-                        y_valAVG[graphRow - i - 1] = y_valAVG[graphRow - i - 2]
-                        y_valDesk[graphRow - i - 1] = y_valDesk[graphRow - i - 2]
-                # 실제 책상 높이는 78cm인데, 키를 바탕으로한 최적의 높이 식을 대입하면 키가 190cm 사람이 최적의 책상 높이가 77.9 ????
+                # if TESTMODE == True:
+                print("현재 키값 :" + str(round(userHeight, 2)))
+                print("테스트식 결과 :" + str(round(userHeightAVG, 2)))
+                print("차값 :" + str(userHeight - userHeightAVG))
+                #val = PID(userHeightAVG, userHeight)
+                #print("PID 계산값 " + str(round(val, 5)))
+                # 그래프 값 입력부
+                y_val[0] = userHeight
+                y_valAVG[0] = userHeightAVG
+                y_valDesk[0] = waveSensorHeight + 2
+                # 쉬프트 그래프
+                for i in range(graphRow - 1):
+                    y_val[graphRow - i - 1] = y_val[graphRow - i - 2]
+                    y_valAVG[graphRow - i - 1] = y_valAVG[graphRow - i - 2]
+                    y_valDesk[graphRow - i - 1] = y_valDesk[graphRow - i - 2]
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                 #높이에 따른 모터작동
                 if stop != True: # 드라이버 pin Set 변경 후 반복 변경 방지
@@ -881,7 +885,18 @@ def main():
                 figure.canvas.flush_events()
             cv2.imshow("Camera", rotate_frame)
             
-            drawDisplay(waveSensorMean)
+            drawDisplay(waveSensorMean+3)
+            
+            if GPIO.input(switch[2]) == 1 :
+                stop = driverSet(0, 2, 2, 0)
+            else :
+                stop = driverSet(0, 0, 0, 0)
+                
+            if GPIO.input(switch[0]) == 1 :
+                stop = driverSet(0, 1, 1, 0)
+            else :
+                stop = driverSet(0, 0, 0, 0)
+                
     except KeyboardInterrupt :
         pass
     
