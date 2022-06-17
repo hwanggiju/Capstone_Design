@@ -359,6 +359,7 @@ try :
     time.sleep(2)
     oled.fill(0)
     oled.show()
+    OLED_initial_setting_Height(SET_HEIGHT)
     
     while True :
         if GPIO.input(switch[2]) == 1 :     # up
