@@ -215,11 +215,13 @@ GPIO.output(wave[0], False)
 # OLED 초기설정
 oled.fill(0)
 oled.show()
+
 font = ImageFont.truetype('malgun.ttf', 15)
 font1 = ImageFont.truetype('malgun.ttf', 20)
 font2 = ImageFont.truetype('malgun.ttf', 10)
 
 image = Image.new('1', (oled.width, oled.height), 255)
+logoImage = Image.open('logo.bmp')
 draw = ImageDraw.Draw(image)
 
 # 한바이트 쓰기
