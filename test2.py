@@ -105,7 +105,7 @@ font1 = ImageFont.truetype('malgun.ttf', 20)
 font2 = ImageFont.truetype('malgun.ttf', 10)
 
 image = Image.new('1', (oled.width, oled.height), 255)
-logoImage = Image.open("logo.bmp")
+logoImage = Image.open('logo.bmp')
 draw = ImageDraw.Draw(image)
 
 def waveFun() :
@@ -354,8 +354,11 @@ def eraseDisplay() :
     
 OLED_initial_setting_Height(SET_HEIGHT)     
 try :
-    logoImage.show()
+    oled.image(logoImage)
+    oled.show()
     time.sleep(2)
+    oled.clear()
+    oled.display()
     
     while True :
         if GPIO.input(switch[2]) == 1 :     # up
