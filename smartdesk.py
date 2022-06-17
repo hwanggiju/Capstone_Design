@@ -28,7 +28,7 @@ gyrosensorY = [0 for i in range(graphRow)]
 ENA_PWM = [100 for i in range(graphRow)]
 ENB_PWM = [100 for i in range(graphRow)]
 
-angleLine = np.linspace(-3,3,graphRow)
+angleLine = np.linspace(-2,2,graphRow)
 heightLine = np.linspace(70, 200, graphRow)
 pidLine = np.linspace(-200,200,graphRow)
 pwmLine = np.linspace(0,100,graphRow)
@@ -348,7 +348,7 @@ def PID(currentVal,setVal):
     Kd = 27.5 #미분
     now = time.time()
     dt = (now - pastPID) / 1.0
-    errorGap_P = currentVal + setVal
+    errorGap_P = currentVal - setVal
     Kp_term = Kp * errorGap_P
 
     errorGap_I = errorGap_P * dt
@@ -523,7 +523,7 @@ def HorizontalHoldTEST(nowAngle, compareAngle):
     val = PID(nowAngle, compareAngle)
     pwmA = 100
     pwmB = 100
-    diffangle = (val) * 90 / 200
+    diffangle = (val) * 90 / 150
     if diffangle < -90:
         diffangle = -90
     elif diffangle > 90:
