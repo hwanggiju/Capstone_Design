@@ -598,7 +598,12 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     oled.show()
     
 deskDistance = 0
+timeTest = True
 def drawDisplay() :
+    if timeTest == True :
+        preTime = nowTime
+        timeTest = False
+    if nowTime - preTime > 1 :
         deskDistance = waveFun()
         draw.text((100, 0), 'Up', font=font2, fill=0)
         draw.text((100, 20), 'Okay', font=font2, fill=0)
@@ -606,18 +611,25 @@ def drawDisplay() :
         draw.text((5, 0), 'Desk Tall', font=font, fill=0)
         draw.text((5, 15), str(int(deskDistance)), font = font, fill = 0)
         draw.text((40, 15), 'cm', font = font, fill = 255)
+        timeTest = True
         oled.image(image)
         oled.show()
+        
     
 def eraseDisplay() :
-    draw.text((100, 0), 'Up', font=font2, fill=255)
-    draw.text((100, 15), 'Okay', font=font2, fill=255)
-    draw.text((100, 30), 'Down', font=font2, fill=255)
-    draw.text((5, 0), 'Desk Tall', font=font, fill=255)
-    draw.text((5, 15), str(int(deskDistance)), font = font, fill = 255)
-    draw.text((40, 15), 'cm', font = font, fill = 255)
-    oled.image(image)
-    oled.show()
+    if timeTest == True :
+        preTime = nowTime
+        timeTest = False
+    if nowTime - preTime > 1 :
+        draw.text((100, 0), 'Up', font=font2, fill=255)
+        draw.text((100, 15), 'Okay', font=font2, fill=255)
+        draw.text((100, 30), 'Down', font=font2, fill=255)
+        draw.text((5, 0), 'Desk Tall', font=font, fill=255)
+        draw.text((5, 15), str(int(deskDistance)), font = font, fill = 255)
+        draw.text((40, 15), 'cm', font = font, fill = 255)
+        timeTest = True
+        oled.image(image)
+        oled.show()
 
 # main code
 def main():
@@ -867,8 +879,10 @@ def main():
                 #figure.canvas.draw()
                 figure.canvas.flush_events()
             cv2.imshow("Camera", rotate_frame)
+            
             drawDisplay()
             eraseDisplay()
+            
     except KeyboardInterrupt :
         pass
     
