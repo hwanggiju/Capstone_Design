@@ -796,7 +796,7 @@ def main():
                 
             if GPIO.input(switch[1]) == 1 :
                 btn_stop = driverSet(0, 0, 0, 0)
-                
+    
             
             if userNum == 1: #인식된 얼굴 수
                 # 책상 다리 모터 제어에 활용되는 값
