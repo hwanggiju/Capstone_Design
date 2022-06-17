@@ -705,6 +705,7 @@ def main():
 
 
         while True:
+            accel = mpu9250.readAccel()
             gyro = mpu9250.readGyro()
             if TESTMODE == False:
                 time.sleep(0.005)
@@ -731,20 +732,18 @@ def main():
             for i in range(len(WaveAVG) - 1) :
                 WaveAVG[len(WaveAVG) - i - 1] = WaveAVG[len(WaveAVG) - i - 2]
             waveSensorMean = np.mean(WaveAVG) # 초음파 평균 거리
-            
-            # 3) accel, gyro의 Raw data 읽기, 
-            AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
+
             #print('test')
             # 4-2) Gyro를 이용한 각도 계산 
             #Gy_Angle = cal_angle_gyro(GyX, GyY, GyZ)
             #print('test')
             # nani 각도 코드 테스트
-            angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
+            angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
             deskAngle = angleX
             print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            ENA_PWM[0], ENB_PWM[0], val = HorizontalHoldTEST(gyro['y'], fixAngleY)
+            ENA_PWM[0], ENB_PWM[0], val = HorizontalHoldTEST(angleY, fixAngleY)
             
             userNum = 0
             for i in range(detect.shape[0]):
@@ -803,23 +802,23 @@ def main():
                     if userHeightAVG < 140 :
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
-                        fixAngleY = gyro['y']  # 현재 각도고정
-                        fixAngleX = gyro['x']
+                        fixAngleY = angleY  # 현재 각도고정
+                        fixAngleX = angleX
                         Ki_term = 0
                         print("down")
                     # up    
                     elif userHeightAVG > 150 :
                         stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
-                        fixAngleY = gyro['y']  # 현재 각도고정
-                        fixAngleX = gyro['x']
+                        fixAngleY = angleY  # 현재 각도고정
+                        fixAngleX = angleX
                         Ki_term = 0
                         print("up")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
                         actionPre = 1#stop
-                        fixAngleY = gyro['y']
-                        fixAngleX = gyro['x']
+                        fixAngleY = angleY
+                        fixAngleX = angleX
                         Ki_term = 0
                         print("stop")
                 else:
@@ -832,9 +831,9 @@ def main():
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             #그래프 표시
 
-            gyrosensorX[0] = gyro['x']
+            gyrosensorX[0] = angleX
             #gyrosensorY[0] = angleY - fixAngleY
-            gyrosensorY[0] = gyro['y'] + 1
+            gyrosensorY[0] = angleY
             y_valPID[0] = val
             # 쉬프트
             for i in range(graphRow - 1):
