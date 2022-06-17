@@ -890,15 +890,19 @@ def main():
             
             if GPIO.input(switch[2]) == 1 :
                 btn_stop = driverSet(100, 2, 2, 100)
+                fixAngleY = angleY
                 if btn_stop == True :
                     while True :
+                        ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
                         if GPIO.input(switch[2]) == 0 :
                             break
                 
             if GPIO.input(switch[0]) == 1 :
                 btn_stop = driverSet(100, 2, 2, 100)
+                fixAngleY = angleY
                 if btn_stop == True :
                     while True :
+                        ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
                         if GPIO.input(switch[0]) == 0 :
                             break
             
