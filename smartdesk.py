@@ -438,26 +438,6 @@ def set_MPU_init(dlpf_bw=DLPF_BW_256,
 
     return read_byte(PWR_MGMT_1)
 
-''' 기본 코드
-def getUserHeight_nani(faceWidth, pixelX, pixelY, nowHeight):
-    faceWidthAverage[0] = faceWidth
-    sumHeight = 0
-    for i in range(len(faceWidthAverage)):
-        sumHeight = faceWidthAverage[i] + sumHeight
-    widthAverage = sumHeight / timeNum
-    fullHorizontalAngle = cameraAngle
-    fullVerticalAngle = fullHorizontalAngle * cameraHeight / cameraWidth
-    faceDifference = faceWidthMax - faceWidthMin
-    distanceDifference = userDistanceMax - userDistanceMin
-    calUserDistance = (faceWidthMax - widthAverage) / faceDifference * distanceDifference + userDistanceMin
-    userTopAngle = abs(pixelX - cameraWidth/2) / cameraWidth * fullHorizontalAngle
-    userDistance = calUserDistance / np.cos(userTopAngle * np.pi/180)
-    cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
-    calHeight = np.tan((cameraUserAngle + deskAngle) * np.pi/180) * (userDistance + 10)
-    for i in range(timeNum-1):#shift array
-        faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
-    return nowHeight + calHeight
-'''
 def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
     faceWidthAverage[0] = faceWidth
     sumHeight = 0
@@ -487,8 +467,8 @@ def changePWM(enA, enB):
         return False
     elif enB < 0 or enB > 100:
         return False
-    enA_pwm.ChangeDutyCycle(0)  # enableA pin start dutycycle 0%
-    enB_pwm.ChangeDutyCycle(0)  # enableB pin start dutycycle 0%
+    #enA_pwm.ChangeDutyCycle(0)  # enableA pin start dutycycle 0%
+    #nB_pwm.ChangeDutyCycle(0)  # enableB pin start dutycycle 0%
     enA_pwm.ChangeDutyCycle(enA)
     enB_pwm.ChangeDutyCycle(enB)
     return True
