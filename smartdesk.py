@@ -725,7 +725,8 @@ def main():
         waveSensorMean = 0
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False
-        btn_stop = False
+        UPbtn_stop = False
+        Downbtn_stop = False
         HeightAVG = [150 for i in range(15)]
         WaveAVG = [waveSensorHeight for i in range(15)]
         cmptime = 0
@@ -887,21 +888,20 @@ def main():
             cv2.imshow("Camera", rotate_frame)
             
             if GPIO.input(switch[2]) == 1 :
-                if btn_stop != True :
-                    btn_stop = driverSet(100, 2, 2, 100)
-                    btnMotorStop = True
+                if UPbtn_stop != True :
+                    UPbtn_stop = driverSet(100, 2, 2, 100)
                     
-            elif GPIO.input(switch[2]) == 0 and btn_stop == True:
-                btn_stop = driverSet(0, 0, 0, 0)
-                btn_stop = False
+            elif GPIO.input(switch[2]) == 0 and UPbtn_stop == True:
+                UPbtn_stop = driverSet(0, 0, 0, 0)
+                UPbtn_stop = False
                     
             if GPIO.input(switch[0]) == 1 :
-                if btn_stop != True :
-                    btn_stop = driverSet(100, 1, 1, 100)
+                if Downbtn_stop != True :
+                    Downbtn_stop = driverSet(100, 1, 1, 100)
                     
-            elif GPIO.input(switch[0]) == 0 and btn_stop == True:
-                btn_stop = driverSet(0, 0, 0, 0)
-                btn_stop = False
+            elif GPIO.input(switch[0]) == 0 and Downbtn_stop == True:
+                Downbtn_stop = driverSet(0, 0, 0, 0)
+                Downbtn_stop = False
             
             drawDisplay(waveSensorMean+3)
             
