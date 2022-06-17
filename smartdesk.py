@@ -545,7 +545,7 @@ def HorizontalHoldTEST(nowAngle, compareAngle):
     pwmA_AVG = alpha * pwmA_AVG + (1 - alpha) * pwmA
     pwmB_AVG = alpha * pwmB_AVG + (1 - alpha) * pwmB
     changePWM(pwmA_AVG, pwmB_AVG)
-    return pwmA, pwmB, val
+    return pwmA_AVG, pwmB_AVG, val
 # driver set
 # 0 : stop
 # 1 : down
