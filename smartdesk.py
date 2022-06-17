@@ -469,12 +469,11 @@ def changePWM(enA, enB):
         return False
     elif enB < 0 or enB > 100:
         return False
-    #enA_pwm.ChangeDutyCycle(0)  # enableA pin start dutycycle 0%
-    #nB_pwm.ChangeDutyCycle(0)  # enableB pin start dutycycle 0%
+    enA_pwm.ChangeDutyCycle(0)  # enableA pin start dutycycle 0%
+    enB_pwm.ChangeDutyCycle(0)  # enableB pin start dutycycle 0%
     enA_pwm.ChangeDutyCycle(enA)
     enB_pwm.ChangeDutyCycle(enB)
     return True
-
 
 #각도 자세유지 코드
 pwmA = 100
@@ -482,7 +481,7 @@ pwmB = 100
 pwmA_AVG = 100
 pwmB_AVG = 100
 preMotorState = 0
-def HorizontalHold(nowAngle, compareAngle):
+def HorizontalHoldTEST(nowAngle, compareAngle):
     global pwmA, pwmB, preMotorState, pwmB_AVG, pwmA_AVG
     angleDiff = nowAngle - compareAngle
     if actionPre == 2:
@@ -596,17 +595,30 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     oled.image(image)
     oled.show()
     
+deskDistance = 0
 def drawDisplay() :
-    draw.text((100, 0), 'Up', font=font2, fill=0)
-    draw.text((100, 15), 'Okay', font=font2, fill=0)
-    draw.text((100, 30), 'Down', font=font2, fill=0)
-    draw.text((5, 0), 'Desk Tall', font=font2, fill=0)
-    oled.image(image)
-    oled.show()
-    pass
+    if timeTest == True :
+        preTime = nowTime
+        timeTest = False
+    if nowTime - preTime > 1 :
+        deskDistance = waveFun()
+        draw.text((100, 0), 'Up', font=font2, fill=0)
+        draw.text((100, 20), 'Okay', font=font2, fill=0)
+        draw.text((100, 40), 'Down', font=font2, fill=0)
+        draw.text((5, 0), 'Desk Tall', font=font, fill=0)
+        draw.text((5, 10), str(deskDistance), font = font, fill = 0)
+        preTime = nowTime
+        oled.image(image)
+        oled.show()
     
 def eraseDisplay() :
-    pass
+    draw.text((100, 0), 'Up', font=font2, fill=255)
+    draw.text((100, 15), 'Okay', font=font2, fill=255)
+    draw.text((100, 30), 'Down', font=font2, fill=255)
+    draw.text((5, 0), 'Desk Tall', font=font, fill=255)
+    draw.text((5, 10), str(deskDistance), font = font, fill = 255)
+    oled.image(image)
+    oled.show()
 
 # main code
 def main():
@@ -615,45 +627,67 @@ def main():
     global deskAngle, Ki_term
     # 디스플레이 초기 설정
     try :
-        SET_HEIGHT = 170
-        draw.text((5, 0), 'WELCOME~!!', font = font1, fill = 0)
-        draw.text((5, 20), 'Smart Desk', font = font1, fill = 0)
-        oled.image(image)
+        oled.image(logoImage)
         oled.show()
         time.sleep(2)
-        draw.text((5, 0), 'WELCOME~!!', font = font1, fill = 255)
-        draw.text((5, 20), 'Smart Desk', font = font1, fill = 255)
+        oled.fill(0)
+        oled.show()
         OLED_initial_setting_Height(SET_HEIGHT)
-        if TESTMODE == False: #test 모드일때는 작동 안함
-            while True :
-                if GPIO.input(switch[2]) == 1 :
-                    draw.text((5, 0), 'Complete set', font = font, fill = 255)
-                    draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
-                    OLED_initial_setting_Height1(SET_HEIGHT)
-                    SET_HEIGHT = SET_HEIGHT + 5
-                    OLED_initial_setting_Height(SET_HEIGHT)
-                    time.sleep(0.2)
-
-                elif GPIO.input(switch[0]) == 1:
-                    draw.text((5, 0), 'Complete set', font = font, fill = 255)
-                    draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
-                    OLED_initial_setting_Height1(SET_HEIGHT)
-                    SET_HEIGHT = SET_HEIGHT - 5
-                    OLED_initial_setting_Height(SET_HEIGHT)
-                    time.sleep(0.2)
-
-                elif GPIO.input(switch[1]) == 1:
-                    OLED_initial_setting_Height1(SET_HEIGHT)
-                    draw.text((5, 0), 'Complete set', font = font, fill = 0)
-                    draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 0)
-                    oled.image(image)
-                    oled.show()
-                    if GPIO.input(switch[1]) == 1 :
-                        draw.text((5, 0), 'Complete set', font = font, fill = 255)
-                        draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
-                        UserTall = SET_HEIGHT
-                        bestDeskTall = (UserTall * 0.23) + (UserTall * 0.18) # 초음파 거리 값
+        # if TESTMODE == False: #test 모드일때는 작동 안함
+        while True :
+            if GPIO.input(switch[2]) == 1 :     # up
+                draw.text((5, 0), 'Complete set', font = font, fill = 255)
+                draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
+                OLED_initial_setting_Height1(SET_HEIGHT)
+                SET_HEIGHT = SET_HEIGHT + 1
+                OLED_initial_setting_Height(SET_HEIGHT)
+                time.sleep(0.2)
+            
+            elif GPIO.input(switch[0]) == 1:    # okay
+                draw.text((5, 0), 'Complete set', font = font, fill = 255)
+                draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
+                OLED_initial_setting_Height1(SET_HEIGHT)
+                SET_HEIGHT = SET_HEIGHT - 1
+                OLED_initial_setting_Height(SET_HEIGHT)
+                time.sleep(0.2)
+                
+            elif GPIO.input(switch[1]) == 1:    # down
+                OLED_initial_setting_Height1(SET_HEIGHT)
+                draw.text((5, 0), 'Your height', font = font, fill = 0)
+                draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 0)
+                draw.text((5, 40), 'Right?', font = font, fill = 0)
+                oled.image(image)
+                oled.show()
+                time.sleep(0.2)
+                while True :
+                    if GPIO.input(switch[2]) == 1:
+                        draw.text((5, 0), 'Your height', font = font, fill = 255)
+                        draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 255)
+                        draw.text((5, 40), 'Right?', font = font, fill = 255)
+                        OLED_initial_setting_Height1(SET_HEIGHT)
+                        SET_HEIGHT = SET_HEIGHT + 1
+                        OLED_initial_setting_Height(SET_HEIGHT)
+                        time.sleep(0.2)
                         break
+                    elif GPIO.input(switch[0]) == 1:
+                        draw.text((5, 0), 'Your height', font = font, fill = 255)
+                        draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 255)
+                        draw.text((5, 40), 'Right?', font = font, fill = 255)
+                        OLED_initial_setting_Height1(SET_HEIGHT)
+                        SET_HEIGHT = SET_HEIGHT - 1
+                        OLED_initial_setting_Height(SET_HEIGHT)
+                        time.sleep(0.2)
+                        break
+                    elif GPIO.input(switch[1]) == 1 :
+                        draw.text((5, 0), 'Your height', font = font, fill = 255)
+                        draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 255)
+                        draw.text((5, 40), 'Right?', font = font, fill = 255)
+                        time.sleep(0.2)
+                        draw.text((5, 0), 'Success Set Height', font = font2, fill = 0)
+                        time.sleep(1)
+                        break
+                draw.text((5, 0), 'Success Set Height', font = font2, fill = 255)
+                break
 
         cap = cv2.VideoCapture(0)
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraHeight)
@@ -721,7 +755,7 @@ def main():
             print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY)
+            ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
             
             userNum = 0
             for i in range(detect.shape[0]):

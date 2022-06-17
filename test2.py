@@ -351,8 +351,7 @@ def eraseDisplay() :
     draw.text((5, 10), str(deskDistance), font = font, fill = 255)
     oled.image(image)
     oled.show()
-    
-OLED_initial_setting_Height(SET_HEIGHT)     
+        
 try :
     oled.image(logoImage)
     oled.show()
