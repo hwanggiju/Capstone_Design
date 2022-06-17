@@ -699,6 +699,7 @@ def main():
                         OLED_initial_setting_Height(SET_HEIGHT)
                         time.sleep(0.2)
                     elif GPIO.input(switch[1]) == 1 :
+                        OLED_initial_setting_Height1(SET_HEIGHT)
                         draw.text((5, 0), 'Your height', font = font, fill = 255)
                         draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 255)
                         draw.text((5, 40), 'Right?', font = font, fill = 255)
