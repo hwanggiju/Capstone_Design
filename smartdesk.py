@@ -13,7 +13,8 @@ import adafruit_ssd1306
 import os
 import smbus
 from imusensor.MPU9250 import MPU9250
-
+import FaBo9Axis_MPU9250
+mpu9250 = FaBo9Axis_MPU9250.MPU9250()
 #그래프
 import matplotlib.pyplot as plt
 graphRow = 200
@@ -828,8 +829,8 @@ def main():
                         stop = False
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             #그래프 표시
-
-            gyrosensorX[0] = angleX - fixAngleX
+            gyro = mpu9250.readGyro()
+            gyrosensorX[0] = gyro['y']
             gyrosensorY[0] = angleY - fixAngleY
             y_valPID[0] = val
             # 쉬프트
