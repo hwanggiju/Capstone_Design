@@ -585,7 +585,7 @@ def OLED_initial_setting_Height(CHANGE_HEIGHT) :
     draw.text((5, 0), '-First Setting-', font = font, fill = 0)
     draw.text((5, 20), 'Input your Height', font = font, fill = 0)
     draw.text((5, 40), str(CHANGE_HEIGHT), font = font, fill = 0)
-    draw.text((80, 40), 'cm', font = font, fill = 0)
+    draw.text((40, 40), 'cm', font = font, fill = 0)
     oled.image(image)
     oled.show()
 
@@ -593,7 +593,7 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     draw.text((5, 0), '-First Setting-', font = font, fill = 255)
     draw.text((5, 20), 'Input your Height', font = font, fill = 255)
     draw.text((5, 40), str(CHANGE_HEIGHT), font = font, fill = 255)
-    draw.text((80, 40), 'cm', font = font, fill = 255)
+    draw.text((40, 40), 'cm', font = font, fill = 255)
     oled.image(image)
     oled.show()
     
@@ -605,7 +605,7 @@ def drawDisplay() :
         draw.text((100, 40), 'Down', font=font2, fill=0)
         draw.text((5, 0), 'Desk Tall', font=font, fill=0)
         draw.text((5, 15), str(int(deskDistance)), font = font, fill = 0)
-        draw.text((80, 15), 'cm', font = font, fill = 255)
+        draw.text((40, 15), 'cm', font = font, fill = 255)
         oled.image(image)
         oled.show()
     
@@ -615,7 +615,7 @@ def eraseDisplay() :
     draw.text((100, 30), 'Down', font=font2, fill=255)
     draw.text((5, 0), 'Desk Tall', font=font, fill=255)
     draw.text((5, 15), str(int(deskDistance)), font = font, fill = 255)
-    draw.text((80, 15), 'cm', font = font, fill = 255)
+    draw.text((40, 15), 'cm', font = font, fill = 255)
     oled.image(image)
     oled.show()
 
