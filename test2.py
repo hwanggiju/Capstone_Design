@@ -352,7 +352,6 @@ def eraseDisplay() :
     oled.show()
         
 try :
-    SET_HEIGHT = 170
     oled.image(logoImage)
     oled.show()
     time.sleep(2)

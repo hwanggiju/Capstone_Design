@@ -717,6 +717,7 @@ def main():
 
 
         while True:
+            drawDisplay()
             accel = mpu9250.readAccel()
             gyro = mpu9250.readGyro()
             if TESTMODE == False:
