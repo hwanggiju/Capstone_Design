@@ -832,7 +832,7 @@ def main():
             gyro = mpu9250.readGyro()
             gyrosensorX[0] = gyro['x']
             #gyrosensorY[0] = angleY - fixAngleY
-            gyrosensorY[0] = gyro['y']
+            gyrosensorY[0] = gyro['y'] + 1
             y_valPID[0] = val
             # 쉬프트
             for i in range(graphRow - 1):
