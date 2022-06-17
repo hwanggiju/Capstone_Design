@@ -840,7 +840,7 @@ def main():
                 if stop != True: # 드라이버 pin Set 변경 후 반복 변경 방지
                     # 앉았을 때, 책상의 최적 높이 설정
                     # down
-                    if userHeightAVG < 140 :
+                    if userHeightAVG < 150 :
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
                         fixAngleY = angleY  # 현재 각도고정
@@ -848,7 +848,7 @@ def main():
                         Ki_term = 0
                         print("down")
                     # up    
-                    elif userHeightAVG > 140 :
+                    elif userHeightAVG > 150 :
                         stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
                         fixAngleY = angleY  # 현재 각도고정
@@ -863,12 +863,12 @@ def main():
                         Ki_term = 0
                         print("stop")
                 else:
-                    if userHeightAVG < 140 and actionPre != 0:
+                    if userHeightAVG < 150 and actionPre != 0:
                         stop = False
                     elif userHeightAVG > 150 and actionPre != 2:
                         stop = False
                     elif waveSensorMean + 3 >= deskUserTall :
-                        stop = False
+                        stop = driverSet(0, 0, 0, 0)
                     
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             #그래프 표시
