@@ -9,6 +9,7 @@ import RPi.GPIO as GPIO
 import numpy as np
 import smbus
 from imusensor.MPU9250 import MPU9250
+import math
 
 
 # 레지스터 값 설정
@@ -62,7 +63,6 @@ GYRO_ZOUT_H  = 0x47     # Low는 0x48
 I2C_bus = smbus.SMBus(1)
 MPU_addr = 0x68
 
-
 WIDTH = 128
 HEIGHT = 64 
 BORDER = 5
@@ -105,6 +105,7 @@ font1 = ImageFont.truetype('malgun.ttf', 20)
 font2 = ImageFont.truetype('malgun.ttf', 10)
 
 image = Image.new('1', (oled.width, oled.height), 255)
+logoImage = Image.open("logo.bmp")
 draw = ImageDraw.Draw(image)
 
 def waveFun() :
@@ -208,6 +209,12 @@ def btn_driverSet(enA, motorA, motorB, enB):
     else:
         return False
     
+def write_byte(adr, data):
+    I2C_bus.write_byte_data(MPU_addr, adr, data)
+
+def read_byte(adr):
+    return I2C_bus.read_byte_data(MPU_addr, adr)
+    
 def read_word(adr):
     val = 0
     try:
@@ -227,6 +234,82 @@ def read_word_2c(adr):
         return -((65535 - val) + 1)
     else:
         return val
+    
+def sensor_calibration():
+    """
+    1초동안의 평균을 이용하여 기준점 계산
+    :return: Accel과 Gyro의 기준점 -> baseAcX ~ basGyZ
+    """
+    SumAcX = 0
+    SumAcY = 0
+    SumAcZ = 0
+    SumGyX = 0
+    SumGyY = 0
+    SumGyZ = 0
+
+    for i in range(10):
+        AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
+        SumAcX += AcX
+        SumAcY += AcY
+        SumAcZ += AcZ
+        SumGyX += GyX
+        SumGyY += GyY
+        SumGyZ += GyZ
+
+    avgAcX = SumAcX / 10
+    avgAcY = SumAcY / 10
+    avgAcZ = SumAcZ / 10
+    avgGyX = SumGyX / 10
+    avgGyY = SumGyY / 10
+    avgGyZ = SumGyZ / 10
+
+    return avgAcX, avgAcY, avgAcZ, avgGyX, avgGyY, avgGyZ
+
+def set_MPU_init(dlpf_bw=DLPF_BW_256,
+                gyro_fs=GYRO_FS_250, accel_fs=ACCEL_FS_2,
+                clk_pll=CLOCK_PLL_XGYRO):
+    global baseAcX, baseAcY, baseAcZ, baseGyX, baseGyY, baseGyZ, past
+
+    write_byte(PWR_MGMT_1, SLEEP_EN | clk_pll)      # sleep mode(bit6), clock(bit2:0)은 XGyro 동기
+    write_byte(CONFIG, dlpf_bw)                     # bit 2:0
+    write_byte(GYRO_CONFIG, gyro_fs)                # Gyro Full Scale bit 4:3
+    write_byte(ACCEL_CONFIG, accel_fs)              # Accel Full Scale Bit 4:3
+    write_byte(PWR_MGMT_1, SLEEP_DIS | clk_pll)     # Start
+
+    # sensor 계산 초기화
+    baseAcX, baseAcY, baseAcZ, baseGyX, baseGyY, baseGyZ \
+        = sensor_calibration()
+    past = time.time()
+
+    return read_byte(PWR_MGMT_1)    
+    
+def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
+    global GyX_deg, GyY_deg, GyZ_deg
+    global past1 #기존 시간값 충돌방지
+    FS_CEL = 131 #3 Full-Scale Range 0=131, 1=65.5, 2=32.8, 3=16.4
+    now = time.time()
+    dt = (now - past) / 1000.0
+    # convert gyro val to degree
+    gyro_x = (GyroAccX - baseGyX) / FS_CEL
+    gyro_y = (GyroAccY - baseGyY) / FS_CEL
+    gyro_z = (GyroAccZ - baseGyZ) / FS_CEL
+    # compute
+    gyroAngleX = gyro_x * dt + GyX_deg
+    gyroAngleY = gyro_y * dt + GyY_deg
+    gyroAngleZ = gyro_z * dt + GyZ_deg
+    # calculate Gyro
+    RADIANS_TO_DEGREES = 180 / math.pi
+    accelAngleX = math.atan(accelX / math.sqrt(math.pow(accelX, 2) + math.pow(accelZ, 2))) * RADIANS_TO_DEGREES
+    accelAngleY = math.atan(-1 * accelX / math.sqrt(math.pow(accelY, 2) + math.pow(accelZ, 2))) * RADIANS_TO_DEGREES
+    accelAngleZ = 0
+    # complementary Filter
+    alpha = 0.86
+    GyX_deg = alpha * gyroAngleX + (1.0 - alpha) * accelAngleX
+    GyY_deg = alpha * gyroAngleY + (1.0 - alpha) * accelAngleY
+    GyZ_deg = gyroAngleZ
+
+    past1 = now
+    return GyX_deg, GyY_deg, GyZ_deg    
 
 def get_raw_data():
     """
@@ -257,15 +340,22 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     oled.show()
     
 deskDistance = 0
+preTime = 0
+timeTest = True
 def drawDisplay() :
-    deskDistance = waveFun()
-    draw.text((100, 0), 'Up', font=font2, fill=0)
-    draw.text((100, 20), 'Okay', font=font2, fill=0)
-    draw.text((100, 40), 'Down', font=font2, fill=0)
-    draw.text((5, 0), 'Desk Tall', font=font, fill=0)
-    draw.text((5, 10), str(deskDistance), font = font, fill = 0)
-    oled.image(image)
-    oled.show()
+    if timeTest == True :
+        preTime = nowTime
+        timeTest = False
+    if nowTime - preTime > 1 :
+        deskDistance = waveFun()
+        draw.text((100, 0), 'Up', font=font2, fill=0)
+        draw.text((100, 20), 'Okay', font=font2, fill=0)
+        draw.text((100, 40), 'Down', font=font2, fill=0)
+        draw.text((5, 0), 'Desk Tall', font=font, fill=0)
+        draw.text((5, 10), str(deskDistance), font = font, fill = 0)
+        preTime = nowTime
+        oled.image(image)
+        oled.show()
 
 def eraseDisplay() :
     draw.text((100, 0), 'Up', font=font2, fill=255)
@@ -278,6 +368,9 @@ def eraseDisplay() :
     
 OLED_initial_setting_Height(SET_HEIGHT)     
 try :
+    logoImage.show()
+    time.sleep(2)
+    
     while True :
         if GPIO.input(switch[2]) == 1 :     # up
             draw.text((5, 0), 'Complete set', font = font, fill = 255)
@@ -331,17 +424,20 @@ try :
                     time.sleep(1)
                     break
             draw.text((5, 0), 'Success Set Height', font = font2, fill = 255)
-            drawDisplay()
             break
         
+    AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
+    angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
+    fixAngle = angleY
     while True :
-        eraseDisplay()
+        AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
+        angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
         nowTime = time.time()
         drawDisplay()
         if GPIO.input(switch[2]) == 1 :     # up
             AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
             angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
-            HorizontalHold(nowAngle, compareAngle)
+            HorizontalHold(angleY, fixAngle)
             btn_driverSet(0, 2, 2, 0)
         else :
             btn_driverSet(0, 0, 0, 0)
