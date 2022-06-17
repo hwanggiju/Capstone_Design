@@ -895,6 +895,7 @@ def main():
                     while True :
                         ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
                         if GPIO.input(switch[2]) == 0 :
+                            btn_stop = False
                             break
                 
             if GPIO.input(switch[0]) == 1 :
@@ -904,6 +905,7 @@ def main():
                     while True :
                         ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
                         if GPIO.input(switch[0]) == 0 :
+                            btn_stop = False
                             break
             
             drawDisplay(waveSensorMean+3)
