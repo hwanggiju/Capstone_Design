@@ -830,8 +830,9 @@ def main():
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             #그래프 표시
             gyro = mpu9250.readGyro()
-            gyrosensorX[0] = gyro['y']
-            gyrosensorY[0] = angleY - fixAngleY
+            gyrosensorX[0] = gyro['x']
+            #gyrosensorY[0] = angleY - fixAngleY
+            gyrosensorY[0] = gyro['y']
             y_valPID[0] = val
             # 쉬프트
             for i in range(graphRow - 1):
