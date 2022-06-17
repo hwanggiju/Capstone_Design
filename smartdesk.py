@@ -798,8 +798,8 @@ def main():
             
             rotate_frame = cv2.resize(rotate_frame, (0, 0), fx=0.4, fy=0.4)
     
-            if waveSensorMean + 3 >= deskUserTall :
-                stop = driverSet(0, 0, 0, 0)      
+            #if waveSensorMean + 3 >= deskUserTall :
+            #    stop = driverSet(0, 0, 0, 0)      
             if userNum == 1: #인식된 얼굴 수
                 # 책상 다리 모터 제어에 활용되는 값
                 widthLength = x2 - x1
