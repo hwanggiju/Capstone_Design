@@ -610,7 +610,7 @@ def drawDisplay(deskDistance) :
         draw.text((100, 40), 'Down', font=font2, fill=0)
         draw.text((5, 0), 'Desk Tall', font=font, fill=0)
         draw.text((5, 15), str(int(deskDistance)), font = font, fill = 0)
-        draw.text((40, 15), 'cm', font = font, fill = 255)
+        draw.text((40, 15), 'cm', font = font, fill = 0)
         timeTest = True
         oled.image(image)
         oled.show()
@@ -751,7 +751,7 @@ def main():
             detect = net.forward()
             (h, w) = rotate_frame.shape[:2]
             detect = detect[0, 0, :, :]
-            rotate_frame = cv2.resize(rotate_frame, (0, 0), fx=0.4, fy=0.4)
+            
                 
             waveSensorHeight = waveFun() # 책상 높이
             WaveAVG[0] = waveSensorHeight
@@ -783,6 +783,8 @@ def main():
                 y2 = int(detect[i, 6] * h)
 
                 cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green ractangle
+            
+            rotate_frame = cv2.resize(rotate_frame, (0, 0), fx=0.4, fy=0.4)
                 
             if userNum == 1: #인식된 얼굴 수
                 # 책상 다리 모터 제어에 활용되는 값
