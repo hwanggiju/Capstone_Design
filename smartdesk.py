@@ -870,6 +870,7 @@ def main():
                 line8.set_ydata(ENB_PWM)
                 #figure.canvas.draw()
                 figure.canvas.flush_events()
+        cv2.imshow("Camera", rotate_frame)
     except KeyboardInterrupt :
         pass
     
@@ -878,4 +879,5 @@ if __name__ == "__main__":
     enA_pwm.stop()
     enB_pwm.stop()
     GPIO.cleanup()
+    cv2.destroyAllWindows()
 
