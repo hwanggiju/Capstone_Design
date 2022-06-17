@@ -901,7 +901,7 @@ def main():
                             break
                 
             if GPIO.input(switch[0]) == 1 :
-                btn_stop = driverSet(100, 2, 2, 100)
+                btn_stop = driverSet(100, 1, 1, 100)
                 fixAngleY = angleY
                 if btn_stop == True :
                     while True :
