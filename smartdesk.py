@@ -826,18 +826,18 @@ def main():
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                 
                 if GPIO.input(switch[2]) == 1 :
-                    stop = driverSet(100, 2, 2, 100)
+                    btn_stop = driverSet(100, 2, 2, 100)
                 
                 if GPIO.input(switch[0]) == 1 :
-                    stop = driverSet(100, 1, 1, 100)
+                    btn_stop = driverSet(100, 1, 1, 100)
                     
-                if stop == True :
+                if btn_stop == True :
                     if GPIO.input(switch[2]) == 0 :
-                        stop = driverSet(0, 0, 0, 0)
-                        stop = False
+                        btn_stop = driverSet(0, 0, 0, 0)
+                        btn_stop = False
                     if GPIO.input(switch[0]) == 0 :
-                        stop = driverSet(0, 0, 0, 0)
-                        stop = False
+                        btn_stop = driverSet(0, 0, 0, 0)
+                        btn_stop = False
                         
                 if ((waveSensorMean+3) >= deskUserTall) and actionPre == 2 :
                     stop = driverSet(0, 0, 0, 0)
