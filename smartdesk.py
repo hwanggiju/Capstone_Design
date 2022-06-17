@@ -696,10 +696,9 @@ def main():
                         draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 255)
                         draw.text((5, 40), 'Right?', font = font, fill = 255)
                         time.sleep(0.2)
-                        draw.text((5, 0), 'Success Set Height', font = font2, fill = 0)
+                        draw.text((0, 0), 'Success Set Height', font = font, fill = 0)
                         time.sleep(1)
                         break
-                draw.text((0, 0), 'Success Set Height', font = font, fill = 0)
                 oled.image(image)
                 oled.show()
                 break
