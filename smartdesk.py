@@ -564,6 +564,17 @@ def driverSet(enA, motorA, motorB, enB):
     else:
         return False
 
+def best(waveSensorMean, deskUserTall) :
+    global initial, nowTime, preTime
+    if initial == True:
+        preTime = time.time()
+        initial = False
+    if nowTime - preTime > 0.5 : 
+        if waveSensorMean + 3 > deskUserTall :
+            stop = driverSet(0, 0, 0, 0)
+            initial = True
+            
+
 def waveFun() :
     GPIO.output(wave[0], True)
     time.sleep(0.00001)
@@ -729,7 +740,7 @@ def main():
         btn_stop = False
         HeightAVG = [130 for i in range(15)]
         WaveAVG = [waveSensorHeight for i in range(15)]
-
+        cmptime = 0
 
         while True:
             accel = mpu9250.readAccel()
@@ -837,7 +848,7 @@ def main():
                         Ki_term = 0
                         print("down")
                     # up    
-                    elif userHeightAVG > 150 :
+                    elif userHeightAVG > 140 :
                         stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
                         fixAngleY = angleY  # 현재 각도고정
@@ -856,7 +867,7 @@ def main():
                         stop = False
                     elif userHeightAVG > 150 and actionPre != 2:
                         stop = False
-                    elif userHeightAVG > 140 and userHeightAVG < 150 and actionPre != 1 :
+                    elif waveSensorMean + 3 >= deskUserTall :
                         stop = False
                     
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
@@ -916,7 +927,8 @@ def main():
                         break
             
             drawDisplay(waveSensorMean+3)
-                    
+            stop = best()
+            
     except KeyboardInterrupt :
         pass
     
