@@ -728,6 +728,7 @@ def main():
         stop = False
         UPbtn_stop = False
         Downbtn_stop = False
+        addcontrol = False
         HeightAVG = [150 for i in range(15)]
         WaveAVG = [waveSensorHeight for i in range(15)]
 
@@ -789,9 +790,8 @@ def main():
             rotate_frame = cv2.resize(rotate_frame, (0, 0), fx=0.4, fy=0.4)
 
             # 일어났을 때 책상 최적의 높이
-            if (waveSensorMean + 3 >= deskUserTall) and actionPre == 2 :
+            if (waveSensorMean + 3 >= deskUserTall) and actionPre == 2 and addcontrol == False :
                 stop = driverSet(0, 0, 0, 0)      
-                
                 
             if userNum == 1: #인식된 얼굴 수
                 # 책상 다리 모터 제어에 활용되는 값
@@ -896,20 +896,24 @@ def main():
                     UPbtn_stop = driverSet(100, 2, 2, 100)
                     fixAngleY = angleY
                     fixAngleX = angleX
+                    addcontrol = True
                     
             elif GPIO.input(switch[2]) == 0 and UPbtn_stop == True:
                 UPbtn_stop = driverSet(0, 0, 0, 0)
                 UPbtn_stop = False
+                addcontrol == False
                     
             if GPIO.input(switch[0]) == 1 :
                 if Downbtn_stop != True :
                     Downbtn_stop = driverSet(100, 1, 1, 100)
                     fixAngleY = angleY
                     fixAngleX = angleX
+                    addcontrol = True
                     
             elif GPIO.input(switch[0]) == 0 and Downbtn_stop == True:
                 Downbtn_stop = driverSet(0, 0, 0, 0)
                 Downbtn_stop = False
+                addcontrol == False
             
             drawDisplay(waveSensorMean+3)
             
