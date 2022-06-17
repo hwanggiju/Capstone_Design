@@ -886,21 +886,21 @@ def main():
                 
             cv2.imshow("Camera", rotate_frame)
             
-            while GPIO.input(switch[2]) == 1 :
+            if GPIO.input(switch[2]) == 1 :
                 if btn_stop != True :
-                    btn_stop = driverSet(100, 2, 2, 100)
+                        btn_stop = driverSet(100, 2, 2, 100)
                     
-                if GPIO.input(switch[2]) == 0 :
-                    btn_stop = driverSet(0, 0, 0, 0)
-                    btn_stop = False
+            elif GPIO.input(switch[2]) == 0 :
+                btn_stop = driverSet(0, 0, 0, 0)
+                btn_stop = False
                     
-            while GPIO.input(switch[0]) == 1 :
+            if GPIO.input(switch[0]) == 1 :
                 if btn_stop != True :
-                    btn_stop = driverSet(100, 1, 1, 100)
+                        btn_stop = driverSet(100, 1, 1, 100)
                     
-                if GPIO.input(switch[0]) == 0 :
-                    btn_stop = driverSet(0, 0, 0, 0)
-                    btn_stop = False
+            elif GPIO.input(switch[0]) == 0 :
+                btn_stop = driverSet(0, 0, 0, 0)
+                btn_stop = False
             
             drawDisplay(waveSensorMean+3)
             
