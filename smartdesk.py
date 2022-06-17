@@ -721,6 +721,8 @@ def main():
         if net.empty() :
             print('Net open failed!')
 
+        accel = mpu9250.readAccel()
+        gyro = mpu9250.readGyro()
         fixAngleY = 0
         waveSensorMean = 0
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
@@ -729,7 +731,6 @@ def main():
         Downbtn_stop = False
         HeightAVG = [150 for i in range(15)]
         WaveAVG = [waveSensorHeight for i in range(15)]
-        cmptime = 0
 
         angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
         fixAngleY = angleY
