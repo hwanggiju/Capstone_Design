@@ -889,8 +889,9 @@ def main():
             if GPIO.input(switch[2]) == 1 :
                 if btn_stop != True :
                     btn_stop = driverSet(100, 2, 2, 100)
+                    btnMotorStop = True
                     
-            elif GPIO.input(switch[2]) == 0 :
+            elif GPIO.input(switch[2]) == 0 and btn_stop == True:
                 btn_stop = driverSet(0, 0, 0, 0)
                 btn_stop = False
                     
@@ -898,7 +899,7 @@ def main():
                 if btn_stop != True :
                     btn_stop = driverSet(100, 1, 1, 100)
                     
-            elif GPIO.input(switch[0]) == 0 :
+            elif GPIO.input(switch[0]) == 0 and btn_stop == True:
                 btn_stop = driverSet(0, 0, 0, 0)
                 btn_stop = False
             
