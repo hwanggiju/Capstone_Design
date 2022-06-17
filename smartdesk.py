@@ -617,6 +617,7 @@ def drawDisplay() :
         oled.show()
          
 def eraseDisplay() :
+    global timeTest
     if timeTest == True :
         preTime = nowTime
         timeTest = False
@@ -698,9 +699,12 @@ def main():
                         draw.text((5, 0), 'Success Set Height', font = font2, fill = 0)
                         time.sleep(1)
                         break
-                draw.text((5, 0), 'Success Set Height', font = font2, fill = 255)
+                draw.text((5, 0), 'Success Set Height', font = font2, fill = 0)
+                oled.image(image)
+                oled.show()
                 break
-
+            
+        draw.text((5, 0), 'Success Set Height', font = font2, fill = 255)
         cap = cv2.VideoCapture(0)
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraHeight)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraWidth)
