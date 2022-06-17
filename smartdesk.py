@@ -585,6 +585,7 @@ def OLED_initial_setting_Height(CHANGE_HEIGHT) :
     draw.text((5, 0), '-First Setting-', font = font, fill = 0)
     draw.text((5, 20), 'Input your Height', font = font, fill = 0)
     draw.text((5, 40), str(CHANGE_HEIGHT), font = font, fill = 0)
+    draw.text((10, 40), 'cm', font = font, fill = 0)
     oled.image(image)
     oled.show()
 
@@ -592,6 +593,7 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     draw.text((5, 0), '-First Setting-', font = font, fill = 255)
     draw.text((5, 20), 'Input your Height', font = font, fill = 255)
     draw.text((5, 40), str(CHANGE_HEIGHT), font = font, fill = 255)
+    draw.text((10, 40), 'cm', font = font, fill = 255)
     oled.image(image)
     oled.show()
     
@@ -602,8 +604,8 @@ def drawDisplay() :
         draw.text((100, 20), 'Okay', font=font2, fill=0)
         draw.text((100, 40), 'Down', font=font2, fill=0)
         draw.text((5, 0), 'Desk Tall', font=font, fill=0)
-        draw.text((5, 10), str(deskDistance), font = font, fill = 0)
-        preTime = nowTime
+        draw.text((5, 15), str(int(deskDistance)), font = font, fill = 0)
+        draw.text((10, 15), 'cm', font = font, fill = 255)
         oled.image(image)
         oled.show()
     
@@ -612,7 +614,8 @@ def eraseDisplay() :
     draw.text((100, 15), 'Okay', font=font2, fill=255)
     draw.text((100, 30), 'Down', font=font2, fill=255)
     draw.text((5, 0), 'Desk Tall', font=font, fill=255)
-    draw.text((5, 10), str(deskDistance), font = font, fill = 255)
+    draw.text((5, 15), str(int(deskDistance)), font = font, fill = 255)
+    draw.text((10, 15), 'cm', font = font, fill = 255)
     oled.image(image)
     oled.show()
 
@@ -713,7 +716,6 @@ def main():
 
 
         while True:
-            drawDisplay()
             accel = mpu9250.readAccel()
             gyro = mpu9250.readGyro()
             if TESTMODE == False:
@@ -865,6 +867,7 @@ def main():
                 #figure.canvas.draw()
                 figure.canvas.flush_events()
             cv2.imshow("Camera", rotate_frame)
+            drawDisplay()
             eraseDisplay()
     except KeyboardInterrupt :
         pass
