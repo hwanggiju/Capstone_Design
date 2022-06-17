@@ -516,37 +516,30 @@ def HorizontalHold(nowAngle, compareAngle):
 
     return pwmA, pwmB
 #각도 자세유지 코드
-pwmA_AVG = 100
-pwmB_AVG = 100
+pwmA = 100
+pwmB = 100
+PreMotorState = 0
 def HorizontalHoldTEST(nowAngle, compareAngle):
-    global pwmA_AVG, pwmB_AVG
-    val = PID(nowAngle, compareAngle)
-    pwmA = 100
-    pwmB = 100
-    diffangle = (val) * 90 / 150
-    if diffangle < -90:
-        diffangle = -90
-    elif diffangle > 90:
-        diffangle = 90
-    diffPwm = int(80 * np.sin(diffangle * np.pi/180))
-    if actionPre == 2:
-        if diffPwm >= 0:
-            pwmB -= diffPwm
-        else:
-            pwmA += diffPwm
-        print(str(pwmA) + '/' + str(pwmB))
-    elif actionPre == 0:
-        if diffPwm >= 0:
-            pwmA -= diffPwm
-        else:
-            pwmB += diffPwm
-        print(str(pwmA) + '/' + str(pwmB))
-    # complementary Filter
-    alpha = 0.85
-    pwmA_AVG = alpha * pwmA_AVG + (1 - alpha) * pwmA
-    pwmB_AVG = alpha * pwmB_AVG + (1 - alpha) * pwmB
-    changePWM(pwmA_AVG, pwmB_AVG)
-    return pwmA_AVG, pwmB_AVG, val
+    global pwmA, pwmB, preMotorState
+    angleDiff = nowAngle - compareAngle
+    if angleDiff > 0 and preMotorState == 1:
+        preMotorState = 0 #각 차값이 양수
+        pwmA = 100
+        pwmB = 100
+    elif angleDiff > 0:
+        if pwmA > 20:
+            pwmA -= 2
+        preMotorState = 0
+    elif angleDiff < 0 and preMotorState == 0:
+        preMotorState = 1 #각 차값이 음수
+        pwmA = 100
+        pwmB = 100
+    elif angleDiff < 0:
+        if pwmB > 20:
+            pwmB -= 2
+        preMotorState = 1
+    changePWM(pwmA, pwmB)
+    return pwmA, pwmB
 # driver set
 # 0 : stop
 # 1 : down
@@ -743,7 +736,7 @@ def main():
             print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            ENA_PWM[0], ENB_PWM[0], val = HorizontalHoldTEST(angleY, fixAngleY)
+            ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
             
             userNum = 0
             for i in range(detect.shape[0]):
@@ -831,10 +824,10 @@ def main():
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             #그래프 표시
 
-            gyrosensorX[0] = angleX - 1.5
-            #gyrosensorY[0] = angleY - fixAngleY
-            gyrosensorY[0] = angleY + 1.5
-            y_valPID[0] = val
+            gyrosensorX[0] = angleX - fixAngleX
+            gyrosensorY[0] = angleY - fixAngleY
+            #gyrosensorY[0] = angleY
+            y_valPID[0] = 0
             # 쉬프트
             for i in range(graphRow - 1):
                 gyrosensorX[graphRow - i - 1] = gyrosensorX[graphRow - i - 2]
