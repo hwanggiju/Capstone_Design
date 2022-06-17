@@ -827,7 +827,7 @@ def main():
                 #높이에 따른 모터작동
                 if stop != True: # 드라이버 pin Set 변경 후 반복 변경 방지
                     # 앉았을 때, 책상의 최적 높이 설정
-                        # down
+                    # down
                     if userHeightAVG < 140 :
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
@@ -901,7 +901,7 @@ def main():
                     stop = driverSet(0, 0, 0, 0)
                     stop = False
                     
-            if (waveSensorMean+3) > deskUserTall and actionPre == 2 :
+            if ((waveSensorMean+3) >= deskUserTall) and actionPre == 2 :
                 stop = driverSet(0, 0, 0, 0)
                     
     except KeyboardInterrupt :
