@@ -598,7 +598,7 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     oled.show()
     
 timeTest = True
-def drawDisplay(self, deskDistance) :
+def drawDisplay(deskDistance) :
     global timeTest, nowTime, preTime
     deskDistance = waveFun()
     eraseDisplay(deskDistance)
