@@ -515,7 +515,10 @@ def HorizontalHold(nowAngle, compareAngle):
 
     return pwmA, pwmB
 #각도 자세유지 코드
+pwmA_AVG = 100
+pwmB_AVG = 100
 def HorizontalHoldTEST(nowAngle, compareAngle):
+    global pwmA_AVG, pwmB_AVG
     val = PID(nowAngle, compareAngle)
     pwmA = 100
     pwmB = 100
@@ -537,7 +540,11 @@ def HorizontalHoldTEST(nowAngle, compareAngle):
         else:
             pwmB += diffPwm
         print(str(pwmA) + '/' + str(pwmB))
-    changePWM(pwmA, pwmB)
+    # complementary Filter
+    alpha = 0.85
+    pwmA_AVG = alpha * pwmA_AVG + (1 - alpha) * pwmA
+    pwmB_AVG = alpha * pwmB_AVG + (1 - alpha) * pwmB
+    changePWM(pwmA_AVG, pwmB_AVG)
     return pwmA, pwmB, val
 # driver set
 # 0 : stop
