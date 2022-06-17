@@ -357,8 +357,8 @@ try :
     oled.image(logoImage)
     oled.show()
     time.sleep(2)
-    oled.clear()
-    oled.display()
+    oled.fill(0)
+    oled.show()
     
     while True :
         if GPIO.input(switch[2]) == 1 :     # up
