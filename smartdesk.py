@@ -597,9 +597,8 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     oled.image(image)
     oled.show()
     
-deskDistance = 0
 timeTest = True
-def drawDisplay() :
+def drawDisplay(deskDistance) :
     global timeTest, nowTime, preTime
     if timeTest == True :
         preTime = nowTime
@@ -616,7 +615,7 @@ def drawDisplay() :
         oled.image(image)
         oled.show()
          
-def eraseDisplay() :
+def eraseDisplay(deskDistance) :
     global timeTest, nowTime, preTime
     if timeTest == True :
         preTime = nowTime
@@ -883,8 +882,8 @@ def main():
                 figure.canvas.flush_events()
             cv2.imshow("Camera", rotate_frame)
             
-            drawDisplay()
-            eraseDisplay()
+            drawDisplay(waveSensorMean)
+            eraseDisplay(waveSensorMean)
     except KeyboardInterrupt :
         pass
     
