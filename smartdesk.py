@@ -382,7 +382,7 @@ def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
     accelAngleY = math.atan(-1 * accelX / math.sqrt(math.pow(accelY, 2) + math.pow(accelZ, 2))) * RADIANS_TO_DEGREES
     accelAngleZ = 0
     # complementary Filter
-    alpha = 0.96
+    alpha = 0.86
     GyX_deg = alpha * gyroAngleX + (1.0 - alpha) * accelAngleX
     GyY_deg = alpha * gyroAngleY + (1.0 - alpha) * accelAngleY
     GyZ_deg = gyroAngleZ
@@ -528,7 +528,7 @@ def HorizontalHoldTEST(nowAngle, compareAngle):
         pwmB = 100
     elif angleDiff > 0:
         if pwmA > 20:
-            pwmA -= 2
+            pwmA -= 5
         preMotorState = 0
     elif angleDiff < 0 and preMotorState == 0:
         preMotorState = 1 #각 차값이 음수
@@ -536,7 +536,7 @@ def HorizontalHoldTEST(nowAngle, compareAngle):
         pwmB = 100
     elif angleDiff < 0:
         if pwmB > 20:
-            pwmB -= 2
+            pwmB -= 5
         preMotorState = 1
     changePWM(pwmA, pwmB)
     return pwmA, pwmB
