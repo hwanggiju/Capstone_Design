@@ -348,7 +348,7 @@ def PID(currentVal,setVal):
     Kd = 27.5 #미분
     now = time.time()
     dt = (now - pastPID) / 1.0
-    errorGap_P = currentVal - setVal
+    errorGap_P = currentVal + setVal
     Kp_term = Kp * errorGap_P
 
     errorGap_I = errorGap_P * dt
