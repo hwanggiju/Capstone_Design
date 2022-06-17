@@ -742,6 +742,7 @@ def main():
             detect = net.forward()
             (h, w) = rotate_frame.shape[:2]
             detect = detect[0, 0, :, :]
+            rotate_frame = cv2.resize(rotate_frame, (0, 0), fx=0.4, fy=0.4)
                 
             waveSensorHeight = waveFun() # 책상 높이
             WaveAVG[0] = waveSensorHeight
