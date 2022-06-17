@@ -433,5 +433,7 @@ try :
      
 except KeyboardInterrupt :
     print('end')
+    enA_pwm.stop()
+    enB_pwm.stop()
     GPIO.cleanup()
     pass
