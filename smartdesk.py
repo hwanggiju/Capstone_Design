@@ -564,17 +564,6 @@ def driverSet(enA, motorA, motorB, enB):
     else:
         return False
 
-def best(waveSensorMean, deskUserTall) :
-    global initial, nowTime, preTime
-    if initial == True:
-        preTime = time.time()
-        initial = False
-    if nowTime - preTime > 0.5 : 
-        if waveSensorMean + 3 > deskUserTall :
-            stop = driverSet(0, 0, 0, 0)
-            initial = True
-            
-
 def waveFun() :
     GPIO.output(wave[0], True)
     time.sleep(0.00001)
