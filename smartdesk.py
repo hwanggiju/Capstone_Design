@@ -29,7 +29,7 @@ ENB_PWM = [100 for i in range(graphRow)]
 
 angleLine = np.linspace(-3,3,graphRow)
 heightLine = np.linspace(70, 190, graphRow)
-pidLine = np.linspace(-100,100,graphRow)
+pidLine = np.linspace(-200,200,graphRow)
 pwmLine = np.linspace(0,100,graphRow)
 
 plt.ion()
@@ -344,7 +344,7 @@ def PID(currentVal,setVal):
     global pastPID, preError, Kp_term, Ki_term, Kd_term
     Kp = 20.0 #비례
     Ki = 5.11 #적분
-    Kd = 25.5 #미분
+    Kd = 30.5 #미분
     now = time.time()
     dt = (now - pastPID) / 1.0
     errorGap_P = setVal - currentVal
