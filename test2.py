@@ -144,34 +144,19 @@ def HorizontalHold(nowAngle, compareAngle):
         if (nowAngle > compareAngle) : 
             pwmA += diffPwm
             pwmB -= diffPwm
-            changePWM(pwmA, pwmB)
-            print(str(pwmA) + '/' + str(pwmB))
         elif nowAngle < compareAngle:
             pwmA -= diffPwm
             pwmB += diffPwm
-            changePWM(pwmA, pwmB)
-            print(str(pwmA) + '/' + str(pwmB))
-        else : 
-            fixpwmA = diffPwm + pwmA
-            fixpwmB = diffPwm + pwmB
-            changePWM(fixpwmA, fixpwmB)
-            print(str(fixpwmA) + '/' + str(fixpwmB))
+        changePWM(pwmA, pwmB)
+        
     elif actionPre == 0 :
         if (nowAngle > compareAngle) : 
             pwmA += diffPwm
             pwmB -= diffPwm
-            changePWM(pwmA, pwmB)
-            print(str(pwmA) + '/' + str(pwmB))
         elif (nowAngle < compareAngle):
             pwmA -= diffPwm
             pwmB += diffPwm
-            changePWM(pwmA, pwmB)
-            print(str(pwmA) + '/' + str(pwmB))
-        else :
-            fixpwmA = diffPwm + pwmA
-            fixpwmB = diffPwm + pwmB
-            changePWM(fixpwmA, fixpwmB)
-            print(str(fixpwmA) + '/' + str(fixpwmB))
+        changePWM(pwmA, pwmB)
 
 def btn_driverSet(enA, motorA, motorB, enB):
     global initial, nowTime, preTime
@@ -179,6 +164,7 @@ def btn_driverSet(enA, motorA, motorB, enB):
         preTime = time.time()
         initial = False
     changePWM(0, 0)
+    
     for i in range(1, len(driver)-1):
         GPIO.output(driver[i], 0)
 
@@ -442,8 +428,7 @@ try :
         else :
             btn_driverSet(0, 0, 0, 0)
             pass 
-        
-        break
+        eraseDisplay()
             
      
 except KeyboardInterrupt :
