@@ -600,6 +600,7 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
 deskDistance = 0
 timeTest = True
 def drawDisplay() :
+    global timeTest
     if timeTest == True :
         preTime = nowTime
         timeTest = False
@@ -614,8 +615,7 @@ def drawDisplay() :
         timeTest = True
         oled.image(image)
         oled.show()
-        
-    
+         
 def eraseDisplay() :
     if timeTest == True :
         preTime = nowTime
@@ -882,7 +882,6 @@ def main():
             
             drawDisplay()
             eraseDisplay()
-            
     except KeyboardInterrupt :
         pass
     
