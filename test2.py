@@ -7,6 +7,61 @@ import os
 import time
 import RPi.GPIO as GPIO
 import numpy as np
+import smbus
+from imusensor.MPU9250 import MPU9250
+
+
+# 레지스터 값 설정
+CONFIG       = 0x1A     # LowPassFilter bit 2:0
+GYRO_CONFIG  = 0x1B     # FS_SEL bit 4:3
+ACCEL_CONFIG = 0x1C     # FS_SEL bit 4:3
+PWR_MGMT_1   = 0x6B     # sleep bit 6, clk_select bit 2:0
+
+# CONFIG: Low Pass Filter 설정(bit 2:0)
+DLPF_BW_256 = 0x00      # Acc: BW-260Hz, Delay-0ms, Gyro: BW-256Hz, Delay-0.98ms
+DLPF_BW_188 = 0x01
+DLPF_BW_98  = 0x02
+DLPF_BW_42  = 0x03
+DLPF_BW_20  = 0x04
+DLPF_BW_10  = 0x05
+DLPF_BW_5   = 0x06      # Acc: BW-5Hz, Delay-19ms, Gyro: BW-5Hz, Delay-18.6ms
+
+# GYRO_CONFIG: Gyro의 Full Scale 설정(bit 4:3)
+GYRO_FS_250  = 0x00 << 3    # 250 deg/sec
+GYRO_FS_500  = 0x01 << 3
+GYRO_FS_1000 = 0x02 << 3
+GYRO_FS_2000 = 0x03 << 3    # 2000 deg/sec
+
+# ACCEL_CONFIG: 가속도센서의 Full Scale 설정(bit 4:3)
+ACCEL_FS_2  = 0x00 << 3     # 2g
+ACCEL_FS_4  = 0x01 << 3
+ACCEL_FS_8  = 0x02 << 3
+ACCEL_FS_16 = 0x03 << 3     # 16g
+
+# PWR_MGMT_1: sleep(bit 6)
+SLEEP_EN        = 0x01 << 6
+SLEEP_DIS       = 0x00 << 6
+# PWR_MGMT_1: clock(bit 2:0)
+CLOCK_INTERNAL  = 0x00  # internal clk(8KHz) 이용 (Not! Recommended)
+CLOCK_PLL_XGYRO = 0x01  # XGyro와 동기
+CLOCK_PLL_YGYRO = 0x02  # YGyro와 동기
+CLOCK_PLL_ZGYRO = 0x03  # ZGyro와 동기
+
+# Data 읽기
+ACCEL_XOUT_H = 0x3B     # Low는 0x3C
+ACCEL_YOUT_H = 0x3D     # Low는 0x3E
+ACCEL_ZOUT_H = 0x3F     # Low는 0x40
+GYRO_XOUT_H  = 0x43     # Low는 0x44
+GYRO_YOUT_H  = 0x45     # Low는 0x46
+GYRO_ZOUT_H  = 0x47     # Low는 0x48
+
+################################
+# I2C 읽고 쓰기
+################################
+# I2C Bus 초기화
+I2C_bus = smbus.SMBus(1)
+MPU_addr = 0x68
+
 
 WIDTH = 128
 HEIGHT = 64 
@@ -80,7 +135,7 @@ def changePWM(enA, enB):
     enB_pwm.ChangeDutyCycle(enB)
     return True
 
-def HorizontalHold(nowAngle, compareAngle, waveSensorMean):
+def HorizontalHold(nowAngle, compareAngle):
     pwmA = 80
     pwmB = 80
     diffPwm = int(20 * np.sin((64 * (nowAngle-compareAngle)) * np.pi/180))
@@ -152,6 +207,40 @@ def btn_driverSet(enA, motorA, motorB, enB):
         return True
     else:
         return False
+    
+def read_word(adr):
+    val = 0
+    try:
+        high = I2C_bus.read_byte_data(MPU_addr, adr)
+        low = I2C_bus.read_byte_data(MPU_addr, adr+1)
+        val = (high << 8) + low
+    except 121:
+        print("warnning!")
+        time.sleep(2)
+        pass
+    finally:
+        return val    
+    
+def read_word_2c(adr):
+    val = read_word(adr)
+    if (val >= 0x8000):
+        return -((65535 - val) + 1)
+    else:
+        return val
+
+def get_raw_data():
+    """
+    가속도(accel)와 각속도(gyro)의 현재 값 읽기
+    :return: accel x/y/z, gyro x/y/z
+    """
+    gyro_xout = read_word_2c(GYRO_XOUT_H)
+    gyro_yout = read_word_2c(GYRO_YOUT_H)
+    gyro_zout = read_word_2c(GYRO_ZOUT_H)
+    accel_xout = read_word_2c(ACCEL_XOUT_H)
+    accel_yout = read_word_2c(ACCEL_YOUT_H)
+    accel_zout = read_word_2c(ACCEL_ZOUT_H)
+    return accel_xout, accel_yout, accel_zout,\
+           gyro_xout, gyro_yout, gyro_zout
 
 def OLED_initial_setting_Height(CHANGE_HEIGHT) :
     draw.text((5, 0), 'First Setting', font = font, fill = 0)
@@ -173,8 +262,8 @@ def drawDisplay() :
     draw.text((100, 0), 'Up', font=font2, fill=0)
     draw.text((100, 20), 'Okay', font=font2, fill=0)
     draw.text((100, 40), 'Down', font=font2, fill=0)
-    draw.text((5, 0), 'Desk Tall', font=font2, fill=0)
-    draw.text((5, 10), str(deskDistance), font = font2, fill = 0)
+    draw.text((5, 0), 'Desk Tall', font=font, fill=0)
+    draw.text((5, 10), str(deskDistance), font = font, fill = 0)
     oled.image(image)
     oled.show()
 
@@ -247,8 +336,15 @@ try :
         
     while True :
         eraseDisplay()
+        nowTime = time.time()
         drawDisplay()
         if GPIO.input(switch[2]) == 1 :     # up
+            AcX, AcY, AcZ, GyX, GyY, GyZ = get_raw_data()
+            angleX, angleY, angleZ = calGyro(AcX, AcY, AcZ ,GyX , GyY, GyZ)
+            HorizontalHold(nowAngle, compareAngle)
+            btn_driverSet(0, 2, 2, 0)
+        else :
+            btn_driverSet(0, 0, 0, 0)
             pass 
         
         break
