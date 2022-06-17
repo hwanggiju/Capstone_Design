@@ -900,30 +900,16 @@ def main():
             
             if GPIO.input(switch[2]) == 1 :
                 btn_stop = driverSet(100, 2, 2, 100)
-                fixAngleY = angleY
                 while True :
-                    accel = mpu9250.readAccel()
-                    gyro = mpu9250.readGyro()
-                    angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
-                    ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
-                    cv2.imshow("Camera", rotate_frame)
                     if GPIO.input(switch[2]) == 0 :
                         btn_stop = driverSet(0, 0, 0, 0)
-                        btn_stop = False
                         break
                 
             if GPIO.input(switch[0]) == 1 :
                 btn_stop = driverSet(100, 1, 1, 100)
-                fixAngleY = angleY
                 while True :
-                    accel = mpu9250.readAccel()
-                    gyro = mpu9250.readGyro()
-                    angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
-                    ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
-                    cv2.imshow("Camera", rotate_frame)
                     if GPIO.input(switch[0]) == 0 :
                         btn_stop = driverSet(0, 0, 0, 0)
-                        btn_stop = False
                         break
             
             drawDisplay(waveSensorMean+3)
