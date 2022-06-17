@@ -927,7 +927,6 @@ def main():
                         break
             
             drawDisplay(waveSensorMean+3)
-            stop = best()
             
     except KeyboardInterrupt :
         pass
