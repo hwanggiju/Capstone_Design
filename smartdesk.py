@@ -605,7 +605,7 @@ def drawDisplay(deskDistance) :
     if timeTest == True :
         preTime = nowTime
         timeTest = False
-    if nowTime - preTime > 0.2 :
+    if nowTime - preTime > 0.01 :
         eraseDisplay()
         predeskDistance = deskDistance
         draw.text((100, 0), 'Up', font=font2, fill=0)
