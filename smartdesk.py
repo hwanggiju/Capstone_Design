@@ -888,12 +888,12 @@ def main():
             drawDisplay(waveSensorMean+3)
             
             if GPIO.input(switch[2]) == 1 :
-                stop = driverSet(0, 2, 2, 0)
+                stop = driverSet(100, 2, 2, 100)
             else :
                 stop = driverSet(0, 0, 0, 0)
                 
             if GPIO.input(switch[0]) == 1 :
-                stop = driverSet(0, 1, 1, 0)
+                stop = driverSet(100, 1, 1, 100)
             else :
                 stop = driverSet(0, 0, 0, 0)
                 
