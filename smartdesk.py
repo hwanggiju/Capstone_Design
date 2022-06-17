@@ -527,16 +527,16 @@ def HorizontalHoldTEST(nowAngle, compareAngle):
         pwmA = 100
         pwmB = 100
     elif angleDiff > 0:
-        if pwmA > 20:
-            pwmA -= 5
+        if pwmB > 20:
+            pwmB-= 5
         preMotorState = 0
     elif angleDiff < 0 and preMotorState == 0:
         preMotorState = 1 #각 차값이 음수
         pwmA = 100
         pwmB = 100
     elif angleDiff < 0:
-        if pwmB > 20:
-            pwmB -= 5
+        if pwmA > 20:
+            pwmA -= 5
         preMotorState = 1
     changePWM(pwmA, pwmB)
     return pwmA, pwmB
