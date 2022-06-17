@@ -440,26 +440,6 @@ def set_MPU_init(dlpf_bw=DLPF_BW_256,
 
     return read_byte(PWR_MGMT_1)
 
-''' 기본 코드
-def getUserHeight_nani(faceWidth, pixelX, pixelY, nowHeight):
-    faceWidthAverage[0] = faceWidth
-    sumHeight = 0
-    for i in range(len(faceWidthAverage)):
-        sumHeight = faceWidthAverage[i] + sumHeight
-    widthAverage = sumHeight / timeNum
-    fullHorizontalAngle = cameraAngle
-    fullVerticalAngle = fullHorizontalAngle * cameraHeight / cameraWidth
-    faceDifference = faceWidthMax - faceWidthMin
-    distanceDifference = userDistanceMax - userDistanceMin
-    calUserDistance = (faceWidthMax - widthAverage) / faceDifference * distanceDifference + userDistanceMin
-    userTopAngle = abs(pixelX - cameraWidth/2) / cameraWidth * fullHorizontalAngle
-    userDistance = calUserDistance / np.cos(userTopAngle * np.pi/180)
-    cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
-    calHeight = np.tan((cameraUserAngle + deskAngle) * np.pi/180) * (userDistance + 10)
-    for i in range(timeNum-1):#shift array
-        faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
-    return nowHeight + calHeight
-'''
 def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
     faceWidthAverage[0] = faceWidth
     sumHeight = 0
@@ -489,41 +469,20 @@ def changePWM(enA, enB):
         return False
     elif enB < 0 or enB > 100:
         return False
-    enA_pwm.ChangeDutyCycle(0)  # enableA pin start dutycycle 0%
-    enB_pwm.ChangeDutyCycle(0)  # enableB pin start dutycycle 0%
+    #enA_pwm.ChangeDutyCycle(0)  # enableA pin start dutycycle 0%
+    #nB_pwm.ChangeDutyCycle(0)  # enableB pin start dutycycle 0%
     enA_pwm.ChangeDutyCycle(enA)
     enB_pwm.ChangeDutyCycle(enB)
     return True
 
-#각도 자세유지 코드
-def HorizontalHold(nowAngle, compareAngle):
-    pwmA = 80
-    pwmB = 80
-    diffangle = (nowAngle - compareAngle)* 90 / 2
-    if diffangle < -90:
-        diffangle = -90
-    elif diffangle > 90:
-        diffangle = 90
-    diffPwm = int(20 * np.sin((abs(diffangle)) * np.pi/180))
-    if actionPre == 2 :
-        pwmA -= diffPwm
-        pwmB += diffPwm
-        changePWM(pwmA, pwmB)
-        print(str(pwmA) + '/' + str(pwmB))
-    elif actionPre == 0 :
-        pwmA -= diffPwm
-        pwmB += diffPwm
-        changePWM(pwmA, pwmB)
-        print(str(pwmA) + '/' + str(pwmB))
 
-    return pwmA, pwmB
 #각도 자세유지 코드
 pwmA = 100
 pwmB = 100
 pwmA_AVG = 100
 pwmB_AVG = 100
 preMotorState = 0
-def HorizontalHoldTEST(nowAngle, compareAngle):
+def HorizontalHold(nowAngle, compareAngle):
     global pwmA, pwmB, preMotorState, pwmB_AVG, pwmA_AVG
     angleDiff = nowAngle - compareAngle
     if actionPre == 2:
@@ -762,7 +721,7 @@ def main():
             print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
+            ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY)
             
             userNum = 0
             for i in range(detect.shape[0]):
