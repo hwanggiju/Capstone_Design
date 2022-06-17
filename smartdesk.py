@@ -738,7 +738,7 @@ def main():
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False
         btn_stop = False
-        HeightAVG = [130 for i in range(15)]
+        HeightAVG = [150 for i in range(15)]
         WaveAVG = [waveSensorHeight for i in range(15)]
         cmptime = 0
 
@@ -798,7 +798,8 @@ def main():
             
             rotate_frame = cv2.resize(rotate_frame, (0, 0), fx=0.4, fy=0.4)
     
-            
+            if waveSensorMean + 3 >= deskUserTall :
+                stop = driverSet(0, 0, 0, 0)      
             if userNum == 1: #인식된 얼굴 수
                 # 책상 다리 모터 제어에 활용되는 값
                 widthLength = x2 - x1
@@ -867,9 +868,7 @@ def main():
                         stop = False
                     elif userHeightAVG > 150 and actionPre != 2:
                         stop = False
-                    elif waveSensorMean + 3 >= deskUserTall :
-                        stop = driverSet(0, 0, 0, 0)
-                    
+                          
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             #그래프 표시
 
@@ -896,6 +895,7 @@ def main():
                 line8.set_ydata(ENB_PWM)
                 #figure.canvas.draw()
                 figure.canvas.flush_events()
+                
             cv2.imshow("Camera", rotate_frame)
             
             if GPIO.input(switch[2]) == 1 :
