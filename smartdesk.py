@@ -899,17 +899,24 @@ def main():
             
             if GPIO.input(switch[2]) == 1 :
                 btn_stop = driverSet(100, 2, 2, 100)
-                while True :
-                    if GPIO.input(switch[2]) == 0 :
-                        btn_stop = driverSet(0, 0, 0, 0)
-                        break
+                try :
+                    while True :
+                        if GPIO.input(switch[2]) == 0 :
+                            btn_stop = driverSet(0, 0, 0, 0)
+                            
+                except GPIO.input(switch[2]) == 0 :
+                    pass
+                        
                 
             if GPIO.input(switch[0]) == 1 :
                 btn_stop = driverSet(100, 1, 1, 100)
-                while True :
-                    if GPIO.input(switch[0]) == 0 :
-                        btn_stop = driverSet(0, 0, 0, 0)
-                        break
+                try :
+                    while True :
+                        if GPIO.input(switch[0]) == 0 :
+                            btn_stop = driverSet(0, 0, 0, 0)
+                            
+                except GPIO.input(switch[0]) == 0 :
+                    pass
             
             drawDisplay(waveSensorMean+3)
             
