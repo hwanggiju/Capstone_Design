@@ -597,10 +597,6 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     
 deskDistance = 0
 def drawDisplay() :
-    if timeTest == True :
-        preTime = nowTime
-        timeTest = False
-    if nowTime - preTime > 1 :
         deskDistance = waveFun()
         draw.text((100, 0), 'Up', font=font2, fill=0)
         draw.text((100, 20), 'Okay', font=font2, fill=0)
