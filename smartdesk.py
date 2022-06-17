@@ -29,7 +29,7 @@ ENA_PWM = [100 for i in range(graphRow)]
 ENB_PWM = [100 for i in range(graphRow)]
 
 angleLine = np.linspace(-3,3,graphRow)
-heightLine = np.linspace(70, 190, graphRow)
+heightLine = np.linspace(70, 200, graphRow)
 pidLine = np.linspace(-200,200,graphRow)
 pwmLine = np.linspace(0,100,graphRow)
 
@@ -705,7 +705,9 @@ def main():
 
 
         while True:
-            time.sleep(0.005)
+            gyro = mpu9250.readGyro()
+            if TESTMODE == False:
+                time.sleep(0.005)
             nowTime = time.time()
             _, frame = cap.read()
             
@@ -742,7 +744,7 @@ def main():
             print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            ENA_PWM[0], ENB_PWM[0], val = HorizontalHoldTEST(angleY, fixAngleY)
+            ENA_PWM[0], ENB_PWM[0], val = HorizontalHoldTEST(gyro['Y']+1, fixAngleY)
             
             userNum = 0
             for i in range(detect.shape[0]):
@@ -801,23 +803,23 @@ def main():
                     if userHeightAVG < 140 :
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
-                        fixAngleY = angleY  # 현재 각도고정
-                        fixAngleX = angleX
+                        fixAngleY = gyro['y']  # 현재 각도고정
+                        fixAngleX = gyro['x']
                         Ki_term = 0
                         print("down")
                     # up    
                     elif userHeightAVG > 150 :
                         stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
-                        fixAngleY = angleY  # 현재 각도고정
-                        fixAngleX = angleX
+                        fixAngleY = gyro['y']  # 현재 각도고정
+                        fixAngleX = gyro['x']
                         Ki_term = 0
                         print("up")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
                         actionPre = 1#stop
-                        fixAngleY = angleY
-                        fixAngleX = angleX
+                        fixAngleY = gyro['y']
+                        fixAngleX = gyro['x']
                         Ki_term = 0
                         print("stop")
                 else:
@@ -829,7 +831,7 @@ def main():
                         stop = False
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             #그래프 표시
-            gyro = mpu9250.readGyro()
+
             gyrosensorX[0] = gyro['x']
             #gyrosensorY[0] = angleY - fixAngleY
             gyrosensorY[0] = gyro['y'] + 1
