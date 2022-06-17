@@ -607,6 +607,7 @@ def drawDisplay(deskDistance) :
         preTime = nowTime
         timeTest = False
     if nowTime - preTime > 1 :
+        eraseDisplay()
         predeskDistance = deskDistance
         draw.text((100, 0), 'Up', font=font2, fill=0)
         draw.text((100, 20), 'Okay', font=font2, fill=0)
@@ -614,7 +615,6 @@ def drawDisplay(deskDistance) :
         draw.text((5, 0), 'Desk Tall', font=font, fill=0)
         draw.text((5, 15), str(int(predeskDistance)), font = font, fill = 0)
         draw.text((40, 15), 'cm', font = font, fill = 0)
-        eraseDisplay()
         oled.image(image)
         oled.show()
          
