@@ -754,7 +754,6 @@ def main():
             detect = net.forward()
             (h, w) = rotate_frame.shape[:2]
             detect = detect[0, 0, :, :]
-            
                 
             waveSensorHeight = waveFun() # 책상 높이
             WaveAVG[0] = waveSensorHeight
@@ -795,13 +794,9 @@ def main():
             if GPIO.input(switch[0]) == 1 :
                 btn_stop = driverSet(100, 1, 1, 100)
                 
-            if GPIO.input(switch[2]) == 0 :
+            if GPIO.input(switch[1]) == 1 :
                 btn_stop = driverSet(0, 0, 0, 0)
-                btn_stop = False
                 
-            if GPIO.input(switch[0]) == 0 :
-                btn_stop = driverSet(0, 0, 0, 0)
-                btn_stop = False
             
             if userNum == 1: #인식된 얼굴 수
                 # 책상 다리 모터 제어에 활용되는 값
