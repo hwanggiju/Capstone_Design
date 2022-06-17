@@ -889,14 +889,21 @@ def main():
             
             if GPIO.input(switch[2]) == 1 :
                 stop = driverSet(100, 2, 2, 100)
-            else :
-                stop = driverSet(0, 0, 0, 0)
                 
             if GPIO.input(switch[0]) == 1 :
                 stop = driverSet(100, 1, 1, 100)
-            else :
-                stop = driverSet(0, 0, 0, 0)
                 
+            if stop == True :
+                if GPIO.input(switch[2]) == 0 :
+                    stop = driverSet(0, 0, 0, 0)
+                    stop = False
+                if GPIO.input(switch[0]) == 0 :
+                    stop = driverSet(0, 0, 0, 0)
+                    stop = False
+                    
+            if (waveSensorMean+3) < deskUserTall :
+                stop = driverSet(0, 0, 0, 0)
+                    
     except KeyboardInterrupt :
         pass
     
