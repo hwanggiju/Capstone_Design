@@ -802,9 +802,6 @@ def main():
             if GPIO.input(switch[0]) == 0 :
                 btn_stop = driverSet(0, 0, 0, 0)
                 btn_stop = False
-                    
-            if ((waveSensorMean+3) >= deskUserTall) and actionPre == 2 :
-                stop = driverSet(0, 0, 0, 0)
             
             if userNum == 1: #인식된 얼굴 수
                 # 책상 다리 모터 제어에 활용되는 값
@@ -876,6 +873,7 @@ def main():
                         stop = False
                     elif userHeightAVG > 140 and userHeightAVG < 150 and actionPre != 1 :
                         stop = False
+                    
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             #그래프 표시
 
