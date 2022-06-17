@@ -518,7 +518,7 @@ def HorizontalHold(nowAngle, compareAngle):
 #각도 자세유지 코드
 pwmA = 100
 pwmB = 100
-PreMotorState = 0
+preMotorState = 0
 def HorizontalHoldTEST(nowAngle, compareAngle):
     global pwmA, pwmB, preMotorState
     angleDiff = nowAngle - compareAngle
