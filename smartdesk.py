@@ -342,9 +342,9 @@ Ki_term = 0
 # 출력 > PID값
 def PID(currentVal,setVal):
     global pastPID, preError, Kp_term, Ki_term, Kd_term
-    Kp = 20.7 #비례
-    Ki = 5.11 #적분
-    Kd = 13.5 #미분
+    Kp = 15.0 #비례
+    Ki = 3.11 #적분
+    Kd = 30.5 #미분
     now = time.time()
     dt = (now - pastPID) / 1.0
     errorGap_P = setVal - currentVal
@@ -517,21 +517,25 @@ def HorizontalHold(nowAngle, compareAngle):
 #각도 자세유지 코드
 def HorizontalHoldTEST(nowAngle, compareAngle):
     val = PID(nowAngle, compareAngle)
-    pwmA = 60
-    pwmB = 60
+    pwmA = 100
+    pwmB = 100
     diffangle = (val) * 90 / 200
     if diffangle < -90:
         diffangle = -90
     elif diffangle > 90:
         diffangle = 90
-    diffPwm = int(40 * np.sin(diffangle * np.pi/180))
-    if actionPre == 2 :
-        pwmA += diffPwm
-        pwmB -= diffPwm
+    diffPwm = int(80 * np.sin(diffangle * np.pi/180))
+    if actionPre == 2:
+        if diffPwm >= 0:
+            pwmB -= diffPwm
+        else:
+            pwmA += diffPwm
         print(str(pwmA) + '/' + str(pwmB))
-    elif actionPre == 0 :
-        pwmA -= diffPwm
-        pwmB += diffPwm
+    elif actionPre == 0:
+        if diffPwm >= 0:
+            pwmA -= diffPwm
+        else:
+            pwmB += diffPwm
         print(str(pwmA) + '/' + str(pwmB))
     changePWM(pwmA, pwmB)
     return pwmA, pwmB, val
