@@ -901,7 +901,7 @@ def main():
                     stop = driverSet(0, 0, 0, 0)
                     stop = False
                     
-            if (waveSensorMean+3) < deskUserTall :
+            if (waveSensorMean+3) > deskUserTall :
                 stop = driverSet(0, 0, 0, 0)
                     
     except KeyboardInterrupt :
