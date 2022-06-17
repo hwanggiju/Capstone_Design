@@ -13,7 +13,8 @@ import adafruit_ssd1306
 import os
 import smbus
 from imusensor.MPU9250 import MPU9250
-
+import FaBo9Axis_MPU9250
+mpu9250 = FaBo9Axis_MPU9250.MPU9250()
 #그래프
 import matplotlib.pyplot as plt
 graphRow = 200
@@ -29,7 +30,7 @@ ENB_PWM = [100 for i in range(graphRow)]
 
 angleLine = np.linspace(-3,3,graphRow)
 heightLine = np.linspace(70, 190, graphRow)
-pidLine = np.linspace(-100,100,graphRow)
+pidLine = np.linspace(-200,200,graphRow)
 pwmLine = np.linspace(0,100,graphRow)
 
 plt.ion()
@@ -342,9 +343,9 @@ Ki_term = 0
 # 출력 > PID값
 def PID(currentVal,setVal):
     global pastPID, preError, Kp_term, Ki_term, Kd_term
-    Kp = 25.0 #비례
-    Ki = 3.11 #적분
-    Kd = 25.5 #미분
+    Kp = 20.0 #비례
+    Ki = 5.11 #적분
+    Kd = 10.5 #미분
     now = time.time()
     dt = (now - pastPID) / 1.0
     errorGap_P = setVal - currentVal
@@ -515,7 +516,10 @@ def HorizontalHold(nowAngle, compareAngle):
 
     return pwmA, pwmB
 #각도 자세유지 코드
+pwmA_AVG = 100
+pwmB_AVG = 100
 def HorizontalHoldTEST(nowAngle, compareAngle):
+    global pwmA_AVG, pwmB_AVG
     val = PID(nowAngle, compareAngle)
     pwmA = 100
     pwmB = 100
@@ -537,8 +541,12 @@ def HorizontalHoldTEST(nowAngle, compareAngle):
         else:
             pwmB += diffPwm
         print(str(pwmA) + '/' + str(pwmB))
-    changePWM(pwmA, pwmB)
-    return pwmA, pwmB, val
+    # complementary Filter
+    alpha = 0.85
+    pwmA_AVG = alpha * pwmA_AVG + (1 - alpha) * pwmA
+    pwmB_AVG = alpha * pwmB_AVG + (1 - alpha) * pwmB
+    changePWM(pwmA_AVG, pwmB_AVG)
+    return pwmA_AVG, pwmB_AVG, val
 # driver set
 # 0 : stop
 # 1 : down
@@ -821,9 +829,10 @@ def main():
                         stop = False
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             #그래프 표시
-
-            gyrosensorX[0] = angleX - fixAngleX
-            gyrosensorY[0] = angleY - fixAngleY
+            gyro = mpu9250.readGyro()
+            gyrosensorX[0] = gyro['x']
+            #gyrosensorY[0] = angleY - fixAngleY
+            gyrosensorY[0] = gyro['y'] + 1
             y_valPID[0] = val
             # 쉬프트
             for i in range(graphRow - 1):
