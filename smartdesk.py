@@ -870,7 +870,7 @@ def main():
                 line8.set_ydata(ENB_PWM)
                 #figure.canvas.draw()
                 figure.canvas.flush_events()
-        cv2.imshow("Camera", rotate_frame)
+            cv2.imshow("Camera", rotate_frame)
     except KeyboardInterrupt :
         pass
     
