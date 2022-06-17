@@ -790,7 +790,7 @@ def main():
             rotate_frame = cv2.resize(rotate_frame, (0, 0), fx=0.4, fy=0.4)
 
             # 일어났을 때 책상 최적의 높이
-            if (waveSensorMean + 3 >= deskUserTall) and actionPre == 2 and addcontrol == False :
+            if (waveSensorMean + 3 >= deskUserTall) and actionPre == 2 and addcontrol != True :
                 stop = driverSet(0, 0, 0, 0)      
                 
             if userNum == 1: #인식된 얼굴 수
