@@ -493,35 +493,14 @@ def changePWM(enA, enB):
     enB_pwm.ChangeDutyCycle(enB)
     return True
 
-#각도 자세유지 코드
-def HorizontalHold(nowAngle, compareAngle):
-    pwmA = 80
-    pwmB = 80
-    diffangle = (nowAngle - compareAngle)* 90 / 2
-    if diffangle < -90:
-        diffangle = -90
-    elif diffangle > 90:
-        diffangle = 90
-    diffPwm = int(20 * np.sin((abs(diffangle)) * np.pi/180))
-    if actionPre == 2 :
-        pwmA -= diffPwm
-        pwmB += diffPwm
-        changePWM(pwmA, pwmB)
-        print(str(pwmA) + '/' + str(pwmB))
-    elif actionPre == 0 :
-        pwmA -= diffPwm
-        pwmB += diffPwm
-        changePWM(pwmA, pwmB)
-        print(str(pwmA) + '/' + str(pwmB))
 
-    return pwmA, pwmB
 #각도 자세유지 코드
 pwmA = 100
 pwmB = 100
 pwmA_AVG = 100
 pwmB_AVG = 100
 preMotorState = 0
-def HorizontalHoldTEST(nowAngle, compareAngle):
+def HorizontalHold(nowAngle, compareAngle):
     global pwmA, pwmB, preMotorState, pwmB_AVG, pwmA_AVG
     angleDiff = nowAngle - compareAngle
     if actionPre == 2:
@@ -760,7 +739,7 @@ def main():
             print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
+            ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY)
             
             userNum = 0
             for i in range(detect.shape[0]):
