@@ -522,22 +522,40 @@ preMotorState = 0
 def HorizontalHoldTEST(nowAngle, compareAngle):
     global pwmA, pwmB, preMotorState
     angleDiff = nowAngle - compareAngle
-    if angleDiff > 0 and preMotorState == 1:
-        preMotorState = 0 #각 차값이 양수
-        pwmA = 100
-        pwmB = 100
-    elif angleDiff > 0:
-        if pwmB > 20:
-            pwmB-= 5
-        preMotorState = 0
-    elif angleDiff < 0 and preMotorState == 0:
-        preMotorState = 1 #각 차값이 음수
-        pwmA = 100
-        pwmB = 100
-    elif angleDiff < 0:
-        if pwmA > 20:
-            pwmA -= 5
-        preMotorState = 1
+    if actionPre == 2:
+        if angleDiff > 0 and preMotorState == 1:
+            preMotorState = 0 #각 차값이 양수
+            pwmA = 100
+            pwmB = 100
+        elif angleDiff > 0:
+            if pwmA > 20:
+                pwmA -= 5
+            preMotorState = 0
+        elif angleDiff < 0 and preMotorState == 0:
+            preMotorState = 1 #각 차값이 음수
+            pwmA = 100
+            pwmB = 100
+        elif angleDiff < 0:
+            if pwmB > 20:
+                pwmB -= 5
+            preMotorState = 1
+    elif actionPre == 0:
+        if angleDiff > 0 and preMotorState == 1:
+            preMotorState = 0 #각 차값이 양수
+            pwmA = 100
+            pwmB = 100
+        elif angleDiff > 0:
+            if pwmB > 20:
+                pwmB -= 5
+            preMotorState = 0
+        elif angleDiff < 0 and preMotorState == 0:
+            preMotorState = 1 #각 차값이 음수
+            pwmA = 100
+            pwmB = 100
+        elif angleDiff < 0:
+            if pwmA > 20:
+                pwmA -= 5
+            preMotorState = 1
     changePWM(pwmA, pwmB)
     return pwmA, pwmB
 # driver set
