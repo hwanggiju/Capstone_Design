@@ -518,9 +518,11 @@ def HorizontalHold(nowAngle, compareAngle):
 #각도 자세유지 코드
 pwmA = 100
 pwmB = 100
+pwmA_AVG = 100
+pwmB_AVG = 100
 preMotorState = 0
 def HorizontalHoldTEST(nowAngle, compareAngle):
-    global pwmA, pwmB, preMotorState
+    global pwmA, pwmB, preMotorState, pwmB_AVG, pwmA_AVG
     angleDiff = nowAngle - compareAngle
     if actionPre == 2:
         if angleDiff > 0 and preMotorState == 1:
@@ -556,8 +558,11 @@ def HorizontalHoldTEST(nowAngle, compareAngle):
             if pwmA > 20:
                 pwmA -= 5
             preMotorState = 1
-    changePWM(pwmA, pwmB)
-    return pwmA, pwmB
+    alpha = 0.85
+    pwmA_AVG = alpha * pwmA_AVG + (1 - alpha) * pwmA
+    pwmB_AVG = alpha * pwmB_AVG + (1 - alpha) * pwmB
+    changePWM(pwmA_AVG, pwmB_AVG)
+    return pwmA_AVG, pwmB_AVG
 # driver set
 # 0 : stop
 # 1 : down
