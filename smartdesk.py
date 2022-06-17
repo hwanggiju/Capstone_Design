@@ -627,6 +627,7 @@ def main():
     global deskAngle, Ki_term
     # 디스플레이 초기 설정
     try :
+        SET_HEIGHT = 170
         oled.image(logoImage)
         oled.show()
         time.sleep(2)
