@@ -614,11 +614,11 @@ def drawDisplay(deskDistance) :
         draw.text((5, 0), 'Desk Tall', font=font, fill=0)
         draw.text((5, 15), str(int(predeskDistance)), font = font, fill = 0)
         draw.text((40, 15), 'cm', font = font, fill = 0)
-        timeTest = True
+        eraseDisplay()
         oled.image(image)
         oled.show()
          
-def eraseDisplay(deskDistance) :
+def eraseDisplay() :
     global predeskDistance
     draw.text((100, 0), 'Up', font=font2, fill=255)
     draw.text((100, 15), 'Okay', font=font2, fill=255)
@@ -884,7 +884,6 @@ def main():
             cv2.imshow("Camera", rotate_frame)
             
             drawDisplay(waveSensorMean)
-            eraseDisplay(waveSensorMean)
     except KeyboardInterrupt :
         pass
     
