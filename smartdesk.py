@@ -897,6 +897,7 @@ def main():
                         angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
                         ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
                         if GPIO.input(switch[2]) == 0 :
+                            btn_stop = driverSet(0, 0, 0, 0)
                             btn_stop = False
                             break
                 
@@ -910,6 +911,7 @@ def main():
                         angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
                         ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
                         if GPIO.input(switch[0]) == 0 :
+                            btn_stop = driverSet(0, 0, 0, 0)
                             btn_stop = False
                             break
             
