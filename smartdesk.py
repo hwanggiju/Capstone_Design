@@ -865,6 +865,7 @@ def main():
                 #figure.canvas.draw()
                 figure.canvas.flush_events()
             cv2.imshow("Camera", rotate_frame)
+            eraseDisplay()
     except KeyboardInterrupt :
         pass
     
