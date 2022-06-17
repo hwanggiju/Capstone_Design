@@ -15,6 +15,7 @@ import smbus
 from imusensor.MPU9250 import MPU9250
 import FaBo9Axis_MPU9250
 mpu9250 = FaBo9Axis_MPU9250.MPU9250()
+
 #그래프
 import matplotlib.pyplot as plt
 graphRow = 200
@@ -28,13 +29,14 @@ gyrosensorY = [0 for i in range(graphRow)]
 ENA_PWM = [100 for i in range(graphRow)]
 ENB_PWM = [100 for i in range(graphRow)]
 
+#그래프 Y축 범위
 angleLine = np.linspace(-2,2,graphRow)
 heightLine = np.linspace(70, 200, graphRow)
 pidLine = np.linspace(-200,200,graphRow)
 pwmLine = np.linspace(0,100,graphRow)
 
 plt.ion()
-figure, ax = plt.subplots(2, 2 ,figsize=(10, 8))
+figure, ax = plt.subplots(2, 2 ,figsize=(10, 8)) #사이즈
 
 line_labels = ['User Heght', 'complementary Filter', 'Desk Height', 'PID', 'Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
 line1 = ax[0][0].plot(x_val, heightLine, color='red')[0]     # height
