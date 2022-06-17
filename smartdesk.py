@@ -742,6 +742,7 @@ def main():
             detect = net.forward()
             (h, w) = rotate_frame.shape[:2]
             detect = detect[0, 0, :, :]
+            rotate_frame = cv2.resize(rotate_frame, (0, 0), fx=0.4, fy=0.4)
                 
             waveSensorHeight = waveFun() # 책상 높이
             WaveAVG[0] = waveSensorHeight
@@ -870,6 +871,7 @@ def main():
                 line8.set_ydata(ENB_PWM)
                 #figure.canvas.draw()
                 figure.canvas.flush_events()
+            cv2.imshow("Camera", rotate_frame)
     except KeyboardInterrupt :
         pass
     
@@ -878,4 +880,5 @@ if __name__ == "__main__":
     enA_pwm.stop()
     enB_pwm.stop()
     GPIO.cleanup()
+    cv2.destroyAllWindows()
 
