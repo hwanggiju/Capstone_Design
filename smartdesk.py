@@ -601,12 +601,11 @@ timeTest = True
 predeskDistance = 0
 def drawDisplay(deskDistance) :
     global timeTest, nowTime, preTime, predeskDistance
-    predeskDistance = 0
     deskDistance = waveFun()
     if timeTest == True :
         preTime = nowTime
         timeTest = False
-    if nowTime - preTime > 1 :
+    if nowTime - preTime > 0.2 :
         eraseDisplay()
         predeskDistance = deskDistance
         draw.text((100, 0), 'Up', font=font2, fill=0)
@@ -619,7 +618,6 @@ def drawDisplay(deskDistance) :
         oled.show()
          
 def eraseDisplay() :
-    global predeskDistance
     draw.text((100, 0), 'Up', font=font2, fill=255)
     draw.text((100, 15), 'Okay', font=font2, fill=255)
     draw.text((100, 30), 'Down', font=font2, fill=255)
