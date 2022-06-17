@@ -824,6 +824,24 @@ def main():
                     y_valAVG[graphRow - i - 1] = y_valAVG[graphRow - i - 2]
                     y_valDesk[graphRow - i - 1] = y_valDesk[graphRow - i - 2]
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
+                
+                if GPIO.input(switch[2]) == 1 :
+                    stop = driverSet(100, 2, 2, 100)
+                
+                if GPIO.input(switch[0]) == 1 :
+                    stop = driverSet(100, 1, 1, 100)
+                    
+                if stop == True :
+                    if GPIO.input(switch[2]) == 0 :
+                        stop = driverSet(0, 0, 0, 0)
+                        stop = False
+                    if GPIO.input(switch[0]) == 0 :
+                        stop = driverSet(0, 0, 0, 0)
+                        stop = False
+                        
+                if ((waveSensorMean+3) >= deskUserTall) and actionPre == 2 :
+                    stop = driverSet(0, 0, 0, 0)
+                    
                 #높이에 따른 모터작동
                 if stop != True: # 드라이버 pin Set 변경 후 반복 변경 방지
                     # 앉았을 때, 책상의 최적 높이 설정
@@ -886,23 +904,6 @@ def main():
             cv2.imshow("Camera", rotate_frame)
             
             drawDisplay(waveSensorMean+3)
-            
-            if GPIO.input(switch[2]) == 1 :
-                stop = driverSet(100, 2, 2, 100)
-                
-            if GPIO.input(switch[0]) == 1 :
-                stop = driverSet(100, 1, 1, 100)
-                
-            if stop == True :
-                if GPIO.input(switch[2]) == 0 :
-                    stop = driverSet(0, 0, 0, 0)
-                    stop = False
-                if GPIO.input(switch[0]) == 0 :
-                    stop = driverSet(0, 0, 0, 0)
-                    stop = False
-                    
-            if ((waveSensorMean+3) >= deskUserTall) and actionPre == 2 :
-                stop = driverSet(0, 0, 0, 0)
                     
     except KeyboardInterrupt :
         pass
