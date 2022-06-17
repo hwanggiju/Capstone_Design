@@ -787,15 +787,6 @@ def main():
                 cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green ractangle
             
             rotate_frame = cv2.resize(rotate_frame, (0, 0), fx=0.4, fy=0.4)
-            
-            if GPIO.input(switch[2]) == 1 :
-                btn_stop = driverSet(100, 2, 2, 100)
-                
-            if GPIO.input(switch[0]) == 1 :
-                btn_stop = driverSet(100, 1, 1, 100)
-                
-            if GPIO.input(switch[1]) == 1 :
-                btn_stop = driverSet(0, 0, 0, 0)
     
             
             if userNum == 1: #인식된 얼굴 수
@@ -896,6 +887,15 @@ def main():
                 #figure.canvas.draw()
                 figure.canvas.flush_events()
             cv2.imshow("Camera", rotate_frame)
+            
+            if GPIO.input(switch[2]) == 1 :
+                btn_stop = driverSet(100, 2, 2, 100)
+                
+            if GPIO.input(switch[0]) == 1 :
+                btn_stop = driverSet(100, 1, 1, 100)
+                
+            if GPIO.input(switch[1]) == 1 :
+                btn_stop = driverSet(0, 0, 0, 0)
             
             drawDisplay(waveSensorMean+3)
                     
