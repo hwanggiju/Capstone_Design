@@ -889,9 +889,7 @@ def main():
 
                 # 얼굴폭 / 계산 좌표 X / 계산 좌표 Y / 카메라 높이
                 userHeight = getUserHeight(widthLength,center_x,center_y-heightLength/2, waveSensorHeight+cameraWaveDifference+2)
-                HeightAVG[0] = userHeight
-                for i in range(len(HeightAVG) - 1):
-                    HeightAVG[len(HeightAVG) - i - 1] = HeightAVG[len(HeightAVG) - i - 2]
+
                 # 사용자의 현재 키
                 # 현재 키의 값 변화를 천천히 바꿔주기 위함
                 userHeightAVG = np.mean(HeightAVG)
@@ -901,14 +899,15 @@ def main():
                 print("차값 :" + str(userHeight - userHeightAVG))
                 #val = PID(userHeightAVG, userHeight)
                 #print("PID 계산값 " + str(round(val, 5)))
-                # 그래프 값 입력부
+                # 그래프 값 입력부 (인식후 작동)
                 y_val[0] = userHeight
                 y_valAVG[0] = userHeightAVG
-
+                HeightAVG[0] = userHeight
                 # 쉬프트 그래프
                 for i in range(graphRow - 1):
                     y_val[graphRow - i - 1] = y_val[graphRow - i - 2]
                     y_valAVG[graphRow - i - 1] = y_valAVG[graphRow - i - 2]
+                    HeightAVG[graphRow - i - 1] = HeightAVG[graphRow - i - 2]
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                     
                 #높이에 따른 모터작동
@@ -944,7 +943,7 @@ def main():
                         stop = False
                           
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
-            #그래프 표시
+            #그래프 표시 (인식안되어도 작동)
             y_valDesk[0] = waveSensorHeight + 2
             gyrosensorX[0] = angleX - fixAngleX
             gyrosensorY[0] = angleY - fixAngleY
@@ -957,7 +956,7 @@ def main():
                 ENB_PWM[graphRow - i - 1] = ENB_PWM[graphRow - i - 2]
                 y_valDesk[graphRow - i - 1] = y_valDesk[graphRow - i - 2]
 
-            if TESTMODE == True:
+            if TESTMODE == True: #테스트 모드시 그래프 운용
                 line1.set_ydata(y_val)
                 line2.set_ydata(y_valAVG)
                 line3.set_ydata(y_valDesk)
@@ -965,7 +964,7 @@ def main():
                 line5.set_ydata(gyrosensorY)
                 line6.set_ydata(ENA_PWM)
                 line7.set_ydata(ENB_PWM)
-                #figure.canvas.draw()
+                #figure.canvas.draw() #딜레이 발생
                 figure.canvas.flush_events()
                 
             cv2.imshow("Camera", rotate_frame)
@@ -985,13 +984,13 @@ def main():
             
             if Mode[0] == True :
                 drawDisplay()
-                if initialBtn != True :
+                if initialBtn == False :
                     fixAngleY = angleY
                     fixAngleX = angleX
                     initialBtn = True
                     
                 if GPIO.input(switch[2]) == 1 :
-                    if UPbtn_stop != True :
+                    if UPbtn_stop == False :
                         UPbtn_stop = driverSet(100, 2, 2, 100)
                         addcontrol = True
                         actionPre = 2
@@ -1003,7 +1002,7 @@ def main():
                     initialBtn = False
                         
                 if GPIO.input(switch[0]) == 1 :
-                    if Downbtn_stop != True :
+                    if Downbtn_stop == False :
                         Downbtn_stop = driverSet(100, 1, 1, 100)
                         addcontrol = True
                         actionPre = 0
