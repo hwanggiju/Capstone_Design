@@ -829,7 +829,8 @@ def sleepDetectMode() :
     pass
 
 #######################################################################
-# main code
+#                             MAIN CODE                               #
+#######################################################################
 def main():
     global actionNow, actionPre, bestDeskTall, fixAngleX, fixAngleY
     global nowTime, preTime
