@@ -612,7 +612,7 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     oled.show()
     
 timeTest = True
-NowdeskDistance = 0
+NowdeskDistance = 70
 ModeWaveAVG = [NowdeskDistance for i in range(5)]
 # 기본 모드 display
 def drawDisplay() :      
