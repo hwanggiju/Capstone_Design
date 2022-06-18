@@ -39,7 +39,7 @@ pwmLine = np.linspace(0,100,graphRow)
 plt.ion()
 figure, ax = plt.subplots(2, 2 ,figsize=(8, 8)) #사이즈
 
-line_labels = ['User Heght', 'complementary Filter', 'Desk Height', 'Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
+line_labels = ['User Height', 'complementary Filter', 'Desk Height', 'Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
 line1 = ax[0][0].plot(x_val, heightLine, color='red')[0]     # height
 line2 = ax[0][0].plot(x_val, heightLine, color='orange')[0]    # height average
 line3 = ax[0][1].plot(x_val, deskLine, color='green')[0]   # desk height
@@ -803,7 +803,7 @@ def main():
         waveSensorMean = 0
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False
-        UPbtn_stop = False
+        btn_stop = False
         Downbtn_stop = False
         addcontrol = False
         HeightAVG = [150 for i in range(15)]
@@ -981,39 +981,34 @@ def main():
                     Mode[idx-1] = False
                 time.sleep(0.05)
                 GPIO.output(buzzer, False)
-            
-            if Mode[0] == True : # 모드 1 : 책상 높이 조절
+            if Mode[0] == True : # 기본모드 : 자동 책상 높이 조절(사용자 인식)
+                recognitionEnable = True
+            if Mode[0] == True : # 모드 1 : 수동 책상 높이 조절
                 drawDisplay()
-                recognitionEnable = True  # 얼굴인식코드 활성화여부 (딜레이최적화)
+                recognitionEnable = False  # 얼굴인식코드 활성화여부 (딜레이최적화)
                 if initialBtn == False :
                     fixAngleY = angleY
                     fixAngleX = angleX
                     initialBtn = True
                     
-                if GPIO.input(switch[2]) == 1 :
-                    if UPbtn_stop == False :
-                        UPbtn_stop = driverSet(100, 2, 2, 100)
+                if GPIO.input(switch[2]) == 1 : # up 버튼 눌렀을 때
+                    if btn_stop == False :
+                        btn_stop = driverSet(100, 2, 2, 100)
                         addcontrol = True
                         actionPre = 2
-                    
-                elif GPIO.input(switch[2]) == 0 and UPbtn_stop == True:
-                    UPbtn_stop = driverSet(0, 0, 0, 0)
-                    UPbtn_stop = False
-                    addcontrol = False
-                    initialBtn = False
                         
-                if GPIO.input(switch[0]) == 1 :
-                    if Downbtn_stop == False :
-                        Downbtn_stop = driverSet(100, 1, 1, 100)
+                elif GPIO.input(switch[0]) == 1 : # Down 버튼 눌렀을 때
+                    if btn_stop == False :
+                        btn_stop = driverSet(100, 1, 1, 100)
                         addcontrol = True
                         actionPre = 0
                         
-                elif GPIO.input(switch[0]) == 0 and Downbtn_stop == True:
-                    Downbtn_stop = driverSet(0, 0, 0, 0)
-                    Downbtn_stop = False
+                elif GPIO.input(switch[0]) == 0 and btn_stop == True: #down 버튼 눌렀다 땟을 때
+                    driverSet(0, 0, 0, 0)
+                    btn_stop = False
                     addcontrol == False
                     initialBtn = False
-                
+
             elif Mode[1] == True : # 모드 2 : 키 설정 모드
                 recognitionEnable = False # 얼굴인식코드 활성화여부 (딜레이최적화)
                 draw.text((5, 0), 'Desk Tall', font=font, fill=255)
@@ -1075,8 +1070,7 @@ def main():
                         GPIO.output(buzzer, True)
                         state = True
                         
-                        
-                    
+
     except KeyboardInterrupt :
         pass
     
