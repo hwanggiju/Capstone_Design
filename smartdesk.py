@@ -496,7 +496,7 @@ pwmB = 100
 pwmA_AVG = 100
 pwmB_AVG = 100
 preMotorState = 0
-def HorizontalHoldTEST(nowAngle, compareAngle):
+def HorizontalHold(nowAngle, compareAngle):
     global pwmA, pwmB, preMotorState, pwmB_AVG, pwmA_AVG
     angleDiff = nowAngle - compareAngle
     if actionPre == 2:
@@ -855,7 +855,7 @@ def main():
             print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
+            ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY)
             
             userNum = 0
             if recognitionEnable == True: # 인식모드 온오프 여부
@@ -877,7 +877,7 @@ def main():
             if (waveSensorMean + 3) >= deskUserTall and actionPre == 2 and addcontrol != True :
                 stop = driverSet(0, 0, 0, 0)      
                 
-            if userNum == 1: #인식된 얼굴 수
+            if userNum == 1 and recognitionEnable == True: #인식된 얼굴 수
                 # 책상 다리 모터 제어에 활용되는 값
                 widthLength = x2 - x1
                 heightLength = y2 - y1
