@@ -53,7 +53,7 @@ ax[1][1].set_xlabel("Time", fontweight = 'bold', fontsize = 16)
 ax[0][0].set_ylabel("Height", fontweight = 'bold', fontsize = 16)
 ax[0][1].set_ylabel("Height", fontweight = 'bold', fontsize = 16)
 ax[1][0].set_ylabel("Angle", fontweight = 'bold', fontsize = 16)
-ax[1][1].set_ylabel("Dutycycle", fontwight = 'bold', fontsize = 16)
+ax[1][1].set_ylabel("Dutycycle", fontweight = 'bold', fontsize = 16)
 
 figure.legend([line1, line2, line3, line4, line5, line6, line7], labels= line_labels)
 plt.title("SMART DESK", fontsize=20)
