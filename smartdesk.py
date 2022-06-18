@@ -654,24 +654,26 @@ prechange = 0
 nowpreHeight = 0
 def ReSetMode(NowHeight, changeHeight) :
     global timeTest, nowTime, preTime, prechange, nowpreHeight
+    '''
     if timeTest == True :
         preTime = nowTime
         timeTest = False
     if nowTime - preTime > 0.001 :
-        eraseReSetMode(nowpreHeight, prechange)
-        draw.text((100, 0), 'Up', font=font2, fill=0)
-        draw.text((100, 20), 'Mode', font=font2, fill=0)
-        draw.text((100, 40), 'Down', font=font2, fill=0)
-        draw.text((5, 0), '-Now Best Tall-', font=font2, fill=0)
-        draw.text((5, 15), str(int(NowHeight)), font=font2, fill=0)
-        draw.text((40, 15), 'cm', font = font2, fill = 0)
-        draw.text((5, 30), '-Change Tall-', font=font2, fill=0)
-        draw.text((5, 45), str(int(changeHeight)), font=font2, fill=0)
-        draw.text((40, 45), 'cm', font = font2, fill = 0)
-        prechange = changeHeight
-        nowpreHeight = NowHeight
-        oled.image(image)
-        oled.show()
+        '''
+    eraseReSetMode(nowpreHeight, prechange)
+    draw.text((100, 0), 'Up', font=font2, fill=0)
+    draw.text((100, 20), 'Mode', font=font2, fill=0)
+    draw.text((100, 40), 'Down', font=font2, fill=0)
+    draw.text((5, 0), '-Now Best Tall-', font=font2, fill=0)
+    draw.text((5, 15), str(int(NowHeight)), font=font2, fill=0)
+    draw.text((40, 15), 'cm', font = font2, fill = 0)
+    draw.text((5, 30), '-Change Tall-', font=font2, fill=0)
+    draw.text((5, 45), str(int(changeHeight)), font=font2, fill=0)
+    draw.text((40, 45), 'cm', font = font2, fill = 0)
+    prechange = changeHeight
+    nowpreHeight = NowHeight
+    oled.image(image)
+    oled.show()
 
 def eraseReSetMode(NowHeight, changeHeight) :
     draw.text((100, 0), 'Up', font=font2, fill=255)
