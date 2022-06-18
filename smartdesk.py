@@ -676,6 +676,7 @@ def ReSetMode(predeskDistance) :
         draw.text((40, 45), 'cm', font = font2, fill = 0)
         oled.image(image)
         oled.show()
+        returnDistance = int(returnDistance)
         return returnDistance
 
 def eraseReSetMode(predeskDistance) :
