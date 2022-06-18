@@ -1001,7 +1001,7 @@ def main():
                 changeUserTall = ReSetMode(deskUserTall)
                 print(type(changeUserTall))
                 if changeUserTall != deskUserTall :
-                    deskUserTall = changeUserTall
+                    deskUserTall = int(changeUserTall)
             
             if Mode[2] == True :
                 eraseReSetMode()
