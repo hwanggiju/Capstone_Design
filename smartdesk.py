@@ -896,19 +896,23 @@ def main():
                 print(' area : %d    center_x : %d   center_y : %d \n'
                     % (area, center_x, center_y))
 
-                # 얼굴폭 / 계산 좌표 X / 계산 좌표 Y / 카메라 높이
-                userHeight = getUserHeight(widthLength,center_x,center_y-heightLength/2, waveSensorHeight+cameraWaveDifference+2)
+                #사용자 키 도출
+                userHeight = getUserHeight(widthLength,                             # 얼굴폭
+                                           center_x,                                # 얼굴좌표 X
+                                           center_y-heightLength/2,                 # 얼굴좌표 Y
+                                           waveSensorHeight+cameraWaveDifference+2) # 카메라 높이
 
-                # 사용자의 현재 키
+                # 사용자의 현재 키 상보필터
                 # 현재 키의 값 변화를 천천히 바꿔주기 위함
                 userHeightAVG = np.mean(HeightAVG)
-                # if TESTMODE == True:
-                print("현재 키값 :" + str(round(userHeight, 2)))
-                print("테스트식 결과 :" + str(round(userHeightAVG, 2)))
-                print("차값 :" + str(userHeight - userHeightAVG))
-                #val = PID(userHeightAVG, userHeight)
-                #print("PID 계산값 " + str(round(val, 5)))
-                # 그래프 값 입력부 (인식후 작동)
+                if TESTMODE == False: #모니터 그래프 없이 터미널사용때
+                    print("현재 키값 :" + str(round(userHeight, 2)))
+                    print("테스트식 결과 :" + str(round(userHeightAVG, 2)))
+                    print("차값 :" + str(userHeight - userHeightAVG))
+                    #val = PID(userHeightAVG, userHeight)
+                    #print("PID 계산값 " + str(round(val, 5)))
+                    
+                # 그래프 값 입력부 (얼굴 인식시 작동)
                 y_val[0] = userHeight
                 y_valAVG[0] = userHeightAVG
                 HeightAVG[0] = userHeight
@@ -964,6 +968,7 @@ def main():
                 recommendHeight[i] = deskUserTall
             for i in range(len(HeightAVG)):
                 HeightAVG[len(HeightAVG) - i - 1] = HeightAVG[len(HeightAVG) - i - 2]
+
             if TESTMODE == True: #테스트 모드시 그래프 운용
                 line1.set_ydata(y_val)
                 line2.set_ydata(y_valAVG)
@@ -979,7 +984,7 @@ def main():
             rotate_frame = cv2.resize(rotate_frame, (0, 0), fx=0.4, fy=0.4)
             cv2.imshow("Camera", rotate_frame)
             
-            if GPIO.input(switch[1]) == 1 :# 모드 변경 어레이 쉬프트 방식
+            if GPIO.input(switch[1]) == 1 :# 중앙키 모드 변경 ( 어레이 쉬프트 방식 )
                 GPIO.output(buzzer, True)
                 idx += 1
                 if idx == 4 :
@@ -1053,7 +1058,8 @@ def main():
                     SET_HEIGHT = changeHeight
                     time.sleep(0.05)
                     GPIO.output(buzzer, False)
-            
+
+            # 설 정 키 확인
             elif Mode[3] == True :
                 if initial_mode == False:  # 모드 진입시 초기설정
                     initial_mode = True
