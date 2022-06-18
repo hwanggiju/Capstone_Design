@@ -172,7 +172,7 @@ bestDeskTall = 0 # (UserTall * 0.23) + (UserTall * 0.18)
 nowTime = time.time()
 preTime = nowTime
 initial = True
-
+recognitionEnable = True # 카메라 작동
 #기초 데이터 얼굴폭, 거리
 #가까울때
 userDistanceMin = 70 #cm
@@ -821,22 +821,22 @@ def main():
             if TESTMODE == False:
                 time.sleep(0.005)
             nowTime = time.time()
+
             _, frame = cap.read()
-            
             rotate_frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
             if frame is None:
                 print("fail")
                 break
-            
-            blob = cv2.dnn.blobFromImage(rotate_frame,  # image
-                                        1,  # scalefactor
-                                        (200, 200),  # image Size
-                                        (104, 177, 123)  # Scalar
-                                        )
-            net.setInput(blob)
-            detect = net.forward()
-            (h, w) = rotate_frame.shape[:2]
-            detect = detect[0, 0, :, :]
+            if recognitionEnable == True: # 인식모드 온오프 여부
+                blob = cv2.dnn.blobFromImage(rotate_frame,  # image
+                                            1,  # scalefactor
+                                            (200, 200),  # image Size
+                                            (104, 177, 123)  # Scalar
+                                            )
+                net.setInput(blob)
+                detect = net.forward()
+                (h, w) = rotate_frame.shape[:2]
+                detect = detect[0, 0, :, :]
                 
             waveSensorHeight = waveFun() # 책상 높이
             WaveAVG[0] = waveSensorHeight
@@ -857,17 +857,18 @@ def main():
             ENA_PWM[0], ENB_PWM[0] = HorizontalHoldTEST(angleY, fixAngleY)
             
             userNum = 0
-            for i in range(detect.shape[0]):
-                confidence = detect[i, 2]
-                if confidence < 0.5:
-                    break
-                userNum = userNum + 1
-                x1 = int(detect[i, 3] * w)
-                y1 = int(detect[i, 4] * h)
-                x2 = int(detect[i, 5] * w)
-                y2 = int(detect[i, 6] * h)
+            if recognitionEnable == True: # 인식모드 온오프 여부
+                for i in range(detect.shape[0]):
+                    confidence = detect[i, 2]
+                    if confidence < 0.5:
+                        break
+                    userNum = userNum + 1
+                    x1 = int(detect[i, 3] * w)
+                    y1 = int(detect[i, 4] * h)
+                    x2 = int(detect[i, 5] * w)
+                    y2 = int(detect[i, 6] * h)
 
-                cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green ractangle
+                    cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green ractangle
             
             rotate_frame = cv2.resize(rotate_frame, (0, 0), fx=0.4, fy=0.4)
 
@@ -967,7 +968,7 @@ def main():
                 
             cv2.imshow("Camera", rotate_frame)
             
-            if GPIO.input(switch[1]) == 1 :# 중앙 키
+            if GPIO.input(switch[1]) == 1 :# 모드 변경 어레이 쉬프트 방식
                 GPIO.output(buzzer, True)
                 idx += 1
                 if idx == 3 :
@@ -980,7 +981,7 @@ def main():
                 time.sleep(0.05)
                 GPIO.output(buzzer, False)
             
-            if Mode[0] == True :
+            if Mode[0] == True : # 모드 1 : 책상 높이 조절
                 drawDisplay()
                 if initialBtn == False :
                     fixAngleY = angleY
@@ -1011,7 +1012,8 @@ def main():
                     addcontrol == False
                     initialBtn = False
                 
-            if Mode[1] == True :
+            if Mode[1] == True : # 모드 2 : 키 설정 모드
+                recognitionEnable == False # 얼굴인식코드 활성화여부 (딜레이최적화)
                 draw.text((5, 0), 'Desk Tall', font=font, fill=255)
                 draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 255)
                 draw.text((40, 15), 'cm', font = font, fill = 255)
@@ -1053,7 +1055,7 @@ def main():
                     time.sleep(0.05)
                     GPIO.output(buzzer, False)
                     
-            if sleepMode == True :
+            if sleepMode == True : #수면 방해모드
                 if userNum >= 1 and state == True :
                     wakeTime = time.time()
                     GPIO.output(buzzer, False)
