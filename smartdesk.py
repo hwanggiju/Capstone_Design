@@ -1057,19 +1057,21 @@ def main():
                     GPIO.output(buzzer, False)
                     
             if sleepMode == True :
-                if userNum >= 1 :
-                    if state == True :
-                        wakeTime = time.time()
-                        GPIO.output(buzzer, False)
-                        stop = driverSet(0, 0, 0 ,0)
-                        state = False
+                if userNum >= 1 and state == True :
+                    wakeTime = time.time()
+                    GPIO.output(buzzer, False)
+                    stop = driverSet(0, 0, 0 ,0)
+                    state = False
                 else :
                     if nowTime - wakeTime > 60 :
                         if state != True :
                             GPIO.output(buzzer, False)
                             stop = driverSet(100, 2, 2, 100)
+                            state = True
+                        
                     elif nowTime - wakeTime > 40 :
                         GPIO.output(buzzer, True)
+                        state = True
                         
                         
                     
