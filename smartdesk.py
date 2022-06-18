@@ -688,6 +688,7 @@ def main():
     global actionNow, actionPre, bestDeskTall, fixAngleX, fixAngleY
     global nowTime, preTime
     global deskAngle, Ki_term
+    global recognitionEnable
     # 디스플레이 초기 설정
     try :
         SET_HEIGHT = 170
