@@ -631,13 +631,10 @@ def HorizontalHold(nowAngle, compareAngle):
 
 '''
 brief : 모터 드라이버 설정
-note  : 
+note  : 0/stop , 1/down, 2/up
 param : enA(모터A 펄스), motorA(모터 방향), motorB(모터 방향), enB(모터B 펄스)
 return: 변경완료여부
 '''
-# 0 : stop
-# 1 : down
-# 2 : up
 def driverSet(enA, motorA, motorB, enB):
     global initial, nowTime, preTime
     if initial == True:
@@ -836,7 +833,6 @@ def main():
     global nowTime, preTime
     global deskAngle, Ki_term, deskUserTall
     global recognitionEnable
-    # 디스플레이 초기 설정
     try :
         SET_HEIGHT = 170
         deskUserTall = 0
@@ -997,7 +993,7 @@ def main():
             # print('test')
             # nani 각도 코드 테스트
             angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
-            deskAngle = angleX
+            deskAngle = angleX #카메라 각도입력
             if TESTMODE == False:
                 print("nani = ", round(angleY, 4))
 
@@ -1093,8 +1089,8 @@ def main():
             y_valDesk[0] = waveSensorHeight + 2
             gyrosensorX[0] = angleX - fixAngleX
             gyrosensorY[0] = angleY - fixAngleY
-            #gyrosensorY[0] = angleY
-            # 그래프쉬프트
+
+            # 그래프 쉬프트
             for i in range(graphRow - 1):
                 y_val[graphRow - i - 1] = y_val[graphRow - i - 2]
                 y_valAVG[graphRow - i - 1] = y_valAVG[graphRow - i - 2]
