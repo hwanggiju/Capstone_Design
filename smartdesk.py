@@ -30,12 +30,12 @@ ENB_PWM = [100 for i in range(graphRow)]
 
 #그래프 Y축 범위
 angleLine = np.linspace(-2,2,graphRow)
-heightLine = np.linspace(70, 200, graphRow)
+heightLine = np.linspace(100, 200, graphRow)
 deskLine = np.linspace(60,130,graphRow)
 pwmLine = np.linspace(0,100,graphRow)
 
 plt.ion()
-figure, ax = plt.subplots(2, 2 ,figsize=(10, 8)) #사이즈
+figure, ax = plt.subplots(2, 2 ,figsize=(6, 8)) #사이즈
 
 line_labels = ['User Heght', 'complementary Filter', 'Desk Height', 'Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
 line1 = ax[0][0].plot(x_val, heightLine, color='red')[0]     # height
