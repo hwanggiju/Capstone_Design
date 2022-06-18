@@ -650,34 +650,25 @@ def eraseDisplay() :
     oled.show()
     
 # 최적높이 재설정 모드 display erase 
-def ReSetMode(predeskDistance) :
-    global timeTest, nowTime, preTime, NowdeskDistance
-    deskDistance = waveFun()
-    ModeWaveAVG[0] = deskDistance
-    for i in range(len(ModeWaveAVG) - 1) :
-        ModeWaveAVG[len(ModeWaveAVG) - i - 1] = ModeWaveAVG[len(ModeWaveAVG) - i - 2]
-    deskDistance1 = np.mean(ModeWaveAVG) # 초음파 평균 거리
-    deskDistance = waveFun()
+def ReSetMode(NowHeight) :
+    global timeTest, nowTime, preTime
+    
     if timeTest == True :
         preTime = nowTime
         timeTest = False
     if nowTime - preTime > 0.001 :
-        eraseReSetMode(predeskDistance)
-        NowdeskDistance = deskDistance1
-        returnDistance = deskDistance1
+        eraseReSetMode(NowHeight)
         draw.text((100, 0), 'Up', font=font2, fill=0)
         draw.text((100, 20), 'Mode', font=font2, fill=0)
         draw.text((100, 40), 'Down', font=font2, fill=0)
         draw.text((5, 0), '-Now Best Tall-', font=font2, fill=0)
-        draw.text((5, 15), str(int(predeskDistance)), font=font2, fill=0)
+        draw.text((5, 15), str(int(NowHeight)), font=font2, fill=0)
         draw.text((40, 15), 'cm', font = font2, fill = 0)
         draw.text((5, 30), '-Change Tall-', font=font2, fill=0)
-        draw.text((5, 45), str(int(NowdeskDistance)), font=font2, fill=0)
+        draw.text((5, 45), str(int()), font=font2, fill=0)
         draw.text((40, 45), 'cm', font = font2, fill = 0)
         oled.image(image)
         oled.show()
-        returnDistance = int(returnDistance)
-        return returnDistance
 
 def eraseReSetMode(predeskDistance) :
     draw.text((100, 0), 'Up', font=font2, fill=255)
@@ -965,30 +956,6 @@ def main():
                 
             cv2.imshow("Camera", rotate_frame)
             
-            if GPIO.input(switch[2]) == 1 :
-                if UPbtn_stop != True :
-                    UPbtn_stop = driverSet(100, 2, 2, 100)
-                    fixAngleY = angleY
-                    fixAngleX = angleX
-                    addcontrol = True
-                    
-            elif GPIO.input(switch[2]) == 0 and UPbtn_stop == True:
-                UPbtn_stop = driverSet(0, 0, 0, 0)
-                UPbtn_stop = False
-                addcontrol == False
-                    
-            if GPIO.input(switch[0]) == 1 :
-                if Downbtn_stop != True :
-                    Downbtn_stop = driverSet(100, 1, 1, 100)
-                    fixAngleY = angleY
-                    fixAngleX = angleX
-                    addcontrol = True
-                    
-            elif GPIO.input(switch[0]) == 0 and Downbtn_stop == True:
-                Downbtn_stop = driverSet(0, 0, 0, 0)
-                Downbtn_stop = False
-                addcontrol == False
-            
             if GPIO.input(switch[1]) == 1 :
                 idx += 1
                 if idx == 3 :
@@ -1001,13 +968,33 @@ def main():
             
             if Mode[0] == True :
                 drawDisplay()
+                if GPIO.input(switch[2]) == 1 :
+                    if UPbtn_stop != True :
+                        UPbtn_stop = driverSet(100, 2, 2, 100)
+                        fixAngleY = angleY
+                        fixAngleX = angleX
+                        addcontrol = True
+                    
+                elif GPIO.input(switch[2]) == 0 and UPbtn_stop == True:
+                    UPbtn_stop = driverSet(0, 0, 0, 0)
+                    UPbtn_stop = False
+                    addcontrol == False
+                        
+                if GPIO.input(switch[0]) == 1 :
+                    if Downbtn_stop != True :
+                        Downbtn_stop = driverSet(100, 1, 1, 100)
+                        fixAngleY = angleY
+                        fixAngleX = angleX
+                        addcontrol = True
+                        
+                elif GPIO.input(switch[0]) == 0 and Downbtn_stop == True:
+                    Downbtn_stop = driverSet(0, 0, 0, 0)
+                    Downbtn_stop = False
+                    addcontrol == False
                 
             if Mode[1] == True :
                 eraseDisplay()
-                changeUserTall = ReSetMode(deskUserTall)
-                print(type(changeUserTall))
-                if changeUserTall != deskUserTall :
-                    deskUserTall = changeUserTall
+                ReSetMode()
             
             if Mode[2] == True :
                 eraseReSetMode()
