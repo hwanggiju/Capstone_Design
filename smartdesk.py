@@ -948,13 +948,13 @@ def main():
             for i in range(graphRow - 1):
                 y_val[graphRow - i - 1] = y_val[graphRow - i - 2]
                 y_valAVG[graphRow - i - 1] = y_valAVG[graphRow - i - 2]
-                HeightAVG[graphRow - i - 1] = HeightAVG[graphRow - i - 2]
                 gyrosensorX[graphRow - i - 1] = gyrosensorX[graphRow - i - 2]
                 gyrosensorY[graphRow - i - 1] = gyrosensorY[graphRow - i - 2]
                 ENA_PWM[graphRow - i - 1] = ENA_PWM[graphRow - i - 2]
                 ENB_PWM[graphRow - i - 1] = ENB_PWM[graphRow - i - 2]
                 y_valDesk[graphRow - i - 1] = y_valDesk[graphRow - i - 2]
-
+            for i in range(len(HeightAVG)):
+                HeightAVG[len(HeightAVG) - i - 1] = HeightAVG[len(HeightAVG) - i - 2]
             if TESTMODE == True: #테스트 모드시 그래프 운용
                 line1.set_ydata(y_val)
                 line2.set_ydata(y_valAVG)
