@@ -249,15 +249,33 @@ image = Image.new('1', (oled.width, oled.height), 255)
 logoImage = Image.open('logo.bmp')
 draw = ImageDraw.Draw(image)
 
-# 한바이트 쓰기
+
+'''
+brief : 한바이트 쓰기
+note  :
+param : 주소, 데이터
+return:
+'''
 def write_byte(adr, data):
     I2C_bus.write_byte_data(MPU_addr, adr, data)
 
-# 한바이트 읽기
+
+'''
+brief : 한바이트 읽기
+note  :
+param : 주소
+return: 한바이트 읽은 값
+'''
 def read_byte(adr):
     return I2C_bus.read_byte_data(MPU_addr, adr)
 
-# 두바이트 읽기
+
+'''
+brief : 두바이트 읽기
+note  :
+param : 주소
+return: 두바이트 읽은 값
+'''
 def read_word(adr):
     val = 0
     try:
@@ -271,19 +289,29 @@ def read_word(adr):
     finally:
         return val
 
-# 두바이트를 2's complement로 읽기(-32768~32767)
-# 아두이노는 변수를 signed 16bit로 선언해서 처리하지만
-# 라즈베리파이는 이렇게 변환해 줘야 한다. 
+
+'''
+brief : 두바이트를 2's complement로 읽기(-32768~32767)
+note  : 아두이노는 변수를 signed 16bit로 선언해서 처리하지만 라즈베리파이는 이렇게 변환해 줘야 한다.
+param : 주소
+return: 두바이트 읽은 값
+'''
 def read_word_2c(adr):
     val = read_word(adr)
     if (val >= 0x8000):
         return -((65535 - val) + 1)
     else:
         return val
-    
+
+
+'''
+brief : 가속도(accel)와 각속도(gyro)의 현재 값 읽기
+note  :
+param :
+return: 센서 accel XYZ gyro XYZ
+'''
 def get_raw_data():
     """
-    가속도(accel)와 각속도(gyro)의 현재 값 읽기
     :return: accel x/y/z, gyro x/y/z
     """
     gyro_xout = read_word_2c(GYRO_XOUT_H)
@@ -292,13 +320,19 @@ def get_raw_data():
     accel_xout = read_word_2c(ACCEL_XOUT_H)
     accel_yout = read_word_2c(ACCEL_YOUT_H)
     accel_zout = read_word_2c(ACCEL_ZOUT_H)
-    return accel_xout, accel_yout, accel_zout,\
+    return accel_xout, accel_yout, accel_zout,
            gyro_xout, gyro_yout, gyro_zout
 
-# 가속도 앵글
+
+'''
+brief : Accel값만 이용해서 X, Y의 각도 측정
+note  :
+param : accel X, accel Y, accel Z
+return: angle X, angle Y
+'''
 def cal_angle_acc(AcX, AcY, AcZ):
     """
-    Accel값만 이용해서 X, Y의 각도 측정 /현한: 직선 가속도만으로 각도를 측정할 수 있나?
+    Accel값만 이용해서 X, Y의 각도 측정
     (고정 좌표 기준?)
     그런데... 각도가 0 -> 90 -> 0 -> -90 -> 0으로 바뀐다. 왜?
     0도 -> 90도 -> 180도 -> 270도 -> 360도
@@ -310,13 +344,18 @@ def cal_angle_acc(AcX, AcY, AcZ):
     """
     y_radians = math.atan2(AcX, math.sqrt((AcY*AcY) + (AcZ*AcZ)))
     x_radians = math.atan2(AcY, math.sqrt((AcX*AcX) + (AcZ*AcZ)))
-    return math.degrees(x_radians), -math.degrees(y_radians)    
+    return math.degrees(x_radians), -math.degrees(y_radians)
 
-# 각속도 각도 계산
+
+'''
+brief : 각속도 각도 계산
+note  : 
+param : Gyro X, Gyro Y, Gyro Z
+return: Gyro Y 상보필터값
+'''
 # 각도(deg) = Gyro값(step) / DEGREE_PER_SECOND(step*sec/deg) * dt(sec) 의 누적...
 DEGREE_PER_SECOND = 32767 / 1000  # Gyro의 Full Scale이 250인 경우
                                  # Full Scale이 1000인 경우 32767/1000
-
 past = 0      # 현재 시간(sec)
 past1 = 0 # nani test용 calGyro() 용 충돌예방 (필요없으면 없애도됨)
 baseAcX = 0   # 기준점(가만히 있어도 회전이 있나???)
@@ -325,11 +364,9 @@ baseAcZ = 0
 baseGyX = 0
 baseGyY = 0
 baseGyZ = 0
-
 GyX_deg = 0   # 측정 각도
 GyY_deg = 0
 GyZ_deg = 0
-
 average = [ 0 for i in range(100)]
 def cal_angle_gyro(GyX, GyY, GyZ):
     # 이 사이트를 참고하면 좋을 듯.
@@ -356,18 +393,21 @@ def cal_angle_gyro(GyX, GyY, GyZ):
     past = now      # 다음 계산을 위해 past로 저장되어야 한다.
     return val
 
-# PID 제어식 nani 개발중
-# Kp 조절 시
-# 오차가 줄어듬 하지만 정상상태 오차로 수렴하면서 예상값과 오차발생
-# Ki 조절 시
-# 최초의 목표값과 정상상태 오차의 적분을 비교 : 정상상태오차 및 상승시간 개선
-# Kd 조절 시
-# 미분을 통해 정상상태로 가는 속도 조절 : 오버슈트 개선
+
+'''
+brief : PID 제어식 nani 개발중
+note  : Kp 조절 시       
+        오차가 줄어듬 하지만 정상상태 오차로 수렴하면서 예상값과 오차발생
+        Ki 조절 시
+        최초의 목표값과 정상상태 오차의 적분을 비교 : 정상상태오차 및 상승시간 개선
+        Kd 조절 시
+        미분을 통해 정상상태로 가는 속도 조절 : 오버슈트 개선
+param : 현재 샌서값, 목표치
+return: PID 값
+'''
 pastPID = time.time() # 초기 셋팅
 preError = 0
 Ki_term = 0
-# 인수 > 센서값 , 목표치
-# 출력 > PID값
 def PID(currentVal,setVal):
     global pastPID, preError, Kp_term, Ki_term, Kd_term
     Kp = 35.0 #비례
@@ -388,7 +428,13 @@ def PID(currentVal,setVal):
     pastPID = now
     return Kp_term + Ki_term + Kd_term
 
-# 가속도, 각속도를 이용해서 각 도출 (계산 및 상보필터)
+
+'''
+brief : 가속도, 각속도를 이용해서 각 도출 (계산 및 상보필터)
+note  : 
+param : accel X, accel Y, accel Z, Gyro X, Gyro Y, Gyro Z
+return: angle X, angle Y, angle Z 상보필터값
+'''
 def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
     global GyX_deg, GyY_deg, GyZ_deg
     global past1 #기존 시간값 충돌방지
@@ -417,6 +463,13 @@ def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
     past1 = now
     return GyX_deg, GyY_deg, GyZ_deg
 
+
+'''
+brief : 1초동안의 평균을 이용하여 기준점 계산
+note  : 
+param : 
+return: accel X, accel Y, accel Z, Gyro X, Gyro Y, Gyro Z
+'''
 def sensor_calibration():
     """
     1초동안의 평균을 이용하여 기준점 계산
@@ -447,6 +500,13 @@ def sensor_calibration():
 
     return avgAcX, avgAcY, avgAcZ, avgGyX, avgGyY, avgGyZ
 
+
+'''
+brief : MPU 초기 설정
+note  : 
+param : dlpf_bw,  gyro_fs, accel_fs, clk_pll
+return: PWR_MGMT_1
+'''
 def set_MPU_init(dlpf_bw=DLPF_BW_256,
                 gyro_fs=GYRO_FS_250, accel_fs=ACCEL_FS_2,
                 clk_pll=CLOCK_PLL_XGYRO):
@@ -465,6 +525,12 @@ def set_MPU_init(dlpf_bw=DLPF_BW_256,
 
     return read_byte(PWR_MGMT_1)
 
+'''
+brief : 카메라 화면 기반 사용자 신장 유도식
+note  : 
+param : faceWidth(얼굴폭), pixelX(좌표X), pixelY(좌표Y), nowHeight(현재 카메라 높이)
+return: 계산된 신장높이
+'''
 def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
     faceWidthAverage[0] = faceWidth
     sumHeight = 0
@@ -488,7 +554,13 @@ def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
         faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
     return nowHeight + calHeight
 
-# PWM 값만 바꿀 때
+
+'''
+brief : PWM 값 변경
+note  : 0~100 dutycycle
+param : enA(모터A 펄스주기), enB(모터B 펄스주기) 
+return: 변경완료여부
+'''
 def changePWM(enA, enB):
     if enA < 0 or enA > 100: #range over check
         return False
@@ -500,7 +572,13 @@ def changePWM(enA, enB):
     enB_pwm.ChangeDutyCycle(enB)
     return True
 
-#각도 자세유지 코드
+
+'''
+brief : 각도 기반 상판 자세유지 
+note  : 가중치 가변 방식
+param : nowAngle(현재 각도), comepareAngle(기준이 될 각도)
+return: 각 모터 펄스 주기
+'''
 pwmA = 100
 pwmB = 100
 pwmA_AVG = 100
@@ -548,7 +626,14 @@ def HorizontalHold(nowAngle, compareAngle):
     pwmB_AVG = alpha * pwmB_AVG + (1 - alpha) * pwmB
     changePWM(pwmA_AVG, pwmB_AVG)
     return pwmA_AVG, pwmB_AVG
-# driver set
+
+
+'''
+brief : 모터 드라이버 설정
+note  : 
+param : enA(모터A 펄스), motorA(모터 방향), motorB(모터 방향), enB(모터B 펄스)
+return: 변경완료여부
+'''
 # 0 : stop
 # 1 : down
 # 2 : up
@@ -587,6 +672,12 @@ def driverSet(enA, motorA, motorB, enB):
     else:
         return False
 
+'''
+brief : 초음파 센서 거리측정
+note  : 
+param : 
+return: 계산된 거리
+'''
 def waveFunc() :
     GPIO.output(wave[0], True)
     time.sleep(0.00001)
@@ -604,7 +695,14 @@ def waveFunc() :
     distance = round(distance, 5)
     
     return distance
-    
+
+
+'''
+brief : OLED 초기 표시
+note  : 
+param : 변경 높이
+return:
+'''
 def OLED_initial_setting_Height(CHANGE_HEIGHT) :
     draw.text((5, 0), '-First Setting-', font = font, fill = 0)
     draw.text((5, 20), 'Input your Height', font = font, fill = 0)
@@ -613,6 +711,13 @@ def OLED_initial_setting_Height(CHANGE_HEIGHT) :
     oled.image(image)
     oled.show()
 
+
+'''
+brief : OLED 초기 표시1
+note  : 
+param : 변경높이
+return:
+'''
 def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     draw.text((5, 0), '-First Setting-', font = font, fill = 255)
     draw.text((5, 20), 'Input your Height', font = font, fill = 255)
@@ -621,10 +726,16 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     oled.image(image)
     oled.show()
     
+
+'''
+brief : 기본 모드 display
+note  : 
+param : 
+return:
+'''
 timeTest = True
 NowdeskDistance = 70
 ModeWaveAVG = [NowdeskDistance for i in range(5)]
-# 기본 모드 display
 def drawDisplay() :      
     global timeTest, nowTime, preTime, NowdeskDistance
     deskDistance = waveFunc()
@@ -642,8 +753,14 @@ def drawDisplay() :
     draw.text((40, 15), 'cm', font = font, fill = 0)
     oled.image(image)
     oled.show()
-        
-# 기본 모드 display erase 
+
+
+'''
+brief : 기본 모드 display erase
+note  : 
+param : 
+return: 
+'''
 def eraseDisplay() :
     draw.text((100, 0), 'Up', font=font2, fill=255)
     draw.text((100, 20), 'Mode', font=font2, fill=255)
@@ -653,8 +770,14 @@ def eraseDisplay() :
     draw.text((40, 15), 'cm', font = font, fill = 255)
     oled.image(image)
     oled.show()
-    
-# 최적높이 재설정 모드 display
+
+
+'''
+brief : 최적높이 재설정 모드 display
+note  : 
+param : NowHeight(현재높이), changeHeight(변경높이)
+return:
+'''
 prechange = 0
 nowpreHeight = 0
 def ReSetMode(NowHeight, changeHeight) :
@@ -674,7 +797,13 @@ def ReSetMode(NowHeight, changeHeight) :
     oled.image(image)
     oled.show()
 
-# 최적높이 재설정 모드 display erase 
+
+'''
+brief : 최적높이 재설정 모드 display erase
+note  : 
+param : NowHeight(현재높이), changeHeight(변경높이)
+return: 
+'''
 def eraseReSetMode(NowHeight, changeHeight) :
     draw.text((100, 0), 'Up', font=font2, fill=255)
     draw.text((100, 20), 'Mode', font=font2, fill=255)
@@ -687,11 +816,18 @@ def eraseReSetMode(NowHeight, changeHeight) :
     draw.text((40, 45), 'cm', font = font2, fill = 255)
     oled.image(image)
     oled.show()       
-    
-# 졸음 감지 모드
+
+
+'''
+brief : 졸음 감지 모드
+note  : 수정중
+param : 
+return: 
+'''
 def sleepDetectMode() :
     pass
 
+#######################################################################
 # main code
 def main():
     global actionNow, actionPre, bestDeskTall, fixAngleX, fixAngleY
