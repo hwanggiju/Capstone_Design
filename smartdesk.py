@@ -1119,8 +1119,7 @@ def main():
             cv2.imshow("Camera", rotate_frame)
 
             ###################### 모드 ######################
-            if GPIO.input(switch[1]) == 1 :# 중앙키 모드 변경 ( 어레이 쉬프트 방식 )
-                GPIO.output(buzzer, True)
+            if GPIO.input(switch[1]) == 1 :# 중앙키 입력시 모드 변경 ( 어레이 쉬프트 방식 )
                 idx += 1
                 if idx == 4 :
                     idx = 0
@@ -1129,6 +1128,7 @@ def main():
                 else : 
                     Mode[idx] = Mode[idx-1]
                     Mode[idx-1] = False
+                GPIO.output(buzzer, True)
                 time.sleep(0.05)
                 GPIO.output(buzzer, False)
                 mode_initial = False
@@ -1141,7 +1141,7 @@ def main():
                     draw.text((5, 0), 'AUTO MODE', font=font, fill=255)
 
             # 모드 1 : 수동 책상 높이 조절
-            if Mode[1] == True :
+            elif Mode[1] == True :
                 if mode_initial == False : # 모드 진입시 초기설정
                     mode_initial = True
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
@@ -1174,7 +1174,7 @@ def main():
                 if mode_initial == False:  # 모드 진입시 초기설정
                     mode_initial = True
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
-                    draw.text((5, 0), 'Desk Tall', font=font, fill=255)
+                draw.text((5, 0), 'Desk Tall', font=font, fill=255)
                 draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 255)
                 draw.text((40, 15), 'cm', font = font, fill = 255)
                 ReSetMode(SET_HEIGHT, changeHeight)
