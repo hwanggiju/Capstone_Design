@@ -1002,15 +1002,15 @@ def main():
                 if GPIO.input(switch[2]) == 1 :
                     changeHeight = SET_HEIGHT + 1
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
-                    SET_HEIGHT = SET_HEIGHT
+                    SET_HEIGHT = changeHeight
                     
                 if GPIO.input(switch[0]) == 1 :
                     changeHeight = SET_HEIGHT - 1
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
-                    SET_HEIGHT = SET_HEIGHT
+                    SET_HEIGHT = changeHeight
             
             if Mode[2] == True :
-                SET_HEIGHT = changeHeight
+                
                 eraseReSetMode()
                 pass
             
