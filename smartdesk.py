@@ -983,6 +983,7 @@ def main():
             
             if Mode[0] == True : # 모드 1 : 책상 높이 조절
                 drawDisplay()
+                recognitionEnable = True  # 얼굴인식코드 활성화여부 (딜레이최적화)
                 if initialBtn == False :
                     fixAngleY = angleY
                     fixAngleX = angleX
@@ -1012,8 +1013,8 @@ def main():
                     addcontrol == False
                     initialBtn = False
                 
-            if Mode[1] == True : # 모드 2 : 키 설정 모드
-                recognitionEnable == False # 얼굴인식코드 활성화여부 (딜레이최적화)
+            elif Mode[1] == True : # 모드 2 : 키 설정 모드
+                recognitionEnable = False # 얼굴인식코드 활성화여부 (딜레이최적화)
                 draw.text((5, 0), 'Desk Tall', font=font, fill=255)
                 draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 255)
                 draw.text((40, 15), 'cm', font = font, fill = 255)
@@ -1034,7 +1035,8 @@ def main():
                     time.sleep(0.05)
                     GPIO.output(buzzer, False)
             
-            if Mode[2] == True : 
+            elif Mode[2] == True :
+                recognitionEnable = False  # 얼굴인식코드 활성화여부 (딜레이최적화)
                 draw.text((5, 0), '-Now Best Tall-', font=font2, fill=255)
                 draw.text((5, 15), str(int(SET_HEIGHT)), font=font2, fill=255)
                 draw.text((40, 15), 'cm', font = font2, fill = 255)
