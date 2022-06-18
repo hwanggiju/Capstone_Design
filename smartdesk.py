@@ -25,6 +25,7 @@ x_val = [i for i in range(graphRow)]
 y_val = [130 for i in range(graphRow)]
 y_valAVG = [130 for i in range(graphRow)]
 y_valDesk = [100 for i in range(graphRow)]
+recommendHeight = [100 for i in range(graphRow)]
 gyrosensorX = [0 for i in range(graphRow)]
 gyrosensorY = [0 for i in range(graphRow)]
 ENA_PWM = [100 for i in range(graphRow)]
@@ -39,14 +40,23 @@ pwmLine = np.linspace(0,100,graphRow)
 plt.ion()
 figure, ax = plt.subplots(2, 2 ,figsize=(8, 8)) #사이즈
 
-line_labels = ['User Height', 'complementary Filter', 'Desk Height', 'Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
-line1 = ax[0][0].plot(x_val, heightLine, color='red')[0]     # height
-line2 = ax[0][0].plot(x_val, heightLine, color='orange')[0]    # height average
-line3 = ax[0][1].plot(x_val, deskLine, color='green')[0]   # desk height
-line4 = ax[1][0].plot(x_val, angleLine, color='blue')[0]      # angleX
-line5 = ax[1][0].plot(x_val, angleLine, color='navy')[0]     # angleY
-line6 = ax[1][1].plot(x_val, pwmLine, color='purple')[0]        # pwm A
-line7 = ax[1][1].plot(x_val, pwmLine, color='crimson')[0]       # pwm B
+line_labels = ['User Height',
+               'complementary Filter',
+               'Desk Height',
+               'Recommend Height',
+               'Angle-X',
+               'Angle-Y',
+               'PWM-LEFT',
+               'PWM-RIGHT']
+
+line1 = ax[0][0].plot(x_val, heightLine, color='red')[0]     # 인식 높이
+line2 = ax[0][0].plot(x_val, heightLine, color='orange')[0]    # 높이 상보필터
+line3 = ax[0][1].plot(x_val, deskLine, color='green')[0]   # 현재 책상 높이
+line4 = ax[0][1].plot(x_val, deskLine, color='yellow')[0]  # 주천 높이
+line5 = ax[1][0].plot(x_val, angleLine, color='blue')[0]      # 각 X
+line6 = ax[1][0].plot(x_val, angleLine, color='navy')[0]     # 각 Y
+line7 = ax[1][1].plot(x_val, pwmLine, color='purple')[0]        # pwm A
+line8 = ax[1][1].plot(x_val, pwmLine, color='crimson')[0]       # pwm B
 
 ax[0][0].set_xlabel("Time", fontweight = 'bold', fontsize = 10)
 ax[0][1].set_xlabel("Time", fontweight = 'bold', fontsize = 10)
@@ -804,7 +814,6 @@ def main():
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False
         btn_stop = False
-        Downbtn_stop = False
         addcontrol = False
         HeightAVG = [150 for i in range(15)]
         WaveAVG = [waveSensorHeight for i in range(5)]
@@ -852,7 +861,8 @@ def main():
             # nani 각도 코드 테스트
             angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
             deskAngle = angleX
-            print("nani = ", round(angleY, 4))
+            if TESTMODE == False:
+                print("nani = ", round(angleY, 4))
 
             #수평 자세 유지 코드 (현재 각도, 작동시 각도)
             ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY)
@@ -868,10 +878,7 @@ def main():
                     y1 = int(detect[i, 4] * h)
                     x2 = int(detect[i, 5] * w)
                     y2 = int(detect[i, 6] * h)
-
                     cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green ractangle
-            
-            rotate_frame = cv2.resize(rotate_frame, (0, 0), fx=0.4, fy=0.4)
 
             # 일어났을 때 책상 최적의 높이
             if (waveSensorMean + 3) >= deskUserTall and actionPre == 2 and addcontrol != True :
@@ -954,19 +961,22 @@ def main():
                 ENA_PWM[graphRow - i - 1] = ENA_PWM[graphRow - i - 2]
                 ENB_PWM[graphRow - i - 1] = ENB_PWM[graphRow - i - 2]
                 y_valDesk[graphRow - i - 1] = y_valDesk[graphRow - i - 2]
+                recommendHeight[i] = deskUserTall
             for i in range(len(HeightAVG)):
                 HeightAVG[len(HeightAVG) - i - 1] = HeightAVG[len(HeightAVG) - i - 2]
             if TESTMODE == True: #테스트 모드시 그래프 운용
                 line1.set_ydata(y_val)
                 line2.set_ydata(y_valAVG)
                 line3.set_ydata(y_valDesk)
-                line4.set_ydata(gyrosensorX)
-                line5.set_ydata(gyrosensorY)
-                line6.set_ydata(ENA_PWM)
-                line7.set_ydata(ENB_PWM)
+                line4.set_ydata(recommendHeight)
+                line5.set_ydata(gyrosensorX)
+                line6.set_ydata(gyrosensorY)
+                line7.set_ydata(ENA_PWM)
+                line8.set_ydata(ENB_PWM)
                 #figure.canvas.draw() #딜레이 발생
                 figure.canvas.flush_events()
-                
+
+            rotate_frame = cv2.resize(rotate_frame, (0, 0), fx=0.4, fy=0.4)
             cv2.imshow("Camera", rotate_frame)
             
             if GPIO.input(switch[1]) == 1 :# 모드 변경 어레이 쉬프트 방식
@@ -985,12 +995,12 @@ def main():
             if Mode[0] == True : # 기본모드 : 자동 책상 높이 조절(사용자 인식)
                 if initial_mode == False: # 모드 진입시 초기설정
                     initial_mode = True
-                    recognitionEnable = True
+                    recognitionEnable = True # 얼굴인식코드 활성화
                     draw.text((5, 0), 'AUTO MODE', font=font, fill=255)
             if Mode[1] == True : # 모드 1 : 수동 책상 높이 조절
                 if initial_mode == False : # 모드 진입시 초기설정
                     initial_mode = True
-                    recognitionEnable = False  # 얼굴인식코드 활성화여부 (딜레이최적화)
+                    recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
                 drawDisplay()
                 if GPIO.input(switch[2]) == 1 : # up 버튼 눌렀을 때
                     if btn_stop == False :
@@ -1018,7 +1028,7 @@ def main():
             elif Mode[2] == True : # 모드 2 : 키 설정 모드
                 if initial_mode == False:  # 모드 진입시 초기설정
                     initial_mode = True
-                    recognitionEnable = False  # 얼굴인식코드 활성화여부 (딜레이최적화)
+                    recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
                     draw.text((5, 0), 'Desk Tall', font=font, fill=255)
                 draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 255)
                 draw.text((40, 15), 'cm', font = font, fill = 255)
