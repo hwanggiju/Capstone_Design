@@ -986,7 +986,7 @@ def main():
                 if initial_mode == False: # 모드 진입시 초기설정
                     initial_mode = True
                     recognitionEnable = True
-
+                    draw.text((5, 0), 'AUTO MODE', font=font, fill=255)
             if Mode[1] == True : # 모드 1 : 수동 책상 높이 조절
                 if initial_mode == False : # 모드 진입시 초기설정
                     initial_mode = True
@@ -1040,13 +1040,15 @@ def main():
                     GPIO.output(buzzer, False)
             
             elif Mode[3] == True :
-                recognitionEnable = False  # 얼굴인식코드 활성화여부 (딜레이최적화)
-                draw.text((5, 0), '-Now Best Tall-', font=font2, fill=255)
-                draw.text((5, 15), str(int(SET_HEIGHT)), font=font2, fill=255)
-                draw.text((40, 15), 'cm', font = font2, fill = 255)
-                draw.text((5, 30), '-Change Tall-', font=font2, fill=255)
-                draw.text((5, 45), str(int(changeHeight)), font=font2, fill=255)
-                draw.text((40, 45), 'cm', font = font2, fill = 255)
+                if initial_mode == False:  # 모드 진입시 초기설정
+                    initial_mode = True
+                    recognitionEnable = False  # 얼굴인식코드 활성화여부 (딜레이최적화)
+                    draw.text((5, 0), '-Now Best Tall-', font=font2, fill=255)
+                    draw.text((5, 15), str(int(SET_HEIGHT)), font=font2, fill=255)
+                    draw.text((40, 15), 'cm', font = font2, fill = 255)
+                    draw.text((5, 30), '-Change Tall-', font=font2, fill=255)
+                    draw.text((5, 45), str(int(changeHeight)), font=font2, fill=255)
+                    draw.text((40, 45), 'cm', font = font2, fill = 255)
                 
                 if GPIO.input(switch[2]) == 1 :
                     GPIO.output(buzzer, True)
