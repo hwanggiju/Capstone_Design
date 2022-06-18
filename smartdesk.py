@@ -1,4 +1,5 @@
 from asyncio.unix_events import _UnixSelectorEventLoop
+from readline import set_history_length
 from xml.dom.minidom import parseString
 import face_recognition
 import cv2
@@ -707,7 +708,9 @@ def main():
                 OLED_initial_setting_Height1(SET_HEIGHT)
                 SET_HEIGHT = SET_HEIGHT + 1
                 OLED_initial_setting_Height(SET_HEIGHT)
+                GPIO.output(buzzer, True)
                 time.sleep(0.2)
+                GPIO.output(buzzer, False)
             
             elif GPIO.input(switch[0]) == 1:    # okay
                 draw.text((5, 0), 'Complete set', font = font, fill = 255)
@@ -716,7 +719,9 @@ def main():
                 OLED_initial_setting_Height1(SET_HEIGHT)
                 SET_HEIGHT = SET_HEIGHT - 1
                 OLED_initial_setting_Height(SET_HEIGHT)
+                GPIO.output(buzzer, True)
                 time.sleep(0.2)
+                GPIO.output(buzzer, False)
                 
             elif GPIO.input(switch[1]) == 1:    # down
                 OLED_initial_setting_Height1(SET_HEIGHT)
@@ -726,7 +731,10 @@ def main():
                 draw.text((5, 40), 'Right?', font = font, fill = 0)
                 oled.image(image)
                 oled.show()
+                GPIO.output(buzzer, True)
                 time.sleep(0.2)
+                GPIO.output(buzzer, False)
+                
                 while True :
                     if GPIO.input(switch[2]) == 1:
                         draw.text((5, 0), 'Your height', font = font, fill = 255)
@@ -736,7 +744,10 @@ def main():
                         OLED_initial_setting_Height1(SET_HEIGHT)
                         SET_HEIGHT = SET_HEIGHT + 1
                         OLED_initial_setting_Height(SET_HEIGHT)
+                        GPIO.output(buzzer, True)
                         time.sleep(0.2)
+                        GPIO.output(buzzer, False)
+                        
                     elif GPIO.input(switch[0]) == 1:
                         draw.text((5, 0), 'Your height', font = font, fill = 255)
                         draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 255)
@@ -745,7 +756,10 @@ def main():
                         OLED_initial_setting_Height1(SET_HEIGHT)
                         SET_HEIGHT = SET_HEIGHT - 1
                         OLED_initial_setting_Height(SET_HEIGHT)
+                        GPIO.output(buzzer, True)
                         time.sleep(0.2)
+                        GPIO.output(buzzer, False)
+                        
                     elif GPIO.input(switch[1]) == 1 :
                         OLED_initial_setting_Height1(SET_HEIGHT)
                         draw.text((5, 0), 'Your height', font = font, fill = 255)
@@ -756,7 +770,9 @@ def main():
                         bestDeskTall = SET_HEIGHT * 0.23 + SET_HEIGHT * 0.18
                         deskUserTall = SET_HEIGHT - bestDeskTall
                         changeHeight = SET_HEIGHT
+                        GPIO.output(buzzer, True)
                         time.sleep(0.2)
+                        GPIO.output(buzzer, False)
                         draw.text((0, 0), 'Success Set Height', font = font3, fill = 0)
                         time.sleep(1)
                         break
@@ -794,7 +810,7 @@ def main():
         # 디스플레이 모드 - 기본 모드 : 1, 최적의 책상 높이 재설정 모드 : 2, 졸음 기능 on/off 모드 : 3
         Mode = [True, False, False]
         idx = 0
-        changeUserTall = 0
+        wakeTime = 0
         
         # 모터 동작 반복
         while True:
@@ -953,6 +969,7 @@ def main():
             cv2.imshow("Camera", rotate_frame)
             
             if GPIO.input(switch[1]) == 1 :
+                GPIO.output(buzzer, True)
                 idx += 1
                 if idx == 3 :
                     idx = 0
@@ -961,6 +978,7 @@ def main():
                 else : 
                     Mode[idx] = Mode[idx-1]
                     Mode[idx-1] = False
+                GPIO.output(buzzer, False)
             
             if Mode[0] == True :
                 drawDisplay()
@@ -994,20 +1012,47 @@ def main():
                 draw.text((40, 15), 'cm', font = font, fill = 255)
                 ReSetMode(SET_HEIGHT, changeHeight)
                 if GPIO.input(switch[2]) == 1 :
+                    GPIO.output(buzzer, True)
                     changeHeight = SET_HEIGHT + 1
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
                     SET_HEIGHT = changeHeight
+                    GPIO.output(buzzer, False)
+                    
                     
                 if GPIO.input(switch[0]) == 1 :
+                    GPIO.output(buzzer, True)
                     changeHeight = SET_HEIGHT - 1
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
                     SET_HEIGHT = changeHeight
+                    GPIO.output(buzzer, False)
             
             if Mode[2] == True :
+                draw.text((5, 0), '-Now Best Tall-', font=font2, fill=255)
+                draw.text((5, 15), str(int(SET_HEIGHT)), font=font2, fill=255)
+                draw.text((40, 15), 'cm', font = font2, fill = 255)
+                draw.text((5, 30), '-Change Tall-', font=font2, fill=255)
+                draw.text((5, 45), str(int(changeHeight)), font=font2, fill=255)
+                draw.text((40, 45), 'cm', font = font2, fill = 255)
                 
-                eraseReSetMode()
-                pass
-            
+                if GPIO.input(switch[2]) == 1 :
+                    GPIO.output(buzzer, True)
+                    sleepMode = True
+                    GPIO.output(buzzer, False)
+                if GPIO.input(switch[0]) == 1 :
+                    GPIO.output(buzzer, True)
+                    sleepMode = False
+                    GPIO.output(buzzer, False)
+                    
+            if sleepMode == True :
+                if userNum == 1 :
+                    wakeTime = time.time()
+                    GPIO.output(buzzer, False)
+                else :
+                    if nowTime - wakeTime > 40 :
+                        GPIO.output(buzzer, True)
+                    elif nowTime - wakeTime > 60 :
+                        pass
+                    
     except KeyboardInterrupt :
         pass
     
