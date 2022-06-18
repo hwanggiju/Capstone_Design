@@ -993,6 +993,9 @@ def main():
                     addcontrol == False
                 
             if Mode[1] == True :
+                draw.text((5, 0), 'Desk Tall', font=font, fill=255)
+                draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 255)
+                draw.text((40, 15), 'cm', font = font, fill = 255)
                 ReSetMode(SET_HEIGHT, changeHeight)
                 if GPIO.input(switch[2]) == 1 :
                     changeHeight = SET_HEIGHT + 1
