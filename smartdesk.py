@@ -812,6 +812,7 @@ def main():
         idx = 0
         wakeTime = 0
         sleepMode = False
+        initialBtn = False
         
         # 모터 동작 반복
         while True:
