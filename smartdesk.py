@@ -664,7 +664,7 @@ def ReSetMode(predeskDistance) :
         draw.text((40, 45), 'cm', font = font2, fill = 0)
         oled.image(image)
         oled.show()
-        return float(NowdeskDistance)
+        return int(NowdeskDistance)
 
 def eraseReSetMode(predeskDistance) :
     draw.text((100, 0), 'Up', font=font2, fill=255)
@@ -853,7 +853,7 @@ def main():
             rotate_frame = cv2.resize(rotate_frame, (0, 0), fx=0.4, fy=0.4)
 
             # 일어났을 때 책상 최적의 높이
-            if (waveSensorMean + 3 >= deskUserTall) and actionPre == 2 and addcontrol != True :
+            if (waveSensorMean + 3) >= deskUserTall and actionPre == 2 and addcontrol != True :
                 stop = driverSet(0, 0, 0, 0)      
                 
             if userNum == 1: #인식된 얼굴 수
