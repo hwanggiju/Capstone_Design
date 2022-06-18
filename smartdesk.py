@@ -358,7 +358,7 @@ def cal_angle_gyro(GyX, GyY, GyZ):
 
 # PID 제어식 nani 개발중
 # Kp 조절 시
-# 오차가 줄어듬 하지만 정상상태 오차로 수렴해 예상값과 오차발생
+# 오차가 줄어듬 하지만 정상상태 오차로 수렴하면서 예상값과 오차발생
 # Ki 조절 시
 # 최초의 목표값과 정상상태 오차의 적분을 비교 : 정상상태오차 및 상승시간 개선
 # Kd 조절 시
@@ -561,7 +561,7 @@ def driverSet(enA, motorA, motorB, enB):
     for i in range(1, len(driver)-1):
         GPIO.output(driver[i], 0)
 
-    if nowTime - preTime > 0.5: # 작동 딜레이
+    if nowTime - preTime > 0.5: # 작동 딜레이 드라이버 보호용
         if motorA == 2:#up
             GPIO.output(driver[1], 0)
             GPIO.output(driver[2], 1)
@@ -571,7 +571,6 @@ def driverSet(enA, motorA, motorB, enB):
         else:#stop
             GPIO.output(driver[1], 0)
             GPIO.output(driver[2], 0)
-            
         if motorB == 2:#up
             GPIO.output(driver[3], 0)
             GPIO.output(driver[4], 1)
@@ -838,10 +837,10 @@ def main():
                 print("fail")
                 break
             if recognitionEnable == True: # 인식모드 사용 여부
-                blob = cv2.dnn.blobFromImage(rotate_frame,  # image
-                                            1,  # scalefactor
-                                            (200, 200),  # image Size
-                                            (104, 177, 123)  # Scalar
+                blob = cv2.dnn.blobFromImage(rotate_frame,      # image
+                                            1,                  # scalefactor
+                                            (200, 200),         # image Size
+                                            (104, 177, 123)     # Scalar
                                             )
                 net.setInput(blob)
                 detect = net.forward()
@@ -951,7 +950,7 @@ def main():
                         stop = False
                           
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
-            #그래프 표시 (얼굴인식안되어도 작동)
+            # 그래프 표시 (얼굴인식안되어도 작동)
             y_valDesk[0] = waveSensorHeight + 2
             gyrosensorX[0] = angleX - fixAngleX
             gyrosensorY[0] = angleY - fixAngleY
@@ -983,7 +982,8 @@ def main():
 
             rotate_frame = cv2.resize(rotate_frame, (0, 0), fx=0.4, fy=0.4)
             cv2.imshow("Camera", rotate_frame)
-            
+
+            ###################### 모드 ######################
             if GPIO.input(switch[1]) == 1 :# 중앙키 모드 변경 ( 어레이 쉬프트 방식 )
                 GPIO.output(buzzer, True)
                 idx += 1
