@@ -622,22 +622,17 @@ def drawDisplay() :
     for i in range(len(ModeWaveAVG) - 1) :
         ModeWaveAVG[len(ModeWaveAVG) - i - 1] = ModeWaveAVG[len(ModeWaveAVG) - i - 2]
     deskDistance1 = np.mean(ModeWaveAVG) # 초음파 평균 거리
-    
-    if timeTest == True :
-        preTime = nowTime
-        timeTest = False
-    if nowTime - preTime > 0.001 :
-        eraseDisplay()
-        NowdeskDistance = deskDistance1
-        draw.text((100, 0), 'Up', font=font2, fill=0)
-        draw.text((100, 20), 'Mode', font=font2, fill=0)
-        draw.text((100, 40), 'Down', font=font2, fill=0)
-        draw.text((5, 0), 'Desk Tall', font=font, fill=0)
-        draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 0)
-        draw.text((40, 15), 'cm', font = font, fill = 0)
-        oled.image(image)
-        oled.show()
-         
+    eraseDisplay()
+    NowdeskDistance = deskDistance1
+    draw.text((100, 0), 'Up', font=font2, fill=0)
+    draw.text((100, 20), 'Mode', font=font2, fill=0)
+    draw.text((100, 40), 'Down', font=font2, fill=0)
+    draw.text((5, 0), 'Desk Tall', font=font, fill=0)
+    draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 0)
+    draw.text((40, 15), 'cm', font = font, fill = 0)
+    oled.image(image)
+    oled.show()
+        
 # 기본 모드 display erase 
 def eraseDisplay() :
     draw.text((100, 0), 'Up', font=font2, fill=255)
@@ -649,17 +644,11 @@ def eraseDisplay() :
     oled.image(image)
     oled.show()
     
-# 최적높이 재설정 모드 display erase 
+# 최적높이 재설정 모드 display
 prechange = 0
 nowpreHeight = 0
 def ReSetMode(NowHeight, changeHeight) :
-    global timeTest, nowTime, preTime, prechange, nowpreHeight
-    '''
-    if timeTest == True :
-        preTime = nowTime
-        timeTest = False
-    if nowTime - preTime > 0.001 :
-        '''
+    global prechange, nowpreHeight
     eraseReSetMode(nowpreHeight, prechange)
     draw.text((100, 0), 'Up', font=font2, fill=0)
     draw.text((100, 20), 'Mode', font=font2, fill=0)
@@ -675,6 +664,7 @@ def ReSetMode(NowHeight, changeHeight) :
     oled.image(image)
     oled.show()
 
+# 최적높이 재설정 모드 display erase 
 def eraseReSetMode(NowHeight, changeHeight) :
     draw.text((100, 0), 'Up', font=font2, fill=255)
     draw.text((100, 20), 'Mode', font=font2, fill=255)
