@@ -813,7 +813,7 @@ def main():
         idx = 0
         wakeTime = 0
         sleepMode = False
-        initialBtn = False
+        initial_mode = False # 모드 옯길시 시작 동작여부
         
         # 모터 동작 반복
         while True:
@@ -981,15 +981,17 @@ def main():
                     Mode[idx-1] = False
                 time.sleep(0.05)
                 GPIO.output(buzzer, False)
+                initial_mode = False
             if Mode[0] == True : # 기본모드 : 자동 책상 높이 조절(사용자 인식)
-                recognitionEnable = True
+                if initial_mode == False: # 모드 진입시 초기설정
+                    initial_mode = True
+                    recognitionEnable = True
 
             if Mode[1] == True : # 모드 1 : 수동 책상 높이 조절
+                if initial_mode == False : # 모드 진입시 초기설정
+                    initial_mode = True
+                    recognitionEnable = False  # 얼굴인식코드 활성화여부 (딜레이최적화)
                 drawDisplay()
-                recognitionEnable = False  # 얼굴인식코드 활성화여부 (딜레이최적화)
-                if initialBtn == False : #모드 진입시 초기설정
-                    initialBtn = True
-                    
                 if GPIO.input(switch[2]) == 1 : # up 버튼 눌렀을 때
                     if btn_stop == False :
                         btn_stop = driverSet(100, 2, 2, 100)
@@ -1012,11 +1014,12 @@ def main():
                     driverSet(0, 0, 0, 0)
                     btn_stop = False
                     addcontrol == False
-                    initialBtn = False
 
             elif Mode[2] == True : # 모드 2 : 키 설정 모드
-                recognitionEnable = False # 얼굴인식코드 활성화여부 (딜레이최적화)
-                draw.text((5, 0), 'Desk Tall', font=font, fill=255)
+                if initial_mode == False:  # 모드 진입시 초기설정
+                    initial_mode = True
+                    recognitionEnable = False  # 얼굴인식코드 활성화여부 (딜레이최적화)
+                    draw.text((5, 0), 'Desk Tall', font=font, fill=255)
                 draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 255)
                 draw.text((40, 15), 'cm', font = font, fill = 255)
                 ReSetMode(SET_HEIGHT, changeHeight)
