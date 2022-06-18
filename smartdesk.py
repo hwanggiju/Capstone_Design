@@ -157,6 +157,8 @@ spi_arr = [11, 10, 25, 17, 8]
 switch = [16, 20, 21]
 # ultra wave[trig, echo]
 wave = [24, 23]
+# buzzer pin ; 7번 핀에 납땜해야함
+buzzer = 4
 
 # 사용자 정의 변수
 UserTall = 0      # 키는 입력으로 받는다
@@ -219,6 +221,8 @@ enB_pwm.start(0)    # enableB pin start dutycycle 0%
 GPIO.setup(wave[0], GPIO.OUT)
 GPIO.setup(wave[1], GPIO.IN)
 GPIO.output(wave[0], False)
+# 부저 핀 setup
+GPIO.setup(buzzer, GPIO.OUT)
 ################################
 
 # OLED 초기설정
@@ -608,34 +612,57 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     oled.show()
     
 timeTest = True
-predeskDistance = 0
-def drawDisplay() :
-    global timeTest, nowTime, preTime, predeskDistance
+NowdeskDistance = 0
+# 기본 모드 display
+def drawDisplay() :      
+    global timeTest, nowTime, preTime, NowdeskDistance
     deskDistance = waveFun()
     if timeTest == True :
         preTime = nowTime
         timeTest = False
     if nowTime - preTime > 0.001 :
         eraseDisplay()
-        predeskDistance = deskDistance
+        NowdeskDistance = deskDistance
         draw.text((100, 0), 'Up', font=font2, fill=0)
-        draw.text((100, 20), 'Okay', font=font2, fill=0)
+        draw.text((100, 20), 'Mode', font=font2, fill=0)
         draw.text((100, 40), 'Down', font=font2, fill=0)
         draw.text((5, 0), 'Desk Tall', font=font, fill=0)
-        draw.text((5, 15), str(int(predeskDistance)), font = font, fill = 0)
+        draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 0)
         draw.text((40, 15), 'cm', font = font, fill = 0)
         oled.image(image)
         oled.show()
          
+# 기본 모드 display erase 
 def eraseDisplay() :
-    draw.text((100, 0), 'Up', font=font2, fill=255)
-    draw.text((100, 15), 'Okay', font=font2, fill=255)
-    draw.text((100, 30), 'Down', font=font2, fill=255)
-    draw.text((5, 0), 'Desk Tall', font=font, fill=255)
-    draw.text((5, 15), str(int(predeskDistance)), font = font, fill = 255)
-    draw.text((40, 15), 'cm', font = font, fill = 255)
-    oled.image(image)
-    oled.show()
+    global timeTest, nowTime, preTime, NowdeskDistance
+    deskDistance = waveFun()
+    if timeTest == True :
+        preTime = nowTime
+        timeTest = False
+    if nowTime - preTime > 0.001 :
+        NowdeskDistance = deskDistance
+        draw.text((100, 0), 'Up', font=font2, fill=255)
+        draw.text((100, 20), 'Mode', font=font2, fill=255)
+        draw.text((100, 40), 'Down', font=font2, fill=255)
+        draw.text((5, 0), 'Desk Tall', font=font, fill=255)
+        draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 255)
+        draw.text((40, 15), 'cm', font = font, fill = 255)
+        oled.image(image)
+        oled.show()
+    
+# 최적높이 재설정 모드 display erase 
+def reSetMode() :
+    draw.text((100, 0), 'Up', font=font2, fill=0)
+    draw.text((100, 20), 'Okay', font=font2, fill=0)
+    draw.text((100, 40), 'Down', font=font2, fill=0)
+    draw.text((5, 0), 'Best desk Tall', font=font, fill=0)
+    draw.text((5, 15), 'Now Tall', font=font, fill=0)
+    draw.text((5, 15), str(int()), font=font, fill=0)
+    pass
+    
+# 졸음 감지 모드
+def sleepDetectMode() :
+    pass
 
 # main code
 def main():
@@ -658,6 +685,7 @@ def main():
             if GPIO.input(switch[2]) == 1 :     # up
                 draw.text((5, 0), 'Complete set', font = font, fill = 255)
                 draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
+                draw.text((40, 40), 'cm', font = font, fill = 255)
                 OLED_initial_setting_Height1(SET_HEIGHT)
                 SET_HEIGHT = SET_HEIGHT + 1
                 OLED_initial_setting_Height(SET_HEIGHT)
@@ -666,6 +694,7 @@ def main():
             elif GPIO.input(switch[0]) == 1:    # okay
                 draw.text((5, 0), 'Complete set', font = font, fill = 255)
                 draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
+                draw.text((40, 40), 'cm', font = font, fill = 255)
                 OLED_initial_setting_Height1(SET_HEIGHT)
                 SET_HEIGHT = SET_HEIGHT - 1
                 OLED_initial_setting_Height(SET_HEIGHT)
@@ -675,6 +704,7 @@ def main():
                 OLED_initial_setting_Height1(SET_HEIGHT)
                 draw.text((5, 0), 'Your height', font = font, fill = 0)
                 draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 0)
+                draw.text((40, 40), 'cm', font = font, fill = 0)
                 draw.text((5, 40), 'Right?', font = font, fill = 0)
                 oled.image(image)
                 oled.show()
@@ -683,6 +713,7 @@ def main():
                     if GPIO.input(switch[2]) == 1:
                         draw.text((5, 0), 'Your height', font = font, fill = 255)
                         draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 255)
+                        draw.text((40, 40), 'cm', font = font, fill = 255)
                         draw.text((5, 40), 'Right?', font = font, fill = 255)
                         OLED_initial_setting_Height1(SET_HEIGHT)
                         SET_HEIGHT = SET_HEIGHT + 1
@@ -691,6 +722,7 @@ def main():
                     elif GPIO.input(switch[0]) == 1:
                         draw.text((5, 0), 'Your height', font = font, fill = 255)
                         draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 255)
+                        draw.text((40, 40), 'cm', font = font, fill = 255)
                         draw.text((5, 40), 'Right?', font = font, fill = 255)
                         OLED_initial_setting_Height1(SET_HEIGHT)
                         SET_HEIGHT = SET_HEIGHT - 1
@@ -700,6 +732,7 @@ def main():
                         OLED_initial_setting_Height1(SET_HEIGHT)
                         draw.text((5, 0), 'Your height', font = font, fill = 255)
                         draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 255)
+                        draw.text((40, 40), 'cm', font = font, fill = 255)
                         draw.text((5, 40), 'Right?', font = font, fill = 255)
                         SET_HEIGHT = SET_HEIGHT
                         bestDeskTall = SET_HEIGHT * 0.23 + SET_HEIGHT * 0.18
