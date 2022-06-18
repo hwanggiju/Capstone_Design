@@ -696,7 +696,7 @@ def sleepDetectMode() :
 def main():
     global actionNow, actionPre, bestDeskTall, fixAngleX, fixAngleY
     global nowTime, preTime
-    global deskAngle, Ki_term
+    global deskAngle, Ki_term, deskUserTall
     global recognitionEnable
     # 디스플레이 초기 설정
     try :
@@ -821,7 +821,7 @@ def main():
         idx = 0
         wakeTime = 0
         sleepMode = False
-        initial_mode = False # 모드 옯길시 시작 동작여부
+        mode_initial = False # 모드 옯길시 시작 동작여부
         
         # 모터 동작 반복
         while True:
@@ -948,7 +948,8 @@ def main():
                         stop = False
                     elif userHeightAVG > 150 and actionPre != 2:
                         stop = False
-                          
+            elif recognitionEnable == True: # 사용자 인식 중 1명이 아닌 경우 즉 0명 or 여러명
+
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             # 그래프 표시 (얼굴인식안되어도 작동)
             y_valDesk[0] = waveSensorHeight + 2
@@ -996,19 +997,19 @@ def main():
                     Mode[idx-1] = False
                 time.sleep(0.05)
                 GPIO.output(buzzer, False)
-                initial_mode = False
+                mode_initial = False
 
             # 기본모드 : 자동 책상 높이 조절(사용자 인식)
             if Mode[0] == True :
-                if initial_mode == False: # 모드 진입시 초기설정
-                    initial_mode = True
+                if mode_initial == False: # 모드 진입시 초기설정
+                    mode_initial = True
                     recognitionEnable = True # 얼굴인식코드 활성화
                     draw.text((5, 0), 'AUTO MODE', font=font, fill=255)
 
             # 모드 1 : 수동 책상 높이 조절
             if Mode[1] == True :
-                if initial_mode == False : # 모드 진입시 초기설정
-                    initial_mode = True
+                if mode_initial == False : # 모드 진입시 초기설정
+                    mode_initial = True
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
                 drawDisplay()
                 if GPIO.input(switch[2]) == 1 : # up 버튼 눌렀을 때
@@ -1036,34 +1037,34 @@ def main():
 
             # 모드 2 : 키 설정 모드
             elif Mode[2] == True :
-                if initial_mode == False:  # 모드 진입시 초기설정
-                    initial_mode = True
+                if mode_initial == False:  # 모드 진입시 초기설정
+                    mode_initial = True
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
                     draw.text((5, 0), 'Desk Tall', font=font, fill=255)
                 draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 255)
                 draw.text((40, 15), 'cm', font = font, fill = 255)
                 ReSetMode(SET_HEIGHT, changeHeight)
                 if GPIO.input(switch[2]) == 1 :
-                    GPIO.output(buzzer, True)
                     changeHeight = SET_HEIGHT + 1
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
                     SET_HEIGHT = changeHeight
+                    GPIO.output(buzzer, True)
                     time.sleep(0.05)
                     GPIO.output(buzzer, False)
                     
                 if GPIO.input(switch[0]) == 1 :
-                    GPIO.output(buzzer, True)
                     changeHeight = SET_HEIGHT - 1
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
                     SET_HEIGHT = changeHeight
+                    GPIO.output(buzzer, True)
                     time.sleep(0.05)
                     GPIO.output(buzzer, False)
 
-            # 설 정 키 확인
+            # 설 정 키 확인?
             elif Mode[3] == True :
-                if initial_mode == False:  # 모드 진입시 초기설정
-                    initial_mode = True
-                    recognitionEnable = False  # 얼굴인식코드 활성화여부 (딜레이최적화)
+                if mode_initial == False:  # 모드 진입시 초기설정
+                    mode_initial = True
+                    recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
                     draw.text((5, 0), '-Now Best Tall-', font=font2, fill=255)
                     draw.text((5, 15), str(int(SET_HEIGHT)), font=font2, fill=255)
                     draw.text((40, 15), 'cm', font = font2, fill = 255)
@@ -1072,15 +1073,15 @@ def main():
                     draw.text((40, 45), 'cm', font = font2, fill = 255)
                 
                 if GPIO.input(switch[2]) == 1 :
-                    GPIO.output(buzzer, True)
                     sleepMode = True
+                    GPIO.output(buzzer, True)
                     time.sleep(0.05)
                     GPIO.output(buzzer, False)
                     state = True
                     
                 if GPIO.input(switch[0]) == 1 :
-                    GPIO.output(buzzer, True)
                     sleepMode = False
+                    GPIO.output(buzzer, True)
                     time.sleep(0.05)
                     GPIO.output(buzzer, False)
                     
