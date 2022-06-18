@@ -999,12 +999,10 @@ def main():
                 ReSetMode(SET_HEIGHT, changeHeight)
                 if GPIO.input(switch[2]) == 1 :
                     changeHeight = SET_HEIGHT + 1
-                    ReSetMode(SET_HEIGHT, changeHeight)
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
                     
                 if GPIO.input(switch[0]) == 1 :
                     changeHeight = SET_HEIGHT - 1
-                    ReSetMode(SET_HEIGHT, changeHeight)
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
             
             if Mode[2] == True :
