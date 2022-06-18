@@ -992,12 +992,16 @@ def main():
                 time.sleep(0.05)
                 GPIO.output(buzzer, False)
                 initial_mode = False
-            if Mode[0] == True : # 기본모드 : 자동 책상 높이 조절(사용자 인식)
+
+            # 기본모드 : 자동 책상 높이 조절(사용자 인식)
+            if Mode[0] == True :
                 if initial_mode == False: # 모드 진입시 초기설정
                     initial_mode = True
                     recognitionEnable = True # 얼굴인식코드 활성화
                     draw.text((5, 0), 'AUTO MODE', font=font, fill=255)
-            if Mode[1] == True : # 모드 1 : 수동 책상 높이 조절
+
+            # 모드 1 : 수동 책상 높이 조절
+            if Mode[1] == True :
                 if initial_mode == False : # 모드 진입시 초기설정
                     initial_mode = True
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
@@ -1025,7 +1029,8 @@ def main():
                     btn_stop = False
                     addcontrol == False
 
-            elif Mode[2] == True : # 모드 2 : 키 설정 모드
+            # 모드 2 : 키 설정 모드
+            elif Mode[2] == True :
                 if initial_mode == False:  # 모드 진입시 초기설정
                     initial_mode = True
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
@@ -1081,7 +1086,7 @@ def main():
                     state = False
                     
                 else :
-                    if nowTime - wakeTime > 60 :
+                    if nowTime - wakeTime > 60 : #인식 불과 시첨
                         if state == True :
                             GPIO.output(buzzer, False)
                             stop = driverSet(100, 2, 2, 100)
