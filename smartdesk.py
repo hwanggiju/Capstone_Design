@@ -984,17 +984,21 @@ def main():
             
             if Mode[0] == True :
                 drawDisplay()
+                if initialBtn == True :
+                    fixAngleY = angleY
+                    fixAngleX = angleX
+                    
                 if GPIO.input(switch[2]) == 1 :
                     if UPbtn_stop != True :
                         UPbtn_stop = driverSet(100, 2, 2, 100)
-                        fixAngleY = angleY
-                        fixAngleX = angleX
                         addcontrol = True
+                        initialBtn = True
                     
                 elif GPIO.input(switch[2]) == 0 and UPbtn_stop == True:
                     UPbtn_stop = driverSet(0, 0, 0, 0)
                     UPbtn_stop = False
-                    addcontrol == False
+                    addcontrol = False
+                    initialBtn = False
                         
                 if GPIO.input(switch[0]) == 1 :
                     if Downbtn_stop != True :
@@ -1002,11 +1006,13 @@ def main():
                         fixAngleY = angleY
                         fixAngleX = angleX
                         addcontrol = True
+                        initialBtn = True
                         
                 elif GPIO.input(switch[0]) == 0 and Downbtn_stop == True:
                     Downbtn_stop = driverSet(0, 0, 0, 0)
                     Downbtn_stop = False
                     addcontrol == False
+                    initialBtn = False
                 
             if Mode[1] == True :
                 draw.text((5, 0), 'Desk Tall', font=font, fill=255)
@@ -1020,7 +1026,6 @@ def main():
                     SET_HEIGHT = changeHeight
                     time.sleep(0.05)
                     GPIO.output(buzzer, False)
-                    
                     
                 if GPIO.input(switch[0]) == 1 :
                     GPIO.output(buzzer, True)
@@ -1053,11 +1058,15 @@ def main():
                 if userNum == 1 :
                     wakeTime = time.time()
                     GPIO.output(buzzer, False)
+                    stop = driverSet(0, 0, 0 ,0)
                 else :
                     if nowTime - wakeTime > 40 :
                         GPIO.output(buzzer, True)
                     elif nowTime - wakeTime > 60 :
-                        pass
+                        GPIO.output(buzzer, False)
+                        stop = driverSet(100, 2, 2, 100)
+                        
+                        
                     
     except KeyboardInterrupt :
         pass
