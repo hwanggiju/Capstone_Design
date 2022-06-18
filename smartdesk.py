@@ -651,13 +651,14 @@ def eraseDisplay() :
     
 # 최적높이 재설정 모드 display erase 
 prechange = 0
+nowpreHeight = 0
 def ReSetMode(NowHeight, changeHeight) :
-    global timeTest, nowTime, preTime, prechange
+    global timeTest, nowTime, preTime, prechange, nowpreHeight
     if timeTest == True :
         preTime = nowTime
         timeTest = False
     if nowTime - preTime > 0.001 :
-        eraseReSetMode(NowHeight, prechange)
+        eraseReSetMode(nowpreHeight, prechange)
         draw.text((100, 0), 'Up', font=font2, fill=0)
         draw.text((100, 20), 'Mode', font=font2, fill=0)
         draw.text((100, 40), 'Down', font=font2, fill=0)
@@ -668,6 +669,7 @@ def ReSetMode(NowHeight, changeHeight) :
         draw.text((5, 45), str(int(changeHeight)), font=font2, fill=0)
         draw.text((40, 45), 'cm', font = font2, fill = 0)
         prechange = changeHeight
+        nowpreHeight = NowHeight
         oled.image(image)
         oled.show()
 
