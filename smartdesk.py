@@ -656,7 +656,6 @@ def ReSetMode(NowHeight, changeHeight) :
         preTime = nowTime
         timeTest = False
     if nowTime - preTime > 0.001 :
-        eraseReSetMode(NowHeight, changeHeight)
         draw.text((100, 0), 'Up', font=font2, fill=0)
         draw.text((100, 20), 'Mode', font=font2, fill=0)
         draw.text((100, 40), 'Down', font=font2, fill=0)
@@ -666,6 +665,7 @@ def ReSetMode(NowHeight, changeHeight) :
         draw.text((5, 30), '-Change Tall-', font=font2, fill=0)
         draw.text((5, 45), str(int(changeHeight)), font=font2, fill=0)
         draw.text((40, 45), 'cm', font = font2, fill = 0)
+        eraseReSetMode(NowHeight, changeHeight)
         oled.image(image)
         oled.show()
 
