@@ -972,7 +972,7 @@ def main():
             if GPIO.input(switch[1]) == 1 :# 모드 변경 어레이 쉬프트 방식
                 GPIO.output(buzzer, True)
                 idx += 1
-                if idx == 3 :
+                if idx == 4 :
                     idx = 0
                     Mode[idx] = True
                     Mode[idx+2] = False
@@ -983,33 +983,38 @@ def main():
                 GPIO.output(buzzer, False)
             if Mode[0] == True : # 기본모드 : 자동 책상 높이 조절(사용자 인식)
                 recognitionEnable = True
-            if Mode[0] == True : # 모드 1 : 수동 책상 높이 조절
+
+            if Mode[1] == True : # 모드 1 : 수동 책상 높이 조절
                 drawDisplay()
                 recognitionEnable = False  # 얼굴인식코드 활성화여부 (딜레이최적화)
-                if initialBtn == False :
-                    fixAngleY = angleY
-                    fixAngleX = angleX
+                if initialBtn == False : #모드 진입시 초기설정
                     initialBtn = True
                     
                 if GPIO.input(switch[2]) == 1 : # up 버튼 눌렀을 때
                     if btn_stop == False :
                         btn_stop = driverSet(100, 2, 2, 100)
+                        if btn_stop == True:
+                            fixAngleY = angleY
+                            fixAngleX = angleX
                         addcontrol = True
                         actionPre = 2
                         
                 elif GPIO.input(switch[0]) == 1 : # Down 버튼 눌렀을 때
                     if btn_stop == False :
                         btn_stop = driverSet(100, 1, 1, 100)
+                        if btn_stop == True:
+                            fixAngleY = angleY
+                            fixAngleX = angleX
                         addcontrol = True
                         actionPre = 0
                         
-                elif GPIO.input(switch[0]) == 0 and btn_stop == True: #down 버튼 눌렀다 땟을 때
+                elif GPIO.input(switch[0]) == 0 and btn_stop == True: # 버튼 눌렀다 땟을 때
                     driverSet(0, 0, 0, 0)
                     btn_stop = False
                     addcontrol == False
                     initialBtn = False
 
-            elif Mode[1] == True : # 모드 2 : 키 설정 모드
+            elif Mode[2] == True : # 모드 2 : 키 설정 모드
                 recognitionEnable = False # 얼굴인식코드 활성화여부 (딜레이최적화)
                 draw.text((5, 0), 'Desk Tall', font=font, fill=255)
                 draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 255)
@@ -1031,7 +1036,7 @@ def main():
                     time.sleep(0.05)
                     GPIO.output(buzzer, False)
             
-            elif Mode[2] == True :
+            elif Mode[3] == True :
                 recognitionEnable = False  # 얼굴인식코드 활성화여부 (딜레이최적화)
                 draw.text((5, 0), '-Now Best Tall-', font=font2, fill=255)
                 draw.text((5, 15), str(int(SET_HEIGHT)), font=font2, fill=255)
