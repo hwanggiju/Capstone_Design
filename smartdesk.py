@@ -1062,6 +1062,7 @@ def main():
                     GPIO.output(buzzer, False)
                     stop = driverSet(0, 0, 0 ,0)
                     state = False
+                    
                 else :
                     if nowTime - wakeTime > 60 :
                         if state == True :
