@@ -709,7 +709,7 @@ def main():
                 SET_HEIGHT = SET_HEIGHT + 1
                 OLED_initial_setting_Height(SET_HEIGHT)
                 GPIO.output(buzzer, True)
-                time.sleep(0.2)
+                time.sleep(0.05)
                 GPIO.output(buzzer, False)
             
             elif GPIO.input(switch[0]) == 1:    # okay
@@ -720,7 +720,7 @@ def main():
                 SET_HEIGHT = SET_HEIGHT - 1
                 OLED_initial_setting_Height(SET_HEIGHT)
                 GPIO.output(buzzer, True)
-                time.sleep(0.2)
+                time.sleep(0.05)
                 GPIO.output(buzzer, False)
                 
             elif GPIO.input(switch[1]) == 1:    # down
@@ -732,7 +732,7 @@ def main():
                 oled.image(image)
                 oled.show()
                 GPIO.output(buzzer, True)
-                time.sleep(0.2)
+                time.sleep(0.05)
                 GPIO.output(buzzer, False)
                 
                 while True :
@@ -745,7 +745,7 @@ def main():
                         SET_HEIGHT = SET_HEIGHT + 1
                         OLED_initial_setting_Height(SET_HEIGHT)
                         GPIO.output(buzzer, True)
-                        time.sleep(0.2)
+                        time.sleep(0.05)
                         GPIO.output(buzzer, False)
                         
                     elif GPIO.input(switch[0]) == 1:
@@ -757,7 +757,7 @@ def main():
                         SET_HEIGHT = SET_HEIGHT - 1
                         OLED_initial_setting_Height(SET_HEIGHT)
                         GPIO.output(buzzer, True)
-                        time.sleep(0.2)
+                        time.sleep(0.05)
                         GPIO.output(buzzer, False)
                         
                     elif GPIO.input(switch[1]) == 1 :
@@ -771,7 +771,7 @@ def main():
                         deskUserTall = SET_HEIGHT - bestDeskTall
                         changeHeight = SET_HEIGHT
                         GPIO.output(buzzer, True)
-                        time.sleep(0.2)
+                        time.sleep(0.05)
                         GPIO.output(buzzer, False)
                         draw.text((0, 0), 'Success Set Height', font = font3, fill = 0)
                         time.sleep(1)
@@ -811,6 +811,7 @@ def main():
         Mode = [True, False, False]
         idx = 0
         wakeTime = 0
+        sleepMode = False
         
         # 모터 동작 반복
         while True:
@@ -978,7 +979,7 @@ def main():
                 else : 
                     Mode[idx] = Mode[idx-1]
                     Mode[idx-1] = False
-                time.sleep(0.1)
+                time.sleep(0.05)
                 GPIO.output(buzzer, False)
             
             if Mode[0] == True :
@@ -1017,7 +1018,7 @@ def main():
                     changeHeight = SET_HEIGHT + 1
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
                     SET_HEIGHT = changeHeight
-                    time.sleep(0.1)
+                    time.sleep(0.05)
                     GPIO.output(buzzer, False)
                     
                     
@@ -1026,7 +1027,7 @@ def main():
                     changeHeight = SET_HEIGHT - 1
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
                     SET_HEIGHT = changeHeight
-                    time.sleep(0.1)
+                    time.sleep(0.05)
                     GPIO.output(buzzer, False)
             
             if Mode[2] == True :
@@ -1040,12 +1041,12 @@ def main():
                 if GPIO.input(switch[2]) == 1 :
                     GPIO.output(buzzer, True)
                     sleepMode = True
-                    time.sleep(0.1)
+                    time.sleep(0.05)
                     GPIO.output(buzzer, False)
                 if GPIO.input(switch[0]) == 1 :
                     GPIO.output(buzzer, True)
                     sleepMode = False
-                    time.sleep(0.1)
+                    time.sleep(0.05)
                     GPIO.output(buzzer, False)
                     
             if sleepMode == True :
