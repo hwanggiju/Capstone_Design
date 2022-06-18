@@ -994,6 +994,7 @@ def main():
                     if UPbtn_stop != True :
                         UPbtn_stop = driverSet(100, 2, 2, 100)
                         addcontrol = True
+                        actionPre = 2
                     
                 elif GPIO.input(switch[2]) == 0 and UPbtn_stop == True:
                     UPbtn_stop = driverSet(0, 0, 0, 0)
@@ -1004,9 +1005,8 @@ def main():
                 if GPIO.input(switch[0]) == 1 :
                     if Downbtn_stop != True :
                         Downbtn_stop = driverSet(100, 1, 1, 100)
-                        fixAngleY = angleY
-                        fixAngleX = angleX
                         addcontrol = True
+                        actionPre = 0
                         
                 elif GPIO.input(switch[0]) == 0 and Downbtn_stop == True:
                     Downbtn_stop = driverSet(0, 0, 0, 0)
