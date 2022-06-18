@@ -22,7 +22,7 @@ graphRow = 200
 x_val = [i for i in range(graphRow)]
 y_val = [130 for i in range(graphRow)]
 y_valAVG = [130 for i in range(graphRow)]
-y_valDesk = [130 for i in range(graphRow)]
+y_valDesk = [100 for i in range(graphRow)]
 gyrosensorX = [0 for i in range(graphRow)]
 gyrosensorY = [0 for i in range(graphRow)]
 ENA_PWM = [100 for i in range(graphRow)]
@@ -46,18 +46,17 @@ line5 = ax[1][0].plot(x_val, angleLine, color='navy')[0]     # angleY
 line6 = ax[1][1].plot(x_val, pwmLine, color='purple')[0]        # pwm A
 line7 = ax[1][1].plot(x_val, pwmLine, color='crimson')[0]       # pwm B
 
-ax[0][0].set_xlabel("Time", fontweight = 'bold', fontsize = 16)
-ax[0][1].set_xlabel("Time", fontweight = 'bold', fontsize = 16)
-ax[1][0].set_xlabel("Time", fontweight = 'bold', fontsize = 16)
-ax[1][1].set_xlabel("Time", fontweight = 'bold', fontsize = 16)
-ax[0][0].set_ylabel("Height", fontweight = 'bold', fontsize = 16)
-ax[0][1].set_ylabel("Height", fontweight = 'bold', fontsize = 16)
-ax[1][0].set_ylabel("Angle", fontweight = 'bold', fontsize = 16)
-ax[1][1].set_ylabel("Dutycycle", fontweight = 'bold', fontsize = 16)
+ax[0][0].set_xlabel("Time", fontweight = 'bold', fontsize = 10)
+ax[0][1].set_xlabel("Time", fontweight = 'bold', fontsize = 10)
+ax[1][0].set_xlabel("Time", fontweight = 'bold', fontsize = 10)
+ax[1][1].set_xlabel("Time", fontweight = 'bold', fontsize = 10)
+ax[0][0].set_ylabel("Height", fontweight = 'bold', fontsize = 10)
+ax[0][1].set_ylabel("Height", fontweight = 'bold', fontsize = 10)
+ax[1][0].set_ylabel("Angle", fontweight = 'bold', fontsize = 10)
+ax[1][1].set_ylabel("Dutycycle", fontweight = 'bold', fontsize = 10)
 
 figure.legend([line1, line2, line3, line4, line5, line6, line7], labels= line_labels)
-plt.title("SMART DESK", fontsize=20)
-plt.xlabel("TIME")
+
 '''
 해야할 것
 - 정확한 각도 도출
