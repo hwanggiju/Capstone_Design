@@ -1,4 +1,5 @@
 from asyncio.unix_events import _UnixSelectorEventLoop
+from xml.dom.minidom import parseString
 import face_recognition
 import cv2
 import RPi.GPIO as GPIO
@@ -739,7 +740,10 @@ def main():
         addcontrol = False
         HeightAVG = [150 for i in range(15)]
         WaveAVG = [waveSensorHeight for i in range(15)]
-
+        # 디스플레이 모드 - 기본 모드 : 1, 최적의 책상 높이 재설정 모드 : 2, 졸음 기능 on/off 모드 : 3
+        Mode = [True, False, False]
+        idx = 0
+        
         # 모터 동작 반복
         while True:
             accel = mpu9250.readAccel()
@@ -920,7 +924,30 @@ def main():
                 Downbtn_stop = False
                 addcontrol == False
             
-            drawDisplay()
+            if GPIO.input(switch[1]) == 1 :
+                idx += 1
+                if idx == 3 :
+                    idx = 0
+                    Mode[idx] = True
+                    Mode[idx+2] = False
+                else : 
+                    Mode[idx] = Mode[idx-1]
+                    Mode[idx-1] = False
+            
+            if Mode[0] == True :
+                draw.text((5, 0), 'Test2', font = font, fill = 255)
+                drawDisplay()
+                
+            if Mode[1] == True :
+                draw.text((5, 0), 'Test1', font = font, fill = 0)
+                oled.image(image)
+                oled.show()
+            
+            if Mode[2] == True :
+                draw.text((5, 0), 'Test1', font = font, fill = 255)
+                draw.text((5, 0), 'Test2', font = font, fill = 0)
+                oled.image(image)
+                oled.show()
             
     except KeyboardInterrupt :
         pass
