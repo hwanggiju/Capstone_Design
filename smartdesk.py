@@ -600,7 +600,7 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     
 timeTest = True
 predeskDistance = 0
-def drawDisplay(deskDistance) :
+def drawDisplay() :
     global timeTest, nowTime, preTime, predeskDistance
     deskDistance = waveFun()
     if timeTest == True :
@@ -912,7 +912,7 @@ def main():
                 Downbtn_stop = False
                 addcontrol == False
             
-            drawDisplay(waveSensorMean+3)
+            drawDisplay()
             
     except KeyboardInterrupt :
         pass
