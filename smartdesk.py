@@ -669,18 +669,19 @@ def ReSetMode(NowHeight, changeHeight) :
         oled.image(image)
         oled.show()
 
-def eraseReSetMode(predeskDistance) :
+def eraseReSetMode(NowHeight) :
+    global changeHeight
     draw.text((100, 0), 'Up', font=font2, fill=255)
     draw.text((100, 20), 'Mode', font=font2, fill=255)
     draw.text((100, 40), 'Down', font=font2, fill=255)
     draw.text((5, 0), '-Now Best Tall-', font=font2, fill=255)
-    draw.text((5, 15), str(int(predeskDistance)), font=font2, fill=255)
+    draw.text((5, 15), str(int(NowHeight)), font=font2, fill=255)
     draw.text((40, 15), 'cm', font = font2, fill = 255)
     draw.text((5, 30), '-Change Tall-', font=font2, fill=255)
-    draw.text((5, 45), str(int(NowdeskDistance)), font=font2, fill=255)
+    draw.text((5, 45), str(int(changeHeight)), font=font2, fill=255)
     draw.text((40, 45), 'cm', font = font2, fill = 255)
     oled.image(image)
-    oled.show()        
+    oled.show()       
     
 # 졸음 감지 모드
 def sleepDetectMode() :
