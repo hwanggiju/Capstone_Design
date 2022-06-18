@@ -1064,10 +1064,9 @@ def main():
                     state = False
                 else :
                     if nowTime - wakeTime > 60 :
-                        if state != True :
+                        if state == True :
                             GPIO.output(buzzer, False)
                             stop = driverSet(100, 2, 2, 100)
-                            state = True
                         
                     elif nowTime - wakeTime > 40 :
                         GPIO.output(buzzer, True)
