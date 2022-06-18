@@ -794,6 +794,7 @@ def main():
         # 디스플레이 모드 - 기본 모드 : 1, 최적의 책상 높이 재설정 모드 : 2, 졸음 기능 on/off 모드 : 3
         Mode = [True, False, False]
         idx = 0
+        changeUserTall = 0
         
         # 모터 동작 반복
         while True:
@@ -990,7 +991,7 @@ def main():
                 
             if Mode[1] == True :
                 eraseDisplay()
-                deskUserTall = ReSetMode(deskUserTall)
+                changeUserTall = ReSetMode(deskUserTall)
             
             if Mode[2] == True :
                 pass
