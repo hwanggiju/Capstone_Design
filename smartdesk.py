@@ -39,7 +39,7 @@ pwmLine = np.linspace(0,100,graphRow)
 plt.ion()
 figure, ax = plt.subplots(2, 2 ,figsize=(8, 8)) #사이즈
 
-line_labels = ['User Heght', 'complementary Filter', 'Desk Height', 'User Desk Height','Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
+line_labels = ['User Heght', 'complementary Filter', 'Now Desk Height', 'Recommend Desk Height','Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
 line1 = ax[0][0].plot(x_val, heightLine, color='red')[0]     # 키
 line2 = ax[0][0].plot(x_val, heightLine, color='orange')[0]    # 키 상보필터
 line3 = ax[0][1].plot(x_val, deskLine, color='green')[0]   # 책상 높이
