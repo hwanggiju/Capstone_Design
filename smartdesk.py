@@ -874,7 +874,6 @@ def main():
                 gyrosensorY[graphRow - i - 1] = gyrosensorY[graphRow - i - 2]
                 ENA_PWM[graphRow - i - 1] = ENA_PWM[graphRow - i - 2]
                 ENB_PWM[graphRow - i - 1] = ENB_PWM[graphRow - i - 2]
-                y_valPID[graphRow - i - 1] = y_valPID[graphRow - i - 2]
 
             if TESTMODE == True:
                 line1.set_ydata(y_val)
