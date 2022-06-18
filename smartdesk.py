@@ -986,7 +986,6 @@ def main():
                     Mode[idx-1] = False
             
             if Mode[0] == True :
-                draw.text((5, 0), 'Test2', font = font, fill = 255)
                 drawDisplay()
                 
             if Mode[1] == True :
@@ -994,10 +993,7 @@ def main():
                 deskUserTall = ReSetMode(deskUserTall)
             
             if Mode[2] == True :
-                draw.text((5, 0), 'Test1', font = font, fill = 255)
-                draw.text((5, 0), 'Test2', font = font, fill = 0)
-                oled.image(image)
-                oled.show()
+                pass
             
     except KeyboardInterrupt :
         pass
