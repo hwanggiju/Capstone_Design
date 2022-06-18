@@ -613,16 +613,23 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     
 timeTest = True
 NowdeskDistance = 0
+ModeWaveAVG = [NowdeskDistance for i in range(10)]
+
 # 기본 모드 display
 def drawDisplay() :      
     global timeTest, nowTime, preTime, NowdeskDistance
     deskDistance = waveFun()
+    ModeWaveAVG[0] = deskDistance
+    for i in range(len(ModeWaveAVG) - 1) :
+        ModeWaveAVG[len(ModeWaveAVG) - i - 1] = ModeWaveAVG[len(ModeWaveAVG) - i - 2]
+    deskDistance1 = np.mean(ModeWaveAVG) # 초음파 평균 거리
+    
     if timeTest == True :
         preTime = nowTime
         timeTest = False
     if nowTime - preTime > 0.001 :
         eraseDisplay()
-        NowdeskDistance = deskDistance
+        NowdeskDistance = deskDistance1
         draw.text((100, 0), 'Up', font=font2, fill=0)
         draw.text((100, 20), 'Mode', font=font2, fill=0)
         draw.text((100, 40), 'Down', font=font2, fill=0)
@@ -654,7 +661,7 @@ def ReSetMode(predeskDistance) :
         eraseReSetMode(predeskDistance)
         NowdeskDistance = deskDistance
         draw.text((100, 0), 'Up', font=font2, fill=0)
-        draw.text((100, 20), 'Okay', font=font2, fill=0)
+        draw.text((100, 20), 'Mode', font=font2, fill=0)
         draw.text((100, 40), 'Down', font=font2, fill=0)
         draw.text((5, 0), '-Now Best Tall-', font=font2, fill=0)
         draw.text((5, 15), str(int(predeskDistance)), font=font2, fill=0)
@@ -668,7 +675,7 @@ def ReSetMode(predeskDistance) :
 
 def eraseReSetMode(predeskDistance) :
     draw.text((100, 0), 'Up', font=font2, fill=255)
-    draw.text((100, 20), 'Okay', font=font2, fill=255)
+    draw.text((100, 20), 'Mode', font=font2, fill=255)
     draw.text((100, 40), 'Down', font=font2, fill=255)
     draw.text((5, 0), '-Now Best Tall-', font=font2, fill=255)
     draw.text((5, 15), str(int(predeskDistance)), font=font2, fill=255)
@@ -992,8 +999,11 @@ def main():
             if Mode[1] == True :
                 eraseDisplay()
                 changeUserTall = ReSetMode(deskUserTall)
+                if changeUserTall != deskUserTall :
+                    deskUserTall = changeUserTall
             
             if Mode[2] == True :
+                eraseReSetMode()
                 pass
             
     except KeyboardInterrupt :
