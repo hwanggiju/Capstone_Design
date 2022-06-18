@@ -652,7 +652,7 @@ def eraseDisplay() :
 # 최적높이 재설정 모드 display erase 
 prechange = 0
 def ReSetMode(NowHeight, changeHeight) :
-    global timeTest, nowTime, preTime
+    global timeTest, nowTime, preTime, prechange
     if timeTest == True :
         preTime = nowTime
         timeTest = False
