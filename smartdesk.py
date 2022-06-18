@@ -650,9 +650,8 @@ def eraseDisplay() :
     oled.show()
     
 # 최적높이 재설정 모드 display erase 
-def ReSetMode(NowHeight) :
+def ReSetMode(NowHeight, changeHeight) :
     global timeTest, nowTime, preTime
-    
     if timeTest == True :
         preTime = nowTime
         timeTest = False
@@ -665,7 +664,7 @@ def ReSetMode(NowHeight) :
         draw.text((5, 15), str(int(NowHeight)), font=font2, fill=0)
         draw.text((40, 15), 'cm', font = font2, fill = 0)
         draw.text((5, 30), '-Change Tall-', font=font2, fill=0)
-        draw.text((5, 45), str(int()), font=font2, fill=0)
+        draw.text((5, 45), str(int(changeHeight)), font=font2, fill=0)
         draw.text((40, 45), 'cm', font = font2, fill = 0)
         oled.image(image)
         oled.show()
@@ -760,6 +759,7 @@ def main():
                         SET_HEIGHT = SET_HEIGHT
                         bestDeskTall = SET_HEIGHT * 0.23 + SET_HEIGHT * 0.18
                         deskUserTall = SET_HEIGHT - bestDeskTall
+                        changeHeight = SET_HEIGHT
                         time.sleep(0.2)
                         draw.text((0, 0), 'Success Set Height', font = font3, fill = 0)
                         time.sleep(1)
@@ -994,7 +994,16 @@ def main():
                 
             if Mode[1] == True :
                 eraseDisplay()
-                ReSetMode()
+                ReSetMode(SET_HEIGHT, changeHeight)
+                if GPIO.input(switch[2]) == 1 :
+                    changeHeight = SET_HEIGHT + 1
+                    ReSetMode(SET_HEIGHT, changeHeight)
+                    deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
+                    
+                if GPIO.input(switch[0]) == 1 :
+                    changeHeight = SET_HEIGHT - 1
+                    ReSetMode(SET_HEIGHT, changeHeight)
+                    deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
             
             if Mode[2] == True :
                 eraseReSetMode()
