@@ -612,7 +612,7 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
     oled.show()
     
 timeTest = True
-predeskDistance = 0
+NowdeskDistance = 0
 # 기본 모드 display
 def drawDisplay() :      
     global timeTest, nowTime, preTime, NowdeskDistance
@@ -627,7 +627,7 @@ def drawDisplay() :
         draw.text((100, 20), 'Mode', font=font2, fill=0)
         draw.text((100, 40), 'Down', font=font2, fill=0)
         draw.text((5, 0), 'Desk Tall', font=font, fill=0)
-        draw.text((5, 15), str(int(predeskDistance)), font = font, fill = 0)
+        draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 0)
         draw.text((40, 15), 'cm', font = font, fill = 0)
         oled.image(image)
         oled.show()
@@ -638,49 +638,46 @@ def eraseDisplay() :
     draw.text((100, 20), 'Mode', font=font2, fill=255)
     draw.text((100, 40), 'Down', font=font2, fill=255)
     draw.text((5, 0), 'Desk Tall', font=font, fill=255)
-    draw.text((5, 15), str(int(predeskDistance)), font = font, fill = 255)
+    draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 255)
     draw.text((40, 15), 'cm', font = font, fill = 255)
     oled.image(image)
     oled.show()
     
 # 최적높이 재설정 모드 display erase 
-def ReSetMode() :
-    global timeTest, nowTime, preTime, predeskDistance
+def ReSetMode(predeskDistance) :
+    global timeTest, nowTime, preTime, NowdeskDistance
     deskDistance = waveFun()
     if timeTest == True :
         preTime = nowTime
         timeTest = False
     if nowTime - preTime > 0.001 :
-        predeskDistance = deskDistance
+        eraseReSetMode(predeskDistance)
+        NowdeskDistance = deskDistance
         draw.text((100, 0), 'Up', font=font2, fill=0)
         draw.text((100, 20), 'Okay', font=font2, fill=0)
         draw.text((100, 40), 'Down', font=font2, fill=0)
         draw.text((5, 0), 'Best desk Tall', font=font, fill=0)
         draw.text((5, 15), '-Now Tall-', font=font, fill=0)
-        draw.text((5, 30), '-Now Tall-', font=font, fill=0)
+        draw.text((5, 30), str(int(predeskDistance)), font=font, fill=0)
+        draw.text((40, 30), 'cm', font = font, fill = 0)
         draw.text((5, 45), '-Change Tall-', font=font, fill=0)
         draw.text((5, 60), str(int(NowdeskDistance)), font=font, fill=0)
+        draw.text((40, 60), 'cm', font = font, fill = 0)
         oled.image(image)
         oled.show()
+        return NowdeskDistance
 
-def eraseReSetMode() :
-    global timeTest, nowTime, preTime, predeskDistance
-    deskDistance = waveFun()
-    if timeTest == True :
-        preTime = nowTime
-        timeTest = False
-    if nowTime - preTime > 0.001 :
-        predeskDistance = deskDistance
-        draw.text((100, 0), 'Up', font=font2, fill=0)
-        draw.text((100, 20), 'Okay', font=font2, fill=0)
-        draw.text((100, 40), 'Down', font=font2, fill=0)
-        draw.text((5, 0), 'Best desk Tall', font=font, fill=0)
-        draw.text((5, 15), '-Now Tall-', font=font, fill=0)
-        draw.text((5, 30), '-Now Tall-', font=font, fill=0)
-        draw.text((5, 45), '-Change Tall-', font=font, fill=0)
-        draw.text((5, 60), str(int(NowdeskDistance)), font=font, fill=0)
-        oled.image(image)
-        oled.show()        
+def eraseReSetMode(predeskDistance) :
+    draw.text((100, 0), 'Up', font=font2, fill=255)
+    draw.text((100, 20), 'Okay', font=font2, fill=255)
+    draw.text((100, 40), 'Down', font=font2, fill=255)
+    draw.text((5, 0), 'Best desk Tall', font=font, fill=255)
+    draw.text((5, 15), '-Now Tall-', font=font, fill=255)
+    draw.text((5, 30), str(int(predeskDistance)), font=font, fill=255)
+    draw.text((5, 45), '-Change Tall-', font=font, fill=255)
+    draw.text((5, 60), str(int(NowdeskDistance)), font=font, fill=255)
+    oled.image(image)
+    oled.show()        
     
 # 졸음 감지 모드
 def sleepDetectMode() :
@@ -994,7 +991,7 @@ def main():
                 
             if Mode[1] == True :
                 eraseDisplay()
-                ReSetMode(deskUserTall)
+                deskUserTall = ReSetMode(deskUserTall)
             
             if Mode[2] == True :
                 draw.text((5, 0), 'Test1', font = font, fill = 255)
