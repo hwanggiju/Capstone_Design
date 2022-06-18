@@ -35,7 +35,7 @@ deskLine = np.linspace(60,130,graphRow)
 pwmLine = np.linspace(0,100,graphRow)
 
 plt.ion()
-figure, ax = plt.subplots(2, 2 ,figsize=(7, 8)) #사이즈
+figure, ax = plt.subplots(2, 2 ,figsize=(8, 8)) #사이즈
 
 line_labels = ['User Heght', 'complementary Filter', 'Desk Height', 'Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
 line1 = ax[0][0].plot(x_val, heightLine, color='red')[0]     # height
