@@ -46,14 +46,14 @@ line5 = ax[1][0].plot(x_val, angleLine, color='navy')[0]     # angleY
 line6 = ax[1][1].plot(x_val, pwmLine, color='purple')[0]        # pwm A
 line7 = ax[1][1].plot(x_val, pwmLine, color='crimson')[0]       # pwm B
 
-ax[0][0].xlabel("Time", fontWeight = 'bold', fontsize = 16)
-ax[0][1].xlabel("Time", fontWeight = 'bold', fontsize = 16)
-ax[1][0].xlabel("Time", fontWeight = 'bold', fontsize = 16)
-ax[1][1].xlabel("Time", fontWeight = 'bold', fontsize = 16)
-ax[0][0].ylabel("Height", fontWeight = 'bold', fontsize = 16)
-ax[0][1].ylabel("Height", fontWeight = 'bold', fontsize = 16)
-ax[1][0].ylabel("Angle", fontWeight = 'bold', fontsize = 16)
-ax[1][1].ylabel("Dutycycle", fontWeight = 'bold', fontsize = 16)
+ax[0][0].set_xlabel("Time", fontWeight = 'bold', fontsize = 16)
+ax[0][1].set_xlabel("Time", fontWeight = 'bold', fontsize = 16)
+ax[1][0].set_xlabel("Time", fontWeight = 'bold', fontsize = 16)
+ax[1][1].set_xlabel("Time", fontWeight = 'bold', fontsize = 16)
+ax[0][0].set_ylabel("Height", fontWeight = 'bold', fontsize = 16)
+ax[0][1].set_ylabel("Height", fontWeight = 'bold', fontsize = 16)
+ax[1][0].set_ylabel("Angle", fontWeight = 'bold', fontsize = 16)
+ax[1][1].set_ylabel("Dutycycle", fontWeight = 'bold', fontsize = 16)
 
 figure.legend([line1, line2, line3, line4, line5, line6, line7], labels= line_labels)
 plt.title("SMART DESK", fontsize=20)
