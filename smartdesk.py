@@ -634,7 +634,6 @@ def eraseDisplay() :
     draw.text((5, 0), 'Desk Tall', font=font, fill=255)
     draw.text((5, 15), str(int(predeskDistance)), font = font, fill = 255)
     draw.text((40, 15), 'cm', font = font, fill = 255)
-    timeTest = True
     oled.image(image)
     oled.show()
 
@@ -939,6 +938,7 @@ def main():
                 drawDisplay()
                 
             if Mode[1] == True :
+                eraseDisplay()
                 draw.text((5, 0), 'Test1', font = font, fill = 0)
                 oled.image(image)
                 oled.show()
