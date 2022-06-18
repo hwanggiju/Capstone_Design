@@ -24,7 +24,6 @@ x_val = [i for i in range(graphRow)]
 y_val = [130 for i in range(graphRow)]
 y_valAVG = [130 for i in range(graphRow)]
 y_valDesk = [100 for i in range(graphRow)]
-decideDesk = [100 for i in range(graphRow)]
 gyrosensorX = [0 for i in range(graphRow)]
 gyrosensorY = [0 for i in range(graphRow)]
 ENA_PWM = [100 for i in range(graphRow)]
@@ -39,15 +38,14 @@ pwmLine = np.linspace(0,100,graphRow)
 plt.ion()
 figure, ax = plt.subplots(2, 2 ,figsize=(8, 8)) #사이즈
 
-line_labels = ['User Heght', 'complementary Filter', 'Now Desk Height', 'Recommend Desk Height','Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
-line1 = ax[0][0].plot(x_val, heightLine, color='red')[0]     # 키
-line2 = ax[0][0].plot(x_val, heightLine, color='orange')[0]    # 키 상보필터
-line3 = ax[0][1].plot(x_val, deskLine, color='green')[0]   # 책상 높이
-line4 = ax[0][1].plot(x_val, deskLine, color='yellow')[0]   # 결정한 책상 높이
-line5 = ax[1][0].plot(x_val, angleLine, color='blue')[0]      # angleX
-line6 = ax[1][0].plot(x_val, angleLine, color='navy')[0]     # angleY
-line7 = ax[1][1].plot(x_val, pwmLine, color='purple')[0]        # pwm A
-line8 = ax[1][1].plot(x_val, pwmLine, color='crimson')[0]       # pwm B
+line_labels = ['User Heght', 'complementary Filter', 'Desk Height', 'Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
+line1 = ax[0][0].plot(x_val, heightLine, color='red')[0]     # height
+line2 = ax[0][0].plot(x_val, heightLine, color='orange')[0]    # height average
+line3 = ax[0][1].plot(x_val, deskLine, color='green')[0]   # desk height
+line4 = ax[1][0].plot(x_val, angleLine, color='blue')[0]      # angleX
+line5 = ax[1][0].plot(x_val, angleLine, color='navy')[0]     # angleY
+line6 = ax[1][1].plot(x_val, pwmLine, color='purple')[0]        # pwm A
+line7 = ax[1][1].plot(x_val, pwmLine, color='crimson')[0]       # pwm B
 
 ax[0][0].set_xlabel("Time", fontweight = 'bold', fontsize = 10)
 ax[0][1].set_xlabel("Time", fontweight = 'bold', fontsize = 10)
@@ -646,7 +644,7 @@ def eraseDisplay() :
     oled.show()
     
 # 최적높이 재설정 모드 display erase 
-def reSetMode() :
+def ReSetMode() :
     global timeTest, nowTime, preTime, predeskDistance
     deskDistance = waveFun()
     if timeTest == True :
@@ -664,6 +662,25 @@ def reSetMode() :
         draw.text((5, 60), str(int(NowdeskDistance)), font=font, fill=0)
         oled.image(image)
         oled.show()
+
+def eraseReSetMode() :
+    global timeTest, nowTime, preTime, predeskDistance
+    deskDistance = waveFun()
+    if timeTest == True :
+        preTime = nowTime
+        timeTest = False
+    if nowTime - preTime > 0.001 :
+        predeskDistance = deskDistance
+        draw.text((100, 0), 'Up', font=font2, fill=0)
+        draw.text((100, 20), 'Okay', font=font2, fill=0)
+        draw.text((100, 40), 'Down', font=font2, fill=0)
+        draw.text((5, 0), 'Best desk Tall', font=font, fill=0)
+        draw.text((5, 15), '-Now Tall-', font=font, fill=0)
+        draw.text((5, 30), '-Now Tall-', font=font, fill=0)
+        draw.text((5, 45), '-Change Tall-', font=font, fill=0)
+        draw.text((5, 60), str(int(NowdeskDistance)), font=font, fill=0)
+        oled.image(image)
+        oled.show()        
     
 # 졸음 감지 모드
 def sleepDetectMode() :
@@ -923,17 +940,15 @@ def main():
                 ENA_PWM[graphRow - i - 1] = ENA_PWM[graphRow - i - 2]
                 ENB_PWM[graphRow - i - 1] = ENB_PWM[graphRow - i - 2]
                 y_valDesk[graphRow - i - 1] = y_valDesk[graphRow - i - 2]
-                decideDesk[i] = deskUserTall
 
             if TESTMODE == True:
                 line1.set_ydata(y_val)
                 line2.set_ydata(y_valAVG)
                 line3.set_ydata(y_valDesk)
-                line4.set_ydata(decideDesk)
-                line5.set_ydata(gyrosensorX)
-                line6.set_ydata(gyrosensorY)
-                line7.set_ydata(ENA_PWM)
-                line8.set_ydata(ENB_PWM)
+                line4.set_ydata(gyrosensorX)
+                line5.set_ydata(gyrosensorY)
+                line6.set_ydata(ENA_PWM)
+                line7.set_ydata(ENB_PWM)
                 #figure.canvas.draw()
                 figure.canvas.flush_events()
                 
@@ -979,9 +994,7 @@ def main():
                 
             if Mode[1] == True :
                 eraseDisplay()
-                draw.text((5, 0), 'Test1', font = font, fill = 0)
-                oled.image(image)
-                oled.show()
+                ReSetMode(deskUserTall)
             
             if Mode[2] == True :
                 draw.text((5, 0), 'Test1', font = font, fill = 255)
