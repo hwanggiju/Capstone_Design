@@ -200,6 +200,8 @@ fixAngleX       = 0 #모터 작동시 고정되는 각도값
 fixAngleY       = 0
 userDistance    = 0
 
+sleepDetectTime = 60
+
 actionNow = 0  # 0:down 1:stop 2:up
 actionPre = 1
 
@@ -945,17 +947,17 @@ def main():
         fixAngleY = 0
         waveSensorMean = 0
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
-        stop = False
-        btn_stop = False
+        stop = False        # 모터셋 프로세스
+        btn_stop = False    # 버튼 초기 프로세스 여부
         addcontrol = False
         HeightAVG = [150 for i in range(15)]
         WaveAVG = [waveSensorHeight for i in range(5)]
         # 디스플레이 모드 - 기본 모드 : 1, 최적의 책상 높이 재설정 모드 : 2, 졸음 기능 on/off 모드 : 3
         Mode = [True, False, False, False]
         idx = 0
-        wakeTime = 0
-        sleepMode = False
-        mode_initial = False # 모드 옯길시 시작 동작여부
+        wakeTime = 0 # 졸음감지 시간
+        sleepMode = False # 졸음감지 모드 활성화 여부
+        mode_initial = False # 모드 이동시 시작 프로세스 동작여부
         
         # 모터 동작 반복
         while True:
@@ -1000,7 +1002,7 @@ def main():
             # 수평 자세 유지 코드 (현재 각도, 작동시 각도)
             ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY)
             
-            userNum = 0
+            userNum = 0 # 인식 인원 수 초기화
             if recognitionEnable == True: # 인식모드 사용 여부 최적화용
                 for i in range(detect.shape[0]):
                     confidence = detect[i, 2]
@@ -1024,10 +1026,10 @@ def main():
                 area = widthLength * heightLength  # 사용자 인식 넓이
                 center_x = x1 + (x2 - x1) / 2
                 center_y = y1 + (y2 - y1) / 2  # 인식된 부분 중심 좌표 x, y 값
-
-                print(" 가로 :" + str(widthLength) + " 세로:" + str(heightLength), end='')
-                print(' area : %d    center_x : %d   center_y : %d \n'
-                    % (area, center_x, center_y))
+                if TESTMODE == False: #모니터 그래프 없이 터미널사용때
+                    print(" 가로 :" + str(widthLength) + " 세로:" + str(heightLength), end='')
+                    print(' area : %d    center_x : %d   center_y : %d \n'
+                        % (area, center_x, center_y))
 
                 #사용자 키 도출
                 userHeight = getUserHeight(widthLength,                             # 얼굴폭
@@ -1227,13 +1229,15 @@ def main():
                     state = False
                     
                 else :
-                    if nowTime - wakeTime > 60 : #인식 불과 시첨
+                    if nowTime - wakeTime > sleepDetectTime : #인식 불과 시첨
                         if state == True :
                             GPIO.output(buzzer, False)
                             stop = driverSet(100, 2, 2, 100)
                         
-                    elif nowTime - wakeTime > 40 :
+                    elif nowTime - wakeTime > sleepDetectTime - 20 :
                         GPIO.output(buzzer, True)
+                        time.sleep((nowTime - wakeTime)*0.02) #시간차 점진적 빠르기
+                        GPIO.output(buzzer, False)
                         state = True
                         
 
