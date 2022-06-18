@@ -999,6 +999,7 @@ def main():
             if Mode[1] == True :
                 eraseDisplay()
                 changeUserTall = ReSetMode(deskUserTall)
+                print(type(changeUserTall))
                 if changeUserTall != deskUserTall :
                     deskUserTall = changeUserTall
             
