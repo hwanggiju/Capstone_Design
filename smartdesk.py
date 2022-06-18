@@ -588,7 +588,7 @@ def driverSet(enA, motorA, motorB, enB):
     else:
         return False
 
-def waveFun() :
+def waveFunc() :
     GPIO.output(wave[0], True)
     time.sleep(0.00001)
     GPIO.output(wave[0], False)
@@ -628,7 +628,7 @@ ModeWaveAVG = [NowdeskDistance for i in range(5)]
 # 기본 모드 display
 def drawDisplay() :      
     global timeTest, nowTime, preTime, NowdeskDistance
-    deskDistance = waveFun()
+    deskDistance = waveFunc()
     ModeWaveAVG[0] = deskDistance
     for i in range(len(ModeWaveAVG) - 1) :
         ModeWaveAVG[len(ModeWaveAVG) - i - 1] = ModeWaveAVG[len(ModeWaveAVG) - i - 2]
@@ -848,7 +848,7 @@ def main():
                 (h, w) = rotate_frame.shape[:2]
                 detect = detect[0, 0, :, :]
                 
-            waveSensorHeight = waveFun() # 책상 높이
+            waveSensorHeight = waveFunc() # 책상 높이
             WaveAVG[0] = waveSensorHeight
             for i in range(len(WaveAVG) - 1) :
                 WaveAVG[len(WaveAVG) - i - 1] = WaveAVG[len(WaveAVG) - i - 2]
