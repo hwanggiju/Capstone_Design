@@ -978,6 +978,7 @@ def main():
                 else : 
                     Mode[idx] = Mode[idx-1]
                     Mode[idx-1] = False
+                time.sleep(0.1)
                 GPIO.output(buzzer, False)
             
             if Mode[0] == True :
@@ -1016,6 +1017,7 @@ def main():
                     changeHeight = SET_HEIGHT + 1
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
                     SET_HEIGHT = changeHeight
+                    time.sleep(0.1)
                     GPIO.output(buzzer, False)
                     
                     
@@ -1024,6 +1026,7 @@ def main():
                     changeHeight = SET_HEIGHT - 1
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
                     SET_HEIGHT = changeHeight
+                    time.sleep(0.1)
                     GPIO.output(buzzer, False)
             
             if Mode[2] == True :
@@ -1037,10 +1040,12 @@ def main():
                 if GPIO.input(switch[2]) == 1 :
                     GPIO.output(buzzer, True)
                     sleepMode = True
+                    time.sleep(0.1)
                     GPIO.output(buzzer, False)
                 if GPIO.input(switch[0]) == 1 :
                     GPIO.output(buzzer, True)
                     sleepMode = False
+                    time.sleep(0.1)
                     GPIO.output(buzzer, False)
                     
             if sleepMode == True :
