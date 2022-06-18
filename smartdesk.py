@@ -837,7 +837,7 @@ def main():
             if frame is None:
                 print("fail")
                 break
-            if recognitionEnable == True: # 인식모드 온오프 여부
+            if recognitionEnable == True: # 인식모드 사용 여부
                 blob = cv2.dnn.blobFromImage(rotate_frame,  # image
                                             1,  # scalefactor
                                             (200, 200),  # image Size
@@ -854,21 +854,21 @@ def main():
                 WaveAVG[len(WaveAVG) - i - 1] = WaveAVG[len(WaveAVG) - i - 2]
             waveSensorMean = np.mean(WaveAVG) # 초음파 평균 거리
 
-            #print('test')
+            # print('test')
             # 4-2) Gyro를 이용한 각도 계산 
-            #Gy_Angle = cal_angle_gyro(GyX, GyY, GyZ)
-            #print('test')
+            # Gy_Angle = cal_angle_gyro(GyX, GyY, GyZ)
+            # print('test')
             # nani 각도 코드 테스트
             angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
             deskAngle = angleX
             if TESTMODE == False:
                 print("nani = ", round(angleY, 4))
 
-            #수평 자세 유지 코드 (현재 각도, 작동시 각도)
+            # 수평 자세 유지 코드 (현재 각도, 작동시 각도)
             ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY)
             
             userNum = 0
-            if recognitionEnable == True: # 인식모드 온오프 여부
+            if recognitionEnable == True: # 인식모드 사용 여부 최적화용
                 for i in range(detect.shape[0]):
                     confidence = detect[i, 2]
                     if confidence < 0.5:
