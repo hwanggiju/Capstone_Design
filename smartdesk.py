@@ -985,15 +985,16 @@ def main():
             
             if Mode[0] == True :
                 drawDisplay()
-                if initialBtn == True :
+                if initialBtn != True :
                     fixAngleY = angleY
                     fixAngleX = angleX
+                    initialBtn = True
                     
                 if GPIO.input(switch[2]) == 1 :
                     if UPbtn_stop != True :
                         UPbtn_stop = driverSet(100, 2, 2, 100)
                         addcontrol = True
-                        initialBtn = True
+                    
                     
                 elif GPIO.input(switch[2]) == 0 and UPbtn_stop == True:
                     UPbtn_stop = driverSet(0, 0, 0, 0)
@@ -1007,7 +1008,6 @@ def main():
                         fixAngleY = angleY
                         fixAngleX = angleX
                         addcontrol = True
-                        initialBtn = True
                         
                 elif GPIO.input(switch[0]) == 0 and Downbtn_stop == True:
                     Downbtn_stop = driverSet(0, 0, 0, 0)
