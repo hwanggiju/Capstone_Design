@@ -660,6 +660,7 @@ def ReSetMode(predeskDistance) :
     if nowTime - preTime > 0.001 :
         eraseReSetMode(predeskDistance)
         NowdeskDistance = deskDistance
+        returnDistance = deskDistance
         draw.text((100, 0), 'Up', font=font2, fill=0)
         draw.text((100, 20), 'Mode', font=font2, fill=0)
         draw.text((100, 40), 'Down', font=font2, fill=0)
@@ -671,7 +672,7 @@ def ReSetMode(predeskDistance) :
         draw.text((40, 45), 'cm', font = font2, fill = 0)
         oled.image(image)
         oled.show()
-        return int(NowdeskDistance)
+        return returnDistance
 
 def eraseReSetMode(predeskDistance) :
     draw.text((100, 0), 'Up', font=font2, fill=255)
@@ -1001,7 +1002,7 @@ def main():
                 changeUserTall = ReSetMode(deskUserTall)
                 print(type(changeUserTall))
                 if changeUserTall != deskUserTall :
-                    deskUserTall = int(changeUserTall)
+                    deskUserTall = changeUserTall
             
             if Mode[2] == True :
                 eraseReSetMode()
