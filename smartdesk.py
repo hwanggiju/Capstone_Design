@@ -40,7 +40,7 @@ figure, ax = plt.subplots(2, 2 ,figsize=(10, 8)) #사이즈
 line_labels = ['User Heght', 'complementary Filter', 'Desk Height', 'Angle-X', 'Angle-Y', 'PWM-LEFT', 'PWM-RIGHT']
 line1 = ax[0][0].plot(x_val, heightLine, color='red')[0]     # height
 line2 = ax[0][0].plot(x_val, heightLine, color='orange')[0]    # height average
-line3 = ax[0][1].plot(x_val, deskLine, color='yellow')[0]   # desk height
+line3 = ax[0][1].plot(x_val, deskLine, color='green')[0]   # desk height
 line4 = ax[1][0].plot(x_val, angleLine, color='blue')[0]      # angleX
 line5 = ax[1][0].plot(x_val, angleLine, color='navy')[0]     # angleY
 line6 = ax[1][1].plot(x_val, pwmLine, color='purple')[0]        # pwm A
