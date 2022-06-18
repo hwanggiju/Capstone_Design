@@ -993,7 +993,6 @@ def main():
                     addcontrol == False
                 
             if Mode[1] == True :
-                eraseDisplay()
                 ReSetMode(SET_HEIGHT, changeHeight)
                 if GPIO.input(switch[2]) == 1 :
                     changeHeight = SET_HEIGHT + 1
@@ -1006,6 +1005,7 @@ def main():
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
             
             if Mode[2] == True :
+                SET_HEIGHT = changeHeight
                 eraseReSetMode()
                 pass
             
