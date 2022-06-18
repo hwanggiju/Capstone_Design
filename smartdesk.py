@@ -614,7 +614,6 @@ def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
 timeTest = True
 NowdeskDistance = 0
 ModeWaveAVG = [NowdeskDistance for i in range(5)]
-
 # 기본 모드 display
 def drawDisplay() :      
     global timeTest, nowTime, preTime, NowdeskDistance
@@ -654,13 +653,18 @@ def eraseDisplay() :
 def ReSetMode(predeskDistance) :
     global timeTest, nowTime, preTime, NowdeskDistance
     deskDistance = waveFun()
+    ModeWaveAVG[0] = deskDistance
+    for i in range(len(ModeWaveAVG) - 1) :
+        ModeWaveAVG[len(ModeWaveAVG) - i - 1] = ModeWaveAVG[len(ModeWaveAVG) - i - 2]
+    deskDistance1 = np.mean(ModeWaveAVG) # 초음파 평균 거리
+    deskDistance = waveFun()
     if timeTest == True :
         preTime = nowTime
         timeTest = False
     if nowTime - preTime > 0.001 :
         eraseReSetMode(predeskDistance)
-        NowdeskDistance = deskDistance
-        returnDistance = deskDistance
+        NowdeskDistance = deskDistance1
+        returnDistance = deskDistance1
         draw.text((100, 0), 'Up', font=font2, fill=0)
         draw.text((100, 20), 'Mode', font=font2, fill=0)
         draw.text((100, 40), 'Down', font=font2, fill=0)
