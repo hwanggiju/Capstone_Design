@@ -830,12 +830,11 @@ def main():
                 # 그래프 값 입력부
                 y_val[0] = userHeight
                 y_valAVG[0] = userHeightAVG
-                y_valDesk[0] = waveSensorHeight + 2
+
                 # 쉬프트 그래프
                 for i in range(graphRow - 1):
                     y_val[graphRow - i - 1] = y_val[graphRow - i - 2]
                     y_valAVG[graphRow - i - 1] = y_valAVG[graphRow - i - 2]
-                    y_valDesk[graphRow - i - 1] = y_valDesk[graphRow - i - 2]
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                     
                 #높이에 따른 모터작동
@@ -872,7 +871,7 @@ def main():
                           
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             #그래프 표시
-
+            y_valDesk[0] = waveSensorHeight + 2
             gyrosensorX[0] = angleX - fixAngleX
             gyrosensorY[0] = angleY - fixAngleY
             #gyrosensorY[0] = angleY
@@ -882,6 +881,7 @@ def main():
                 gyrosensorY[graphRow - i - 1] = gyrosensorY[graphRow - i - 2]
                 ENA_PWM[graphRow - i - 1] = ENA_PWM[graphRow - i - 2]
                 ENB_PWM[graphRow - i - 1] = ENB_PWM[graphRow - i - 2]
+                y_valDesk[graphRow - i - 1] = y_valDesk[graphRow - i - 2]
 
             if TESTMODE == True:
                 line1.set_ydata(y_val)
