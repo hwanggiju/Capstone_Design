@@ -31,7 +31,7 @@ gyrosensorY = [0 for i in range(graphRow)]
 ENA_PWM = [100 for i in range(graphRow)]
 ENB_PWM = [100 for i in range(graphRow)]
 
-#그래프 Y축 범위
+# 그래프 Y축 표시범위
 angleLine = np.linspace(-2,2,graphRow)
 heightLine = np.linspace(100, 200, graphRow)
 deskLine = np.linspace(60,130,graphRow)
@@ -40,6 +40,7 @@ pwmLine = np.linspace(0,100,graphRow)
 plt.ion()
 figure, ax = plt.subplots(2, 2 ,figsize=(8, 8)) #사이즈
 
+# 그래프 라벨
 line_labels = ['User Height',
                'complementary Filter',
                'Desk Height',
@@ -49,6 +50,7 @@ line_labels = ['User Height',
                'PWM-LEFT',
                'PWM-RIGHT']
 
+# 그래프 구성
 line1 = ax[0][0].plot(x_val, heightLine, color='red')[0]     # 인식 높이
 line2 = ax[0][0].plot(x_val, heightLine, color='orange')[0]    # 높이 상보필터
 line3 = ax[0][1].plot(x_val, deskLine, color='green')[0]   # 현재 책상 높이
@@ -58,16 +60,17 @@ line6 = ax[1][0].plot(x_val, angleLine, color='navy')[0]     # 각 Y
 line7 = ax[1][1].plot(x_val, pwmLine, color='purple')[0]        # pwm A
 line8 = ax[1][1].plot(x_val, pwmLine, color='crimson')[0]       # pwm B
 
+# 그래프 X,Y 라인 단위
 ax[0][0].set_xlabel("Time", fontweight = 'bold', fontsize = 10)
 ax[0][1].set_xlabel("Time", fontweight = 'bold', fontsize = 10)
 ax[1][0].set_xlabel("Time", fontweight = 'bold', fontsize = 10)
 ax[1][1].set_xlabel("Time", fontweight = 'bold', fontsize = 10)
-ax[0][0].set_ylabel("Height", fontweight = 'bold', fontsize = 10)
-ax[0][1].set_ylabel("Height", fontweight = 'bold', fontsize = 10)
-ax[1][0].set_ylabel("Angle", fontweight = 'bold', fontsize = 10)
-ax[1][1].set_ylabel("Dutycycle", fontweight = 'bold', fontsize = 10)
+ax[0][0].set_ylabel("Height(cm)", fontweight = 'bold', fontsize = 10)
+ax[0][1].set_ylabel("Height(cm)", fontweight = 'bold', fontsize = 10)
+ax[1][0].set_ylabel("Angle(')", fontweight = 'bold', fontsize = 10)
+ax[1][1].set_ylabel("Dutycycle(%)", fontweight = 'bold', fontsize = 10)
 
-figure.legend([line1, line2, line3, line4, line5, line6, line7], labels= line_labels)
+figure.legend([line1, line2, line3, line4, line5, line6, line7, line8], labels= line_labels)
 
 '''
 해야할 것
@@ -214,7 +217,6 @@ deskAngle = 0 #28 # 책상 판과 카메라 중심까지의 각도
 deskUserAngle = -1 # 책상 판과 사용자 높이 사이의 각도
 cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
 
-##################################
 #하드웨어 초기설정
 for i in range(len(driver)): #모터 드라이버 핀
     GPIO.setup(driver[i], GPIO.OUT)
@@ -234,7 +236,6 @@ GPIO.setup(wave[1], GPIO.IN)
 GPIO.output(wave[0], False)
 # 부저 핀 setup
 GPIO.setup(buzzer, GPIO.OUT)
-################################
 
 # OLED 초기설정
 oled.fill(0)
