@@ -256,6 +256,7 @@ btnstandImage = Image.open('manual.bmp')
 setImage = Image.open('logo.bmp')
 sleepImage = Image.open('sleep.bmp')
 draw = ImageDraw.Draw(image)
+draw1 = ImageDraw.Draw(sleepImage)
 
 
 '''
@@ -803,10 +804,10 @@ return:
 '''
 sleep_list = ['↑', '↓']
 def sleepDetectMode(sleepDetectTime, light) :
-    draw.text((100, 0), sleep_list[0], font=font2, fill=light)
-    draw.text((100, 20), str(sleepDetectTime), font=font2, fill=light)
-    draw.text((100, 40), sleep_list[1], font=font2, fill=light)
-    oled.image(image)
+    draw1.text((100, 0), sleep_list[0], font=font2, fill=light)
+    draw1.text((100, 20), str(sleepDetectTime), font=font2, fill=light)
+    draw1.text((100, 40), sleep_list[1], font=font2, fill=light)
+    oled.image(sleepImage)
     oled.show()
     
     
@@ -1185,7 +1186,7 @@ def main():
                     mode_initial = True
                     ReSetMode(SET_HEIGHT, changeHeight, 255)
                     recognitionEnable = True  # 얼굴인식코드
-                oled.image(sleepImage)
+                    #oled.image(sleepImage)
                     #oled.show()
                     
                 sleepDetectMode(sleepDetectTime, 0)  
