@@ -760,23 +760,6 @@ def drawDisplay(light) :
     draw.text((40, 15), auto_list[4], font = font, fill = light)
     oled.image(image)
     oled.show()
-'''
-brief : display 출력
-note  : 
-param : 화면 출력 글
-return:
-'''
-def ReSetMode(line1, line2, line3, line4, line5, line6):
-    draw.text((100, 0), 'Up', font=font2, fill=0)
-    draw.text((100, 20), 'Mode', font=font2, fill=0)
-    draw.text((100, 40), 'Down', font=font2, fill=0)
-    draw.text((5, 0), line1, font=font2, fill=0)
-    draw.text((5, 15), line2, font=font2, fill=0)
-    draw.text((40, 15), line3, font=font2, fill=0)
-    draw.text((5, 30), line4, font=font2, fill=0)
-    draw.text((5, 45), line5, font=font2, fill=0)
-    draw.text((40, 45), line6, font=font2, fill=0)
-
 
 '''
 brief : 최적높이 재설정 모드 display
@@ -790,9 +773,9 @@ def ReSetMode(NowHeight, changeHeight, light) :
     draw.text((110, 20), reset_list[1], font=font2, fill=light)
     draw.text((110, 40), reset_list[2], font=font2, fill=light)
     draw.text((5, 0), str(NowHeight), font=font1, fill=light)
-    draw.text((30, 0), reset_list[3], font=font1, fill=light)
+    draw.text((40, 0), reset_list[3], font=font1, fill=light)
     draw.text((5, 40), str(changeHeight), font=font1, fill=light)
-    draw.text((30, 40), reset_list[3], font=font1, fill=light)
+    draw.text((40, 40), reset_list[3], font=font1, fill=light)
     oled.image(image)
     oled.show()
 
