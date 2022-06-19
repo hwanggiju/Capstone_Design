@@ -1007,13 +1007,13 @@ def main():
                 moveEnable = True
 
                 if moveEnable == True:
-                    if (waveSensorHeight + 2) < deskUserTall and stop == False: # 설정키보다 작다면
+                    if waveSensorHeight + 2 < deskUserTall and stop == False: # 설정키보다 작다면
                         stop = driverSet(100,2,2,100)
                         actionPre = 0  # down
                         fixAngleY = angleYmean  # 현재 각도고정
                         fixAngleX = angleX
                         Ki_term = 0
-                    elif waveSensorHeight + 2) > deskUserTall and stop == False: #설정키보다 크다면
+                    elif waveSensorHeight + 2 > deskUserTall and stop == False: #설정키보다 크다면
                         stop = driverSet(100, 1, 1, 100)
                         actionPre = 0  # down
                         fixAngleY = angleYmean  # 현재 각도고정
