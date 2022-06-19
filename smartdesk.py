@@ -1185,8 +1185,8 @@ def main():
                     mode_initial = True
                     ReSetMode(SET_HEIGHT, changeHeight, 255)
                     recognitionEnable = True  # 얼굴인식코드
-                    oled.image(sleepImage)
-                    oled.show()
+                oled.image(sleepImage)
+                    #oled.show()
                     
                 sleepDetectMode(sleepDetectTime, 0)  
                 
