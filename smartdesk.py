@@ -739,27 +739,27 @@ note  :
 param : 
 return:
 '''
-timeTest = True
+
 NowdeskDistance = 70
 ModeWaveAVG = [NowdeskDistance for i in range(5)]
-auto_list = ['U', 'M', 'D', 'Desk Tall', 'cm']
+auto_list = ['↑', 'M', '↓', 'Desk Tall', 'cm']
 def drawDisplay(light) :      
-    global timeTest, nowTime, preTime, NowdeskDistance
+    global nowTime, preTime, NowdeskDistance
     deskDistance = waveFunc()
     ModeWaveAVG[0] = deskDistance
     for i in range(len(ModeWaveAVG) - 1) :
         ModeWaveAVG[len(ModeWaveAVG) - i - 1] = ModeWaveAVG[len(ModeWaveAVG) - i - 2]
     deskDistance1 = np.mean(ModeWaveAVG) # 초음파 평균 거리
+    draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 255)
     NowdeskDistance = deskDistance1
     draw.text((100, 0), auto_list[0], font=font2, fill=light)
     draw.text((100, 20), auto_list[1], font=font2, fill=light)
     draw.text((100, 40), auto_list[2], font=font2, fill=light)
     draw.text((5, 0), auto_list[3], font=font, fill=light)
-    draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = light)
+    draw.text((5, 15), str(int(deskDistance1)), font = font, fill = light)
     draw.text((40, 15), auto_list[4], font = font, fill = light)
     oled.image(image)
     oled.show()
-
 '''
 brief : display 출력
 note  : 
@@ -784,15 +784,15 @@ note  :
 param : NowHeight(현재높이), changeHeight(변경높이)
 return:
 '''
-reset_list = ['U', 'M', 'D', 'cm']
+reset_list = ['↑', 'M', '↓', 'cm']
 def ReSetMode(NowHeight, changeHeight, light) :
     draw.text((100, 0), reset_list[0], font=font2, fill=light)
     draw.text((100, 20), reset_list[1], font=font2, fill=light)
     draw.text((100, 40), reset_list[2], font=font2, fill=light)
-    draw.text((5, 0), str(NowHeight), font=font2, fill=light)
-    draw.text((5, 15), reset_list[3], font=font2, fill=light)
-    draw.text((5, 40), str(changeHeight), font=font2, fill=light)
-    draw.text((5, 15), reset_list[3], font=font2, fill=light)
+    draw.text((5, 0), str(NowHeight), font=font1, fill=light)
+    draw.text((15, 0), reset_list[3], font=font1, fill=light)
+    draw.text((5, 40), str(changeHeight), font=font1, fill=light)
+    draw.text((15, 40), reset_list[3], font=font1, fill=light)
     oled.image(image)
     oled.show()
 
@@ -929,6 +929,7 @@ def main():
         sleepMode = False # 졸음감지 모드 활성화 여부
         mode_initial = False # 모드 이동시 시작 프로세스 동작여부
         mode_time_start = 0
+        
         # 모터 동작 반복
         while True:
             accel = mpu9250.readAccel()
@@ -1143,7 +1144,7 @@ def main():
                                 fixAngleX = angleX
                             addcontrol = True
                             actionPre = 0
-
+                    
                     elif GPIO.input(switch[0]) == 0 and btn_stop == True: # 버튼 눌렀다 땟을 때
                         driverSet(0, 0, 0, 0)
                         btn_stop = False
