@@ -253,7 +253,7 @@ logoImage = Image.open('logo.bmp')
 AutoImage = Image.open('auto.bmp')
 btnstandImage = Image.open('manual.bmp')
 setImage = Image.open('logo.bmp')
-sleepImage = Image.open('logo.bmp')
+sleepImage = Image.open('sleep.bmp')
 draw = ImageDraw.Draw(image)
 
 
