@@ -1029,6 +1029,7 @@ def main():
                     if (waveSensorMean + 3) > deskUserTall - 1 and (waveSensorMean + 3) < deskUserTall + 1:
                         driverSet(0, 0, 0, 0)
                         stop = False
+                        moveEnable == False
 
                 '''                        
                 #높이에 따른 모터작동
