@@ -544,6 +544,7 @@ param : faceWidth(얼굴폭), pixelX(좌표X), pixelY(좌표Y), nowHeight(현재
 return: 계산된 신장높이
 '''
 def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
+    global faceWidthAverage
     faceWidthAverage[0] = faceWidth
     sumHeight = 0
     for i in range(len(faceWidthAverage)):
