@@ -985,7 +985,7 @@ def main():
                     x2 = int(detect[i, 5] * w)
                     y2 = int(detect[i, 6] * h)
                     cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green ractangle
-
+                    cv2.rectangle(rotate_frame, (x1+1, y1+1), (x2-1, y2-1), (0, 255, 0))  # green ractangle
             # 일어났을 때 책상 최적의 높이
             if (waveSensorMean + 3) >= deskUserTall and actionPre == 2 and addcontrol != True :
                 stop = driverSet(0, 0, 0, 0)      
