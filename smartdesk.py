@@ -941,7 +941,7 @@ def main():
         wakeTime = 0 # 졸음감지 시간
         sleepMode = False # 졸음감지 모드 활성화 여부
         mode_initial = False # 모드 이동시 시작 프로세스 동작여부
-        
+        mode_time_start = 0
         # 모터 동작 반복
         while True:
             accel = mpu9250.readAccel()
@@ -1117,6 +1117,7 @@ def main():
                 time.sleep(0.05)
                 GPIO.output(buzzer, False)
                 mode_initial = False
+                mode_time_start = 0
 
             # 기본모드 : 자동 책상 높이 조절(사용자 인식)
             if Mode[0] == True :
@@ -1134,34 +1135,31 @@ def main():
                     mode_initial = True
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
                     oled.image(btnstandImage)
-                    for i in range(1000):
-                        time.sleep(0.001)
-                        oled.show()
+                    oled.show()
+                if nowTime - mode_time_start > 1:
+                    drawDisplay(0)
+                    if GPIO.input(switch[2]) == 1 : # up 버튼 눌렀을 때
+                        if btn_stop == False :
+                            btn_stop = driverSet(100, 2, 2, 100)
+                            if btn_stop == True:
+                                fixAngleY = angleY
+                                fixAngleX = angleX
+                            addcontrol = True
+                            actionPre = 2
 
-                drawDisplay(0)
+                    elif GPIO.input(switch[0]) == 1 : # Down 버튼 눌렀을 때
+                        if btn_stop == False :
+                            btn_stop = driverSet(100, 1, 1, 100)
+                            if btn_stop == True:
+                                fixAngleY = angleY
+                                fixAngleX = angleX
+                            addcontrol = True
+                            actionPre = 0
 
-                if GPIO.input(switch[2]) == 1 : # up 버튼 눌렀을 때
-                    if btn_stop == False :
-                        btn_stop = driverSet(100, 2, 2, 100)
-                        if btn_stop == True:
-                            fixAngleY = angleY
-                            fixAngleX = angleX
-                        addcontrol = True
-                        actionPre = 2
-
-                elif GPIO.input(switch[0]) == 1 : # Down 버튼 눌렀을 때
-                    if btn_stop == False :
-                        btn_stop = driverSet(100, 1, 1, 100)
-                        if btn_stop == True:
-                            fixAngleY = angleY
-                            fixAngleX = angleX
-                        addcontrol = True
-                        actionPre = 0
-
-                elif GPIO.input(switch[0]) == 0 and btn_stop == True: # 버튼 눌렀다 땟을 때
-                    driverSet(0, 0, 0, 0)
-                    btn_stop = False
-                    addcontrol == False
+                    elif GPIO.input(switch[0]) == 0 and btn_stop == True: # 버튼 눌렀다 땟을 때
+                        driverSet(0, 0, 0, 0)
+                        btn_stop = False
+                        addcontrol == False
 
             # 모드 2 : 키 설정 모드
             elif Mode[2] == True :
@@ -1171,26 +1169,26 @@ def main():
                     drawDisplay(255)
                     oled.image(setImage)
                     oled.show()
-                    
-                ReSetMode(SET_HEIGHT, changeHeight, 0)
-                
-                if GPIO.input(switch[2]) == 1 :
-                    changeHeight = SET_HEIGHT + 1
-                    deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
-                    SET_HEIGHT = changeHeight
-                    ReSetMode(SET_HEIGHT-1, changeHeight-1, 255)
-                    GPIO.output(buzzer, True)
-                    time.sleep(0.05)
-                    GPIO.output(buzzer, False)
-                    
-                if GPIO.input(switch[0]) == 1 :
-                    changeHeight = SET_HEIGHT - 1
-                    deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
-                    SET_HEIGHT = changeHeight
-                    ReSetMode(SET_HEIGHT+1, changeHeight+1, 255)
-                    GPIO.output(buzzer, True)
-                    time.sleep(0.05)
-                    GPIO.output(buzzer, False)
+                if nowTime - mode_time_start > 1:
+                    ReSetMode(SET_HEIGHT, changeHeight, 0)
+
+                    if GPIO.input(switch[2]) == 1 :
+                        changeHeight = SET_HEIGHT + 1
+                        deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
+                        SET_HEIGHT = changeHeight
+                        ReSetMode(SET_HEIGHT-1, changeHeight-1, 255)
+                        GPIO.output(buzzer, True)
+                        time.sleep(0.05)
+                        GPIO.output(buzzer, False)
+
+                    if GPIO.input(switch[0]) == 1 :
+                        changeHeight = SET_HEIGHT - 1
+                        deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
+                        SET_HEIGHT = changeHeight
+                        ReSetMode(SET_HEIGHT+1, changeHeight+1, 255)
+                        GPIO.output(buzzer, True)
+                        time.sleep(0.05)
+                        GPIO.output(buzzer, False)
 
             # 설 정 키 확인?
             elif Mode[3] == True :
