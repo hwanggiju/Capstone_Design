@@ -900,9 +900,10 @@ def main():
         idx = 0
         wakeTime = 0 # 졸음감지 시간
         mode_initial = False # 모드 이동시 시작 프로세스 동작여부
-        mode_time_start = 0
-        moveEnable = False # 큰 움직임이 있을 때 모터 동작 여부
-
+        mode_time_start = 0 # 모드 초기 시작시 OLED 오동작 방지를 감안한 타임 인터럽트용 변수
+        # 움직임 감지를 통한 높이 재설정 에 필요한 모듈 순차용 변수 [감지/변경/이동]
+        recognitionMode = [True, False, False]
+        deskMoveTall = 100 # 높이 산출 후 이동해야할 책상의 높이
 
         # 모터 동작 반복
         while True:
@@ -1002,24 +1003,39 @@ def main():
                 HeightAVG[0] = userHeight
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다
 
-                # 큰 움직임이 있을 때 모터 작동으로 변경 / 현재 높이에서 20CM 오차가 발생시 실행
-                if abs(userHeightAVG - (waveSensorHeight + 70)) > 10 and moveEnables == False:
-                    moveEnable = True
+                # 큰 움직임이 있을 때
+                # 움직임에 의한 길이 조절 모드로 들어감
+                # 어느정도 안정화된 모션이 감지되면
+                # 모터 작동으로 변경
+                val_list = [ 0 for i in range(10)] # 표준변화량을 알기 위한 어레이
+                if abs(userHeightAVG - (waveSensorHeight + 70)) > 10 and recognitionMode[0] == True:
+                    recognitionMode[0] = False # 변화량 감지 중지
+                    recognitionMode[1] = True  # 안정길이 산출 활성화
                     stop = False
-                    if userHeightAVG - (waveSensorHeight + 60) < 0:
-                        deskUserTall = 70
-                    else:
-                        deskUserTall = 100
-
-                if moveEnable == True:
-                    if(waveSensorMean) > deskUserTall - 2 and (waveSensorMean) < deskUserTall + 2:
+                if recognitionMode[1] == True: # 길이의 변화량이 적을때를 감지
+                    for i in range(len(val_list)): # 변화량 입력
+                        val_list[i] = HeightAVG[i]
+                    val_AVG = np.mean(val_list) #평균 도출
+                    for i in range(len(val_list)):
+                        val_list[i] = pow((val_list[i] - val_AVG), 2)
+                    val_VAR = np.mean(val_list) # 분산 도출
+                    val_DEV = math.sqrt(val_VAR)# 표준편차 도출
+                    if val_DEV < 0.1:
+                        deskMoveTall = userHeightAVG - deskUserTall # 현재감지된 키 - 적정 사람-책상거리
+                        if deskMoveTall < 73: #최소높이 고정
+                            deskMoveTall = 73
+                        recognitionMode[1] = False
+                        recognitionMode[2] = True
+                if recognitionMode[2] == True: # 모터 작동 모드
+                    if(waveSensorMean) > deskMoveTall - 2 and (waveSensorMean) < deskMoveTall + 2:
                         pwmA_AVG = 0
                         pwmB_AVG = 0
                         fixAngleY = angleY  # 현재 각도고정
                         fixAngleX = angleX
                         stop = driverSet(0, 0, 0, 0)
-                        moveEnable = False
-                    elif waveSensorHeight < deskUserTall - 2 and stop == False: # 설정키보다 작다면
+                        recognitionMode[2] = False
+                        recognitionMode[0] = True
+                    elif waveSensorHeight < deskMoveTall - 2 and stop == False: # 설정키보다 작다면
                         pwmA_AVG = 0
                         pwmB_AVG = 0
                         fixAngleY = angleY  # 현재 각도고정
@@ -1027,7 +1043,7 @@ def main():
                         stop = driverSet(0, 2, 2, 0)
                         actionPre = 2  # down
                         Ki_term = 0
-                    elif waveSensorHeight > deskUserTall + 2 and stop == False: #설정키보다 크다면
+                    elif waveSensorHeight > deskMoveTall + 2 and stop == False: #설정키보다 크다면
                         pwmA_AVG = 0
                         pwmB_AVG = 0
                         fixAngleY = angleY  # 현재 각도고정
@@ -1037,7 +1053,7 @@ def main():
                         Ki_term = 0
 
                 '''                        
-                #높이에 따른 모터작동
+                #높이에 따른 모터작동 ///단순 작동ㅇ
                 if stop == False and recognitionMotorEnable == True: # 드라이버 pin Set 변경 후 반복 변경 방지
                     # 앉았을 때, 책상의 최적 높이 설정
                     # down
@@ -1188,7 +1204,7 @@ def main():
                     if GPIO.input(switch[2]) == 1 :
                         changeHeight = SET_HEIGHT + 1
                         bestDeskTall = changeHeight * 0.23 + changeHeight * 0.18
-                        deskUserTall = changeHeight - bestDeskTall
+                        deskUserTall = changeHeight - bestDeskTall # 변경 키 - 계산키
                         SET_HEIGHT = changeHeight
                         ReSetMode(SET_HEIGHT-1, changeHeight-1, 255)
                         GPIO.output(buzzer, True)
