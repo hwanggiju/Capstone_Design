@@ -56,7 +56,7 @@ line_labels = ['User Height',
 line1 = ax[0][0].plot(x_val, heightLine, color='red')[0]     # 인식 높이
 line2 = ax[0][0].plot(x_val, heightLine, color='orange')[0]    # 높이 상보필터
 line3 = ax[0][1].plot(x_val, deskLine, color='green')[0]   # 현재 책상 높이
-line4 = ax[0][1].plot(x_val, deskLine, color='yellow')[0]  # 주천 높이
+line4 = ax[0][1].plot(x_val, deskLine, color='orange')[0]  # 주천 높이
 line5 = ax[1][0].plot(x_val, angleLine, color='blue')[0]      # 각 X
 line6 = ax[1][0].plot(x_val, angleLine, color='navy')[0]     # 각 Y
 line7 = ax[1][1].plot(x_val, pwmLine, color='purple')[0]        # pwm A
