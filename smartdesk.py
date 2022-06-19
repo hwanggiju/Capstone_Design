@@ -1005,10 +1005,10 @@ def main():
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다
 
                 # 큰 움직임이 있을 때 모터 작동으로 변경
-                if abs(userHeightAVG - (waveSensorHeight + 50)) > 20 and moveEnable == False:
+                if abs(userHeightAVG - (waveSensorHeight + 60)) > 20 and moveEnable == False:
                     moveEnable = True
                     stop = False
-                    if userHeightAVG - (waveSensorHeight + 50) < 0:
+                    if userHeightAVG - (waveSensorHeight + 60) < 0:
                         deskUserTall = 70
                     else:
                         deskUserTall = 100
