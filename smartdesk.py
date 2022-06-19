@@ -136,7 +136,7 @@ GYRO_ZOUT_H  = 0x47     # Low는 0x48
 ################################
 # I2C Bus 초기화
 I2C_bus = smbus.SMBus(1)
-MPU_addr = 0x68 #MPU9250 address
+MPU_addr = 0x68
 
 ################################
 # SPI Setting
@@ -327,7 +327,8 @@ def get_raw_data():
     accel_xout = read_word_2c(ACCEL_XOUT_H)
     accel_yout = read_word_2c(ACCEL_YOUT_H)
     accel_zout = read_word_2c(ACCEL_ZOUT_H)
-    return accel_xout, accel_yout, accel_zout, gyro_xout, gyro_yout, gyro_zout
+    return accel_xout, accel_yout, accel_zout,
+           gyro_xout, gyro_yout, gyro_zout
 
 
 '''
@@ -831,7 +832,7 @@ def sleepDetectMode() :
     pass
 
 #######################################################################
-##                            MAIN CODE                              ##
+#                             MAIN CODE                               #
 #######################################################################
 def main():
     global actionNow, actionPre, bestDeskTall, fixAngleX, fixAngleY
@@ -1088,12 +1089,8 @@ def main():
                     elif userHeightAVG > 150 and actionPre != 2:
                         stop = False
             elif recognitionEnable == True: # 사용자 인식 중 1명이 아닌 경우 즉 0명 or 여러명
-<<<<<<< HEAD
                 
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
-=======
-                print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
->>>>>>> 1a28a7f51aaa7f732d2ebae6dbcce17965484040
             # 그래프 표시 (얼굴인식안되어도 작동)
             y_valDesk[0] = waveSensorHeight + 2
             gyrosensorX[0] = angleX - fixAngleX
@@ -1147,11 +1144,11 @@ def main():
                 if mode_initial == False: # 모드 진입시 초기설정
                     mode_initial = True
                     recognitionEnable = True # 얼굴인식코드 활성화
+                    oled.image(AutoImage)
+                    oled.show()
                     oled.fill(0)
                     oled.show()
                     
-                oled.image(AutoImage)
-                oled.show()
 
             # 모드 1 : 수동 책상 높이 조절
             elif Mode[1] == True :
@@ -1242,7 +1239,7 @@ def main():
                     state = False
                     
                 else :
-                    if nowTime - wakeTime > sleepDetectTime : #인식 불과 시점
+                    if nowTime - wakeTime > sleepDetectTime : #인식 불과 시첨
                         if state == True :
                             GPIO.output(buzzer, False)
                             stop = driverSet(100, 2, 2, 100)
