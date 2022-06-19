@@ -904,7 +904,6 @@ def main():
         # 움직임 감지를 통한 높이 재설정 에 필요한 모듈 순차용 변수 [감지/변경/이동]
         recognitionMode = [False, True, False]
         deskMoveTall = 100 # 높이 산출 후 이동해야할 책상의 높이
-
         # 모터 동작 반복
         while True:
             accel = mpu9250.readAccel()
@@ -1260,7 +1259,7 @@ def main():
                 
                 if nowTime - wakeTime > sleepDetectTime : #인식 불과 시첨
                     GPIO.output(buzzer, False)
-                    stop = driverSet(100, 2, 2, 100)
+                    #stop = driverSet(100, 2, 2, 100)
                     
                 elif nowTime - wakeTime > sleepDetectTime - 30 :
                         GPIO.output(buzzer, True)
