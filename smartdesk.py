@@ -221,7 +221,6 @@ cameraWaveDifference = 46 # 카메라 - 센서간 높이차이
 deskAngle = 0 #28 # 책상 판과 카메라 중심까지의 각도
 deskUserAngle = -1 # 책상 판과 사용자 높이 사이의 각도
 cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
-maxPwm = 0 # 점진적 속도 증가를 위한 변수
 
 #하드웨어 초기설정
 for i in range(len(driver)): #모터 드라이버 핀
@@ -599,21 +598,21 @@ pwmA_AVG = 0
 pwmB_AVG = 0
 preMotorState = 0
 def HorizontalHold(nowAngle, compareAngle):
-    global pwmA, pwmB, preMotorState, pwmB_AVG, pwmA_AVG, maxPwm
+    global pwmA, pwmB, preMotorState, pwmB_AVG, pwmA_AVG
     angleDiff = nowAngle - compareAngle
     if actionPre == 2:
         if angleDiff > 0 and preMotorState == 1:
             preMotorState = 0 #각 차값이 양수
-            pwmA = maxPwm
-            pwmB = maxPwm
+            pwmA = 100
+            pwmB = 100
         elif angleDiff > 0:
             if pwmA > 20:
                 pwmA -= 5
             preMotorState = 0
         elif angleDiff < 0 and preMotorState == 0:
             preMotorState = 1 #각 차값이 음수
-            pwmA = maxPwm
-            pwmB = maxPwm
+            pwmA = 100
+            pwmB = 100
         elif angleDiff < 0:
             if pwmB > 20:
                 pwmB -= 5
@@ -621,16 +620,16 @@ def HorizontalHold(nowAngle, compareAngle):
     elif actionPre == 0:
         if angleDiff > 0 and preMotorState == 1:
             preMotorState = 0 #각 차값이 양수
-            pwmA = maxPwm
-            pwmB = maxPwm
+            pwmA = 100
+            pwmB = 100
         elif angleDiff > 0:
             if pwmB > 20:
                 pwmB -= 5
             preMotorState = 0
         elif angleDiff < 0 and preMotorState == 0:
             preMotorState = 1 #각 차값이 음수
-            pwmA = maxPwm
-            pwmB = maxPwm
+            pwmA = 100
+            pwmB = 100
         elif angleDiff < 0:
             if pwmA > 20:
                 pwmA -= 5
@@ -649,7 +648,7 @@ param : enA(모터A 펄스), motorA(모터 방향), motorB(모터 방향), enB(�
 return: 변경완료여부
 '''
 def driverSet(enA, motorA, motorB, enB):
-    global initial, nowTime, preTime, maxPwm
+    global initial, nowTime, preTime
     if initial == True:
         preTime = time.time()
         initial = False
@@ -678,7 +677,6 @@ def driverSet(enA, motorA, motorB, enB):
         changePWM(enA, enB)
         initial = True
         preTime = nowTime
-        maxPwm = 10
         return True
     else:
         return False
@@ -791,7 +789,7 @@ def sleepDetectMode(sleepDetectTime, light) :
 #######################################################################
 def main():
     global actionNow, actionPre, bestDeskTall, fixAngleX, fixAngleY
-    global nowTime, preTime, maxPwm
+    global nowTime, preTime
     global deskAngle, Ki_term, deskUserTall
     global recognitionEnable, sleepDetectTime, recognitionMotorEnable
     try :
@@ -949,8 +947,6 @@ def main():
             angleYmean = np.mean(angleAVG)
             if TESTMODE == False:
                 print("nani = ", round(angleY, 4))
-            if maxPwm < 100: #점진적 속도변화를 위한 값
-                maxPwm = maxPwm + 10
             # 수평 자세 유지 코드 (현재 각도, 작동시 각도)
             ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY)
             
@@ -1020,18 +1016,24 @@ def main():
                         stop = driverSet(0, 0, 0, 0)
                         fixAngleY = angleY  # 현재 각도고정
                         fixAngleX = angleX
+                        pwmA_AVG = 0
+                        pwmB_AVG = 0
                         moveEnable = False
                     elif waveSensorHeight < deskUserTall - 2 and stop == False: # 설정키보다 작다면
                         stop = driverSet(100,2,2,100)
                         actionPre = 2  # down
                         fixAngleY = angleY  # 현재 각도고정
                         fixAngleX = angleX
+                        pwmA_AVG = 0
+                        pwmB_AVG = 0
                         Ki_term = 0
                     elif waveSensorHeight > deskUserTall + 2 and stop == False: #설정키보다 크다면
                         stop = driverSet(100, 1, 1, 100)
                         actionPre = 0  # down
                         fixAngleY = angleY  # 현재 각도고정
                         fixAngleX = angleX
+                        pwmA_AVG = 0
+                        pwmB_AVG = 0
                         Ki_term = 0
 
                 '''                        
