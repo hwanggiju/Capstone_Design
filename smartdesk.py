@@ -789,7 +789,7 @@ def sleepDetectMode(sleepDetectTime, light) :
 #######################################################################
 def main():
     global actionNow, actionPre, bestDeskTall, fixAngleX, fixAngleY
-    global nowTime, preTime
+    global nowTime, preTime, pwmA_AVG, pwmB_AVG
     global deskAngle, Ki_term, deskUserTall
     global recognitionEnable, sleepDetectTime, recognitionMotorEnable
     try :
