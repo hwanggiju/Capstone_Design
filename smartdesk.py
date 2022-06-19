@@ -801,9 +801,15 @@ note  : 수정중
 param : 
 return: 
 '''
-def sleepDetectMode() :
-    pass
-
+sleep_list = ['↑', '↓']
+def sleepDetectMode(sleepDetectTime, light) :
+    draw.text((100, 20), sleep_list[0], font=font2, fill=light)
+    draw.text((100, 20), str(sleepDetectTime), font=font2, fill=light)
+    draw.text((100, 20), sleep_list[1], font=font2, fill=light)
+    oled.image(image)
+    oled.show()
+    
+    
 #######################################################################
 #                             MAIN CODE                               #
 #######################################################################
@@ -873,6 +879,7 @@ def main():
                         GPIO.output(buzzer, False)
                         
                     elif GPIO.input(switch[1]) == 1 :
+                        OLED_initial_setting_Height(SET_HEIGHT, 255)
                         confirm_disp(SET_HEIGHT, 255)
                         SET_HEIGHT = SET_HEIGHT
                         bestDeskTall = SET_HEIGHT * 0.23 + SET_HEIGHT * 0.18
@@ -1169,7 +1176,7 @@ def main():
                         time.sleep(0.05)
                         GPIO.output(buzzer, False)
 
-            # 설 정 키 확인?
+            # 졸음 ON/OFF
             elif Mode[3] == True :
                 if mode_initial == False:  # 모드 진입시 초기설정
                     mode_initial = True
@@ -1196,7 +1203,7 @@ def main():
                     GPIO.output(buzzer, False)
                     stop = driverSet(0, 0, 0 ,0)
                     state = False
-                    
+            
                 else :
                     if nowTime - wakeTime > sleepDetectTime : #인식 불과 시첨
                         if state == True :
@@ -1208,7 +1215,13 @@ def main():
                         time.sleep((nowTime - wakeTime)*0.02) #시간차 점진적 빠르기
                         GPIO.output(buzzer, False)
                         state = True
-                        
+                sleepDetectMode(sleepDetectTime, 0)     
+                if GPIO.input(switch[2]) == 1 :
+                    sleepDetectTime += 1
+                    sleepDetectMode(sleepDetectTime-1, 255)
+                elif GPIO.input(switch[0]) == 1 :
+                    sleepDetectTime -= 1    
+                    sleepDetectMode(sleepDetectTime+1, 255)
 
     except KeyboardInterrupt :
         pass
