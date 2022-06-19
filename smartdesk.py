@@ -656,7 +656,6 @@ def driverSet(enA, motorA, motorB, enB):
     changePWM(0, 0)
     for i in range(1, len(driver)-1):
         GPIO.output(driver[i], 0)
-    maxPwm = 10
     if nowTime - preTime > 0.5: # 작동 딜레이 드라이버 보호용
         if motorA == 2:#up
             GPIO.output(driver[1], 0)
@@ -679,6 +678,10 @@ def driverSet(enA, motorA, motorB, enB):
         changePWM(enA, enB)
         initial = True
         preTime = nowTime
+        maxPwm = 10
+        for i in range(graphRow):
+            ENA_PWM[i] = 0
+            ENB_PWM[i] = 0
         return True
     else:
         return False
