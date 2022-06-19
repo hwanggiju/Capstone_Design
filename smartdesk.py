@@ -1009,9 +1009,9 @@ def main():
                 # 큰 움직임이 있을 때 모터 작동으로 변경
                 if abs(userHeightAVG - userHeight) > 3 and moveEnable == False:
                     moveEnable = True
-                    if userHeight < 140 and deskUserTall > 90:
+                    if userHeight < 140 and deskUserTall > SET_HEIGHT - 40:
                         deskUserTall = deskUserTall + 30
-                    elif userHeight >= 140 and deskUserTall <= 90:
+                    elif userHeight >= 140 and deskUserTall <= SET_HEIGHT - 70:
                         deskUserTall = deskUserTall - 30
                 if moveEnable == True:
                     if waveSensorHeight + 2 < deskUserTall and stop == False: # 설정키보다 작다면
