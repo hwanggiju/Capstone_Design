@@ -894,6 +894,7 @@ def main():
         addcontrol = False
         HeightAVG = [150 for i in range(15)]
         WaveAVG = [waveSensorHeight for i in range(10)]
+        angleAVG = [0 for i in range(8)]
         # 디스플레이 모드 - 기본 모드 : 1, 최적의 책상 높이 재설정 모드 : 2, 졸음 기능 on/off 모드 : 3
         Mode = [True, False, False, False]
         idx = 0
@@ -938,6 +939,9 @@ def main():
             # nani 각도 코드 테스트
             angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
             deskAngle = angleX - fixAngleX #카메라 각도입력
+            for i in range(len(angleAVG) - 1):
+                angleAVG[len(angleAVG) - i - 1] = angleAVG[len(angleAVG) - i - 2]
+            angleYmean = np.mean(angleAVG)
             if TESTMODE == False:
                 print("nani = ", round(angleY, 4))
 
@@ -1002,7 +1006,7 @@ def main():
                     if userHeightAVG < 140 :
                         stop = driverSet(100, 1, 1, 100)  
                         actionPre = 0#down
-                        fixAngleY = angleY  # 현재 각도고정
+                        fixAngleY = angleYmean  # 현재 각도고정
                         fixAngleX = angleX
                         Ki_term = 0
                         print("down")
@@ -1010,14 +1014,14 @@ def main():
                     elif userHeightAVG > 150 :
                         stop = driverSet(100, 2, 2, 100)
                         actionPre = 2#up
-                        fixAngleY = angleY  # 현재 각도고정
+                        fixAngleY = angleYmean  # 현재 각도고정
                         fixAngleX = angleX
                         Ki_term = 0
                         print("up")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
                         actionPre = 1#stop
-                        fixAngleY = angleY
+                        fixAngleY = angleYmean
                         fixAngleX = angleX
                         Ki_term = 0
                         print("stop")
@@ -1028,7 +1032,8 @@ def main():
                         stop = False
             elif recognitionEnable == True: # 사용자 인식 중 1명이 아닌 경우 즉 0명 or 여러명
                 pass
-            print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
+            if TESTMODE == False:
+                print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             # 그래프 표시 (얼굴인식안되어도 작동)
             y_valDesk[0] = waveSensorHeight + 2
             gyrosensorX[0] = angleX - fixAngleX
