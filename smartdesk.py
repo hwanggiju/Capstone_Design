@@ -939,6 +939,7 @@ def main():
             # nani 각도 코드 테스트
             angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
             deskAngle = angleX - fixAngleX #카메라 각도입력
+            angleAVG[0] = angleY
             for i in range(len(angleAVG) - 1):
                 angleAVG[len(angleAVG) - i - 1] = angleAVG[len(angleAVG) - i - 2]
             angleYmean = np.mean(angleAVG)
