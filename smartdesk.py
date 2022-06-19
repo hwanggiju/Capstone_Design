@@ -1229,7 +1229,7 @@ def main():
                     state = False
                     
                 else :
-                    if nowTime - wakeTime > sleepDetectTime : #인식 불과 시첨
+                    if nowTime - wakeTime > sleepDetectTime : #인식 불과 시점
                         if state == True :
                             GPIO.output(buzzer, False)
                             stop = driverSet(100, 2, 2, 100)
