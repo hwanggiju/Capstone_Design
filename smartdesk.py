@@ -1131,13 +1131,12 @@ def main():
             # 모드 1 : 수동 책상 높이 조절
             elif Mode[1] == True :
                 if mode_initial == False : # 모드 진입시 초기설정
-                    oled.fill(0)
                     mode_initial = True
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
-                    oled.image(btnstandImage)
+                    #oled.image(btnstandImage)
                     oled.show()
                     time.sleep(1)
-                    #oled.fill(0)
+                    oled.fill(0)
                        
                 drawDisplay(0)
                 
