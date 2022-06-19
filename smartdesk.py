@@ -250,6 +250,10 @@ font3 = ImageFont.truetype('malgun.ttf', 13)
 
 image = Image.new('1', (oled.width, oled.height), 255)
 logoImage = Image.open('logo.bmp')
+AutoImage = Image.open('automode.bmp')
+btnstandImage = Image.open('manualmode.bmp')
+setImage = Image.open('logo.bmp')
+sleepImage = Image.open('logo.bmp')
 draw = ImageDraw.Draw(image)
 
 
@@ -1085,7 +1089,7 @@ def main():
                     elif userHeightAVG > 150 and actionPre != 2:
                         stop = False
             elif recognitionEnable == True: # 사용자 인식 중 1명이 아닌 경우 즉 0명 or 여러명
-
+                
             print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             # 그래프 표시 (얼굴인식안되어도 작동)
             y_valDesk[0] = waveSensorHeight + 2
@@ -1140,14 +1144,22 @@ def main():
                 if mode_initial == False: # 모드 진입시 초기설정
                     mode_initial = True
                     recognitionEnable = True # 얼굴인식코드 활성화
-                    draw.text((5, 0), 'AUTO MODE', font=font, fill=255)
+                    oled.fill(0)
+                    oled.show()
+                    
+                oled.image(AutoImage)
+                oled.show()
 
             # 모드 1 : 수동 책상 높이 조절
             elif Mode[1] == True :
                 if mode_initial == False : # 모드 진입시 초기설정
                     mode_initial = True
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
-                drawDisplay()
+                    oled.fill(0)
+                    oled.show()
+                # drawDisplay()
+                oled.image(btnstandImage)
+                oled.show()
                 if GPIO.input(switch[2]) == 1 : # up 버튼 눌렀을 때
                     if btn_stop == False :
                         btn_stop = driverSet(100, 2, 2, 100)
@@ -1176,10 +1188,11 @@ def main():
                 if mode_initial == False:  # 모드 진입시 초기설정
                     mode_initial = True
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
-                draw.text((5, 0), 'Desk Tall', font=font, fill=255)
-                draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 255)
-                draw.text((40, 15), 'cm', font = font, fill = 255)
-                ReSetMode(SET_HEIGHT, changeHeight)
+                    oled.fill(0)
+                    oled.show()
+                # ReSetMode(SET_HEIGHT, changeHeight)
+                oled.image(setImage)
+                oled.show()
                 if GPIO.input(switch[2]) == 1 :
                     changeHeight = SET_HEIGHT + 1
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
@@ -1201,13 +1214,10 @@ def main():
                 if mode_initial == False:  # 모드 진입시 초기설정
                     mode_initial = True
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
-                    draw.text((5, 0), '-Now Best Tall-', font=font2, fill=255)
-                    draw.text((5, 15), str(int(SET_HEIGHT)), font=font2, fill=255)
-                    draw.text((40, 15), 'cm', font = font2, fill = 255)
-                    draw.text((5, 30), '-Change Tall-', font=font2, fill=255)
-                    draw.text((5, 45), str(int(changeHeight)), font=font2, fill=255)
-                    draw.text((40, 45), 'cm', font = font2, fill = 255)
-                
+                    oled.fill(0)
+                    oled.show()
+                oled.image(sleepImage)
+                oled.show()
                 if GPIO.input(switch[2]) == 1 :
                     sleepMode = True
                     GPIO.output(buzzer, True)
