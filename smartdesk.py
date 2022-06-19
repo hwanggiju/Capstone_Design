@@ -1017,7 +1017,7 @@ def main():
                         deskMoveTall = 73
                     elif deskMoveTall > 120:
                         deskMoveTall = 120
-                    if val_DEV < 0.6:
+                    if val_DEV < 0.7:
                         GPIO.output(buzzer, True)
                         time.sleep(0.01)
                         GPIO.output(buzzer, False)
