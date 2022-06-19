@@ -1136,7 +1136,7 @@ def main():
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
                     oled.image(btnstandImage)
                     oled.show()
-                if nowTime - mode_time_start > 1:
+                if nowTime - mode_time_start > 1: # 이미지 show 오류 방지
                     drawDisplay(0)
                     if GPIO.input(switch[2]) == 1 : # up 버튼 눌렀을 때
                         if btn_stop == False :
@@ -1169,7 +1169,7 @@ def main():
                     drawDisplay(255)
                     oled.image(setImage)
                     oled.show()
-                if nowTime - mode_time_start > 1:
+                if nowTime - mode_time_start > 1: # 이미지 show 오류 방지
                     ReSetMode(SET_HEIGHT, changeHeight, 0)
 
                     if GPIO.input(switch[2]) == 1 :
