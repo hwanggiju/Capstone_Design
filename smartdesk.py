@@ -1003,7 +1003,7 @@ def main():
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
 
                 # 큰 움직임이 있을 때 모터 작동으로 변경
-                if abs(userHeightAVG - userHeight) > 20:
+                if abs(userHeightAVG - userHeight) > 10:
                     moveEnable = True
 
                 if moveEnable == True:
