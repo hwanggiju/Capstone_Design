@@ -1202,7 +1202,7 @@ def main():
                     time.sleep(0.05)
                     GPIO.output(buzzer, False)
                     
-                if GPIO.input(switch[0]) == 1 :
+                if GPIO.input(switch[0]) == 1 and sleepDetectTime > 40:
                     sleepDetectTime -= 10
                     sleepDetectMode(sleepDetectTime+10, 255)
                     GPIO.output(buzzer, True)
@@ -1213,7 +1213,7 @@ def main():
                     GPIO.output(buzzer, False)
                     stop = driverSet(100, 2, 2, 100)
                     
-                elif nowTime - wakeTime > sleepDetectTime - 20 :
+                elif nowTime - wakeTime > sleepDetectTime - 30 :
                         GPIO.output(buzzer, True)
                         time.sleep(0.05)
                         GPIO.output(buzzer, False) 
