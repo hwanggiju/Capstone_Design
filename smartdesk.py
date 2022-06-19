@@ -1134,9 +1134,9 @@ def main():
                     mode_initial = True
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
                     #oled.image(btnstandImage)
-                    oled.show()
-                    time.sleep(1)
-                    oled.fill(0)
+                    #oled.show()
+                    #time.sleep(1)
+                    #oled.fill(0)
                        
                 drawDisplay(0)
                 
