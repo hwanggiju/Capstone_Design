@@ -775,6 +775,23 @@ def eraseDisplay() :
     oled.image(image)
     oled.show()
 
+'''
+brief : display 출력
+note  : 
+param : 화면 출력 글
+return:
+'''
+def printOLED(line1, line2, line3, line4, line5, line6):
+    draw.text((100, 0), 'Up', font=font2, fill=0)
+    draw.text((100, 20), 'Mode', font=font2, fill=0)
+    draw.text((100, 40), 'Down', font=font2, fill=0)
+    draw.text((5, 0), line1, font=font2, fill=0)
+    draw.text((5, 15), line2, font=font2, fill=0)
+    draw.text((40, 15), line3, font=font2, fill=0)
+    draw.text((5, 30), line4, font=font2, fill=0)
+    draw.text((5, 45), line5, font=font2, fill=0)
+    draw.text((40, 45), line6, font=font2, fill=0)
+
 
 '''
 brief : 최적높이 재설정 모드 display
@@ -787,15 +804,13 @@ nowpreHeight = 0
 def ReSetMode(NowHeight, changeHeight) :
     global prechange, nowpreHeight
     eraseReSetMode(nowpreHeight, prechange)
-    draw.text((100, 0), 'Up', font=font2, fill=0)
-    draw.text((100, 20), 'Mode', font=font2, fill=0)
-    draw.text((100, 40), 'Down', font=font2, fill=0)
-    draw.text((5, 0), '-Now Best Tall-', font=font2, fill=0)
-    draw.text((5, 15), str(int(NowHeight)), font=font2, fill=0)
-    draw.text((40, 15), 'cm', font = font2, fill = 0)
-    draw.text((5, 30), '-Change Tall-', font=font2, fill=0)
-    draw.text((5, 45), str(int(changeHeight)), font=font2, fill=0)
-    draw.text((40, 45), 'cm', font = font2, fill = 0)
+    printOLED('Up',
+              'Mode',
+              '-Now Best Tall-',
+              str(int(NowHeight)),
+              'cm',
+              str(int(changeHeight)),
+              'cm')
     prechange = changeHeight
     nowpreHeight = NowHeight
     oled.image(image)
