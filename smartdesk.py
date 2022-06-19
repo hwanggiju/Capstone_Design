@@ -894,7 +894,7 @@ def main():
         addcontrol = False
         HeightAVG = [150 for i in range(15)]
         WaveAVG = [waveSensorHeight for i in range(10)]
-        angleAVG = [0 for i in range(8)]
+        angleAVG = [0 for i in range(10)]
         # 디스플레이 모드 - 기본 모드 : 1, 최적의 책상 높이 재설정 모드 : 2, 졸음 기능 on/off 모드 : 3
         Mode = [True, False, False, False]
         idx = 0
@@ -1017,7 +1017,7 @@ def main():
                         deskMoveTall = 73
                     elif deskMoveTall > 120:
                         deskMoveTall = 120
-                    if val_DEV < 0.7:
+                    if val_DEV < 0.8:
                         GPIO.output(buzzer, True)
                         time.sleep(0.01)
                         GPIO.output(buzzer, False)
