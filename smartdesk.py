@@ -902,7 +902,7 @@ def main():
         wakeTime = 0 # 졸음감지 시간
         mode_initial = False # 모드 이동시 시작 프로세스 동작여부
         mode_time_start = 0
-        
+        moveEnable = False # 큰 움직임이 있을 때 모터 동작 여부
         # 모터 동작 반복
         while True:
             accel = mpu9250.readAccel()
@@ -1001,7 +1001,28 @@ def main():
                 y_valAVG[0] = userHeightAVG
                 HeightAVG[0] = userHeight
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
-                    
+
+                # 큰 움직임이 있을 때 모터 작동으로 변경
+                if abs(userHeightAVG - userHeight) > 20:
+                    moveEnable = True
+
+                if moveEnable == True:
+                    if (waveSensorMean + 3) < deskUserTall and stop == False: # 설정키보다 작다면
+                        stop = driverSet(100,2,2,100)
+                        actionPre = 0  # down
+                        fixAngleY = angleYmean  # 현재 각도고정
+                        fixAngleX = angleX
+                        Ki_term = 0
+                    elif (waveSensorMean + 3) > deskUserTall and stop == False: #설정키보다 크다면
+                        stop = driverSet(100, 1, 1, 100)
+                        actionPre = 0  # down
+                        fixAngleY = angleYmean  # 현재 각도고정
+                        fixAngleX = angleX
+                        Ki_term = 0
+                    if (waveSensorMean + 3) > deskUserTall - 1 and (waveSensorMean + 3) < deskUserTall + 1:
+                        moveEnable == False
+
+                '''                        
                 #높이에 따른 모터작동
                 if stop == False and recognitionMotorEnable == True: # 드라이버 pin Set 변경 후 반복 변경 방지
                     # 앉았을 때, 책상의 최적 높이 설정
@@ -1023,6 +1044,8 @@ def main():
                         Ki_term = 0
                         if TESTMODE == False:
                             print("up")
+
+
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
                         actionPre = 1 # stop
@@ -1032,10 +1055,14 @@ def main():
                         if TESTMODE == False:
                             print("stop")
                 else:
+                    if (waveSensorMean + 3) >= deskUserTall:
+                        stop = driverSet(0, 0, 0, 0)
+
                     if userHeightAVG < 140 and actionPre != 0:
                         stop = False
                     elif userHeightAVG > 150 and actionPre != 2:
                         stop = False
+                '''
             elif recognitionEnable == True: # 사용자 인식 중 1명이 아닌 경우 즉 0명 or 여러명
                 pass
             if TESTMODE == False:
