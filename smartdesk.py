@@ -593,10 +593,10 @@ note  : 가중치 가변 방식
 param : nowAngle(현재 각도), comepareAngle(기준이 될 각도)
 return: 각 모터 펄스 주기
 '''
-pwmA = 100
-pwmB = 100
-pwmA_AVG = 100
-pwmB_AVG = 100
+pwmA = 0
+pwmB = 0
+pwmA_AVG = 0
+pwmB_AVG = 0
 preMotorState = 0
 def HorizontalHold(nowAngle, compareAngle):
     global pwmA, pwmB, preMotorState, pwmB_AVG, pwmA_AVG, maxPwm
@@ -679,9 +679,6 @@ def driverSet(enA, motorA, motorB, enB):
         initial = True
         preTime = nowTime
         maxPwm = 10
-        for i in range(graphRow):
-            ENA_PWM[i] = 0
-            ENB_PWM[i] = 0
         return True
     else:
         return False
