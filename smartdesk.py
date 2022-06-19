@@ -965,8 +965,8 @@ def main():
                     cv2.rectangle(rotate_frame, (x1+1, y1+1), (x2-1, y2-1), (0, 255, 0))  # green 박스
                     cv2.rectangle(rotate_frame, (x1+2, y1+2), (x2-2, y2-2), (0, 255, 0))  # green 박스
             # 일어났을 때 책상 최적의 높이
-            if (waveSensorMean + 3) >= deskUserTall and actionPre == 2 and addcontrol != True :
-                stop = driverSet(0, 0, 0, 0)
+            #if (waveSensorMean + 3) >= deskUserTall and actionPre == 2 and addcontrol != True :
+            #    stop = driverSet(0, 0, 0, 0)
 
             if userNum == 1 and recognitionEnable == True: #인식된 얼굴 수
                 # 책상 다리 모터 제어에 활용되는 값
@@ -1003,8 +1003,8 @@ def main():
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
 
                 # 큰 움직임이 있을 때 모터 작동으로 변경
-                if abs(userHeightAVG - userHeight) > 3:
-                    moveEnable = True
+                #if abs(userHeightAVG - userHeight) > 3:
+                moveEnable = True
 
                 if moveEnable == True:
                     if (waveSensorMean + 3) < deskUserTall and stop == False: # 설정키보다 작다면
@@ -1022,7 +1022,6 @@ def main():
                     if (waveSensorMean + 3) > deskUserTall - 1 and (waveSensorMean + 3) < deskUserTall + 1:
                         driverSet(0, 0, 0, 0)
                         stop = False
-                        moveEnable == False
 
                 '''                        
                 #높이에 따른 모터작동
