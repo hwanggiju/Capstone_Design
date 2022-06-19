@@ -634,7 +634,7 @@ def HorizontalHold(nowAngle, compareAngle):
             if pwmA > 20:
                 pwmA -= 5
             preMotorState = 1
-    alpha = 0.7
+    alpha = 0.8
     pwmA_AVG = alpha * pwmA_AVG + (1 - alpha) * pwmA
     pwmB_AVG = alpha * pwmB_AVG + (1 - alpha) * pwmB
     changePWM(pwmA_AVG, pwmB_AVG)
