@@ -1135,32 +1135,32 @@ def main():
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
                     oled.image(btnstandImage)
                     oled.show()
-                    time.sleep(1)
-                else:
-                    drawDisplay(0)
+                    time.sleep(0.001)
 
-                    if GPIO.input(switch[2]) == 1 : # up 버튼 눌렀을 때
-                        if btn_stop == False :
-                            btn_stop = driverSet(100, 2, 2, 100)
-                            if btn_stop == True:
-                                fixAngleY = angleY
-                                fixAngleX = angleX
-                            addcontrol = True
-                            actionPre = 2
+                drawDisplay(0)
 
-                    elif GPIO.input(switch[0]) == 1 : # Down 버튼 눌렀을 때
-                        if btn_stop == False :
-                            btn_stop = driverSet(100, 1, 1, 100)
-                            if btn_stop == True:
-                                fixAngleY = angleY
-                                fixAngleX = angleX
-                            addcontrol = True
-                            actionPre = 0
+                if GPIO.input(switch[2]) == 1 : # up 버튼 눌렀을 때
+                    if btn_stop == False :
+                        btn_stop = driverSet(100, 2, 2, 100)
+                        if btn_stop == True:
+                            fixAngleY = angleY
+                            fixAngleX = angleX
+                        addcontrol = True
+                        actionPre = 2
 
-                    elif GPIO.input(switch[0]) == 0 and btn_stop == True: # 버튼 눌렀다 땟을 때
-                        driverSet(0, 0, 0, 0)
-                        btn_stop = False
-                        addcontrol == False
+                elif GPIO.input(switch[0]) == 1 : # Down 버튼 눌렀을 때
+                    if btn_stop == False :
+                        btn_stop = driverSet(100, 1, 1, 100)
+                        if btn_stop == True:
+                            fixAngleY = angleY
+                            fixAngleX = angleX
+                        addcontrol = True
+                        actionPre = 0
+
+                elif GPIO.input(switch[0]) == 0 and btn_stop == True: # 버튼 눌렀다 땟을 때
+                    driverSet(0, 0, 0, 0)
+                    btn_stop = False
+                    addcontrol == False
 
             # 모드 2 : 키 설정 모드
             elif Mode[2] == True :
