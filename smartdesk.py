@@ -1139,7 +1139,7 @@ def main():
                     time.sleep(1)
                     oled.fill(0)
                        
-                drawDisplay(0)
+                #drawDisplay(0)
                 
                 if GPIO.input(switch[2]) == 1 : # up 버튼 눌렀을 때
                     if btn_stop == False :
