@@ -1016,7 +1016,7 @@ def main():
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                     
                 #높이에 따른 모터작동
-                if stop != True: # 드라이버 pin Set 변경 후 반복 변경 방지
+                if stop == False: # 드라이버 pin Set 변경 후 반복 변경 방지
                     # 앉았을 때, 책상의 최적 높이 설정
                     # down
                     if userHeightAVG < 140 :
@@ -1102,6 +1102,7 @@ def main():
             if Mode[0] == True :
                 if mode_initial == False: # 모드 진입시 초기설정
                     mode_initial = True
+                    stop = False
                     recognitionEnable = True # 얼굴인식코드 활성화
                     oled.fill(0)
                     oled.image(AutoImage)
@@ -1205,7 +1206,7 @@ def main():
                         
                     elif nowTime - wakeTime > sleepDetectTime - 20 :
                         GPIO.output(buzzer, True)
-                        time.sleep((nowTime - wakeTime)*0.02) #시간차 점진적 빠르기
+                        time.sleep(0.05)
                         GPIO.output(buzzer, False)
                         state = True
                         
