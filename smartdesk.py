@@ -760,23 +760,6 @@ def drawDisplay(light) :
     draw.text((40, 15), auto_list[4], font = font, fill = light)
     oled.image(image)
     oled.show()
-'''
-brief : display 출력
-note  : 
-param : 화면 출력 글
-return:
-'''
-def ReSetMode(line1, line2, line3, line4, line5, line6):
-    draw.text((100, 0), 'Up', font=font2, fill=0)
-    draw.text((100, 20), 'Mode', font=font2, fill=0)
-    draw.text((100, 40), 'Down', font=font2, fill=0)
-    draw.text((5, 0), line1, font=font2, fill=0)
-    draw.text((5, 15), line2, font=font2, fill=0)
-    draw.text((40, 15), line3, font=font2, fill=0)
-    draw.text((5, 30), line4, font=font2, fill=0)
-    draw.text((5, 45), line5, font=font2, fill=0)
-    draw.text((40, 45), line6, font=font2, fill=0)
-
 
 '''
 brief : 최적높이 재설정 모드 display
@@ -790,9 +773,9 @@ def ReSetMode(NowHeight, changeHeight, light) :
     draw.text((110, 20), reset_list[1], font=font2, fill=light)
     draw.text((110, 40), reset_list[2], font=font2, fill=light)
     draw.text((5, 0), str(NowHeight), font=font1, fill=light)
-    draw.text((15, 0), reset_list[3], font=font1, fill=light)
+    draw.text((40, 0), reset_list[3], font=font1, fill=light)
     draw.text((5, 40), str(changeHeight), font=font1, fill=light)
-    draw.text((15, 40), reset_list[3], font=font1, fill=light)
+    draw.text((40, 40), reset_list[3], font=font1, fill=light)
     oled.image(image)
     oled.show()
 
@@ -921,12 +904,11 @@ def main():
         btn_stop = False    # 버튼 초기 프로세스 여부
         addcontrol = False
         HeightAVG = [150 for i in range(15)]
-        WaveAVG = [waveSensorHeight for i in range(5)]
+        WaveAVG = [waveSensorHeight for i in range(10)]
         # 디스플레이 모드 - 기본 모드 : 1, 최적의 책상 높이 재설정 모드 : 2, 졸음 기능 on/off 모드 : 3
         Mode = [True, False, False, False]
         idx = 0
         wakeTime = 0 # 졸음감지 시간
-        sleepMode = False # 졸음감지 모드 활성화 여부
         mode_initial = False # 모드 이동시 시작 프로세스 동작여부
         mode_time_start = 0
         
@@ -1148,7 +1130,7 @@ def main():
                     elif GPIO.input(switch[0]) == 0 and btn_stop == True: # 버튼 눌렀다 땟을 때
                         driverSet(0, 0, 0, 0)
                         btn_stop = False
-                        addcontrol == False
+                        addcontrol = False
 
             # 모드 2 : 키 설정 모드
             elif Mode[2] == True :
