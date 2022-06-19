@@ -1084,8 +1084,7 @@ def main():
                     elif userHeightAVG > 150 and actionPre != 2:
                         stop = False
             elif recognitionEnable == True: # 사용자 인식 중 1명이 아닌 경우 즉 0명 or 여러명
-
-            print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
+                print("초음파 측정 거리 : %d\n" % (waveSensorMean+3))
             # 그래프 표시 (얼굴인식안되어도 작동)
             y_valDesk[0] = waveSensorHeight + 2
             gyrosensorX[0] = angleX - fixAngleX
