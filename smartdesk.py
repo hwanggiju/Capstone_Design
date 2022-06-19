@@ -1014,8 +1014,7 @@ def main():
                         deskUserTall = 100
 
                 if moveEnable == True:
-                    if(waveSensorMean + 3) > deskUserTall - 2 and (waveSensorMean + 3) < deskUserTall + 2 or (
-                        waveSensorMean) < 73:
+                    if(waveSensorMean + 3) > deskUserTall - 2 and (waveSensorMean + 3) < deskUserTall + 2:
                         stop = driverSet(0, 0, 0, 0)
                         fixAngleY = angleY  # 현재 각도고정
                         fixAngleX = angleX
