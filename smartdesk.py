@@ -1008,7 +1008,7 @@ def main():
                 # 어느정도 안정화된 모션이 감지되면
                 # 모터 작동으로 변경
                 val_list = [ 0 for i in range(10)] # 표준변화량을 알기 위한 어레이
-                if abs(userHeightAVG - (waveSensorHeight + 70)) > 10 and recognitionMode[0] == True:
+                if abs(userHeightAVG - (waveSensorHeight + 70)) > 20 and recognitionMode[0] == True:
                     recognitionMode[0] = False # 변화량 감지 중지
                     recognitionMode[1] = True  # 안정길이 산출 활성화
                     stop = False
@@ -1020,7 +1020,7 @@ def main():
                         val_list[i] = pow((val_list[i] - val_AVG), 2)
                     val_VAR = np.mean(val_list) # 분산 도출
                     val_DEV = math.sqrt(val_VAR)# 표준편차 도출
-                    deskMoveTall = userHeightAVG - deskUserTall - 44  # 현재감지된 키 - 적정 사람-책상거리
+                    deskMoveTall = userHeightAVG - deskUserTall  # 현재감지된 키 - 적정 사람-책상거리
                     if deskMoveTall < 73:  # 최소높이 고정
                         deskMoveTall = 73
                     if val_DEV < 1:
