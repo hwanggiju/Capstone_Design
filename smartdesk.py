@@ -948,7 +948,7 @@ def main():
             # print('test')
             # nani 각도 코드 테스트
             angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'] ,gyro['x'] , gyro['y'], gyro['z'])
-            deskAngle = -angleX #카메라 각도입력
+            deskAngle = angleX #카메라 각도입력
             if TESTMODE == False:
                 print("nani = ", round(angleY, 4))
 
