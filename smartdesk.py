@@ -1135,9 +1135,9 @@ def main():
                     mode_initial = True
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
                     oled.image(btnstandImage)
+                    oled.show()
                     time.sleep(1)
                     oled.fill(0)
-                    oled.show()
                        
                 drawDisplay(0)
                 
@@ -1174,7 +1174,6 @@ def main():
                     oled.show()
                     time.sleep(1)
                     oled.fill(0)
-                    oled.show()
                     
                 ReSetMode(SET_HEIGHT, changeHeight, 0)
                 
@@ -1205,7 +1204,6 @@ def main():
                     oled.show()
                     time.sleep(1)
                     oled.fill(0)
-                    oled.show()
                     
                 if GPIO.input(switch[2]) == 1 :
                     sleepMode = True
