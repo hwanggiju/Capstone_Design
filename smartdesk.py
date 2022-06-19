@@ -952,7 +952,7 @@ def main():
             if maxPwm < 100: #점진적 속도변화를 위한 값
                 maxPwm = maxPwm + 5
             # 수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY, maxPwm)
+            ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY)
             
             userNum = 0 # 인식 인원 수 초기화
             if recognitionEnable == True: # 인식모드 사용 여부 최적화용
