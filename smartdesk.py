@@ -909,7 +909,6 @@ def main():
         Mode = [True, False, False, False]
         idx = 0
         wakeTime = 0 # 졸음감지 시간
-        sleepMode = False # 졸음감지 모드 활성화 여부
         mode_initial = False # 모드 이동시 시작 프로세스 동작여부
         mode_time_start = 0
         
