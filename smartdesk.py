@@ -995,17 +995,20 @@ def main():
                     print("차값 :" + str(userHeight - userHeightAVG))
                     #val = PID(userHeightAVG, userHeight)
                     #print("PID 계산값 " + str(round(val, 5)))
-                    
+
                 # 그래프 값 입력부 (얼굴 인식시 작동)
                 y_val[0] = userHeight
                 y_valAVG[0] = userHeightAVG
                 HeightAVG[0] = userHeight
-                # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
+                # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다
 
                 # 큰 움직임이 있을 때 모터 작동으로 변경
-                #if abs(userHeightAVG - userHeight) > 3:
-                moveEnable = True
-
+                if abs(userHeightAVG - userHeight) > 3 and moveEnable == False:
+                    moveEnable = True
+                    if userHeight < 140:
+                        deskUserTall = deskUserTall - 30
+                    else:
+                        deskUserTall = deskUserTall + 30
                 if moveEnable == True:
                     if waveSensorHeight + 2 < deskUserTall and stop == False: # 설정키보다 작다면
                         stop = driverSet(100,2,2,100)
