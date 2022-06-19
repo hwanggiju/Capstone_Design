@@ -221,6 +221,7 @@ cameraWaveDifference = 46 # 카메라 - 센서간 높이차이
 deskAngle = 0 #28 # 책상 판과 카메라 중심까지의 각도
 deskUserAngle = -1 # 책상 판과 사용자 높이 사이의 각도
 cameraUserAngle = 0 # 카메라 앵글 안의 사용자 높이 각도
+maxPwm = 0 # 점진적 속도 증가를 위한 변수
 
 #하드웨어 초기설정
 for i in range(len(driver)): #모터 드라이버 핀
@@ -598,21 +599,21 @@ pwmA_AVG = 100
 pwmB_AVG = 100
 preMotorState = 0
 def HorizontalHold(nowAngle, compareAngle):
-    global pwmA, pwmB, preMotorState, pwmB_AVG, pwmA_AVG
+    global pwmA, pwmB, preMotorState, pwmB_AVG, pwmA_AVG, maxPwm
     angleDiff = nowAngle - compareAngle
     if actionPre == 2:
         if angleDiff > 0 and preMotorState == 1:
             preMotorState = 0 #각 차값이 양수
-            pwmA = 100
-            pwmB = 100
+            pwmA = maxPwm
+            pwmB = maxPwm
         elif angleDiff > 0:
             if pwmA > 20:
                 pwmA -= 5
             preMotorState = 0
         elif angleDiff < 0 and preMotorState == 0:
             preMotorState = 1 #각 차값이 음수
-            pwmA = 100
-            pwmB = 100
+            pwmA = maxPwm
+            pwmB = maxPwm
         elif angleDiff < 0:
             if pwmB > 20:
                 pwmB -= 5
@@ -620,16 +621,16 @@ def HorizontalHold(nowAngle, compareAngle):
     elif actionPre == 0:
         if angleDiff > 0 and preMotorState == 1:
             preMotorState = 0 #각 차값이 양수
-            pwmA = 100
-            pwmB = 100
+            pwmA = maxPwm
+            pwmB = maxPwm
         elif angleDiff > 0:
             if pwmB > 20:
                 pwmB -= 5
             preMotorState = 0
         elif angleDiff < 0 and preMotorState == 0:
             preMotorState = 1 #각 차값이 음수
-            pwmA = 100
-            pwmB = 100
+            pwmA = maxPwm
+            pwmB = maxPwm
         elif angleDiff < 0:
             if pwmA > 20:
                 pwmA -= 5
@@ -648,14 +649,14 @@ param : enA(모터A 펄스), motorA(모터 방향), motorB(모터 방향), enB(�
 return: 변경완료여부
 '''
 def driverSet(enA, motorA, motorB, enB):
-    global initial, nowTime, preTime
+    global initial, nowTime, preTime, maxPwm
     if initial == True:
         preTime = time.time()
         initial = False
     changePWM(0, 0)
     for i in range(1, len(driver)-1):
         GPIO.output(driver[i], 0)
-
+    maxPwm = 0
     if nowTime - preTime > 0.5: # 작동 딜레이 드라이버 보호용
         if motorA == 2:#up
             GPIO.output(driver[1], 0)
@@ -948,9 +949,10 @@ def main():
             angleYmean = np.mean(angleAVG)
             if TESTMODE == False:
                 print("nani = ", round(angleY, 4))
-
+            if maxPwm < 100:
+                maxPwm = maxPwm + 5
             # 수평 자세 유지 코드 (현재 각도, 작동시 각도)
-            ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY)
+            ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY, maxPwm)
             
             userNum = 0 # 인식 인원 수 초기화
             if recognitionEnable == True: # 인식모드 사용 여부 최적화용
