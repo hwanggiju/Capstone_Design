@@ -249,7 +249,7 @@ font1 = ImageFont.truetype('malgun.ttf', 20)
 font2 = ImageFont.truetype('malgun.ttf', 10)
 font3 = ImageFont.truetype('malgun.ttf', 13)
 
-image = Image.new('1', (oled.width, oled.height), 255)
+image = Image.new('5', (oled.width, oled.height), 255)
 logoImage = Image.open('logo.bmp')
 AutoImage = Image.open('auto.bmp')
 btnstandImage = Image.open('manual.bmp')
