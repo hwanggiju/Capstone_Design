@@ -1007,6 +1007,7 @@ def main():
                 # 큰 움직임이 있을 때 모터 작동으로 변경
                 if abs(userHeightAVG - (waveSensorHeight + 50)) > 20 and moveEnable == False:
                     moveEnable = True
+                    stop = False
                     if userHeightAVG - (waveSensorHeight + 50) < 0:
                         deskUserTall = 70
                     else:
@@ -1029,7 +1030,6 @@ def main():
                         driverSet(0, 0, 0, 0)
                         fixAngleY = angleY  # 현재 각도고정
                         fixAngleX = angleX
-                        stop = False
                         moveEnable == False
 
                 '''                        
