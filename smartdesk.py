@@ -902,7 +902,7 @@ def main():
         mode_initial = False # 모드 이동시 시작 프로세스 동작여부
         mode_time_start = 0 # 모드 초기 시작시 OLED 오동작 방지를 감안한 타임 인터럽트용 변수
         # 움직임 감지를 통한 높이 재설정 에 필요한 모듈 순차용 변수 [감지/변경/이동]
-        recognitionMode = [False, True, False]
+        recognitionMode = [True, False, False]
         deskMoveTall = 100 # 높이 산출 후 이동해야할 책상의 높이
         # 모터 동작 반복
         while True:
