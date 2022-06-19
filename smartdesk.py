@@ -1005,12 +1005,9 @@ def main():
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다
 
                 # 큰 움직임이 있을 때 모터 작동으로 변경
-                if abs(userHeightAVG - deskUserTall + 70) > 15 and moveEnable == False:
+                if abs(userHeightAVG - (waveSensorHeight + 50)) > 15 and moveEnable == False:
                     moveEnable = True
-                    if userHeight > 140 and deskUserTall < SET_HEIGHT - 40:
-                        deskUserTall = 100
-                    elif userHeight <= 140 and deskUserTall >= SET_HEIGHT - 80:
-                        deskUserTall = 70
+
                 if moveEnable == True:
                     if waveSensorHeight + 2 < deskUserTall and stop == False: # 설정키보다 작다면
                         stop = driverSet(100,2,2,100)
