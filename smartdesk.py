@@ -1010,7 +1010,6 @@ def main():
                 if recognitionMode[1] == True: # 길이의 변화량이 적을때를 감지
                     for i in range(len(val_list)): # 변화량 입력
                         val_list[i] = HeightAVG[i]
-                    val_AVG = np.mean(val_list) #평균 도출
                     for i in range(len(val_list)):
                         val_list[i] = pow((val_list[i] - y_val[i]), 2)
                     val_VAR = np.mean(val_list) # 분산 도출
@@ -1020,7 +1019,7 @@ def main():
                         deskMoveTall = 73
                     elif deskMoveTall > 120:
                         deskMoveTall = 120
-                    if val_DEV < 0.5:
+                    if val_DEV < 0.1:
                         GPIO.output(buzzer, True)
                         time.sleep(0.01)
                         GPIO.output(buzzer, False)
