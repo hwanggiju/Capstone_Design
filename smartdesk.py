@@ -803,9 +803,9 @@ return:
 '''
 sleep_list = ['↑', '↓']
 def sleepDetectMode(sleepDetectTime, light) :
-    draw.text((100, 20), sleep_list[0], font=font2, fill=light)
+    draw.text((100, 0), sleep_list[0], font=font2, fill=light)
     draw.text((100, 20), str(sleepDetectTime), font=font2, fill=light)
-    draw.text((100, 20), sleep_list[1], font=font2, fill=light)
+    draw.text((100, 40), sleep_list[1], font=font2, fill=light)
     oled.image(image)
     oled.show()
     
