@@ -1020,6 +1020,7 @@ def main():
                         fixAngleX = angleX
                         Ki_term = 0
                     if (waveSensorMean + 3) > deskUserTall - 1 and (waveSensorMean + 3) < deskUserTall + 1:
+                        driverSet(0, 0, 0, 0)
                         moveEnable == False
 
                 '''                        
