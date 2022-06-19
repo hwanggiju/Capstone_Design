@@ -1025,7 +1025,7 @@ def main():
                         deskMoveTall = 73
                     elif deskMoveTall > 120:
                         deskMoveTall = 120
-                    if val_DEV < 1:
+                    if val_DEV < 0.5:
                         recognitionMode[1] = False
                         recognitionMode[2] = True
                 if recognitionMode[2] == True: # 모터 작동 모드
