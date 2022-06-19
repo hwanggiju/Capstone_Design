@@ -908,6 +908,8 @@ def main():
         mode_initial = False # 모드 이동시 시작 프로세스 동작여부
         mode_time_start = 0
         moveEnable = False # 큰 움직임이 있을 때 모터 동작 여부
+
+
         # 모터 동작 반복
         while True:
             accel = mpu9250.readAccel()
@@ -1011,9 +1013,9 @@ def main():
                 if abs(userHeightAVG - userHeight) > 3 and moveEnable == False:
                     moveEnable = True
                     if userHeight < 140 and deskUserTall < SET_HEIGHT - 40:
-                        deskUserTall = deskUserTall + 30
+                        deskUserTall = 100
                     elif userHeight >= 140 and deskUserTall >= SET_HEIGHT - 70:
-                        deskUserTall = deskUserTall - 30
+                        deskUserTall = 70
                 if moveEnable == True:
                     if waveSensorHeight + 2 < deskUserTall and stop == False: # 설정키보다 작다면
                         stop = driverSet(100,2,2,100)
