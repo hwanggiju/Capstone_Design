@@ -323,8 +323,7 @@ def get_raw_data():
     accel_xout = read_word_2c(ACCEL_XOUT_H)
     accel_yout = read_word_2c(ACCEL_YOUT_H)
     accel_zout = read_word_2c(ACCEL_ZOUT_H)
-    return accel_xout, accel_yout, accel_zout,
-           gyro_xout, gyro_yout, gyro_zout
+    return accel_xout, accel_yout, accel_zout, gyro_xout, gyro_yout, gyro_zout
 
 
 '''
