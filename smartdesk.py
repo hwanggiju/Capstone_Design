@@ -857,7 +857,7 @@ def main():
                         confirm_disp(SET_HEIGHT, 255)
                         SET_HEIGHT = SET_HEIGHT
                         bestDeskTall = SET_HEIGHT * 0.23 + SET_HEIGHT * 0.18
-                        deskUserTall = SET_HEIGHT - bestDeskTall - 40
+                        deskUserTall = SET_HEIGHT - bestDeskTall - 24
                         changeHeight = SET_HEIGHT
                         GPIO.output(buzzer, True)
                         time.sleep(0.05)
@@ -1209,7 +1209,7 @@ def main():
                     if GPIO.input(switch[2]) == 1 :
                         changeHeight = SET_HEIGHT + 1
                         bestDeskTall = changeHeight * 0.23 + changeHeight * 0.18
-                        deskUserTall = changeHeight - bestDeskTall - 40 # 변경 키 - 계산키
+                        deskUserTall = changeHeight - bestDeskTall - 24 # 변경 키 - 계산키
                         SET_HEIGHT = changeHeight
                         ReSetMode(SET_HEIGHT-1, changeHeight-1, 255)
                         GPIO.output(buzzer, True)
@@ -1219,7 +1219,7 @@ def main():
                     if GPIO.input(switch[0]) == 1 :
                         changeHeight = SET_HEIGHT - 1
                         bestDeskTall = changeHeight * 0.23 + changeHeight * 0.18
-                        deskUserTall = changeHeight - bestDeskTall - 40
+                        deskUserTall = changeHeight - bestDeskTall - 24
                         SET_HEIGHT = changeHeight
                         ReSetMode(SET_HEIGHT+1, changeHeight+1, 255)
                         GPIO.output(buzzer, True)
