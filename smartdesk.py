@@ -634,7 +634,7 @@ def HorizontalHold(nowAngle, compareAngle):
             if pwmA > 20:
                 pwmA -= 5
             preMotorState = 1
-    alpha = 0.75
+    alpha = 0.7
     pwmA_AVG = alpha * pwmA_AVG + (1 - alpha) * pwmA
     pwmB_AVG = alpha * pwmB_AVG + (1 - alpha) * pwmB
     changePWM(pwmA_AVG, pwmB_AVG)
@@ -857,7 +857,7 @@ def main():
                         confirm_disp(SET_HEIGHT, 255)
                         SET_HEIGHT = SET_HEIGHT
                         bestDeskTall = SET_HEIGHT * 0.23 + SET_HEIGHT * 0.18
-                        deskUserTall = SET_HEIGHT - bestDeskTall - 44
+                        deskUserTall = SET_HEIGHT - bestDeskTall - 40
                         changeHeight = SET_HEIGHT
                         GPIO.output(buzzer, True)
                         time.sleep(0.05)
@@ -1023,6 +1023,8 @@ def main():
                     deskMoveTall = userHeightAVG - deskUserTall  # 현재감지된 키 - 적정 사람-책상거리
                     if deskMoveTall < 73:  # 최소높이 고정
                         deskMoveTall = 73
+                    elif deskMoveTall > 120:
+                        deskMoveTall = 120
                     if val_DEV < 1:
                         recognitionMode[1] = False
                         recognitionMode[2] = True
@@ -1204,7 +1206,7 @@ def main():
                     if GPIO.input(switch[2]) == 1 :
                         changeHeight = SET_HEIGHT + 1
                         bestDeskTall = changeHeight * 0.23 + changeHeight * 0.18
-                        deskUserTall = changeHeight - bestDeskTall - 44 # 변경 키 - 계산키
+                        deskUserTall = changeHeight - bestDeskTall - 40 # 변경 키 - 계산키
                         SET_HEIGHT = changeHeight
                         ReSetMode(SET_HEIGHT-1, changeHeight-1, 255)
                         GPIO.output(buzzer, True)
@@ -1214,7 +1216,7 @@ def main():
                     if GPIO.input(switch[0]) == 1 :
                         changeHeight = SET_HEIGHT - 1
                         bestDeskTall = changeHeight * 0.23 + changeHeight * 0.18
-                        deskUserTall = changeHeight - bestDeskTall - 44
+                        deskUserTall = changeHeight - bestDeskTall - 40
                         SET_HEIGHT = changeHeight
                         ReSetMode(SET_HEIGHT+1, changeHeight+1, 255)
                         GPIO.output(buzzer, True)
