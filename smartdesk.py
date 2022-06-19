@@ -1135,7 +1135,8 @@ def main():
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
                     oled.image(btnstandImage)
                     oled.show()
-                    time.sleep(0.001)
+                    for i in range(1000):
+                        time.sleep(0.001)
 
                 drawDisplay(0)
 
