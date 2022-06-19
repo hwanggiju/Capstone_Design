@@ -460,7 +460,7 @@ def calGyro(accelX, accelY, accelZ, GyroAccX, GyroAccY, GyroAccZ):
     gyroAngleZ = gyro_z * dt + GyZ_deg
     # calculate Gyro
     RADIANS_TO_DEGREES = 180 / math.pi
-    accelAngleX = math.atan(accelX / math.sqrt(math.pow(accelX, 2) + math.pow(accelZ, 2))) * RADIANS_TO_DEGREES
+    accelAngleX = math.atan(accelY / math.sqrt(math.pow(accelX, 2) + math.pow(accelZ, 2))) * RADIANS_TO_DEGREES
     accelAngleY = math.atan(-1 * accelX / math.sqrt(math.pow(accelY, 2) + math.pow(accelZ, 2))) * RADIANS_TO_DEGREES
     accelAngleZ = 0
     # complementary Filter
@@ -740,12 +740,25 @@ param :
 return:
 '''
 
-auto_list = ['↑', 'M', '↓']
+NowdeskDistance = 70
+ModeWaveAVG = [NowdeskDistance for i in range(5)]
+auto_list = ['↑', 'M', '↓', 'Desk Tall', 'cm']
 def drawDisplay(light) :      
+    global nowTime, preTime, NowdeskDistance
+    deskDistance = waveFunc()
+    ModeWaveAVG[0] = deskDistance
+    for i in range(len(ModeWaveAVG) - 1) :
+        ModeWaveAVG[len(ModeWaveAVG) - i - 1] = ModeWaveAVG[len(ModeWaveAVG) - i - 2]
+    deskDistance1 = np.mean(ModeWaveAVG) # 초음파 평균 거리
+    draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 255)
+    NowdeskDistance = deskDistance1
     draw.text((110, 0), auto_list[0], font=font2, fill=light)
     draw.text((110, 20), auto_list[1], font=font2, fill=light)
     draw.text((110, 40), auto_list[2], font=font2, fill=light)
-    oled.image(btnstandImage)
+    draw.text((5, 0), auto_list[3], font=font, fill=light)
+    draw.text((5, 15), str(int(deskDistance1)), font = font, fill = light)
+    draw.text((40, 15), auto_list[4], font = font, fill = light)
+    oled.image(image)
     oled.show()
 
 '''
@@ -1180,7 +1193,7 @@ def main():
                     time.sleep(0.05)
                     GPIO.output(buzzer, False)
                 
-                if nowTime - wakeTime > sleepDetectTime and : #인식 불과 시첨
+                if nowTime - wakeTime > sleepDetectTime : #인식 불과 시첨
                     GPIO.output(buzzer, False)
                     stop = driverSet(100, 2, 2, 100)
                     
