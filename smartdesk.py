@@ -634,7 +634,7 @@ def HorizontalHold(nowAngle, compareAngle):
             if pwmA > 20:
                 pwmA -= 5
             preMotorState = 1
-    alpha = 0.7
+    alpha = 0.6
     pwmA_AVG = alpha * pwmA_AVG + (1 - alpha) * pwmA
     pwmB_AVG = alpha * pwmB_AVG + (1 - alpha) * pwmB
     changePWM(pwmA_AVG, pwmB_AVG)
@@ -1032,7 +1032,7 @@ def main():
                         recognitionMode[2] = True
                         stop = False
                 if recognitionMode[2] == True: # 모터 작동 모드
-                    if(waveSensorMean) > deskMoveTall -0.25 and (waveSensorMean) < deskMoveTall + 0.25:
+                    if(waveSensorMean) > deskMoveTall - 1 and (waveSensorMean) < deskMoveTall + 1:
                         pwmA_AVG = 0
                         pwmB_AVG = 0
                         fixAngleY = angleY  # 현재 각도고정
@@ -1040,7 +1040,7 @@ def main():
                         stop = driverSet(0, 0, 0, 0)
                         recognitionMode[2] = False
                         recognitionMode[0] = True
-                    elif waveSensorHeight < deskMoveTall + 2 and stop == False: # 설정키보다 작다면
+                    elif waveSensorHeight < deskMoveTall + 3 and stop == False: # 설정키보다 작다면
                         pwmA_AVG = 0
                         pwmB_AVG = 0
                         fixAngleY = angleY  # 현재 각도고정
@@ -1048,7 +1048,7 @@ def main():
                         stop = driverSet(0, 2, 2, 0)
                         actionPre = 2  # down
                         Ki_term = 0
-                    elif waveSensorHeight > deskMoveTall + 2 and stop == False: #설정키보다 크다면
+                    elif waveSensorHeight > deskMoveTall - 3 and stop == False: #설정키보다 크다면
                         pwmA_AVG = 0
                         pwmB_AVG = 0
                         fixAngleY = angleY  # 현재 각도고정
