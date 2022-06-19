@@ -1,5 +1,6 @@
 from asyncio.unix_events import _UnixSelectorEventLoop
 from readline import set_history_length
+from tkinter import S
 from xml.dom.minidom import parseString
 import face_recognition
 import cv2
@@ -707,11 +708,14 @@ note  :
 param : 변경 높이
 return:
 '''
-def OLED_initial_setting_Height(CHANGE_HEIGHT) :
-    draw.text((5, 0), '-First Setting-', font = font, fill = 0)
-    draw.text((5, 20), 'Input your Height', font = font, fill = 0)
-    draw.text((5, 40), str(CHANGE_HEIGHT), font = font, fill = 0)
-    draw.text((40, 40), 'cm', font = font, fill = 0)
+init_set = ['-First Setting-', 'Input your Height', 'cm']
+def OLED_initial_setting_Height(CHANGE_HEIGHT, light) :
+    preHeight = CHANGE_HEIGHT
+    OLED_initial_setting_Height(preHeight, 255)
+    draw.text((5, 0), init_set[0], font = font, fill = light)
+    draw.text((5, 20), init_set[DLPF_BW_10], font = font, fill = light)
+    draw.text((5, 40), str(CHANGE_HEIGHT), font = font, fill = light)
+    draw.text((40, 40), init_set[2], font = font, fill = light)
     oled.image(image)
     oled.show()
 
@@ -722,14 +726,15 @@ note  :
 param : 변경높이
 return:
 '''
-def OLED_initial_setting_Height1(CHANGE_HEIGHT) :
-    draw.text((5, 0), '-First Setting-', font = font, fill = 255)
-    draw.text((5, 20), 'Input your Height', font = font, fill = 255)
-    draw.text((5, 40), str(CHANGE_HEIGHT), font = font, fill = 255)
-    draw.text((40, 40), 'cm', font = font, fill = 255)
+confirm_list = ['Your height', 'cm', 'Right?']
+def confirm_disp(CHANGE_HEIGHT, light) :
+    confirm_disp(CHANGE_HEIGHT, 255)
+    draw.text((5, 0), confirm_list[0], font = font, fill = light)
+    draw.text((5, 20), str(CHANGE_HEIGHT), font = font, fill = light)
+    draw.text((40, 40), confirm_list[1], font = font, fill = light)
+    draw.text((5, 40), confirm_list[2], font = font, fill = light) 
     oled.image(image)
     oled.show()
-    
 
 '''
 brief : 기본 모드 display
@@ -862,7 +867,7 @@ def main():
         time.sleep(2)
         oled.fill(0)
         oled.show()
-        OLED_initial_setting_Height(SET_HEIGHT)
+        OLED_initial_setting_Height(SET_HEIGHT, 0)
         # if TESTMODE == False: #test 모드일때는 작동 안함
         # 초기 사용자 키설정 디스플레이
         while True :
@@ -870,9 +875,8 @@ def main():
                 draw.text((5, 0), 'Complete set', font = font, fill = 255)
                 draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
                 draw.text((40, 40), 'cm', font = font, fill = 255)
-                OLED_initial_setting_Height1(SET_HEIGHT)
                 SET_HEIGHT = SET_HEIGHT + 1
-                OLED_initial_setting_Height(SET_HEIGHT)
+                OLED_initial_setting_Height(SET_HEIGHT, 0)
                 GPIO.output(buzzer, True)
                 time.sleep(0.05)
                 GPIO.output(buzzer, False)
@@ -881,7 +885,6 @@ def main():
                 draw.text((5, 0), 'Complete set', font = font, fill = 255)
                 draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
                 draw.text((40, 40), 'cm', font = font, fill = 255)
-                OLED_initial_setting_Height1(SET_HEIGHT)
                 SET_HEIGHT = SET_HEIGHT - 1
                 OLED_initial_setting_Height(SET_HEIGHT)
                 GPIO.output(buzzer, True)
@@ -889,48 +892,30 @@ def main():
                 GPIO.output(buzzer, False)
                 
             elif GPIO.input(switch[1]) == 1:    # down
-                OLED_initial_setting_Height1(SET_HEIGHT)
-                draw.text((5, 0), 'Your height', font = font, fill = 0)
-                draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 0)
-                draw.text((40, 40), 'cm', font = font, fill = 0)
-                draw.text((5, 40), 'Right?', font = font, fill = 0)
-                oled.image(image)
-                oled.show()
+                confirm_disp(SET_HEIGHT, 0)
                 GPIO.output(buzzer, True)
                 time.sleep(0.05)
                 GPIO.output(buzzer, False)
                 
                 while True :
                     if GPIO.input(switch[2]) == 1:
-                        draw.text((5, 0), 'Your height', font = font, fill = 255)
-                        draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 255)
-                        draw.text((40, 40), 'cm', font = font, fill = 255)
-                        draw.text((5, 40), 'Right?', font = font, fill = 255)
-                        OLED_initial_setting_Height1(SET_HEIGHT)
+                        confirm_disp(SET_HEIGHT, 255)
                         SET_HEIGHT = SET_HEIGHT + 1
-                        OLED_initial_setting_Height(SET_HEIGHT)
+                        OLED_initial_setting_Height(SET_HEIGHT, 0)
                         GPIO.output(buzzer, True)
                         time.sleep(0.05)
                         GPIO.output(buzzer, False)
                         
                     elif GPIO.input(switch[0]) == 1:
-                        draw.text((5, 0), 'Your height', font = font, fill = 255)
-                        draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 255)
-                        draw.text((40, 40), 'cm', font = font, fill = 255)
-                        draw.text((5, 40), 'Right?', font = font, fill = 255)
-                        OLED_initial_setting_Height1(SET_HEIGHT)
+                        confirm_disp(SET_HEIGHT, 255)
                         SET_HEIGHT = SET_HEIGHT - 1
-                        OLED_initial_setting_Height(SET_HEIGHT)
+                        OLED_initial_setting_Height(SET_HEIGHT, 0)
                         GPIO.output(buzzer, True)
                         time.sleep(0.05)
                         GPIO.output(buzzer, False)
                         
                     elif GPIO.input(switch[1]) == 1 :
-                        OLED_initial_setting_Height1(SET_HEIGHT)
-                        draw.text((5, 0), 'Your height', font = font, fill = 255)
-                        draw.text((5, 20), str(SET_HEIGHT), font = font, fill = 255)
-                        draw.text((40, 40), 'cm', font = font, fill = 255)
-                        draw.text((5, 40), 'Right?', font = font, fill = 255)
+                        confirm_disp(SET_HEIGHT, 255)
                         SET_HEIGHT = SET_HEIGHT
                         bestDeskTall = SET_HEIGHT * 0.23 + SET_HEIGHT * 0.18
                         deskUserTall = SET_HEIGHT - bestDeskTall
