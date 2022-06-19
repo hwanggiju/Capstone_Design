@@ -902,7 +902,7 @@ def main():
         mode_initial = False # 모드 이동시 시작 프로세스 동작여부
         mode_time_start = 0 # 모드 초기 시작시 OLED 오동작 방지를 감안한 타임 인터럽트용 변수
         # 움직임 감지를 통한 높이 재설정 에 필요한 모듈 순차용 변수 [감지/변경/이동]
-        recognitionMode = [True, False, False]
+        recognitionMode = [False, True, False]
         deskMoveTall = 100 # 높이 산출 후 이동해야할 책상의 높이
 
         # 모터 동작 반복
@@ -1007,7 +1007,7 @@ def main():
                 # 움직임에 의한 길이 조절 모드로 들어감
                 # 어느정도 안정화된 모션이 감지되면
                 # 모터 작동으로 변경
-                val_list = [ 0 for i in range(10)] # 표준변화량을 알기 위한 어레이
+                val_list = [ 0 for i in range(8)] # 표준변화량을 알기 위한 어레이
                 if abs(userHeightAVG - (waveSensorHeight + 70)) > 15 and recognitionMode[0] == True:
                     recognitionMode[0] = False # 변화량 감지 중지
                     recognitionMode[1] = True  # 안정길이 산출 활성화
