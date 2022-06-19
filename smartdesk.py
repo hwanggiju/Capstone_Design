@@ -921,7 +921,7 @@ def main():
         btn_stop = False    # 버튼 초기 프로세스 여부
         addcontrol = False
         HeightAVG = [150 for i in range(15)]
-        WaveAVG = [waveSensorHeight for i in range(5)]
+        WaveAVG = [waveSensorHeight for i in range(10)]
         # 디스플레이 모드 - 기본 모드 : 1, 최적의 책상 높이 재설정 모드 : 2, 졸음 기능 on/off 모드 : 3
         Mode = [True, False, False, False]
         idx = 0
