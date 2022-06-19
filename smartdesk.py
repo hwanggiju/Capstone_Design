@@ -1008,7 +1008,7 @@ def main():
                 # 어느정도 안정화된 모션이 감지되면
                 # 모터 작동으로 변경
                 val_list = [ 0 for i in range(10)] # 표준변화량을 알기 위한 어레이
-                if abs(userHeightAVG - (waveSensorHeight + 70)) > 20 and recognitionMode[0] == True:
+                if abs(userHeightAVG - (waveSensorHeight + 70)) > 10 and recognitionMode[0] == True:
                     recognitionMode[0] = False # 변화량 감지 중지
                     recognitionMode[1] = True  # 안정길이 산출 활성화
                     stop = False
