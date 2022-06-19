@@ -894,7 +894,7 @@ def main():
         addcontrol = False
         HeightAVG = [150 for i in range(15)]
         WaveAVG = [waveSensorHeight for i in range(10)]
-        angleAVG = [0 for i in range(10)]
+        angleAVG = [0 for i in range(10s)]
         # 디스플레이 모드 - 기본 모드 : 1, 최적의 책상 높이 재설정 모드 : 2, 졸음 기능 on/off 모드 : 3
         Mode = [True, False, False, False]
         idx = 0
@@ -998,6 +998,11 @@ def main():
                 y_valAVG[0] = userHeightAVG
                 HeightAVG[0] = userHeight
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다
+
+                # 코드 정리한거 확인하고 지우면됨.
+                1. 모드1 자동 감지 높이조절코드 끝
+                2. 시작점부터 점차 속도 높아지는 모터코드 추가
+                3. 추천 길이 계산식 수정
 
                 # 큰 움직임이 있을 때
                 # 1움직임에 의한 길이 조절 모드로 들어감
