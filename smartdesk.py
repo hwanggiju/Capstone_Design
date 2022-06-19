@@ -791,7 +791,7 @@ def sleepDetectMode(sleepDetectTime, light) :
 #######################################################################
 def main():
     global actionNow, actionPre, bestDeskTall, fixAngleX, fixAngleY
-    global nowTime, preTime
+    global nowTime, preTime, maxPwm
     global deskAngle, Ki_term, deskUserTall
     global recognitionEnable, sleepDetectTime, recognitionMotorEnable
     try :
@@ -949,7 +949,7 @@ def main():
             angleYmean = np.mean(angleAVG)
             if TESTMODE == False:
                 print("nani = ", round(angleY, 4))
-            if maxPwm < 100:
+            if maxPwm < 100: #점진적 속도변화를 위한 값
                 maxPwm = maxPwm + 5
             # 수평 자세 유지 코드 (현재 각도, 작동시 각도)
             ENA_PWM[0], ENB_PWM[0] = HorizontalHold(angleY, fixAngleY, maxPwm)
