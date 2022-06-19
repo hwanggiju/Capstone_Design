@@ -251,14 +251,10 @@ font3 = ImageFont.truetype('malgun.ttf', 13)
 
 image = Image.new('1', (oled.width, oled.height), 255)
 logoImage = Image.open('logo.bmp')
-AutoImage = Image.open('logo.bmp')
-btnstandImage = Image.open('logo.bmp')
+AutoImage = Image.open('auto.bmp')
+btnstandImage = Image.open('manual.bmp')
 setImage = Image.open('logo.bmp')
-sleepImage = Image.open('logo.bmp')
-#AutoImage = Image.open('auto.bmp')
-#btnstandImage = Image.open('manual.bmp')
-#setImage = Image.open('logo.bmp')
-#sleepImage = Image.open('sleep.bmp')
+sleepImage = Image.open('sleep.bmp')
 draw = ImageDraw.Draw(image)
 
 
