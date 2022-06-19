@@ -1081,6 +1081,7 @@ def main():
             # 기본모드 : 자동 책상 높이 조절(사용자 인식)
             if Mode[0] == True :
                 if mode_initial == False: # 모드 진입시 초기설정
+                    recognitionMotorEnable = True
                     mode_initial = True
                     stop = False
                     recognitionEnable = True # 얼굴인식코드 활성화
