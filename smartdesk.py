@@ -795,27 +795,6 @@ def ReSetMode(NowHeight, changeHeight, light) :
     oled.image(image)
     oled.show()
 
-
-'''
-brief : 최적높이 재설정 모드 display erase
-note  : 
-param : NowHeight(현재높이), changeHeight(변경높이)
-return: 
-'''
-def eraseReSetMode(NowHeight, changeHeight) :
-    draw.text((100, 0), 'Up', font=font2, fill=255)
-    draw.text((100, 20), 'Mode', font=font2, fill=255)
-    draw.text((100, 40), 'Down', font=font2, fill=255)
-    draw.text((5, 0), '-Now Best Tall-', font=font2, fill=255)
-    draw.text((5, 15), str(int(NowHeight)), font=font2, fill=255)
-    draw.text((40, 15), 'cm', font = font2, fill = 255)
-    draw.text((5, 30), '-Change Tall-', font=font2, fill=255)
-    draw.text((5, 45), str(int(changeHeight)), font=font2, fill=255)
-    draw.text((40, 45), 'cm', font = font2, fill = 255)
-    oled.image(image)
-    oled.show()       
-
-
 '''
 brief : 졸음 감지 모드
 note  : 수정중
@@ -1037,7 +1016,7 @@ def main():
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                     
                 #높이에 따른 모터작동
-                if stop != True and addcontrol == False: # 드라이버 pin Set 변경 후 반복 변경 방지
+                if stop != True: # 드라이버 pin Set 변경 후 반복 변경 방지
                     # 앉았을 때, 책상의 최적 높이 설정
                     # down
                     if userHeightAVG < 140 :
