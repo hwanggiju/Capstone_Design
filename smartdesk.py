@@ -136,7 +136,7 @@ GYRO_ZOUT_H  = 0x47     # Low는 0x48
 ################################
 # I2C Bus 초기화
 I2C_bus = smbus.SMBus(1)
-MPU_addr = 0x68
+MPU_addr = 0x68 #MPU9250 address
 
 ################################
 # SPI Setting
