@@ -1010,7 +1010,8 @@ def main():
                         fixAngleY = angleYmean  # 현재 각도고정
                         fixAngleX = angleX
                         Ki_term = 0
-                        print("down")
+                        if TESTMODE == False:
+                            print("down")
                     # up    
                     elif userHeightAVG > 150 :
                         stop = driverSet(100, 2, 2, 100)
@@ -1018,14 +1019,16 @@ def main():
                         fixAngleY = angleYmean  # 현재 각도고정
                         fixAngleX = angleX
                         Ki_term = 0
-                        print("up")
+                        if TESTMODE == False:
+                            print("up")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
                         actionPre = 1#stop
                         fixAngleY = angleYmean
                         fixAngleX = angleX
                         Ki_term = 0
-                        print("stop")
+                        if TESTMODE == False:
+                            print("stop")
                 else:
                     if userHeightAVG < 140 and actionPre != 0:
                         stop = False
