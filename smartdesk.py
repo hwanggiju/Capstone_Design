@@ -869,11 +869,6 @@ def main():
                 oled.image(image)
                 oled.show()
                 break
-        accel = mpu9250.readAccel()
-        gyro = mpu9250.readGyro()
-        angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'], gyro['x'], gyro['y'], gyro['z'])
-        fixAngleY = angleY  # 현재 각도고정
-        fixAngleX = angleX
         draw.text((0, 0), 'Success Set Height', font = font3, fill = 255)
         cap = cv2.VideoCapture(0)
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraHeight)
