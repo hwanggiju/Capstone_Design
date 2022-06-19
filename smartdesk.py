@@ -857,7 +857,7 @@ def main():
                         confirm_disp(SET_HEIGHT, 255)
                         SET_HEIGHT = SET_HEIGHT
                         bestDeskTall = SET_HEIGHT * 0.23 + SET_HEIGHT * 0.18
-                        deskUserTall = SET_HEIGHT - bestDeskTall - 44 
+                        deskUserTall = SET_HEIGHT - bestDeskTall - 44
                         changeHeight = SET_HEIGHT
                         GPIO.output(buzzer, True)
                         time.sleep(0.05)
@@ -1020,7 +1020,7 @@ def main():
                         val_list[i] = pow((val_list[i] - val_AVG), 2)
                     val_VAR = np.mean(val_list) # 분산 도출
                     val_DEV = math.sqrt(val_VAR)# 표준편차 도출
-                    deskMoveTall = userHeightAVG - deskUserTall  # 현재감지된 키 - 적정 사람-책상거리
+                    deskMoveTall = userHeightAVG - deskUserTall - 44  # 현재감지된 키 - 적정 사람-책상거리
                     if deskMoveTall < 73:  # 최소높이 고정
                         deskMoveTall = 73
                     if val_DEV < 1:
