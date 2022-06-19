@@ -30,8 +30,8 @@ y_valDesk = [100 for i in range(graphRow)]
 recommendHeight = [100 for i in range(graphRow)]
 gyrosensorX = [0 for i in range(graphRow)]
 gyrosensorY = [0 for i in range(graphRow)]
-ENA_PWM = [100 for i in range(graphRow)]
-ENB_PWM = [100 for i in range(graphRow)]
+ENA_PWM = [0 for i in range(graphRow)]
+ENB_PWM = [0 for i in range(graphRow)]
 
 # 그래프 Y축 표시범위
 angleLine = np.linspace(-2,2,graphRow)
