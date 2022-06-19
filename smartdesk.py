@@ -1181,7 +1181,7 @@ def main():
             elif Mode[3] == True :
                 if mode_initial == False:  # 모드 진입시 초기설정
                     mode_initial = True
-                    recognitionEnable = True  # 얼굴인식코드 비활성화 (딜레이최적화)
+                    recognitionEnable = True  # 얼굴인식코드
                     oled.image(sleepImage)
                     oled.show()
                     
@@ -1194,6 +1194,7 @@ def main():
                     
                 if GPIO.input(switch[0]) == 1 :
                     sleepMode = False
+                    oled.fill(255)
                     GPIO.output(buzzer, True)
                     time.sleep(0.05)
                     GPIO.output(buzzer, False)
@@ -1218,11 +1219,11 @@ def main():
                         state = True
                 sleepDetectMode(sleepDetectTime, 0)     
                 if GPIO.input(switch[2]) == 1 :
-                    sleepDetectTime += 1
-                    sleepDetectMode(sleepDetectTime-1, 255)
+                    sleepDetectTime += 10
+                    sleepDetectMode(sleepDetectTime-10, 255)
                 elif GPIO.input(switch[0]) == 1 :
-                    sleepDetectTime -= 1    
-                    sleepDetectMode(sleepDetectTime+1, 255)
+                    sleepDetectTime -= 10
+                    sleepDetectMode(sleepDetectTime+10, 255)
 
     except KeyboardInterrupt :
         pass
