@@ -1009,7 +1009,7 @@ def main():
                     moveEnable = True
                     if userHeight > 140 and deskUserTall < SET_HEIGHT - 40:
                         deskUserTall = 100
-                    elif userHeight <= 140 and deskUserTall >= SET_HEIGHT - 70:
+                    elif userHeight <= 140 and deskUserTall >= SET_HEIGHT - 80:
                         deskUserTall = 70
                 if moveEnable == True:
                     if waveSensorHeight + 2 < deskUserTall and stop == False: # 설정키보다 작다면
