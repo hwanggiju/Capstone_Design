@@ -1027,7 +1027,7 @@ def main():
                         fixAngleX = angleX
                         Ki_term = 0
                     elif (waveSensorMean + 3) > deskUserTall - 2 and (waveSensorMean + 3) < deskUserTall + 2 or (waveSensorMean) < 73:
-                        driverSet(0, 0, 0, 0)
+                        stop = driverSet(0, 0, 0, 0)
                         fixAngleY = angleY  # 현재 각도고정
                         fixAngleX = angleX
                         moveEnable == False
