@@ -817,7 +817,7 @@ def main():
     global actionNow, actionPre, bestDeskTall, fixAngleX, fixAngleY
     global nowTime, preTime
     global deskAngle, Ki_term, deskUserTall
-    global recognitionEnable
+    global recognitionEnable, sleepDetectTime
     try :
         SET_HEIGHT = 170
         deskUserTall = 0
