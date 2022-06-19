@@ -1,4 +1,5 @@
 from asyncio.unix_events import _UnixSelectorEventLoop
+from pickle import FALSE
 from readline import set_history_length
 from tkinter import S
 from xml.dom.minidom import parseString
@@ -899,7 +900,7 @@ def main():
         wakeTime = 0 # 졸음감지 시간
         mode_initial = False # 모드 이동시 시작 프로세스 동작여부
         mode_time_start = 0
-        
+        recognitionMotorEnable = True
         # 모터 동작 반복
         while True:
             accel = mpu9250.readAccel()
@@ -995,7 +996,7 @@ def main():
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다 
                     
                 #높이에 따른 모터작동
-                if stop == False: # 드라이버 pin Set 변경 후 반복 변경 방지
+                if stop == False and recognitionMotorEnable == True: # 드라이버 pin Set 변경 후 반복 변경 방지
                     # 앉았을 때, 책상의 최적 높이 설정
                     # down
                     if userHeightAVG < 140 :
@@ -1157,15 +1158,17 @@ def main():
                     mode_initial = True
                     ReSetMode(SET_HEIGHT, changeHeight, 255)
                     recognitionEnable = True  # 얼굴인식코드
+                    recognitionMotorEnable = FALSE
                     #oled.image(sleepImage)
                     #oled.show()
                     
                 sleepDetectMode(sleepDetectTime, 0)  
                 
-                if userNum >= 1 :
+                if userNum == 1 :
                     wakeTime = time.time()
                     GPIO.output(buzzer, False)
                     stop = driverSet(0, 0, 0 ,0)
+                    
                     
                 if GPIO.input(switch[2]) == 1 :
                     sleepDetectTime += 10
