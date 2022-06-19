@@ -1011,7 +1011,6 @@ def main():
                 if abs(userHeightAVG - (waveSensorHeight + 70)) > 15 and recognitionMode[0] == True:
                     recognitionMode[0] = False # 변화량 감지 중지
                     recognitionMode[1] = True  # 안정길이 산출 활성화
-                    stop = False
                 if recognitionMode[1] == True: # 길이의 변화량이 적을때를 감지
                     for i in range(len(val_list)): # 변화량 입력
                         val_list[i] = HeightAVG[i]
@@ -1031,6 +1030,7 @@ def main():
                         GPIO.output(buzzer, False)
                         recognitionMode[1] = False
                         recognitionMode[2] = True
+                        stop = False
                 if recognitionMode[2] == True: # 모터 작동 모드
                     if(waveSensorMean) > deskMoveTall -0.25 and (waveSensorMean) < deskMoveTall + 0.25:
                         pwmA_AVG = 0
