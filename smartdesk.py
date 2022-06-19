@@ -1022,7 +1022,7 @@ def main():
                     elif waveSensorHeight < deskUserTall - 2 and stop == False: # 설정키보다 작다면
                         pwmA_AVG = 10
                         pwmB_AVG = 10
-                        stop = driverSet(100,2,2,100)
+                        stop = driverSet(0,2,2,0)
                         actionPre = 2  # down
                         fixAngleY = angleY  # 현재 각도고정
                         fixAngleX = angleX
@@ -1030,7 +1030,7 @@ def main():
                     elif waveSensorHeight > deskUserTall + 2 and stop == False: #설정키보다 크다면
                         pwmA_AVG = 10
                         pwmB_AVG = 10
-                        stop = driverSet(100, 1, 1, 100)
+                        stop = driverSet(0, 1, 1, 0)
                         actionPre = 0  # down
                         fixAngleY = angleY  # 현재 각도고정
                         fixAngleX = angleX
