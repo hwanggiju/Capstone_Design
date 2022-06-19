@@ -592,10 +592,10 @@ note  : 가중치 가변 방식
 param : nowAngle(현재 각도), comepareAngle(기준이 될 각도)
 return: 각 모터 펄스 주기
 '''
-pwmA = 10
-pwmB = 10
-pwmA_AVG = 10
-pwmB_AVG = 10
+pwmA = 0
+pwmB = 0
+pwmA_AVG = 0
+pwmB_AVG = 0
 preMotorState = 0
 def HorizontalHold(nowAngle, compareAngle):
     global pwmA, pwmB, preMotorState, pwmB_AVG, pwmA_AVG
@@ -1015,25 +1015,25 @@ def main():
                     if(waveSensorMean) > deskUserTall - 2 and (waveSensorMean) < deskUserTall + 2:
                         pwmA_AVG = 0
                         pwmB_AVG = 0
-                        stop = driverSet(0, 0, 0, 0)
                         fixAngleY = angleY  # 현재 각도고정
                         fixAngleX = angleX
+                        stop = driverSet(0, 0, 0, 0)
                         moveEnable = False
                     elif waveSensorHeight < deskUserTall - 2 and stop == False: # 설정키보다 작다면
                         pwmA_AVG = 0
                         pwmB_AVG = 0
-                        stop = driverSet(0,2,2,0)
-                        actionPre = 2  # down
                         fixAngleY = angleY  # 현재 각도고정
                         fixAngleX = angleX
+                        stop = driverSet(0, 2, 2, 0)
+                        actionPre = 2  # down
                         Ki_term = 0
                     elif waveSensorHeight > deskUserTall + 2 and stop == False: #설정키보다 크다면
                         pwmA_AVG = 0
                         pwmB_AVG = 0
-                        stop = driverSet(0, 1, 1, 0)
-                        actionPre = 0  # down
                         fixAngleY = angleY  # 현재 각도고정
                         fixAngleX = angleX
+                        stop = driverSet(0, 1, 1, 0)
+                        actionPre = 0  # down
                         Ki_term = 0
 
                 '''                        
