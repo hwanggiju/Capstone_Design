@@ -559,7 +559,7 @@ def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
     userSideAngle = abs(cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
     userDistance = (calUserDistance / np.cos(userTopAngle * np.pi/180))/ np.cos(userSideAngle * np.pi/180)
     gap = calUserDistance / userDistance
-    calUserDistance = ((faceWidthMax - (1 - gap) * 35) - widthAverage) / faceDifference * distanceDifference + userDistanceMin
+    calUserDistance = ((faceWidthMax - (1 - gap) * 60) - widthAverage) / faceDifference * distanceDifference + userDistanceMin
     userDistance = (calUserDistance / np.cos(userTopAngle * np.pi / 180)) / np.cos(userSideAngle * np.pi / 180)
     cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
     calHeight = np.sin((cameraUserAngle + deskAngle) * np.pi/180) * userDistance# abs(np.sin((cameraUserAngle + deskAngle) * np.pi/180))* 15
