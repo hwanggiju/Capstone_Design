@@ -856,18 +856,19 @@ def main():
                 time.sleep(0.05)
                 GPIO.output(buzzer, False)
             
-            elif GPIO.input(switch[0]) == 1:    # okay
+            elif GPIO.input(switch[0]) == 1:    # down
                 draw.text((5, 0), 'Complete set', font = font, fill = 255)
                 draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
                 draw.text((40, 40), 'cm', font = font, fill = 255)
                 SET_HEIGHT = SET_HEIGHT - 1
                 OLED_initial_setting_Height(SET_HEIGHT+1, 255)
-                OLED_initial_setting_Height(SET_HEIGHT)
+                OLED_initial_setting_Height(SET_HEIGHT, 0)
                 GPIO.output(buzzer, True)
                 time.sleep(0.05)
                 GPIO.output(buzzer, False)
                 
-            elif GPIO.input(switch[1]) == 1:    # down
+            elif GPIO.input(switch[1]) == 1:   # okay
+                OLED_initial_setting_Height(SET_HEIGHT, 255)
                 confirm_disp(SET_HEIGHT, 0)
                 GPIO.output(buzzer, True)
                 time.sleep(0.05)
@@ -1122,6 +1123,8 @@ def main():
                 if mode_initial == False: # 모드 진입시 초기설정
                     mode_initial = True
                     recognitionEnable = True # 얼굴인식코드 활성화
+                    oled.fill(0)
+                    oled.show()
                     oled.image(AutoImage)
                     oled.show()
                 
