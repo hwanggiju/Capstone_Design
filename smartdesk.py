@@ -188,6 +188,7 @@ nowTime = time.time()
 preTime = nowTime
 initial = True
 recognitionEnable = True # 카메라 작동
+recognitionMotorEnable = True # 카메라 인식 모터 작동 여부
 #기초 데이터 얼굴폭, 거리
 #가까울때
 userDistanceMin = 70 #cm
@@ -557,7 +558,7 @@ def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
     userSideAngle = abs(cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
     userDistance = (calUserDistance / np.cos(userTopAngle * np.pi/180))/ np.cos(userSideAngle * np.pi/180)
     gap = calUserDistance / userDistance
-    calUserDistance = ((faceWidthMax - (1 - gap) * 30) - widthAverage) / faceDifference * distanceDifference + userDistanceMin
+    calUserDistance = ((faceWidthMax - (1 - gap) * 20) - widthAverage) / faceDifference * distanceDifference + userDistanceMin
     userDistance = (calUserDistance / np.cos(userTopAngle * np.pi / 180)) / np.cos(userSideAngle * np.pi / 180)
     cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
     calHeight = np.sin((cameraUserAngle + deskAngle) * np.pi/180) * userDistance# abs(np.sin((cameraUserAngle + deskAngle) * np.pi/180))* 15
@@ -790,7 +791,7 @@ def main():
     global actionNow, actionPre, bestDeskTall, fixAngleX, fixAngleY
     global nowTime, preTime
     global deskAngle, Ki_term, deskUserTall
-    global recognitionEnable, sleepDetectTime
+    global recognitionEnable, sleepDetectTime, recognitionMotorEnable
     try :
         SET_HEIGHT = 170
         deskUserTall = 0
@@ -901,7 +902,7 @@ def main():
         wakeTime = 0 # 졸음감지 시간
         mode_initial = False # 모드 이동시 시작 프로세스 동작여부
         mode_time_start = 0
-        recognitionMotorEnable = True
+        
         # 모터 동작 반복
         while True:
             accel = mpu9250.readAccel()
@@ -960,13 +961,13 @@ def main():
                     y1 = int(detect[i, 4] * h)
                     x2 = int(detect[i, 5] * w)
                     y2 = int(detect[i, 6] * h)
-                    cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green ractangle
-                    cv2.rectangle(rotate_frame, (x1+1, y1+1), (x2-1, y2-1), (0, 255, 0))  # green ractangle
-                    cv2.rectangle(rotate_frame, (x1+2, y1+2), (x2-2, y2-2), (0, 255, 0))  # green ractangle
+                    cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green 박스
+                    cv2.rectangle(rotate_frame, (x1+1, y1+1), (x2-1, y2-1), (0, 255, 0))  # green 박스
+                    cv2.rectangle(rotate_frame, (x1+2, y1+2), (x2-2, y2-2), (0, 255, 0))  # green 박스
             # 일어났을 때 책상 최적의 높이
             if (waveSensorMean + 3) >= deskUserTall and actionPre == 2 and addcontrol != True :
-                stop = driverSet(0, 0, 0, 0)      
-                
+                stop = driverSet(0, 0, 0, 0)
+
             if userNum == 1 and recognitionEnable == True: #인식된 얼굴 수
                 # 책상 다리 모터 제어에 활용되는 값
                 widthLength = x2 - x1
@@ -974,7 +975,7 @@ def main():
                 area = widthLength * heightLength  # 사용자 인식 넓이
                 center_x = x1 + (x2 - x1) / 2
                 center_y = y1 + (y2 - y1) / 2  # 인식된 부분 중심 좌표 x, y 값
-                if TESTMODE == False: #모니터 그래프 없이 터미널사용때
+                if TESTMODE == False: # 모니터 그래프 없이 터미널사용때
                     print(" 가로 :" + str(widthLength) + " 세로:" + str(heightLength), end='')
                     print(' area : %d    center_x : %d   center_y : %d \n'
                         % (area, center_x, center_y))
@@ -1007,8 +1008,8 @@ def main():
                     # down
                     if userHeightAVG < 140 :
                         stop = driverSet(100, 1, 1, 100)  
-                        actionPre = 0#down
-                        fixAngleY = angleYmean  # 현재 각도고정
+                        actionPre = 0 # down
+                        fixAngleY = angleYmean # 현재 각도고정
                         fixAngleX = angleX
                         Ki_term = 0
                         if TESTMODE == False:
@@ -1016,7 +1017,7 @@ def main():
                     # up    
                     elif userHeightAVG > 150 :
                         stop = driverSet(100, 2, 2, 100)
-                        actionPre = 2#up
+                        actionPre = 2 # up
                         fixAngleY = angleYmean  # 현재 각도고정
                         fixAngleX = angleX
                         Ki_term = 0
@@ -1024,7 +1025,7 @@ def main():
                             print("up")
                     else:
                         stop = driverSet(0, 0, 0, 0)  # stay
-                        actionPre = 1#stop
+                        actionPre = 1 # stop
                         fixAngleY = angleYmean
                         fixAngleX = angleX
                         Ki_term = 0
