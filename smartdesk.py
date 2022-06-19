@@ -558,7 +558,7 @@ def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
     userSideAngle = abs(cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
     userDistance = (calUserDistance / np.cos(userTopAngle * np.pi/180))/ np.cos(userSideAngle * np.pi/180)
     gap = calUserDistance / userDistance
-    calUserDistance = ((faceWidthMax - (1 - gap) * 20) - widthAverage) / faceDifference * distanceDifference + userDistanceMin
+    calUserDistance = ((faceWidthMax - (1 - gap) * 35) - widthAverage) / faceDifference * distanceDifference + userDistanceMin
     userDistance = (calUserDistance / np.cos(userTopAngle * np.pi / 180)) / np.cos(userSideAngle * np.pi / 180)
     cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
     calHeight = np.sin((cameraUserAngle + deskAngle) * np.pi/180) * userDistance# abs(np.sin((cameraUserAngle + deskAngle) * np.pi/180))* 15
@@ -868,7 +868,11 @@ def main():
                 oled.image(image)
                 oled.show()
                 break
-            
+        accel = mpu9250.readAccel()
+        gyro = mpu9250.readGyro()
+        angleX, angleY, angleZ = calGyro(accel['x'], accel['y'], accel['z'], gyro['x'], gyro['y'], gyro['z'])
+        fixAngleY = angleY  # 현재 각도고정
+        fixAngleX = angleX
         draw.text((0, 0), 'Success Set Height', font = font3, fill = 255)
         cap = cv2.VideoCapture(0)
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraHeight)
@@ -1005,9 +1009,9 @@ def main():
                 # 큰 움직임이 있을 때 모터 작동으로 변경
                 if abs(userHeightAVG - userHeight) > 3 and moveEnable == False:
                     moveEnable = True
-                    if userHeight < 140:
+                    if userHeight < 140 and deskUserTall > 110:
                         deskUserTall = deskUserTall - 30
-                    else:
+                    elif userHeight >= 140 and deskUserTall <= 110:
                         deskUserTall = deskUserTall + 30
                 if moveEnable == True:
                     if waveSensorHeight + 2 < deskUserTall and stop == False: # 설정키보다 작다면
