@@ -964,9 +964,6 @@ def main():
                     cv2.rectangle(rotate_frame, (x1, y1), (x2, y2), (0, 255, 0))  # green 박스
                     cv2.rectangle(rotate_frame, (x1+1, y1+1), (x2-1, y2-1), (0, 255, 0))  # green 박스
                     cv2.rectangle(rotate_frame, (x1+2, y1+2), (x2-2, y2-2), (0, 255, 0))  # green 박스
-            # 일어났을 때 책상 최적의 높이
-            #if (waveSensorMean + 3) >= deskUserTall and actionPre == 2 and addcontrol != True :
-            #    stop = driverSet(0, 0, 0, 0)
 
             if userNum == 1 and recognitionEnable == True: #인식된 얼굴 수
                 # 책상 다리 모터 제어에 활용되는 값
@@ -1031,7 +1028,7 @@ def main():
                         recognitionMode[2] = True
                         stop = False
                 if recognitionMode[2] == True: # 모터 작동 모드
-                    if waveSensorMean >= deskMoveTall - 1 and waveSensorMean <= deskMoveTall + 1:
+                    if waveSensorMean + 2 >= deskMoveTall - 1 and waveSensorMean + 2 <= deskMoveTall + 1:
                         pwmA_AVG = 0
                         pwmB_AVG = 0
                         fixAngleY = angleY  # 현재 각도고정
@@ -1039,7 +1036,7 @@ def main():
                         stop = driverSet(0, 0, 0, 0)
                         recognitionMode[2] = False
                         recognitionMode[0] = True
-                    elif waveSensorHeight < deskMoveTall - 1 and stop == False: # 설정키보다 작다면
+                    elif waveSensorHeight + 2 < deskMoveTall - 1 and stop == False: # 설정키보다 작다면
                         pwmA_AVG = 0
                         pwmB_AVG = 0
                         fixAngleY = angleY  # 현재 각도고정
@@ -1047,7 +1044,7 @@ def main():
                         stop = driverSet(0, 2, 2, 0)
                         actionPre = 2  # down
                         Ki_term = 0
-                    elif waveSensorHeight > deskMoveTall + 1 and stop == False: #설정키보다 크다면
+                    elif waveSensorHeight + 2 > deskMoveTall + 1 and stop == False: #설정키보다 크다면
                         pwmA_AVG = 0
                         pwmB_AVG = 0
                         fixAngleY = angleY  # 현재 각도고정
