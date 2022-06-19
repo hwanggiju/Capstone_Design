@@ -1111,7 +1111,7 @@ def main():
                 ENA_PWM[graphRow - i - 1] = ENA_PWM[graphRow - i - 2]
                 ENB_PWM[graphRow - i - 1] = ENB_PWM[graphRow - i - 2]
                 y_valDesk[graphRow - i - 1] = y_valDesk[graphRow - i - 2]
-                recommendHeight[i] = deskUserTall
+                recommendHeight[i] = deskMoveTall
             for i in range(len(HeightAVG)):
                 HeightAVG[len(HeightAVG) - i - 1] = HeightAVG[len(HeightAVG) - i - 2]
 
