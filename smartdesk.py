@@ -710,15 +710,12 @@ return:
 '''
 init_set = ['-First Setting-', 'Input your Height', 'cm']
 def OLED_initial_setting_Height(CHANGE_HEIGHT, light) :
-    preHeight = CHANGE_HEIGHT
-    OLED_initial_setting_Height(preHeight, 255)
     draw.text((5, 0), init_set[0], font = font, fill = light)
-    draw.text((5, 20), init_set[DLPF_BW_10], font = font, fill = light)
+    draw.text((5, 20), init_set[1], font = font, fill = light)
     draw.text((5, 40), str(CHANGE_HEIGHT), font = font, fill = light)
     draw.text((40, 40), init_set[2], font = font, fill = light)
     oled.image(image)
     oled.show()
-
 
 '''
 brief : OLED 초기 표시1
@@ -728,7 +725,6 @@ return:
 '''
 confirm_list = ['Your height', 'cm', 'Right?']
 def confirm_disp(CHANGE_HEIGHT, light) :
-    confirm_disp(CHANGE_HEIGHT, 255)
     draw.text((5, 0), confirm_list[0], font = font, fill = light)
     draw.text((5, 20), str(CHANGE_HEIGHT), font = font, fill = light)
     draw.text((40, 40), confirm_list[1], font = font, fill = light)
@@ -753,7 +749,6 @@ def drawDisplay(light) :
     for i in range(len(ModeWaveAVG) - 1) :
         ModeWaveAVG[len(ModeWaveAVG) - i - 1] = ModeWaveAVG[len(ModeWaveAVG) - i - 2]
     deskDistance1 = np.mean(ModeWaveAVG) # 초음파 평균 거리
-    drawDisplay(255)
     NowdeskDistance = deskDistance1
     draw.text((100, 0), auto_list[0], font=font2, fill=light)
     draw.text((100, 20), auto_list[1], font=font2, fill=light)
@@ -788,19 +783,15 @@ note  :
 param : NowHeight(현재높이), changeHeight(변경높이)
 return:
 '''
-prechange = 0
-nowpreHeight = 0
-reset_list = ['U', 'M', 'D', 'Desk Tall', 'cm']
+reset_list = ['U', 'M', 'D', 'cm']
 def ReSetMode(NowHeight, changeHeight, light) :
-    global prechange, nowpreHeight
-    ReSetMode(nowpreHeight, prechange, 255)
     draw.text((100, 0), reset_list[0], font=font2, fill=light)
     draw.text((100, 20), reset_list[1], font=font2, fill=light)
     draw.text((100, 40), reset_list[2], font=font2, fill=light)
-    draw.text((5, 0), reset_list[3], font=font2, fill=light)
-    draw.text((5, 15), reset_list[4], font=font2, fill=light)
-    prechange = changeHeight
-    nowpreHeight = NowHeight
+    draw.text((5, 0), str(NowHeight), font=font2, fill=light)
+    draw.text((5, 15), reset_list[3], font=font2, fill=light)
+    draw.text((5, 40), str(changeHeight), font=font2, fill=light)
+    draw.text((5, 15), reset_list[3], font=font2, fill=light)
     oled.image(image)
     oled.show()
 
@@ -859,6 +850,7 @@ def main():
                 draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
                 draw.text((40, 40), 'cm', font = font, fill = 255)
                 SET_HEIGHT = SET_HEIGHT + 1
+                OLED_initial_setting_Height(SET_HEIGHT-1, 255)
                 OLED_initial_setting_Height(SET_HEIGHT, 0)
                 GPIO.output(buzzer, True)
                 time.sleep(0.05)
@@ -869,6 +861,7 @@ def main():
                 draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
                 draw.text((40, 40), 'cm', font = font, fill = 255)
                 SET_HEIGHT = SET_HEIGHT - 1
+                OLED_initial_setting_Height(SET_HEIGHT+1, 255)
                 OLED_initial_setting_Height(SET_HEIGHT)
                 GPIO.output(buzzer, True)
                 time.sleep(0.05)
@@ -884,6 +877,7 @@ def main():
                     if GPIO.input(switch[2]) == 1:
                         confirm_disp(SET_HEIGHT, 255)
                         SET_HEIGHT = SET_HEIGHT + 1
+                        OLED_initial_setting_Height(SET_HEIGHT-1, 255)
                         OLED_initial_setting_Height(SET_HEIGHT, 0)
                         GPIO.output(buzzer, True)
                         time.sleep(0.05)
@@ -892,6 +886,7 @@ def main():
                     elif GPIO.input(switch[0]) == 1:
                         confirm_disp(SET_HEIGHT, 255)
                         SET_HEIGHT = SET_HEIGHT - 1
+                        OLED_initial_setting_Height(SET_HEIGHT+1, 255)
                         OLED_initial_setting_Height(SET_HEIGHT, 0)
                         GPIO.output(buzzer, True)
                         time.sleep(0.05)
@@ -1143,7 +1138,7 @@ def main():
                     time.sleep(1)
                     oled.fill(0)
                     oled.show()
-                    
+                       
                 drawDisplay(0)
                 
                 if GPIO.input(switch[2]) == 1 : # up 버튼 눌렀을 때
@@ -1182,10 +1177,12 @@ def main():
                     oled.show()
                     
                 ReSetMode(SET_HEIGHT, changeHeight, 0)
+                
                 if GPIO.input(switch[2]) == 1 :
                     changeHeight = SET_HEIGHT + 1
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
                     SET_HEIGHT = changeHeight
+                    ReSetMode(SET_HEIGHT-1, changeHeight-1, 255)
                     GPIO.output(buzzer, True)
                     time.sleep(0.05)
                     GPIO.output(buzzer, False)
@@ -1194,6 +1191,7 @@ def main():
                     changeHeight = SET_HEIGHT - 1
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
                     SET_HEIGHT = changeHeight
+                    ReSetMode(SET_HEIGHT+1, changeHeight+1, 255)
                     GPIO.output(buzzer, True)
                     time.sleep(0.05)
                     GPIO.output(buzzer, False)
