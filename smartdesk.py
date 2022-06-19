@@ -752,9 +752,9 @@ def drawDisplay(light) :
     deskDistance1 = np.mean(ModeWaveAVG) # 초음파 평균 거리
     draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 255)
     NowdeskDistance = deskDistance1
-    draw.text((100, 0), auto_list[0], font=font2, fill=light)
-    draw.text((100, 20), auto_list[1], font=font2, fill=light)
-    draw.text((100, 40), auto_list[2], font=font2, fill=light)
+    draw.text((110, 0), auto_list[0], font=font2, fill=light)
+    draw.text((110, 20), auto_list[1], font=font2, fill=light)
+    draw.text((110, 40), auto_list[2], font=font2, fill=light)
     draw.text((5, 0), auto_list[3], font=font, fill=light)
     draw.text((5, 15), str(int(deskDistance1)), font = font, fill = light)
     draw.text((40, 15), auto_list[4], font = font, fill = light)
@@ -786,9 +786,9 @@ return:
 '''
 reset_list = ['↑', 'M', '↓', 'cm']
 def ReSetMode(NowHeight, changeHeight, light) :
-    draw.text((100, 0), reset_list[0], font=font2, fill=light)
-    draw.text((100, 20), reset_list[1], font=font2, fill=light)
-    draw.text((100, 40), reset_list[2], font=font2, fill=light)
+    draw.text((110, 0), reset_list[0], font=font2, fill=light)
+    draw.text((110, 20), reset_list[1], font=font2, fill=light)
+    draw.text((110, 40), reset_list[2], font=font2, fill=light)
     draw.text((5, 0), str(NowHeight), font=font1, fill=light)
     draw.text((15, 0), reset_list[3], font=font1, fill=light)
     draw.text((5, 40), str(changeHeight), font=font1, fill=light)
