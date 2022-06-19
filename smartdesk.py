@@ -1000,11 +1000,11 @@ def main():
                 # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다
 
                 # 큰 움직임이 있을 때
-                # 움직임에 의한 길이 조절 모드로 들어감
-                # 어느정도 안정화된 모션이 감지되면
-                # 모터 작동으로 변경
+                # 1움직임에 의한 길이 조절 모드로 들어감
+                # 2어느정도 안정화된 모션이 감지되면
+                # 3모터 작동으로 변경
                 val_list = [ 0 for i in range(5)] # 표준변화량을 알기 위한 어레이
-                if abs(userHeightAVG - userHeight) > 15 and recognitionMode[0] == True:
+                if abs(userHeightAVG - userHeight) > 10 and recognitionMode[0] == True:
                     recognitionMode[0] = False # 변화량 감지 중지
                     recognitionMode[1] = True  # 안정길이 산출 활성화
                 if recognitionMode[1] == True: # 길이의 변화량이 적을때를 감지
