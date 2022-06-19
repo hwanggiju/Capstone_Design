@@ -1008,10 +1008,8 @@ def main():
                     recognitionMode[0] = False # 변화량 감지 중지
                     recognitionMode[1] = True  # 안정길이 산출 활성화
                 if recognitionMode[1] == True: # 길이의 변화량이 적을때를 감지
-                    for i in range(len(val_list)): # 변화량 입력
-                        val_list[i] = HeightAVG[i]
                     for i in range(len(val_list)):
-                        val_list[i] = pow((val_list[i] - y_val[i]), 2)
+                        val_list[i] = pow((y_valAVG[i] - y_val[i]), 2)
                     val_VAR = np.mean(val_list) # 분산 도출
                     val_DEV = math.sqrt(val_VAR)# 표준편차 도출
                     deskMoveTall = userHeightAVG - deskUserTall  # 현재감지된 키 - 적정 사람-책상거리
