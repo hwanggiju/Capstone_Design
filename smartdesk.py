@@ -56,7 +56,7 @@ line_labels = ['User Height',
 line1 = ax[0][0].plot(x_val, heightLine, color='red')[0]     # 인식 높이
 line2 = ax[0][0].plot(x_val, heightLine, color='orange')[0]    # 높이 상보필터
 line3 = ax[0][1].plot(x_val, deskLine, color='green')[0]   # 현재 책상 높이
-line4 = ax[0][1].plot(x_val, deskLine, color='orange')[0]  # 주천 높이
+line4 = ax[0][1].plot(x_val, deskLine, color='gold')[0]  # 주천 높이
 line5 = ax[1][0].plot(x_val, angleLine, color='blue')[0]      # 각 X
 line6 = ax[1][0].plot(x_val, angleLine, color='navy')[0]     # 각 Y
 line7 = ax[1][1].plot(x_val, pwmLine, color='purple')[0]        # pwm A
@@ -1008,7 +1008,7 @@ def main():
                 # 어느정도 안정화된 모션이 감지되면
                 # 모터 작동으로 변경
                 val_list = [ 0 for i in range(10)] # 표준변화량을 알기 위한 어레이
-                if abs(userHeightAVG - (waveSensorHeight + 70)) > 10 and recognitionMode[0] == True:
+                if abs(userHeightAVG - (waveSensorHeight + 70)) > 15 and recognitionMode[0] == True:
                     recognitionMode[0] = False # 변화량 감지 중지
                     recognitionMode[1] = True  # 안정길이 산출 활성화
                     stop = False
@@ -1025,7 +1025,10 @@ def main():
                         deskMoveTall = 73
                     elif deskMoveTall > 120:
                         deskMoveTall = 120
-                    if val_DEV < 0.5:
+                    if val_DEV < 0.4:
+                        GPIO.output(buzzer, True)
+                        time.sleep(0.01)
+                        GPIO.output(buzzer, False)
                         recognitionMode[1] = False
                         recognitionMode[2] = True
                 if recognitionMode[2] == True: # 모터 작동 모드
