@@ -1031,7 +1031,7 @@ def main():
                     if waveSensorMean + 2 >= deskMoveTall - 1 and waveSensorMean + 2 <= deskMoveTall + 1:
                         pwmA_AVG = 0
                         pwmB_AVG = 0
-                        fixAngleY = angleY  # 현재 각도고정
+                        fixAngleY = 0#angleY  # 현재 각도고정
                         fixAngleX = angleX
                         stop = driverSet(0, 0, 0, 0)
                         recognitionMode[2] = False
@@ -1039,7 +1039,7 @@ def main():
                     elif waveSensorHeight + 2 < deskMoveTall - 1 and stop == False: # 설정키보다 작다면
                         pwmA_AVG = 0
                         pwmB_AVG = 0
-                        fixAngleY = angleY  # 현재 각도고정
+                        fixAngleY = 0#angleY  # 현재 각도고정
                         fixAngleX = angleX
                         stop = driverSet(0, 2, 2, 0)
                         actionPre = 2  # down
@@ -1047,7 +1047,7 @@ def main():
                     elif waveSensorHeight + 2 > deskMoveTall + 1 and stop == False: #설정키보다 크다면
                         pwmA_AVG = 0
                         pwmB_AVG = 0
-                        fixAngleY = angleY  # 현재 각도고정
+                        fixAngleY = 0#angleY  # 현재 각도고정
                         fixAngleX = angleX
                         stop = driverSet(0, 1, 1, 0)
                         actionPre = 0  # down
