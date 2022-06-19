@@ -1117,7 +1117,7 @@ def main():
                 time.sleep(0.05)
                 GPIO.output(buzzer, False)
                 mode_initial = False
-                mode_time_start = nowtime
+                mode_time_start = nowTime
 
             # 기본모드 : 자동 책상 높이 조절(사용자 인식)
             if Mode[0] == True :
