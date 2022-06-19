@@ -1003,7 +1003,7 @@ def main():
                 # 움직임에 의한 길이 조절 모드로 들어감
                 # 어느정도 안정화된 모션이 감지되면
                 # 모터 작동으로 변경
-                val_list = [ 0 for i in range(5)] # 표준변화량을 알기 위한 어레이
+                val_list = [ 0 for i in range(10)] # 표준변화량을 알기 위한 어레이
                 if abs(userHeightAVG - userHeight) > 15 and recognitionMode[0] == True:
                     recognitionMode[0] = False # 변화량 감지 중지
                     recognitionMode[1] = True  # 안정길이 산출 활성화
@@ -1020,7 +1020,7 @@ def main():
                         deskMoveTall = 73
                     elif deskMoveTall > 120:
                         deskMoveTall = 120
-                    if val_DEV < 0.05:
+                    if val_DEV < 0.01:
                         GPIO.output(buzzer, True)
                         time.sleep(0.01)
                         GPIO.output(buzzer, False)
