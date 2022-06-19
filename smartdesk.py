@@ -1020,8 +1020,8 @@ def main():
                         val_list[i] = pow((val_list[i] - val_AVG), 2)
                     val_VAR = np.mean(val_list) # 분산 도출
                     val_DEV = math.sqrt(val_VAR)# 표준편차 도출
+                    deskMoveTall = userHeightAVG - deskUserTall  # 현재감지된 키 - 적정 사람-책상거리
                     if val_DEV < 5:
-                        deskMoveTall = userHeightAVG - deskUserTall # 현재감지된 키 - 적정 사람-책상거리
                         if deskMoveTall < 73: #최소높이 고정
                             deskMoveTall = 73
                         recognitionMode[1] = False
