@@ -1010,9 +1010,9 @@ def main():
                 if abs(userHeightAVG - userHeight) > 3 and moveEnable == False:
                     moveEnable = True
                     if userHeight < 140 and deskUserTall > 120:
-                        deskUserTall = deskUserTall - 30
-                    elif userHeight >= 140 and deskUserTall <= 120:
                         deskUserTall = deskUserTall + 30
+                    elif userHeight >= 140 and deskUserTall <= 90:
+                        deskUserTall = deskUserTall - 30
                 if moveEnable == True:
                     if waveSensorHeight + 2 < deskUserTall and stop == False: # 설정키보다 작다면
                         stop = driverSet(100,2,2,100)
