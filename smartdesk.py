@@ -1012,7 +1012,7 @@ def main():
                         val_list[i] = HeightAVG[i]
                     val_AVG = np.mean(val_list) #평균 도출
                     for i in range(len(val_list)):
-                        val_list[i] = pow((val_list[i] - HeightAVG[i]), 2)
+                        val_list[i] = pow((val_list[i] - y_val[i]), 2)
                     val_VAR = np.mean(val_list) # 분산 도출
                     val_DEV = math.sqrt(val_VAR)# 표준편차 도출
                     deskMoveTall = userHeightAVG - deskUserTall  # 현재감지된 키 - 적정 사람-책상거리
@@ -1020,7 +1020,7 @@ def main():
                         deskMoveTall = 73
                     elif deskMoveTall > 120:
                         deskMoveTall = 120
-                    if val_DEV < 0.01:
+                    if val_DEV < 0.1:
                         GPIO.output(buzzer, True)
                         time.sleep(0.01)
                         GPIO.output(buzzer, False)
