@@ -790,9 +790,9 @@ def ReSetMode(NowHeight, changeHeight, light) :
     draw.text((110, 20), reset_list[1], font=font2, fill=light)
     draw.text((110, 40), reset_list[2], font=font2, fill=light)
     draw.text((5, 0), str(NowHeight), font=font1, fill=light)
-    draw.text((15, 0), reset_list[3], font=font1, fill=light)
+    draw.text((30, 0), reset_list[3], font=font1, fill=light)
     draw.text((5, 40), str(changeHeight), font=font1, fill=light)
-    draw.text((15, 40), reset_list[3], font=font1, fill=light)
+    draw.text((30, 40), reset_list[3], font=font1, fill=light)
     oled.image(image)
     oled.show()
 
@@ -1148,7 +1148,7 @@ def main():
                     elif GPIO.input(switch[0]) == 0 and btn_stop == True: # 버튼 눌렀다 땟을 때
                         driverSet(0, 0, 0, 0)
                         btn_stop = False
-                        addcontrol == False
+                        addcontrol = False
 
             # 모드 2 : 키 설정 모드
             elif Mode[2] == True :
