@@ -328,7 +328,7 @@ def get_raw_data():
     accel_xout = read_word_2c(ACCEL_XOUT_H)
     accel_yout = read_word_2c(ACCEL_YOUT_H)
     accel_zout = read_word_2c(ACCEL_ZOUT_H)
-    return accel_xout, accel_yout, accel_zout,
+    return accel_xout, accel_yout, accel_zout,\
            gyro_xout, gyro_yout, gyro_zout
 
 
@@ -745,38 +745,22 @@ return:
 timeTest = True
 NowdeskDistance = 70
 ModeWaveAVG = [NowdeskDistance for i in range(5)]
-def drawDisplay() :      
+auto_list = ['U', 'M', 'D', 'Desk Tall', 'cm']
+def drawDisplay(light) :      
     global timeTest, nowTime, preTime, NowdeskDistance
     deskDistance = waveFunc()
     ModeWaveAVG[0] = deskDistance
     for i in range(len(ModeWaveAVG) - 1) :
         ModeWaveAVG[len(ModeWaveAVG) - i - 1] = ModeWaveAVG[len(ModeWaveAVG) - i - 2]
     deskDistance1 = np.mean(ModeWaveAVG) # 초음파 평균 거리
-    eraseDisplay()
+    drawDisplay(255)
     NowdeskDistance = deskDistance1
-    draw.text((100, 0), 'Up', font=font2, fill=0)
-    draw.text((100, 20), 'Mode', font=font2, fill=0)
-    draw.text((100, 40), 'Down', font=font2, fill=0)
-    draw.text((5, 0), 'Desk Tall', font=font, fill=0)
-    draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 0)
-    draw.text((40, 15), 'cm', font = font, fill = 0)
-    oled.image(image)
-    oled.show()
-
-
-'''
-brief : 기본 모드 display erase
-note  : 
-param : 
-return: 
-'''
-def eraseDisplay() :
-    draw.text((100, 0), 'Up', font=font2, fill=255)
-    draw.text((100, 20), 'Mode', font=font2, fill=255)
-    draw.text((100, 40), 'Down', font=font2, fill=255)
-    draw.text((5, 0), 'Desk Tall', font=font, fill=255)
-    draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = 255)
-    draw.text((40, 15), 'cm', font = font, fill = 255)
+    draw.text((100, 0), auto_list[0], font=font2, fill=light)
+    draw.text((100, 20), auto_list[1], font=font2, fill=light)
+    draw.text((100, 40), auto_list[2], font=font2, fill=light)
+    draw.text((5, 0), auto_list[3], font=font, fill=light)
+    draw.text((5, 15), str(int(NowdeskDistance)), font = font, fill = light)
+    draw.text((40, 15), auto_list[4], font = font, fill = light)
     oled.image(image)
     oled.show()
 
@@ -786,7 +770,7 @@ note  :
 param : 화면 출력 글
 return:
 '''
-def printOLED(line1, line2, line3, line4, line5, line6):
+def ReSetMode(line1, line2, line3, line4, line5, line6):
     draw.text((100, 0), 'Up', font=font2, fill=0)
     draw.text((100, 20), 'Mode', font=font2, fill=0)
     draw.text((100, 40), 'Down', font=font2, fill=0)
@@ -806,16 +790,15 @@ return:
 '''
 prechange = 0
 nowpreHeight = 0
-def ReSetMode(NowHeight, changeHeight) :
+reset_list = ['U', 'M', 'D', 'Desk Tall', 'cm']
+def ReSetMode(NowHeight, changeHeight, light) :
     global prechange, nowpreHeight
-    eraseReSetMode(nowpreHeight, prechange)
-    printOLED('Up',
-              'Mode',
-              '-Now Best Tall-',
-              str(int(NowHeight)),
-              'cm',
-              str(int(changeHeight)),
-              'cm')
+    ReSetMode(nowpreHeight, prechange, 255)
+    draw.text((100, 0), reset_list[0], font=font2, fill=light)
+    draw.text((100, 20), reset_list[1], font=font2, fill=light)
+    draw.text((100, 40), reset_list[2], font=font2, fill=light)
+    draw.text((5, 0), reset_list[3], font=font2, fill=light)
+    draw.text((5, 15), reset_list[4], font=font2, fill=light)
     prechange = changeHeight
     nowpreHeight = NowHeight
     oled.image(image)
@@ -1146,14 +1129,13 @@ def main():
                     recognitionEnable = True # 얼굴인식코드 활성화
                     oled.image(AutoImage)
                     oled.show()
-                    time.sleep(1)
-                    oled.fill(0)
-                    oled.show()
-                    
+                
 
             # 모드 1 : 수동 책상 높이 조절
             elif Mode[1] == True :
                 if mode_initial == False : # 모드 진입시 초기설정
+                    oled.fill(0)
+                    oled.show()
                     mode_initial = True
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
                     oled.image(btnstandImage)
@@ -1161,7 +1143,9 @@ def main():
                     time.sleep(1)
                     oled.fill(0)
                     oled.show()
-                drawDisplay()
+                    
+                drawDisplay(0)
+                
                 if GPIO.input(switch[2]) == 1 : # up 버튼 눌렀을 때
                     if btn_stop == False :
                         btn_stop = driverSet(100, 2, 2, 100)
@@ -1190,12 +1174,14 @@ def main():
                 if mode_initial == False:  # 모드 진입시 초기설정
                     mode_initial = True
                     recognitionEnable = False  # 얼굴인식코드 비활성화 (딜레이최적화)
+                    drawDisplay(255)
                     oled.image(setImage)
                     oled.show()
                     time.sleep(1)
                     oled.fill(0)
                     oled.show()
-                ReSetMode(SET_HEIGHT, changeHeight)
+                    
+                ReSetMode(SET_HEIGHT, changeHeight, 0)
                 if GPIO.input(switch[2]) == 1 :
                     changeHeight = SET_HEIGHT + 1
                     deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
