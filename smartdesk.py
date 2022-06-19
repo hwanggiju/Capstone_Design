@@ -1032,7 +1032,7 @@ def main():
                         recognitionMode[1] = False
                         recognitionMode[2] = True
                 if recognitionMode[2] == True: # 모터 작동 모드
-                    if(waveSensorMean) > deskMoveTall - 2 and (waveSensorMean) < deskMoveTall + 2:
+                    if(waveSensorMean) > deskMoveTall -0.25 and (waveSensorMean) < deskMoveTall + 0.25:
                         pwmA_AVG = 0
                         pwmB_AVG = 0
                         fixAngleY = angleY  # 현재 각도고정
@@ -1040,7 +1040,7 @@ def main():
                         stop = driverSet(0, 0, 0, 0)
                         recognitionMode[2] = False
                         recognitionMode[0] = True
-                    elif waveSensorHeight < deskMoveTall - 2 and stop == False: # 설정키보다 작다면
+                    elif waveSensorHeight < deskMoveTall + 2 and stop == False: # 설정키보다 작다면
                         pwmA_AVG = 0
                         pwmB_AVG = 0
                         fixAngleY = angleY  # 현재 각도고정
