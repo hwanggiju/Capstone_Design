@@ -1161,7 +1161,8 @@ def main():
 
                     if GPIO.input(switch[2]) == 1 :
                         changeHeight = SET_HEIGHT + 1
-                        deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
+                        bestDeskTall = changeHeight * 0.23 + changeHeight * 0.18
+                        deskUserTall = changeHeight - bestDeskTall
                         SET_HEIGHT = changeHeight
                         ReSetMode(SET_HEIGHT-1, changeHeight-1, 255)
                         GPIO.output(buzzer, True)
@@ -1170,7 +1171,8 @@ def main():
 
                     if GPIO.input(switch[0]) == 1 :
                         changeHeight = SET_HEIGHT - 1
-                        deskUserTall = changeHeight * 0.23 + changeHeight * 0.18
+                        bestDeskTall = changeHeight * 0.23 + changeHeight * 0.18
+                        deskUserTall = changeHeight - bestDeskTall
                         SET_HEIGHT = changeHeight
                         ReSetMode(SET_HEIGHT+1, changeHeight+1, 255)
                         GPIO.output(buzzer, True)
@@ -1181,24 +1183,41 @@ def main():
             elif Mode[3] == True :
                 if mode_initial == False:  # 모드 진입시 초기설정
                     mode_initial = True
+                    ReSetMode(SET_HEIGHT, changeHeight, 255)
                     recognitionEnable = True  # 얼굴인식코드
                     oled.image(sleepImage)
                     oled.show()
                     
+                sleepDetectMode(sleepDetectTime, 0)  
+                
+                if userNum >= 1 :
+                    wakeTime = time.time()
+                    GPIO.output(buzzer, False)
+                    stop = driverSet(0, 0, 0 ,0)
+                    
                 if GPIO.input(switch[2]) == 1 :
-                    sleepMode = True
+                    sleepDetectTime += 10
+                    sleepDetectMode(sleepDetectTime-10, 255)
                     GPIO.output(buzzer, True)
                     time.sleep(0.05)
                     GPIO.output(buzzer, False)
-                    state = True
                     
                 if GPIO.input(switch[0]) == 1 :
-                    sleepMode = False
-                    oled.fill(255)
+                    sleepDetectTime -= 10
+                    sleepDetectMode(sleepDetectTime+10, 255)
                     GPIO.output(buzzer, True)
                     time.sleep(0.05)
                     GPIO.output(buzzer, False)
+                
+                if nowTime - wakeTime > sleepDetectTime : #인식 불과 시첨
+                    GPIO.output(buzzer, False)
+                    stop = driverSet(100, 2, 2, 100)
                     
+                elif nowTime - wakeTime > sleepDetectTime - 20 :
+                        GPIO.output(buzzer, True)
+                        time.sleep(0.05)
+                        GPIO.output(buzzer, False) 
+            '''      
             if sleepMode == True : #수면 방해모드
                 if userNum >= 1 and state == True :
                     wakeTime = time.time()
@@ -1224,7 +1243,7 @@ def main():
                 elif GPIO.input(switch[0]) == 1 :
                     sleepDetectTime -= 10
                     sleepDetectMode(sleepDetectTime+10, 255)
-
+            '''
     except KeyboardInterrupt :
         pass
     
