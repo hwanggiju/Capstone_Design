@@ -638,7 +638,7 @@ def HorizontalHold(nowAngle, compareAngle):
     if TESTMODE == True:
         alpha = 0.6
     else:
-        alpha = 0.9
+        alpha = 0.92
     pwmA_AVG = alpha * pwmA_AVG + (1 - alpha) * pwmA
     pwmB_AVG = alpha * pwmB_AVG + (1 - alpha) * pwmB
     changePWM(pwmA_AVG, pwmB_AVG)
@@ -1025,7 +1025,7 @@ def main():
                         GPIO.output(buzzer, True)
                         time.sleep(0.01)
                         GPIO.output(buzzer, False)
-                        time.sleep(0.05)
+                        time.sleep(0.1)
                         GPIO.output(buzzer, True)
                         time.sleep(0.01)
                         GPIO.output(buzzer, False)
