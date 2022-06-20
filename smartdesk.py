@@ -88,7 +88,7 @@ figure.legend([line1, line2, line3, line4, line5, line6, line7, line8], labels= 
 질문4. 스위치로 올리는 것보다 더 편한가? feat. 김성수교수님
 
 '''
-TESTMODE = False
+TESTMODE = True
 # 레지스터 값 설정
 CONFIG       = 0x1A     # LowPassFilter bit 2:0
 GYRO_CONFIG  = 0x1B     # FS_SEL bit 4:3
