@@ -990,6 +990,8 @@ def main():
                     print("현재 키값 :" + str(round(userHeightAVG, 2)))
                     print("책상 목표 높이 :" + str(round(deskMoveTall, 2)))
                     print("현재 책상 높이 :" + str(round(waveSensorMean + 2,2)))
+                    print("좌측모터 PWM :" + str(ENA_PWM[0]))
+                    print("우측모터 PWM :" + str(ENB_PWM[0]))
                     #val = PID(userHeightAVG, userHeight)
                     #print("PID 계산값 " + str(round(val, 5)))
 
