@@ -1234,8 +1234,14 @@ def main():
                     recognitionMotorEnable = True
                     wakeTime = time.time()
                     GPIO.output(buzzer, False)
-                    stop = driverSet(0, 0, 0 ,0)
-                    
+                    if waveSensorHeight + 2 > deskMoveTall + 1 and stop == False:
+                        pwmA_AVG = 0
+                        pwmB_AVG = 0
+                        fixAngleY = angleYmean  # 현재 각도고정
+                        fixAngleX = angleX
+                        stop = driverSet(0, 1, 1, 0)
+                        actionPre = 0  # down
+                        Ki_term = 0
                     
                 if GPIO.input(switch[2]) == 1 :
                     sleepDetectTime += 10
@@ -1257,9 +1263,9 @@ def main():
                     recognitionMotorEnable = True
                     
                 elif nowTime - wakeTime > sleepDetectTime - 30 :
-                        GPIO.output(buzzer, True)
-                        time.sleep(0.05)
-                        GPIO.output(buzzer, False) 
+                    GPIO.output(buzzer, True)
+                    time.sleep(0.05)
+                    GPIO.output(buzzer, False) 
     except KeyboardInterrupt :
         pass
     
