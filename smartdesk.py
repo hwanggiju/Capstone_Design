@@ -539,12 +539,12 @@ def set_MPU_init(dlpf_bw=DLPF_BW_256,
     return read_byte(PWR_MGMT_1)
 
 '''
-brief : 카메라 화면 기반 사용자 신장 유도식
+brief : 카메라 화면 기반 사용자 신장 유도식 
 note  : 
 param : faceWidth(얼굴폭), pixelX(좌표X), pixelY(좌표Y), nowHeight(현재 카메라 높이)
 return: 계산된 신장높이
 '''
-def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
+def getUserHeight1(faceWidth, pixelX, pixelY, nowHeight):
     global faceWidthAverage
     faceWidthAverage[0] = faceWidth
     sumHeight = 0
@@ -566,6 +566,34 @@ def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
     calHeight = np.sin((cameraUserAngle + deskAngle) * np.pi/180) * userDistance# abs(np.sin((cameraUserAngle + deskAngle) * np.pi/180))* 15
     for i in range(timeNum-1):#shift array
         faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
+    return nowHeight + calHeight
+
+'''
+brief : 카메라 화면 기반 사용자 신장 유도식 ( 화각 왜곡 테스트 수정 )
+note  : 
+param : faceWidth(얼굴폭), pixelX(좌표X), pixelY(좌표Y), nowHeight(현재 카메라 높이)
+return: 계산된 신장높이
+'''
+def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
+    global faceWidthAverage
+    faceWidthAverage[0] = faceWidth
+    COD = 5 # Correction of distortion 왜곡 보정값
+    widthAverage = np.mean(faceWidthAverage)
+    fullHorizontalAngle = cameraAngle
+    fullVerticalAngle = fullHorizontalAngle * cameraHeight / cameraWidth
+    faceDifference = faceWidthMax - faceWidthMin
+    distanceDifference = userDistanceMax - userDistanceMin
+    calUserDistance = ((faceWidthMax) - widthAverage) / faceDifference * distanceDifference + userDistanceMin
+    userTopAngle = abs(pixelX - cameraWidth/2) / cameraWidth * fullHorizontalAngle
+    userSideAngle = abs(cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
+    userDistance = (calUserDistance / np.cos(userTopAngle * np.pi/180))/ np.cos(userSideAngle * np.pi / 180)
+    gap = (np.cos(np.pi - np.arccos(calUserDistance / userDistance)) + 1) * 10 * COD
+    calUserDistance = (faceWidthMax - gap - widthAverage) / faceDifference * distanceDifference + userDistanceMin
+    userDistance = (calUserDistance / np.cos(userTopAngle * np.pi / 180)) / np.cos(userSideAngle * np.pi / 180)
+    cameraUserAngle = (cameraHeight/2 - pixelY) / cameraHeight * fullVerticalAngle
+    calHeight = np.sin((cameraUserAngle + deskAngle) * np.pi/180) * userDistance# abs(np.sin((cameraUserAngle + deskAngle) * np.pi/180))* 15
+    for i in range(timeNum - 1):#shift array
+        faceWidthAverage[timeNum - 1 - i] = faceWidthAverage[timeNum - 2 - i]
     return nowHeight + calHeight
 
 
