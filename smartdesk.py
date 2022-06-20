@@ -805,9 +805,6 @@ def main():
         # 초기 사용자 키설정 디스플레이
         while True :
             if GPIO.input(switch[2]) == 1 :     # up
-                draw.text((5, 0), 'Complete set', font = font, fill = 255)
-                draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
-                draw.text((40, 40), 'cm', font = font, fill = 255)
                 SET_HEIGHT = SET_HEIGHT + 1
                 OLED_initial_setting_Height(SET_HEIGHT-1, 255)
                 OLED_initial_setting_Height(SET_HEIGHT, 0)
@@ -816,9 +813,6 @@ def main():
                 GPIO.output(buzzer, False)
             
             elif GPIO.input(switch[0]) == 1:    # down
-                draw.text((5, 0), 'Complete set', font = font, fill = 255)
-                draw.text((5, 40), str(SET_HEIGHT), font = font, fill = 255)
-                draw.text((40, 40), 'cm', font = font, fill = 255)
                 SET_HEIGHT = SET_HEIGHT - 1
                 OLED_initial_setting_Height(SET_HEIGHT+1, 255)
                 OLED_initial_setting_Height(SET_HEIGHT, 0)
@@ -854,17 +848,19 @@ def main():
                         
                     elif GPIO.input(switch[1]) == 1 :
                         OLED_initial_setting_Height(SET_HEIGHT, 255)
-                        confirm_disp(SET_HEIGHT, 255)
-                        SET_HEIGHT = SET_HEIGHT
-                        bestDeskTall = SET_HEIGHT * 0.23 + SET_HEIGHT * 0.18
-                        deskUserTall = SET_HEIGHT - bestDeskTall - 34
-                        changeHeight = SET_HEIGHT
-                        GPIO.output(buzzer, True)
+                        confirm_disp(SET_HEIGHT, 0)
                         time.sleep(0.05)
-                        GPIO.output(buzzer, False)
-                        draw.text((0, 0), 'Success Set Height', font = font3, fill = 0)
-                        time.sleep(1)
-                        break
+                        if GPIO.input(switch[1]) == 1 :
+                            SET_HEIGHT = SET_HEIGHT
+                            bestDeskTall = SET_HEIGHT * 0.23 + SET_HEIGHT * 0.18
+                            deskUserTall = SET_HEIGHT - bestDeskTall - 34
+                            changeHeight = SET_HEIGHT
+                            GPIO.output(buzzer, True)
+                            time.sleep(0.05)
+                            GPIO.output(buzzer, False)
+                            draw.text((0, 0), 'Success Set Height', font = font3, fill = 0)
+                            time.sleep(1)
+                            break
                 oled.image(image)
                 oled.show()
                 break
