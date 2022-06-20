@@ -891,7 +891,6 @@ def main():
         waveSensorHeight = 70 # 최소 길이 초기화 71.5
         stop = False        # 모터셋 프로세스
         btn_stop = False    # 버튼 초기 프로세스 여부
-        addcontrol = False
         HeightAVG = [150 for i in range(15)]
         WaveAVG = [waveSensorHeight for i in range(10)]
         angleAVG = [0 for i in range(10)]
@@ -1144,7 +1143,6 @@ def main():
                             if btn_stop == True:
                                 fixAngleY = angleY
                                 fixAngleX = angleX
-                            addcontrol = True
                             actionPre = 2
 
                     elif GPIO.input(switch[0]) == 1 : # Down 버튼 눌렀을 때
@@ -1153,13 +1151,11 @@ def main():
                             if btn_stop == True:
                                 fixAngleY = angleY
                                 fixAngleX = angleX
-                            addcontrol = True
                             actionPre = 0
                     
                     elif GPIO.input(switch[0]) == 0 and btn_stop == True: # 버튼 눌렀다 땟을 때
                         driverSet(0, 0, 0, 0)
                         btn_stop = False
-                        addcontrol = False
 
             # 모드 2 : 키 설정 모드
             elif Mode[2] == True :
