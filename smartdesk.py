@@ -1006,8 +1006,8 @@ def main():
                 val_list = [ 0 for i in range(5)] # 표준변화량을 알기 위한 어레이
                 if recognitionMode[0] == True:
                     if abs(userHeightAVG - userHeight) > 10 or abs(deskMoveTall - waveSensorMean + 2) >= 3 or abs(y_valAVG[0] - y_valAVG[50]) > 10:
-                    recognitionMode[0] = False # 변화량 감지 중지
-                    recognitionMode[1] = True  # 안정길이 산출 활성화
+                        recognitionMode[0] = False # 변화량 감지 중지
+                        recognitionMode[1] = True  # 안정길이 산출 활성화
                 if recognitionMode[1] == True: # 길이의 변화량이 적을때를 감지
                     for i in range(len(val_list)):
                         val_list[i] = pow((y_valAVG[i] - y_val[i]), 2)
