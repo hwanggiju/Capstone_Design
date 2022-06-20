@@ -183,6 +183,7 @@ bestDeskTall = 0 # (UserTall * 0.23) + (UserTall * 0.18)
 # 일어섰을 때 적정 높이 = UserTall - bestDeskTall -> 초음파 거리
 # minHeight = 80
 # seatdownHeight = 0
+preHeight = 0
 
 nowTime = time.time()
 preTime = nowTime
@@ -788,7 +789,7 @@ def sleepDetectMode(sleepDetectTime, light) :
 def main():
     global actionNow, actionPre, bestDeskTall, fixAngleX, fixAngleY
     global nowTime, preTime, pwmA_AVG, pwmB_AVG
-    global deskAngle, Ki_term, deskUserTall
+    global deskAngle, Ki_term, deskUserTall, preHeight
     global recognitionEnable, sleepDetectTime, recognitionMotorEnable
     try :
         SET_HEIGHT = 170
@@ -854,6 +855,7 @@ def main():
                             bestDeskTall = SET_HEIGHT * 0.23 + SET_HEIGHT * 0.18
                             deskUserTall = SET_HEIGHT - bestDeskTall - 34
                             changeHeight = SET_HEIGHT
+                            preHeight = SET_HEIGHT
                             GPIO.output(buzzer, True)
                             time.sleep(0.05)
                             GPIO.output(buzzer, False)
@@ -1000,7 +1002,7 @@ def main():
                 # 3모터 작동으로 변경
                 val_list = [ 0 for i in range(5)] # 표준변화량을 알기 위한 어레이
                 if recognitionMode[0] == True:
-                    if abs(userHeightAVG - userHeight) > 10 or abs(deskMoveTall - (waveSensorMean + 2)) >= 3:
+                    if abs(userHeightAVG - userHeight) > 10 or abs(deskMoveTall - (waveSensorMean + 2)) >= 3 or abs(preHeight - userHeightAVG) > 10:
                         recognitionMode[0] = False # 변화량 감지 중지
                         recognitionMode[1] = True  # 안정길이 산출 활성화
                 if recognitionMode[1] == True: # 길이의 변화량이 적을때를 감지
@@ -1017,6 +1019,7 @@ def main():
                         GPIO.output(buzzer, True)
                         time.sleep(0.01)
                         GPIO.output(buzzer, False)
+                        preHeight = userHeightAVG
                         recognitionMode[1] = False
                         recognitionMode[2] = True
                         stop = False
