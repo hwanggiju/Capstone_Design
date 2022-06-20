@@ -1024,7 +1024,7 @@ def main():
                         recognitionMode[1] = False
                         recognitionMode[2] = True
                         stop = False
-                if recognitionMode[2] == True and recognitionMotorEnable == False: # 모터 작동 모드
+                if recognitionMode[2] == True : # 모터 작동 모드
                     if waveSensorMean + 2 >= deskMoveTall - 1 and waveSensorMean + 2 <= deskMoveTall + 1:
                         pwmA_AVG = 0
                         pwmB_AVG = 0
@@ -1231,7 +1231,6 @@ def main():
                 sleepDetectMode(sleepDetectTime, 0)  
                 
                 if userNum == 1 :
-                    recognitionMotorEnable = False
                     wakeTime = time.time()
                     GPIO.output(buzzer, False)
                     
