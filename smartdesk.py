@@ -188,7 +188,7 @@ nowTime = time.time()
 preTime = nowTime
 initial = True
 recognitionEnable = True # 카메라 작동
-recognitionMotorEnable = True # 카메라 인식 모터 작동 여부
+recognitionMotorEnable = False # 카메라 인식 모터 작동 여부
 #기초 데이터 얼굴폭, 거리
 #가까울때
 userDistanceMin = 70 #cm
@@ -1024,7 +1024,7 @@ def main():
                         recognitionMode[1] = False
                         recognitionMode[2] = True
                         stop = False
-                if recognitionMode[2] == True: # 모터 작동 모드
+                if recognitionMode[2] == True and recognitionMotorEnable == False: # 모터 작동 모드
                     if waveSensorMean + 2 >= deskMoveTall - 1 and waveSensorMean + 2 <= deskMoveTall + 1:
                         pwmA_AVG = 0
                         pwmB_AVG = 0
@@ -1225,7 +1225,6 @@ def main():
                     mode_initial = True
                     ReSetMode(SET_HEIGHT, 255)
                     recognitionEnable = True  # 얼굴인식코드
-                    # recognitionMotorEnable = False
                     #oled.image(sleepImage)
                     #oled.show()
                     
@@ -1253,39 +1252,13 @@ def main():
                 
                 if nowTime - wakeTime > sleepDetectTime : #인식 불과 시첨
                     GPIO.output(buzzer, False)
-                    # stop = driverSet(100, 2, 2, 100)
+                    stop = driverSet(100, 2, 2, 100)
+                    recognitionMotorEnable = True
                     
                 elif nowTime - wakeTime > sleepDetectTime - 30 :
                         GPIO.output(buzzer, True)
                         time.sleep(0.05)
                         GPIO.output(buzzer, False) 
-            '''      
-            if sleepMode == True : #수면 방해모드
-                if userNum >= 1 and state == True :
-                    wakeTime = time.time()
-                    GPIO.output(buzzer, False)
-                    stop = driverSet(0, 0, 0 ,0)
-                    state = False
-            
-                else :
-                    if nowTime - wakeTime > sleepDetectTime : #인식 불과 시첨
-                        if state == True :
-                            GPIO.output(buzzer, False)
-                            stop = driverSet(100, 2, 2, 100)
-                        
-                    elif nowTime - wakeTime > sleepDetectTime - 20 :
-                        GPIO.output(buzzer, True)
-                        time.sleep(0.05)
-                        GPIO.output(buzzer, False)
-                        state = True
-                sleepDetectMode(sleepDetectTime, 0)     
-                if GPIO.input(switch[2]) == 1 :
-                    sleepDetectTime += 10
-                    sleepDetectMode(sleepDetectTime-10, 255)
-                elif GPIO.input(switch[0]) == 1 :
-                    sleepDetectTime -= 10
-                    sleepDetectMode(sleepDetectTime+10, 255)
-            '''
     except KeyboardInterrupt :
         pass
     
