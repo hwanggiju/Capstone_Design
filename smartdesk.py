@@ -592,8 +592,8 @@ note  : 가중치 가변 방식
 param : nowAngle(현재 각도), comepareAngle(기준이 될 각도)
 return: 각 모터 펄스 주기
 '''
-pwmA = 0
-pwmB = 0
+pwmA = 100
+pwmB = 100
 pwmA_AVG = 0
 pwmB_AVG = 0
 preMotorState = 0
