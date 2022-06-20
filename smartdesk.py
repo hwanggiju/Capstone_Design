@@ -989,7 +989,7 @@ def main():
                 if TESTMODE == False: #모니터 그래프 없이 터미널사용때
                     print("현재 키값 :" + str(round(userHeightAVG, 2)))
                     print("책상 목표 높이 :" + str(round(deskMoveTall, 2)))
-                    print("현재 책상 높이 :" + str(round(waveSensorMean + 2),2))
+                    print("현재 책상 높이 :" + str(round(waveSensorMean + 2,2)))
                     #val = PID(userHeightAVG, userHeight)
                     #print("PID 계산값 " + str(round(val, 5)))
 
