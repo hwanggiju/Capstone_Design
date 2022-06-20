@@ -1225,6 +1225,7 @@ def main():
                     mode_initial = True
                     ReSetMode(SET_HEIGHT, 255)
                     recognitionEnable = True  # 얼굴인식코드
+                    wakeTime = time.time()
                     #oled.image(sleepImage)
                     #oled.show()
                     
