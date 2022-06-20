@@ -1004,7 +1004,7 @@ def main():
                 # 2어느정도 안정화된 모션이 감지되면
                 # 3모터 작동으로 변경
                 val_list = [ 0 for i in range(5)] # 표준변화량을 알기 위한 어레이
-                if abs(userHeightAVG - userHeight) > 10 and recognitionMode[0] == True:
+                if abs(userHeightAVG - userHeight) > 10 and recognitionMode[0] == True and recognitionMotorEnable == True:
                     recognitionMode[0] = False # 변화량 감지 중지
                     recognitionMode[1] = True  # 안정길이 산출 활성화
                 if recognitionMode[1] == True: # 길이의 변화량이 적을때를 감지
@@ -1225,7 +1225,7 @@ def main():
                     mode_initial = True
                     ReSetMode(SET_HEIGHT, 255)
                     recognitionEnable = True  # 얼굴인식코드
-                    recognitionMotorEnable = FALSE
+                    recognitionMotorEnable = False
                     #oled.image(sleepImage)
                     #oled.show()
                     
@@ -1253,7 +1253,7 @@ def main():
                 
                 if nowTime - wakeTime > sleepDetectTime : #인식 불과 시첨
                     GPIO.output(buzzer, False)
-                    #stop = driverSet(100, 2, 2, 100)
+                    stop = driverSet(100, 2, 2, 100)
                     
                 elif nowTime - wakeTime > sleepDetectTime - 30 :
                         GPIO.output(buzzer, True)
