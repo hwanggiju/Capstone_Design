@@ -987,9 +987,9 @@ def main():
                 # 현재 키의 값 변화를 천천히 바꿔주기 위함
                 userHeightAVG = np.mean(HeightAVG)
                 if TESTMODE == False: #모니터 그래프 없이 터미널사용때
-                    print("현재 키값 :" + str(round(userHeight, 2)))
-                    print("테스트식 결과 :" + str(round(userHeightAVG, 2)))
-                    print("차값 :" + str(userHeight - userHeightAVG))
+                    print("현재 키값 :" + str(round(userHeightAVG, 2)))
+                    print("책상 목표 높이 :" + str(round(deskMoveTall, 2)))
+                    print("현재 책상 높이 :" + str(waveSensorMean + 2))
                     #val = PID(userHeightAVG, userHeight)
                     #print("PID 계산값 " + str(round(val, 5)))
 
@@ -1061,48 +1061,7 @@ def main():
                         stop = driverSet(0, 1, 1, 0)
                         actionPre = 0  # down
                         Ki_term = 0
-
-                '''                        
-                #높이에 따른 모터작동 ///단순 작동ㅇ
-                if stop == False and recognitionMotorEnable == True: # 드라이버 pin Set 변경 후 반복 변경 방지
-                    # 앉았을 때, 책상의 최적 높이 설정
-                    # down
-                    if userHeightAVG < 140 :
-                        stop = driverSet(100, 1, 1, 100)  
-                        actionPre = 0 # down
-                        fixAngleY = angleYmean # 현재 각도고정
-                        fixAngleX = angleX
-                        Ki_term = 0
-                        if TESTMODE == False:
-                            print("down")
-                    # up    
-                    elif userHeightAVG > 150 :
-                        stop = driverSet(100, 2, 2, 100)
-                        actionPre = 2 # up
-                        fixAngleY = angleYmean  # 현재 각도고정
-                        fixAngleX = angleX
-                        Ki_term = 0
-                        if TESTMODE == False:
-                            print("up")
-
-
-                    else:
-                        stop = driverSet(0, 0, 0, 0)  # stay
-                        actionPre = 1 # stop
-                        fixAngleY = angleYmean
-                        fixAngleX = angleX
-                        Ki_term = 0
-                        if TESTMODE == False:
-                            print("stop")
-                else:
-                    if (waveSensorMean + 3) >= deskUserTall:
-                        stop = driverSet(0, 0, 0, 0)
-
-                    if userHeightAVG < 140 and actionPre != 0:
-                        stop = False
-                    elif userHeightAVG > 150 and actionPre != 2:
-                        stop = False
-                '''
+                        
             elif recognitionEnable == True: # 사용자 인식 중 1명이 아닌 경우 즉 0명 or 여러명
                 pass
             if TESTMODE == False:
