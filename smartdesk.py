@@ -849,6 +849,7 @@ def main():
                         confirm_disp(SET_HEIGHT, 0)
                         time.sleep(0.05)
                         if GPIO.input(switch[1]) == 1 :
+                            confirm_disp(SET_HEIGHT, 255)
                             SET_HEIGHT = SET_HEIGHT
                             bestDeskTall = SET_HEIGHT * 0.23 + SET_HEIGHT * 0.18
                             deskUserTall = SET_HEIGHT - bestDeskTall - 34
