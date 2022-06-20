@@ -1038,7 +1038,7 @@ def main():
                         recognitionMode[2] = True
                         stop = False
                 if recognitionMode[2] == True : # 모터 작동 모드
-                    if waveSensorMean + 2 >= deskMoveTall - 1 and waveSensorMean + 2 <= deskMoveTall + 1:
+                    if waveSensorMean + 2 >= deskMoveTall - 2 and waveSensorMean + 2 <= deskMoveTall + 2:
                         pwmA_AVG = 0
                         pwmB_AVG = 0
                         fixAngleY = angleYmean  # 현재 각도고정
