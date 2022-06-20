@@ -992,12 +992,7 @@ def main():
                 y_val[0] = userHeight
                 y_valAVG[0] = userHeightAVG
                 HeightAVG[0] = userHeight
-                # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아낸다
-
-                # 코드 정리한거 확인하고 지우면됨.
-                # 1. 모드1 자동 감지 높이조절코드 끝
-                # 2. 시작점부터 점차 속도 높아지는 모터코드 추가
-                # 3. 추천 길이 계산식 수정
+                # 책상의 최적 높이와 사용자의 현재 키를 빼서 최적의 값을 알아
 
                 # 큰 움직임이 있을 때
                 # 1움직임에 의한 길이 조절 모드로 들어감
@@ -1005,7 +1000,7 @@ def main():
                 # 3모터 작동으로 변경
                 val_list = [ 0 for i in range(5)] # 표준변화량을 알기 위한 어레이
                 if recognitionMode[0] == True:
-                    if abs(userHeightAVG - userHeight) > 10 or abs(deskMoveTall - waveSensorMean + 2) >= 3 or abs(y_valAVG[0] - y_valAVG[50]) > 10:
+                    if abs(userHeightAVG - userHeight) > 10 or abs(deskMoveTall - waveSensorMean + 2) >= 3:
                         recognitionMode[0] = False # 변화량 감지 중지
                         recognitionMode[1] = True  # 안정길이 산출 활성화
                 if recognitionMode[1] == True: # 길이의 변화량이 적을때를 감지
