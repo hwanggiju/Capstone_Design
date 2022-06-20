@@ -1231,6 +1231,7 @@ def main():
                 sleepDetectMode(sleepDetectTime, 0)  
                 
                 if userNum == 1 :
+                    recognitionMotorEnable = True
                     wakeTime = time.time()
                     GPIO.output(buzzer, False)
                     stop = driverSet(0, 0, 0 ,0)
