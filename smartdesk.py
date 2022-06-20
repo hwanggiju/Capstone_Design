@@ -731,7 +731,7 @@ confirm_list = ['Your height', 'cm', 'Right?']
 def confirm_disp(CHANGE_HEIGHT, light) :
     draw.text((5, 0), confirm_list[0], font = font, fill = light)
     draw.text((5, 20), str(CHANGE_HEIGHT), font = font, fill = light)
-    draw.text((40, 40), confirm_list[1], font = font, fill = light)
+    draw.text((40, 20), confirm_list[1], font = font, fill = light)
     draw.text((5, 40), confirm_list[2], font = font, fill = light) 
     oled.image(image)
     oled.show()
@@ -758,14 +758,12 @@ param : NowHeight(현재높이), changeHeight(변경높이)
 return:
 '''
 reset_list = ['↑', 'M', '↓', 'cm']
-def ReSetMode(NowHeight, changeHeight, light) :
+def ReSetMode(NowHeight, light) :
     draw.text((110, 0), reset_list[0], font=font2, fill=light)
     draw.text((110, 20), reset_list[1], font=font2, fill=light)
     draw.text((110, 40), reset_list[2], font=font2, fill=light)
-    draw.text((5, 0), str(NowHeight), font=font1, fill=light)
-    draw.text((40, 0), reset_list[3], font=font1, fill=light)
-    draw.text((5, 40), str(changeHeight), font=font1, fill=light)
-    draw.text((40, 40), reset_list[3], font=font1, fill=light)
+    draw.text((5, 20), str(NowHeight), font=font1, fill=light)
+    draw.text((40, 20), reset_list[3], font=font1, fill=light)
     oled.image(image)
     oled.show()
 
@@ -1198,14 +1196,14 @@ def main():
                     oled.image(setImage)
                     oled.show()
                 if nowTime - mode_time_start > 1: # 이미지 show 오류 방지
-                    ReSetMode(SET_HEIGHT, changeHeight, 0)
+                    ReSetMode(SET_HEIGHT, 0)
 
                     if GPIO.input(switch[2]) == 1 :
                         changeHeight = SET_HEIGHT + 1
                         bestDeskTall = changeHeight * 0.23 + changeHeight * 0.18
                         deskUserTall = changeHeight - bestDeskTall - 34 # 변경 키 - 계산키
                         SET_HEIGHT = changeHeight
-                        ReSetMode(SET_HEIGHT-1, changeHeight-1, 255)
+                        ReSetMode(SET_HEIGHT-1, 255)
                         GPIO.output(buzzer, True)
                         time.sleep(0.05)
                         GPIO.output(buzzer, False)
@@ -1215,7 +1213,7 @@ def main():
                         bestDeskTall = changeHeight * 0.23 + changeHeight * 0.18
                         deskUserTall = changeHeight - bestDeskTall - 34
                         SET_HEIGHT = changeHeight
-                        ReSetMode(SET_HEIGHT+1, changeHeight+1, 255)
+                        ReSetMode(SET_HEIGHT+1, 255)
                         GPIO.output(buzzer, True)
                         time.sleep(0.05)
                         GPIO.output(buzzer, False)
