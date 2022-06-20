@@ -638,7 +638,7 @@ def HorizontalHold(nowAngle, compareAngle):
     if TESTMODE == True:
         alpha = 0.6
     else:
-        alpha = 0.95
+        alpha = 0.9
     pwmA_AVG = alpha * pwmA_AVG + (1 - alpha) * pwmA
     pwmB_AVG = alpha * pwmB_AVG + (1 - alpha) * pwmB
     changePWM(pwmA_AVG, pwmB_AVG)
