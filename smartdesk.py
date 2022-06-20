@@ -1223,7 +1223,7 @@ def main():
             elif Mode[3] == True :
                 if mode_initial == False:  # 모드 진입시 초기설정
                     mode_initial = True
-                    ReSetMode(SET_HEIGHT, changeHeight, 255)
+                    ReSetMode(SET_HEIGHT, 255)
                     recognitionEnable = True  # 얼굴인식코드
                     recognitionMotorEnable = FALSE
                     #oled.image(sleepImage)
