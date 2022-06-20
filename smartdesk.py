@@ -1005,6 +1005,9 @@ def main():
                     if abs(deskMoveTall - (waveSensorMean + 2)) >= 3 or abs(preHeight - userHeightAVG) > 15:
                         recognitionMode[0] = False # 변화량 감지 중지
                         recognitionMode[1] = True  # 안정길이 산출 활성화
+                        GPIO.output(buzzer, True)
+                        time.sleep(0.01)
+                        GPIO.output(buzzer, False)
                 if recognitionMode[1] == True: # 길이의 변화량이 적을때를 감지
                     for i in range(len(val_list)):
                         val_list[i] = pow((y_valAVG[i] - y_val[i]), 2)
@@ -1016,6 +1019,10 @@ def main():
                     elif deskMoveTall > 120:
                         deskMoveTall = 120
                     if val_DEV < 0.8:
+                        GPIO.output(buzzer, True)
+                        time.sleep(0.01)
+                        GPIO.output(buzzer, False)
+                        time.sleep(0.01)
                         GPIO.output(buzzer, True)
                         time.sleep(0.01)
                         GPIO.output(buzzer, False)
