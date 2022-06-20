@@ -1030,7 +1030,7 @@ def main():
                         pwmB_AVG = 0
                         fixAngleY = angleYmean  # 현재 각도고정
                         fixAngleX = angleX
-                        stop = driverSet(0, 0, 0, 0)
+                        driverSet(0, 0, 0, 0)
                         recognitionMode[2] = False
                         recognitionMode[0] = True
                     elif waveSensorHeight + 2 < deskMoveTall - 1 and stop == False: # 설정키보다 작다면
@@ -1231,17 +1231,9 @@ def main():
                 sleepDetectMode(sleepDetectTime, 0)  
                 
                 if userNum == 1 :
-                    recognitionMotorEnable = True
+                    recognitionMotorEnable = False
                     wakeTime = time.time()
                     GPIO.output(buzzer, False)
-                    if waveSensorHeight + 2 > deskMoveTall + 1 and stop == False:
-                        pwmA_AVG = 0
-                        pwmB_AVG = 0
-                        fixAngleY = angleYmean  # 현재 각도고정
-                        fixAngleX = angleX
-                        stop = driverSet(0, 1, 1, 0)
-                        actionPre = 0  # down
-                        Ki_term = 0
                     
                 if GPIO.input(switch[2]) == 1 :
                     sleepDetectTime += 10
