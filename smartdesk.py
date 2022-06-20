@@ -1234,6 +1234,14 @@ def main():
                 if userNum == 1 :
                     wakeTime = time.time()
                     GPIO.output(buzzer, False)
+                    if waveSensorHeight + 2 > deskMoveTall + 1: #설정키보다 크다면
+                        pwmA_AVG = 0
+                        pwmB_AVG = 0
+                        fixAngleY = angleYmean  # 현재 각도고정
+                        fixAngleX = angleX
+                        stop = driverSet(0, 1, 1, 0)
+                        actionPre = 0  # down
+                        Ki_term = 0
                     
                 if GPIO.input(switch[2]) == 1 :
                     sleepDetectTime += 10
