@@ -1030,7 +1030,7 @@ def main():
                         pwmB_AVG = 0
                         fixAngleY = angleYmean  # 현재 각도고정
                         fixAngleX = angleX
-                        driverSet(0, 0, 0, 0)
+                        stop = driverSet(0, 0, 0, 0)
                         recognitionMode[2] = False
                         recognitionMode[0] = True
                     elif waveSensorHeight + 2 < deskMoveTall - 1 and stop == False: # 설정키보다 작다면
