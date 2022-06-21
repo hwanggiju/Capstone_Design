@@ -1072,6 +1072,7 @@ def main():
                         pwmA = 100
                         pwmB = 100
                         stop = driverSet(0, 0, 0, 0)
+                        stop = False
                         recognitionMode[2] = False
                         recognitionMode[3] = True
                     elif waveSensorHeight + 2 < deskMoveTall - 1 and stop == False: # 설정키보다 작다면
@@ -1093,14 +1094,14 @@ def main():
                         actionPre = 0  # down
                         Ki_term = 0
                 if recognitionMode[3] == True:
-                    if angleY > fixAngleY - 0.2:
+                    if angleY > fixAngleY - 0.2 and stop == False:
                         pwmA = 100
                         pwmB = 100
-                        driverSet(0,1,0,0)
-                    elif angleY < fixAngleY + 0.2:
+                        stop = driverSet(10,2,0,10)
+                    elif angleY < fixAngleY + 0.2 and stop == False:
                         pwmA = 100
                         pwmB = 100
-                        driverSet(0,0,1,0)
+                        stop = driverSet(10,0,2,10)
                     else:
                         recognitionMode[3] = False
                         recognitionMode[0] = True
