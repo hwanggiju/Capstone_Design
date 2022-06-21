@@ -819,7 +819,7 @@ def sleepDetectMode(sleepDetectTime, light) :
 #######################################################################
 def main():
     global actionNow, actionPre, bestDeskTall, fixAngleX, fixAngleY
-    global nowTime, preTime, pwmA_AVG, pwmB_AVG
+    global nowTime, preTime, pwmA_AVG, pwmB_AVG, pwmB, pwmA
     global deskAngle, Ki_term, deskUserTall, preHeight
     global recognitionEnable, sleepDetectTime, recognitionMotorEnable
     try :
@@ -1069,6 +1069,8 @@ def main():
                     if waveSensorMean + 2 >= deskMoveTall - 2 and waveSensorMean + 2 <= deskMoveTall + 2:
                         pwmA_AVG = 0
                         pwmB_AVG = 0
+                        pwmA = 100
+                        pwmB = 100
                         fixAngleY = angleYmean  # 현재 각도고정
                         fixAngleX = angleX
                         stop = driverSet(0, 0, 0, 0)
@@ -1077,14 +1079,18 @@ def main():
                     elif waveSensorHeight + 2 < deskMoveTall - 1 and stop == False: # 설정키보다 작다면
                         pwmA_AVG = 0
                         pwmB_AVG = 0
+                        pwmA = 100
+                        pwmB = 100
                         fixAngleY = angleYmean  # 현재 각도고정
                         fixAngleX = angleX
                         stop = driverSet(0, 2, 2, 0)
-                        actionPre = 2  # down
+                        actionPre = 2  # up
                         Ki_term = 0
                     elif waveSensorHeight + 2 > deskMoveTall + 1 and stop == False: #설정키보다 크다면
                         pwmA_AVG = 0
                         pwmB_AVG = 0
+                        pwmA = 100
+                        pwmB = 100
                         fixAngleY = angleYmean  # 현재 각도고정
                         fixAngleX = angleX
                         stop = driverSet(0, 1, 1, 0)
