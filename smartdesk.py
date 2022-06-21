@@ -929,7 +929,7 @@ def main():
         mode_initial = False # 모드 이동시 시작 프로세스 동작여부
         mode_time_start = 0 # 모드 초기 시작시 OLED 오동작 방지를 감안한 타임 인터럽트용 변수
         # 움직임 감지를 통한 높이 재설정 에 필요한 모듈 순차용 변수 [감지/변경/이동]
-        recognitionMode = [True, False, False]
+        recognitionMode = [True, False, False, False]
         deskMoveTall = 100 # 높이 산출 후 이동해야할 책상의 높이
         # 모터 동작 반복
         while True:
@@ -1071,16 +1071,12 @@ def main():
                         pwmB_AVG = 0
                         pwmA = 100
                         pwmB = 100
-                        fixAngleY = angleYmean  # 현재 각도고정
-                        fixAngleX = angleX
                         stop = driverSet(0, 0, 0, 0)
                         recognitionMode[2] = False
-                        recognitionMode[0] = True
+                        recognitionMode[3] = True
                     elif waveSensorHeight + 2 < deskMoveTall - 1 and stop == False: # 설정키보다 작다면
                         pwmA_AVG = 0
                         pwmB_AVG = 0
-                        pwmA = 100
-                        pwmB = 100
                         fixAngleY = angleYmean  # 현재 각도고정
                         fixAngleX = angleX
                         stop = driverSet(0, 2, 2, 0)
@@ -1096,7 +1092,18 @@ def main():
                         stop = driverSet(0, 1, 1, 0)
                         actionPre = 0  # down
                         Ki_term = 0
-                        
+                if recognitionMode[3] == True:
+                    if angleY > fixAngleY - 0.2:
+                        pwmA = 100
+                        pwmB = 100
+                        driverSet(0,1,0,0)
+                    elif angleY < fixAngleY + 0.2:
+                        pwmA = 100
+                        pwmB = 100
+                        driverSet(0,0,1,0)
+                    else:
+                        recognitionMode[3] = False
+                        recognitionMode[0] = True
             elif recognitionEnable == True: # 사용자 인식 중 1명이 아닌 경우 즉 0명 or 여러명
                 pass
             if TESTMODE == False:
