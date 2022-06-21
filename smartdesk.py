@@ -577,7 +577,7 @@ return: 계산된 신장높이
 def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
     global faceWidthAverage
     faceWidthAverage[0] = faceWidth
-    COD = 10 # Correction of distortion 왜곡 보정값
+    COD = 7 # Correction of distortion 왜곡 보정값
     widthAverage = np.mean(faceWidthAverage)
     fullHorizontalAngle = cameraAngle
     fullVerticalAngle = fullHorizontalAngle * cameraHeight / cameraWidth
