@@ -1040,6 +1040,8 @@ def main():
                     if abs(deskMoveTall - (waveSensorMean + 2)) >= 3 or abs(preHeight - userHeightAVG) > 15:
                         recognitionMode[0] = False # 변화량 감지 중지
                         recognitionMode[1] = True  # 안정길이 산출 활성화
+                        fixAngleY = angleYmean  # 현재 각도고정
+                        fixAngleX = angleX
                         GPIO.output(buzzer, True)
                         time.sleep(0.01)
                         GPIO.output(buzzer, False)
