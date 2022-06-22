@@ -1110,7 +1110,7 @@ def main():
                         pwmA = 100
                         pwmB = 100
                         stop = driverSet(10,1,2,10)
-                    elif abs(angleY - fixAngleY) < 0.5:
+                    elif abs(angleYmean - fixAngleY) < 0.5:
                         stop = driverSet(10, 0, 0, 10)
                         recognitionMode[3] = False
                         recognitionMode[0] = True
