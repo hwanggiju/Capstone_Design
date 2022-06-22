@@ -1096,12 +1096,17 @@ def main():
                         stop = driverSet(0, 1, 1, 0)
                         actionPre = 0  # down
                         Ki_term = 0
+                    if count == 0:
+                        count = count + 1
+                        fixAngleY = angleYmean  # 현재 각도고정
+                        fixAngleX = angleX
+
                 if recognitionMode[3] == True: #움직임 정지 후 수평이 안맞을 시 작동
-                    if angleY > fixAngleY - 0.2 and stop == False and count > 0:
+                    if angleY > fixAngleY - 0.2 and stop == False:
                         pwmA = 100
                         pwmB = 100
                         stop = driverSet(10,2,1,10)
-                    elif angleY < fixAngleY + 0.2 and stop == False and count > 0:
+                    elif angleY < fixAngleY + 0.2 and stop == False:
                         pwmA = 100
                         pwmB = 100
                         stop = driverSet(10,1,2,10)
@@ -1109,7 +1114,6 @@ def main():
                         stop = driverSet(10, 0, 0, 10)
                         recognitionMode[3] = False
                         recognitionMode[0] = True
-                        count = count + 1
             elif recognitionEnable == True: # 사용자 인식 중 1명이 아닌 경우 즉 0명 or 여러명
                 pass
             if TESTMODE == False:
