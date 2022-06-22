@@ -3,7 +3,7 @@ from pickle import FALSE
 from readline import set_history_length
 from tkinter import S
 from xml.dom.minidom import parseString
-import face_recognition
+#import face_recognition
 import cv2
 import RPi.GPIO as GPIO
 import time
