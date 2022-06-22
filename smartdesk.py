@@ -1036,7 +1036,7 @@ def main():
                 if TESTMODE == True:
                     val_list = [ 0 for i in range(5)] # 표준변화량을 알기 위한 어레이
                 else:
-                    val_list = [ 0 for i in range(15)] # 표준변화량을 알기 위한 어레이
+                    val_list = [ 0 for i in range(10)] # 표준변화량을 알기 위한 어레이
                 if recognitionMode[0] == True:
                     if abs(deskMoveTall - (waveSensorMean + 2)) >= 3 or abs(preHeight - userHeightAVG) > 15:
                         recognitionMode[0] = False # 변화량 감지 중지
