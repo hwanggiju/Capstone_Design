@@ -932,6 +932,7 @@ def main():
         recognitionMode = [True, False, False, False]
         deskMoveTall = 100 # 높이 산출 후 이동해야할 책상의 높이
         # 모터 동작 반복
+        count = 0
         while True:
             accel = mpu9250.readAccel()
             gyro = mpu9250.readGyro()
@@ -1096,11 +1097,11 @@ def main():
                         actionPre = 0  # down
                         Ki_term = 0
                 if recognitionMode[3] == True: #움직임 정지 후 수평이 안맞을 시 작동
-                    if angleY > fixAngleY - 0.2 and stop == False:
+                    if angleY > fixAngleY - 0.2 and stop == False and count > 0:
                         pwmA = 100
                         pwmB = 100
                         stop = driverSet(10,2,1,10)
-                    elif angleY < fixAngleY + 0.2 and stop == False:
+                    elif angleY < fixAngleY + 0.2 and stop == False and count > 0:
                         pwmA = 100
                         pwmB = 100
                         stop = driverSet(10,1,2,10)
@@ -1108,6 +1109,7 @@ def main():
                         stop = driverSet(10, 0, 0, 10)
                         recognitionMode[3] = False
                         recognitionMode[0] = True
+                        count = count + 1
             elif recognitionEnable == True: # 사용자 인식 중 1명이 아닌 경우 즉 0명 or 여러명
                 pass
             if TESTMODE == False:
