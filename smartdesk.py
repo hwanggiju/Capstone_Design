@@ -1,5 +1,3 @@
-import time
-time.sleep(10)
 from asyncio.unix_events import _UnixSelectorEventLoop
 from pickle import FALSE
 from readline import set_history_length
@@ -8,7 +6,7 @@ from xml.dom.minidom import parseString
 import face_recognition
 import cv2
 import RPi.GPIO as GPIO
-
+import time
 import sys
 import numpy as np
 import math
