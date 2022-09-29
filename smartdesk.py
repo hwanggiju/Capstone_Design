@@ -982,7 +982,7 @@ def main():
             if recognitionEnable == True: # 인식모드 사용 여부 최적화용
                 for i in range(detect.shape[0]):
                     confidence = detect[i, 2]
-                    if confidence < 0.5:
+                    if confidence < 0.87:
                         break
                     userNum = userNum + 1
                     x1 = int(detect[i, 3] * w)
