@@ -568,6 +568,8 @@ def getUserHeight1(faceWidth, pixelX, pixelY, nowHeight):
         faceWidthAverage[timeNum-1-i] = faceWidthAverage[timeNum-2-i]
     return nowHeight + calHeight
 
+
+
 '''
 brief : 카메라 화면 기반 사용자 신장 유도식 ( 화각 왜곡 테스트 수정 )
 note  : 
@@ -596,8 +598,11 @@ def getUserHeight(faceWidth, pixelX, pixelY, nowHeight):
         faceWidthAverage[timeNum - 1 - i] = faceWidthAverage[timeNum - 2 - i]
     return nowHeight + calHeight
 
+# COD = 3 # Correction of distortion 왜곡 보정값
+# calHeight=sin(((320-Y)*0.11667+deskAngle)* pi /180)*(faceWidthMax-((cos(pi-arccos(cos(abs(X-240)/469.14450)/cos(abs(320-Y)*0.00203))+1)*10*COD)-widthAverage)/(4043*cos(abs(X-240)/469.14450)*cos(abs(320-Y)*0.00203)))
 
-'''
+
+''' 
 brief : PWM 값 변경
 note  : 0~100 dutycycle
 param : enA(모터A 펄스주기), enB(모터B 펄스주기) 
